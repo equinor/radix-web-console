@@ -1,15 +1,15 @@
 import { Table } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import { StatusBadge } from '../status-badges';
-import { RelativeToNow } from '../time/relative-to-now';
-import { Event } from '../../store/radix-api';
+import type { Event } from '../../store/radix-api';
 import {
   isEventObsolete,
   isEventResolved,
   isWarningEvent,
 } from '../../utils/event-model';
+import { StatusBadge } from '../status-badges';
+import { RelativeToNow } from '../time/relative-to-now';
 
 export interface EventSummaryProps {
   event: Readonly<Event>;

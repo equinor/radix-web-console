@@ -1,6 +1,6 @@
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 import { ExternalDNSList } from '.';
-import { ExternalDns } from '../../store/radix-api';
+import type { ExternalDns } from '../../store/radix-api';
 
 const testData: Array<ComponentProps<typeof ExternalDNSList>> = [
   {

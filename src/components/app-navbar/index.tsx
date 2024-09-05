@@ -1,6 +1,6 @@
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import {
-  IconData,
+  type IconData,
   desktop_mac,
   engineering,
   external_link,
@@ -13,10 +13,9 @@ import {
   world,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import { FunctionComponent, forwardRef } from 'react';
+import { type FunctionComponent, forwardRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
-import { AppBadge } from '../app-badge';
 import { configVariables } from '../../utils/config';
 import { urlToAppMonitoring } from '../../utils/monitoring';
 import {
@@ -26,6 +25,7 @@ import {
   getAppUrl,
   getEnvsUrl,
 } from '../../utils/routing';
+import { AppBadge } from '../app-badge';
 
 import './style.css';
 import { uniq } from 'lodash';

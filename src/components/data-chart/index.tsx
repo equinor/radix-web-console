@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { clsx } from 'clsx';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
 import {
@@ -12,7 +12,6 @@ import {
   googleChartDataBuilder,
 } from './data-chart-options';
 
-import { ScrimPopup } from '../scrim-popup';
 import { configVariables } from '../../utils/config';
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 import {
@@ -20,15 +19,16 @@ import {
   sortCompareNumber,
   sortCompareString,
 } from '../../utils/sort-utils';
+import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
+import { isNull } from 'lodash';
+import { externalUrls } from '../../externalUrls';
 import {
-  GenericResponse,
+  type GenericResponse,
   useGetAvailabilityItemsQuery,
   useLazyGetStatusItemsQuery,
 } from '../../store/dynatrace-api';
-import { isNull } from 'lodash';
-import { externalUrls } from '../../externalUrls';
 
 type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0];
 
@@ -66,28 +66,13 @@ function availabilityTooltip(
   availability: number
 ): string {
   const availStr = availability !== -1 ? `${availability.toFixed(2)}%` : 'N/A';
-  return (
-    '<div class="chart-tooltip grid grid--gap-small">' +
-    `  <span>${formatDateMonthTime(timestamp)}</span>` +
-    `  <span>Availability: ${availStr}</span>` +
-    '</div>'
-  );
+  return `<div class="chart-tooltip grid grid--gap-small">  <span>${formatDateMonthTime(timestamp)}</span>  <span>Availability: ${availStr}</span></div>`;
 }
 
 function timelineTooltip(start: Date, end: Date, status?: string): string {
   const period = `${formatDateMonthTime(start)} - ${formatDateMonthTime(end)}`;
   const duration = differenceInWords(end, start, true);
-  return (
-    '<div class="chart-tooltip grid grid--gap-small">' +
-    '  <span>Status code: ' +
-    `    <span class="${clsx('status-code', { [status ?? '']: !!status })}">` +
-    (status?.substring(3) ?? 'N/A') +
-    '    </span>' +
-    '  </span>' +
-    `  <span>Period: ${period}</span>` +
-    `  <span>Duration: ${duration}</span>` +
-    '</div>'
-  );
+  return `<div class="chart-tooltip grid grid--gap-small">  <span>Status code:     <span class="${clsx('status-code', { [status ?? '']: !!status })}">${status?.substring(3) ?? 'N/A'}    </span>  </span>  <span>Period: ${period}</span>  <span>Duration: ${duration}</span></div>`;
 }
 
 async function getStatusItems(

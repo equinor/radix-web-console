@@ -1,6 +1,6 @@
-import { Button, Icon, IconProps, Tooltip } from '@equinor/eds-core-react';
+import { Button, Icon, type IconProps, Tooltip } from '@equinor/eds-core-react';
 import { copy } from '@equinor/eds-icons';
-import { FunctionComponent, useState } from 'react';
+import { type FunctionComponent, useState } from 'react';
 
 import { copyToClipboard } from '../../utils/string';
 

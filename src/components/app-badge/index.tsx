@@ -1,5 +1,5 @@
-import { configure, JdenticonConfig, toSvg } from 'jdenticon';
-import { FunctionComponent } from 'react';
+import { type JdenticonConfig, configure, toSvg } from 'jdenticon';
+import type { FunctionComponent } from 'react';
 
 import './style.css';
 

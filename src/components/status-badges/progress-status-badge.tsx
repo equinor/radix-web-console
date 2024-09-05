@@ -8,14 +8,14 @@ import {
   traffic_light,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
-  StatusBadgeTemplateProps,
+  type StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import {
+import type {
   ScheduledBatchSummary,
   ScheduledJobSummary,
 } from '../../store/radix-api';

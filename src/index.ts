@@ -1,4 +1,4 @@
-import React from 'react';
+import type React from 'react';
 import { createRoot } from 'react-dom/client';
 
 import defaultEntry from './init/entry-default';

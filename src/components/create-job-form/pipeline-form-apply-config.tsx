@@ -1,11 +1,11 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import { FormEvent } from 'react';
+import type { FormEvent } from 'react';
 
 import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api';
-import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { FormProp } from './index';
+import type { FormProp } from './index';
 
 export function PipelineFormApplyConfig({
   children,

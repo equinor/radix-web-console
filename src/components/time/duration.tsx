@@ -1,5 +1,5 @@
-import { differenceInWords } from '../../utils/datetime';
 import { isValid } from 'date-fns';
+import { differenceInWords } from '../../utils/datetime';
 
 type Props = {
   start: number | string | Date;

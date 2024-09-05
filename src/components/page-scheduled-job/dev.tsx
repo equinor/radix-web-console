@@ -2,7 +2,7 @@ import { Response, Server } from 'miragejs';
 
 import { PageScheduledJob } from '.';
 
-import { ScheduledJobSummary } from '../../store/radix-api';
+import type { ScheduledJobSummary } from '../../store/radix-api';
 
 const testData: Array<
   Parameters<typeof PageScheduledJob>[0] & { jobData?: ScheduledJobSummary }

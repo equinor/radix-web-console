@@ -9,35 +9,39 @@ import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
 import {
-  FunctionComponent,
-  HTMLAttributes,
-  MouseEvent,
+  type FunctionComponent,
+  type HTMLAttributes,
+  type MouseEvent,
   useEffect,
 } from 'react';
 import { Link } from 'react-router-dom';
 
-import AsyncResource from '../async-resource/async-resource';
+import { routes } from '../../routes';
+import type {
+  ApplicationSummary,
+  Component,
+  JobSummary,
+} from '../../store/radix-api';
+import {
+  type ImageScan,
+  type Vulnerability,
+  scanApi,
+} from '../../store/scan-api';
+import { filterFields } from '../../utils/filter-fields';
+import { routeWithParams } from '../../utils/string';
 import { AppBadge } from '../app-badge';
+import AsyncResource from '../async-resource/async-resource';
 import {
   EnvironmentCardStatus,
   EnvironmentVulnerabilityIndicator,
 } from '../environments-summary/environment-card-status';
 import {
+  EnvironmentStatus,
   aggregateComponentEnvironmentStatus,
   aggregateComponentReplicaEnvironmentStatus,
   aggregateVulnerabilitySummaries,
-  EnvironmentStatus,
   environmentVulnerabilitySummarizer,
 } from '../environments-summary/environment-status-utils';
-import { filterFields } from '../../utils/filter-fields';
-import { routes } from '../../routes';
-import {
-  ApplicationSummary,
-  Component,
-  JobSummary,
-} from '../../store/radix-api';
-import { ImageScan, Vulnerability, scanApi } from '../../store/scan-api';
-import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 

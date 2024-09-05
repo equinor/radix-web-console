@@ -1,9 +1,18 @@
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, ReactNode, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FunctionComponent,
+  type ReactNode,
+  useState,
+} from 'react';
 
+import type {
+  BuildSecret,
+  ImageHubSecret,
+  Secret,
+} from '../../store/radix-api';
 import { SecretStatus } from '../secret-status';
-import { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api';
 
 import './style.css';
 
@@ -19,7 +28,7 @@ export const SecretForm: FunctionComponent<{
    * @param value form value
    * @returns true to prevent or disallow saving the same value twice, or false/void to allow this behavior
    */
-  onSave?: (value: string) => Promise<boolean | void>;
+  onSave?: (value: string) => Promise<boolean | undefined>;
 }> = ({
   secret,
   secretName,

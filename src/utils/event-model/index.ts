@@ -1,4 +1,4 @@
-import { Event } from '../../store/radix-api';
+import type { Event } from '../../store/radix-api';
 
 type EventStateValidator = (event: Readonly<Event>) => boolean;
 type EventStateValidators = {

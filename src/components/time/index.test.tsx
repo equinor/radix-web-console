@@ -1,9 +1,9 @@
 import { render } from '@testing-library/react';
-import { Duration } from './duration';
 import { addMinutes } from 'date-fns';
-import { RelativeToNow } from './relative-to-now';
-import { DurationToNow } from './duration-to-now';
 import { expect } from 'vitest';
+import { Duration } from './duration';
+import { DurationToNow } from './duration-to-now';
+import { RelativeToNow } from './relative-to-now';
 vi.setSystemTime(new Date('Tue May 29 12:47:20 2018 +0200'));
 
 const Times = [

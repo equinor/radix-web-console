@@ -1,4 +1,4 @@
-import { Breadcrumb, BreadcrumbProps } from './index';
+import { Breadcrumb, type BreadcrumbProps } from './index';
 
 const data: Array<BreadcrumbProps> = [
   {

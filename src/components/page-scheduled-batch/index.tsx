@@ -2,6 +2,16 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
+import { routes } from '../../routes';
+import {
+  type ScheduledBatchSummary,
+  radixApi,
+  useGetBatchQuery,
+  useJobLogQuery,
+} from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
+import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
@@ -11,16 +21,6 @@ import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
-import {
-  ScheduledBatchSummary,
-  radixApi,
-  useGetBatchQuery,
-  useJobLogQuery,
-} from '../../store/radix-api';
-import { withRouteParams } from '../../utils/router';
-import { getEnvsUrl } from '../../utils/routing';
-import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 
 import './style.css';
 

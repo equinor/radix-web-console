@@ -1,9 +1,9 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { link } from '@equinor/eds-icons';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
-import { ApplicationAlias } from '../../store/radix-api';
+import type { ApplicationAlias } from '../../store/radix-api';
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
 
 export interface DefaultAppAliasProps {

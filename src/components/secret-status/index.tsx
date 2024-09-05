@@ -1,8 +1,8 @@
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
+import type { Secret } from '../../store/radix-api';
 import { StatusBadge } from '../status-badges';
-import { Secret } from '../../store/radix-api';
 
 export const SecretStatus: FunctionComponent<{ status?: Secret['status'] }> = ({
   status,

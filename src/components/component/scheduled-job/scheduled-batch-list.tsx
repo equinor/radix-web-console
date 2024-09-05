@@ -21,12 +21,8 @@ import { JobContextMenu } from './job-context-menu';
 import { JobDeploymentLink } from './job-deployment-link';
 import { RestartBatch } from './restart-batch';
 
-import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
-import { Duration } from '../../time/duration';
-import { RelativeToNow } from '../../time/relative-to-now';
 import {
-  ScheduledBatchSummary,
+  type ScheduledBatchSummary,
   useDeleteBatchMutation,
   useStopBatchMutation,
 } from '../../../store/radix-api';
@@ -36,11 +32,15 @@ import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  sortDirection,
+  type sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../../utils/string';
+import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
+import { ScrimPopup } from '../../scrim-popup';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
 import { BatchJobStatuses } from './batch-job-statuses';
-import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils';
 
 import './style.css';
 
@@ -155,7 +155,7 @@ export function ScheduledBatchList({
                           })}
                         >
                           <Table.Cell
-                            className={`fitwidth padding-right-0`}
+                            className={'fitwidth padding-right-0'}
                             variant="icon"
                           >
                             {batch.deploymentName && (
@@ -194,9 +194,7 @@ export function ScheduledBatchList({
                             <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>
                           <Table.Cell>
-                            <BatchJobStatuses
-                              jobs={batch.jobList}
-                            ></BatchJobStatuses>
+                            <BatchJobStatuses jobs={batch.jobList} />
                           </Table.Cell>
                           <Table.Cell>
                             <RelativeToNow

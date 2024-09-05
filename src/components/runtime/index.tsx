@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
-import { Runtime as RuntimeModel } from '../../store/radix-api';
+import type { FunctionComponent } from 'react';
+import type { Runtime as RuntimeModel } from '../../store/radix-api';
 
 export interface RuntimeProps {
   runtime: RuntimeModel;

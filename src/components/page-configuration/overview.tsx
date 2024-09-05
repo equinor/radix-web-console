@@ -6,10 +6,10 @@ import {
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { Alert } from '../alert';
 import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
-import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
+import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 
 interface Props {
   adGroups?: Array<string>;
@@ -62,9 +62,7 @@ export function Overview({ adGroups, appName }: Props) {
                     ))}
                   </List>
                   {!state.isFetching && unknownADGroups?.length > 0 && (
-                    <UnknownADGroupsAlert
-                      unknownADGroups={unknownADGroups}
-                    ></UnknownADGroupsAlert>
+                    <UnknownADGroupsAlert unknownADGroups={unknownADGroups} />
                   )}
                 </AsyncResource>
               )}

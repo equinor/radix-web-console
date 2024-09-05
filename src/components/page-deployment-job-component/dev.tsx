@@ -2,7 +2,7 @@ import { Server } from 'miragejs';
 
 import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
-import {
+import type {
   ChangeEnvVarApiResponse,
   Deployment,
   EnvVarsApiResponse,

@@ -1,10 +1,15 @@
-import { FunctionComponent, useRef, useState } from 'react';
-import { ReplicaSummary } from '../../store/radix-api';
-import { Icon, IconProps, Popover, Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { smallReplicaName } from '../../utils/string';
+import {
+  Icon,
+  type IconProps,
+  Popover,
+  Typography,
+} from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
+import { type FunctionComponent, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import type { ReplicaSummary } from '../../store/radix-api';
+import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaNameWithHelpDescriptionProps {
   displayName?: string;
@@ -66,7 +71,7 @@ export const ReplicaName: FunctionComponent<{
             'Job Manager creates, gets, deletes singe jobs and batch jobs with Job API'
           }
           replicaUrlFunc={replicaUrlFunc}
-        ></ReplicaNameWithHelpDescription>
+        />
       );
     case 'JobManagerAux':
       return (
@@ -77,7 +82,7 @@ export const ReplicaName: FunctionComponent<{
             'Job Resources Validator validates accesses to Volume Mounts and Azure Key Vaults if they are used in a job-component'
           }
           replicaUrlFunc={replicaUrlFunc}
-        ></ReplicaNameWithHelpDescription>
+        />
       );
     default:
       return (

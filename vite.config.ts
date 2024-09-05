@@ -1,7 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
-import eslintPlugin from 'vite-plugin-eslint';
 
+import checker from 'vite-plugin-checker';
 import packageJson from './package.json';
 
 // regex filter for dev.* components
@@ -28,10 +28,10 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    eslintPlugin({
-      failOnError: true,
-      failOnWarning: false,
-      useEslintrc: true,
+    checker({
+      biome: {
+        command: 'check',
+      },
     }),
   ],
 });

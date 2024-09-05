@@ -2,9 +2,12 @@ import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { blocked, check, error_outlined, run, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
+import type { ComponentProps } from 'react';
+import type {
+  PipelineRunTask,
+  PipelineRunTaskStep,
+} from '../../store/radix-api';
 import { StatusBadgeTemplate } from './status-badge-template';
-import { PipelineRunTaskStep, PipelineRunTask } from '../../store/radix-api';
-import { ComponentProps } from 'react';
 
 type BadgeProps = ComponentProps<typeof StatusBadgeTemplate>;
 

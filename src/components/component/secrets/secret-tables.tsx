@@ -1,17 +1,22 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, ReactNode, useEffect, useState } from 'react';
+import {
+  type FunctionComponent,
+  type ReactNode,
+  useEffect,
+  useState,
+} from 'react';
 
-import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
-import { SecretOverview } from './secret-overview';
-import { ScrimPopup } from '../../scrim-popup';
-import { ComponentSecretStatusBadge } from '../../status-badges';
-import { Secret } from '../../../store/radix-api';
+import type { Secret } from '../../../store/radix-api';
 import {
   dataSorter,
   sortCompareString,
-  sortDirection,
+  type sortDirection,
 } from '../../../utils/sort-utils';
+import { ScrimPopup } from '../../scrim-popup';
+import { ComponentSecretStatusBadge } from '../../status-badges';
+import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
+import { SecretOverview } from './secret-overview';
 
 import './style.css';
 

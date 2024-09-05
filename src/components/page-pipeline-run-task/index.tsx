@@ -1,18 +1,18 @@
 import * as PropTypes from 'prop-types';
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { PipelineRunTask } from '../pipeline-run-task';
-import { PipelineRunTaskSteps } from '../pipeline-run-task-steps';
-import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
 import { routes } from '../../routes';
-import { routeWithParams, smallJobName } from '../../utils/string';
-import { withRouteParams } from '../../utils/router';
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetTektonPipelineRunTaskQuery,
   useGetTektonPipelineRunTaskStepsQuery,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams, smallJobName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { PipelineRunTask } from '../pipeline-run-task';
+import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
+import { PipelineRunTaskSteps } from '../pipeline-run-task-steps';
 
 interface Props {
   appName: string;

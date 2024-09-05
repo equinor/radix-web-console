@@ -2,18 +2,18 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 
-import { DeploymentComponentList } from './deployment-component-list';
-import { DeploymentJobComponentList } from './deployment-job-component-list';
-import { DeploymentSummary } from './deployment-summary';
+import { Link } from 'react-router-dom';
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import { useGetDeploymentQuery } from '../../store/radix-api';
+import { buildComponentMap } from '../../utils/build-component-map';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { buildComponentMap } from '../../utils/build-component-map';
-import { routes } from '../../routes';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
-import { useGetDeploymentQuery } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { Link } from 'react-router-dom';
+import { DeploymentComponentList } from './deployment-component-list';
+import { DeploymentJobComponentList } from './deployment-job-component-list';
+import { DeploymentSummary } from './deployment-summary';
 
 type Props = {
   appName: string;
@@ -76,7 +76,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
                 <DeploymentComponentList
                   appName={appName}
                   deployment={deployment}
-                  components={componentMap['component']}
+                  components={componentMap.component}
                 />
               </div>
 
@@ -84,7 +84,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
                 <DeploymentJobComponentList
                   appName={appName}
                   deploymentName={deploymentName}
-                  components={componentMap['job']}
+                  components={componentMap.job}
                 />
               </div>
             </>

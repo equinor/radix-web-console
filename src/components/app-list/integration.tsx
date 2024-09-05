@@ -1,4 +1,4 @@
-import { Server } from 'mock-socket';
+import type { Server } from 'mock-socket';
 
 import AppList from '.';
 

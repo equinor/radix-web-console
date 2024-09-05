@@ -1,17 +1,17 @@
-import { FunctionComponent } from 'react';
-import { ScheduledJobSummary } from '../../../store/radix-api';
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
-import { StatusTooltipTemplateProps } from '../../status-tooltips/status-tooltip-template';
+import type { FunctionComponent } from 'react';
+import type { ScheduledJobSummary } from '../../../store/radix-api';
 import { StatusBadgeTemplate } from '../../status-badges/status-badge-template';
+import type { StatusTooltipTemplateProps } from '../../status-tooltips/status-tooltip-template';
 
 export type BatchJobStatus = 'Running' | 'Succeeded' | 'Failed' | 'Other';
 
 class JobStatuses {
-  running: number = 0;
-  succeeded: number = 0;
-  failed: number = 0;
-  other: number = 0;
+  running = 0;
+  succeeded = 0;
+  failed = 0;
+  other = 0;
 }
 
 const JobStatusBadgeTemplates = {
@@ -41,22 +41,22 @@ const JobConditionBadge: FunctionComponent<{
 }> = ({ status }) => (
   <div className="job-status-container">
     {status.running > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Running']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Running}>
         {status.running}
       </StatusBadgeTemplate>
     )}
     {status.succeeded > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Succeeded']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Succeeded}>
         {status.succeeded}
       </StatusBadgeTemplate>
     )}
     {status.failed > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Failed']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Failed}>
         {status.failed}
       </StatusBadgeTemplate>
     )}
     {status.other > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Other']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Other}>
         {status.other}
       </StatusBadgeTemplate>
     )}

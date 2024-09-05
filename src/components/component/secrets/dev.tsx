@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 
 import { SecretOverview } from './secret-overview';
 
-import {
+import type {
   ChangeComponentSecretApiResponse,
   GetEnvironmentApiArg,
   GetEnvironmentApiResponse,

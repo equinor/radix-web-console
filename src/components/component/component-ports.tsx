@@ -1,8 +1,8 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import { Port } from '../../store/radix-api';
+import type { Port } from '../../store/radix-api';
 
 export const ComponentPorts: FunctionComponent<{ ports: Array<Port> }> = ({
   ports,

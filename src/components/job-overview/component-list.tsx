@@ -1,12 +1,12 @@
 import * as PropTypes from 'prop-types';
 
-import { DeploymentSummary } from '../../store/radix-api';
-import { DockerImage } from '../docker-image';
-import { GitCommitTags } from '../component/git-commit-tags';
 import { List, Typography } from '@equinor/eds-core-react';
 import { Link } from 'react-router-dom';
-import { routeWithParams } from '../../utils/string';
 import { routes } from '../../routes';
+import type { DeploymentSummary } from '../../store/radix-api';
+import { routeWithParams } from '../../utils/string';
+import { GitCommitTags } from '../component/git-commit-tags';
+import { DockerImage } from '../docker-image';
 
 type Props = {
   appName: string;

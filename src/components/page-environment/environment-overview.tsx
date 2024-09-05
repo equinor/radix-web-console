@@ -1,28 +1,21 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { github, trending_up } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
 import EnvironmentAlerting from './environment-alerting';
 import EnvironmentToolbar from './environment-toolbar';
 
-import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DeploymentsList } from '../deployments-list';
-import { EventsList } from '../events-list';
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
 import {
   radixApi,
   useGetApplicationQuery,
   useGetEnvironmentEventsQuery,
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
 import { getFetchErrorMessage } from '../../store/utils';
 import { configVariables } from '../../utils/config';
 import {
@@ -38,11 +31,18 @@ import {
   smallDeploymentName,
   smallGithubCommitHash,
 } from '../../utils/string';
+import { Alert } from '../alert';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { DeploymentsList } from '../deployments-list';
+import { EventsList } from '../events-list';
+import { GitTagLinks } from '../git-tags/git-tag-links';
+import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
-import { GitCommitTags } from '../component/git-commit-tags';
 import { DefaultAppAlias } from '../component/default-app-alias';
 import { DNSAliases } from '../component/dns-aliases';
+import { GitCommitTags } from '../component/git-commit-tags';
 
 export const EnvironmentOverview: FunctionComponent<{
   appName: string;

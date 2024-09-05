@@ -1,6 +1,6 @@
-import { ResponseHandler } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
+import type { ResponseHandler } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { RootState } from '../store';
+import type { RootState } from '../store';
 import { configVariables } from '../../utils/config';
 
 /** Override for text/plain response handler */

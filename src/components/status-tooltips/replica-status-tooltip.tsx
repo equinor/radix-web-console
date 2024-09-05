@@ -7,14 +7,14 @@ import {
   time,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import {
   StatusTooltipTemplate,
-  StatusTooltipTemplateProps,
+  type StatusTooltipTemplateProps,
 } from './status-tooltip-template';
 
-import { ReplicaSummary } from '../../store/radix-api';
+import type { ReplicaSummary } from '../../store/radix-api';
 
 type ReplicaStatus = ReplicaSummary['replicaStatus']['status'];
 

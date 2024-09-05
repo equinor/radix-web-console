@@ -1,8 +1,8 @@
 import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import { Component } from '../../store/radix-api';
+import type { Component } from '../../store/radix-api';
 
 export const ComponentSecrets: FunctionComponent<{ component: Component }> = ({
   component,

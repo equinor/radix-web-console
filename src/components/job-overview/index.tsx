@@ -6,28 +6,28 @@ import { Link } from 'react-router-dom';
 import { ComponentList } from './component-list';
 import { StepsList } from './steps-list';
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { CommitHash } from '../commit-hash';
-import { getJobExecutionState } from '../component/execution-state';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { ScrimPopup } from '../scrim-popup';
 import { useInterval } from '../../effects/use-interval';
 import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
 import {
-  Job,
+  type Job,
   radixApi,
   useGetApplicationJobQuery,
   useGetApplicationQuery,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
 import {
   routeWithParams,
   smallDeploymentName,
   smallJobName,
 } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { CommitHash } from '../commit-hash';
+import { getJobExecutionState } from '../component/execution-state';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ScrimPopup } from '../scrim-popup';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
 
@@ -135,7 +135,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                   )}
 
                   <ScrimPopup
-                    title={`Rerun job`}
+                    title={'Rerun job'}
                     open={!!visibleRerunScrim}
                     onClose={() => setVisibleRerunScrim(false)}
                     isDismissable

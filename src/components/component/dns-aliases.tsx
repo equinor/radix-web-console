@@ -1,6 +1,6 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
-import { DnsAlias, DnsExternalAlias } from '../../store/radix-api';
+import type { FunctionComponent } from 'react';
+import type { DnsAlias, DnsExternalAlias } from '../../store/radix-api';
 import { DNSAlias } from './dns_alias';
 
 import './style.css';

@@ -1,20 +1,20 @@
-import { ChipProps, Icon } from '@equinor/eds-core-react';
+import { type ChipProps, Icon } from '@equinor/eds-core-react';
 import {
+  type IconData,
   blocked,
   check,
   error_outlined,
-  IconData,
   run,
   timer,
   traffic_light,
   warning_outlined,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
-  StatusBadgeTemplateProps,
+  type StatusBadgeTemplateProps,
 } from './status-badge-template';
 
 export type GenericStatusBadgeProps = {

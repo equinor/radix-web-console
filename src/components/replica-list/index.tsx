@@ -4,24 +4,24 @@ import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import {
   Fragment,
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useEffect,
   useState,
 } from 'react';
 
-import { ReplicaImage } from '../replica-image';
-import { ReplicaStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { ReplicaSummary } from '../../store/radix-api';
+import type { ReplicaSummary } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
-import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { ReplicaImage } from '../replica-image';
+import { ReplicaStatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
 import { ReplicaName } from './replica-name';
@@ -41,6 +41,7 @@ export const ReplicaList: FunctionComponent<{
     []
   );
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes
   useEffect(() => {
     setLastUpdate(new Date());
   }, [replicaList]);
@@ -94,7 +95,7 @@ export const ReplicaList: FunctionComponent<{
                 className={clsx({ 'border-bottom-transparent': expanded })}
               >
                 <Table.Cell
-                  className={`fitwidth padding-right-0`}
+                  className={'fitwidth padding-right-0'}
                   variant="icon"
                 >
                   <Typography
@@ -114,7 +115,7 @@ export const ReplicaList: FunctionComponent<{
                   <ReplicaName
                     replica={replica}
                     replicaUrlFunc={replicaUrlFunc}
-                  ></ReplicaName>
+                  />
                 </Table.Cell>
                 <Table.Cell>
                   <ReplicaStatusBadge status={replica.replicaStatus?.status} />

@@ -4,24 +4,24 @@ import {
   NativeSelect,
   Typography,
 } from '@equinor/eds-core-react';
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { RelativeToNow } from '../time/relative-to-now';
-import { formatDateTime } from '../../utils/datetime';
-import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
+import { pollingInterval } from '../../store/defaults';
 import {
-  DeploymentSummary,
+  type DeploymentSummary,
   useGetDeploymentsQuery,
   useGetEnvironmentSummaryQuery,
   useTriggerPipelinePromoteMutation,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
+import { formatDateTime } from '../../utils/datetime';
+import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
+import { RelativeToNow } from '../time/relative-to-now';
 
-import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { FormProp } from './index';
+import type { FormProp } from './index';
 
 export function PipelineFormPromote({
   children,
@@ -113,7 +113,7 @@ export function PipelineFormPromote({
                     {smallDeploymentName(x.name)}{' '}
                     {x.activeTo
                       ? `(${formatDateTime(x.activeFrom)})`
-                      : `(currently active)`}
+                      : '(currently active)'}
                     {x.gitCommitHash &&
                       ` ${smallGithubCommitHash(x.gitCommitHash)}`}
                     {x.gitTags && `, ${x.gitTags}`}

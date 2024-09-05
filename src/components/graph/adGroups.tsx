@@ -1,16 +1,20 @@
 import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { ActionMeta, CSSObjectWithLabel, OnChangeValue } from 'react-select';
+import type {
+  ActionMeta,
+  CSSObjectWithLabel,
+  OnChangeValue,
+} from 'react-select';
 import AsyncSelect from 'react-select/async';
 
 import {
-  AdGroup,
+  type AdGroup,
   msGraphApi,
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api';
-import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 import AsyncResource from '../async-resource/async-resource';
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 
 type DisplayAdGroups = AdGroup & { deleted?: boolean };
 
@@ -113,9 +117,7 @@ export function ADGroups({
         Azure Active Directory groups (type 3 characters to search)
       </Typography>
       {!state.isFetching && unknownADGroups?.length > 0 && (
-        <UnknownADGroupsAlert
-          unknownADGroups={unknownADGroups}
-        ></UnknownADGroupsAlert>
+        <UnknownADGroupsAlert unknownADGroups={unknownADGroups} />
       )}
     </AsyncResource>
   );

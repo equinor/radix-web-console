@@ -1,7 +1,7 @@
-import { DeploymentOverview } from './deployment-overview';
-import { DocumentTitle } from '../document-title';
 import { withRouteParams } from '../../utils/router';
 import { smallDeploymentName } from '../../utils/string';
+import { DocumentTitle } from '../document-title';
+import { DeploymentOverview } from './deployment-overview';
 
 type Props = {
   appName: string;

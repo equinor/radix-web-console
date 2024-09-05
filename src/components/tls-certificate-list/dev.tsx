@@ -1,6 +1,6 @@
 import { TLSCertificateList } from '.';
 
-import { X509Certificate } from '../../store/radix-api';
+import type { X509Certificate } from '../../store/radix-api';
 
 const certsGroups: Array<X509Certificate[]> = [
   [

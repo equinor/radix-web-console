@@ -1,6 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
 
-import { AppListItem, AppListItemProps, FavouriteClickedHandler } from '.';
+import {
+  AppListItem,
+  type AppListItemProps,
+  type FavouriteClickedHandler,
+} from '.';
 
 const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 

@@ -2,11 +2,11 @@ import { List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { DockerImage } from '../docker-image';
 import { routes } from '../../routes';
-import { Component, Deployment } from '../../store/radix-api';
+import type { Component, Deployment } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
 import { GitCommitTags } from '../component/git-commit-tags';
+import { DockerImage } from '../docker-image';
 
 type Props = {
   appName: string;

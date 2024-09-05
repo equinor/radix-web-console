@@ -1,7 +1,7 @@
 import { clusterBases } from './clusterBases';
 import { extractCweNumber } from './utils/cwe';
 
-// prettier-ignore
+// biome-ignore format: long lines
 export const externalUrls = {
   community: 'https://www.radix.equinor.com/community',
   documentation: 'https://www.radix.equinor.com',

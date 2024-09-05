@@ -3,7 +3,7 @@ import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
 import {
   Fragment,
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useEffect,
   useMemo,
@@ -11,18 +11,20 @@ import {
 } from 'react';
 import { Link } from 'react-router-dom';
 
-import AsyncResource from '../async-resource/async-resource';
-import { ComponentStatusBadge } from '../status-badges';
-import { ReplicaStatusTooltip } from '../status-tooltips';
-import { VulnerabilitySummary } from '../vulnerability-summary';
-import { buildComponentMap } from '../../utils/build-component-map';
-import { Component, Environment, ReplicaSummary } from '../../store/radix-api';
+import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
+import clsx from 'clsx';
+import type {
+  Component,
+  Environment,
+  ReplicaSummary,
+} from '../../store/radix-api';
 import {
-  EnvironmentVulnerabilities,
-  ImageWithLastScan,
+  type EnvironmentVulnerabilities,
+  type ImageWithLastScan,
   scanApi,
 } from '../../store/scan-api';
 import { getFetchErrorData } from '../../store/utils';
+import { buildComponentMap } from '../../utils/build-component-map';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
@@ -30,8 +32,10 @@ import {
   getReplicaUrl,
 } from '../../utils/routing';
 import { smallReplicaName } from '../../utils/string';
-import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
-import clsx from 'clsx';
+import AsyncResource from '../async-resource/async-resource';
+import { ComponentStatusBadge } from '../status-badges';
+import { ReplicaStatusTooltip } from '../status-tooltips';
+import { VulnerabilitySummary } from '../vulnerability-summary';
 
 import './style.css';
 
@@ -201,7 +205,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                           >
                             {showChevronColumn && (
                               <Table.Cell
-                                className={`fitwidth padding-right-0`}
+                                className={'fitwidth padding-right-0'}
                               >
                                 {hasComponentOAuth2Service(x) && (
                                   <Typography link as="span">

@@ -1,20 +1,20 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
+import { pollingInterval } from '../../store/defaults';
+import {
+  type ImageHubSecret,
+  radixApi,
+  useGetPrivateImageHubsQuery,
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 import AsyncResource from '../async-resource/async-resource';
 import { errorToast, successToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
-import {
-  ImageHubSecret,
-  radixApi,
-  useGetPrivateImageHubsQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { getFetchErrorMessage } from '../../store/utils';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 

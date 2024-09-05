@@ -6,13 +6,13 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import {
-  Id,
-  toast,
+  type Id,
   ToastContainer,
-  ToastContent,
-  ToastOptions,
+  type ToastContent,
+  type ToastOptions,
+  toast,
 } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';

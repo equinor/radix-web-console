@@ -6,35 +6,35 @@ import {
   Progress,
   Typography,
 } from '@equinor/eds-core-react';
+import { nanoid } from 'nanoid';
 import * as PropTypes from 'prop-types';
 import { useState } from 'react';
-import { nanoid } from 'nanoid';
 
 import imageDeployKey from './deploy-key02.png';
 import imageWebhook from './webhook02.png';
 
+import { externalUrls } from '../../externalUrls';
+import { configVariables } from '../../utils/config';
 import { Alert } from '../alert';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
-import { externalUrls } from '../../externalUrls';
-import { configVariables } from '../../utils/config';
 
 import './style.css';
+import { pollingInterval } from '../../store/defaults';
 import {
-  ApplicationRegistration,
+  type ApplicationRegistration,
   useGetDeployKeyAndSecretQuery,
   useRegenerateDeployKeyMutation,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 interface Props {
   app: ApplicationRegistration;
-  refetch?: Function;
+  refetch?: () => unknown;
   onDeployKeyChange: (appName: string) => void;
   startVisible?: boolean;
   useOtherCiToolOptionVisible?: boolean;
@@ -141,7 +141,7 @@ export const ConfigureApplicationGithub = ({
                     ) : (
                       <>
                         <ScrimPopup
-                          title={`Warning`}
+                          title={'Warning'}
                           open={!!visibleRegenerateScrim}
                           onClose={() => setVisibleRegenerateScrim(false)}
                           isDismissable

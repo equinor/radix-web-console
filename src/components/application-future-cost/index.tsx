@@ -1,10 +1,13 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import AsyncResource from '../async-resource/async-resource';
-import { ApplicationCost, useGetFutureCostQuery } from '../../store/cost-api';
+import {
+  type ApplicationCost,
+  useGetFutureCostQuery,
+} from '../../store/cost-api';
 import { formatDateTimeYear } from '../../utils/datetime';
+import AsyncResource from '../async-resource/async-resource';
 
 import '../application-cost/style.css';
 

@@ -7,11 +7,11 @@ import {
   traffic_light,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ComponentProps, FunctionComponent } from 'react';
+import type { ComponentProps, FunctionComponent } from 'react';
 
 import { StatusBadgeTemplate } from './status-badge-template';
 
-import {
+import type {
   JobSummary,
   ScheduledBatchSummary,
   ScheduledJobSummary,

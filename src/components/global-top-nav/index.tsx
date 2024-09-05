@@ -8,19 +8,19 @@ import {
 import { close, info_circle, menu } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {
-  FunctionComponent,
-  PropsWithChildren,
+  type FunctionComponent,
+  type PropsWithChildren,
   forwardRef,
   useState,
 } from 'react';
 
 import { StyledToastContainer } from './styled-toaster';
 
-import { HomeLogo } from '../home-logo';
 import { clusterBases } from '../../clusterBases';
 import { externalUrls } from '../../externalUrls';
 import { routes } from '../../routes';
 import { configVariables } from '../../utils/config';
+import { HomeLogo } from '../home-logo';
 
 import './style.css';
 import { Link } from 'react-router-dom';

@@ -1,23 +1,23 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
+import { routes } from '../../routes';
+import type { Step } from '../../store/radix-api';
+import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
+import { PipelineStep, getPipelineStepDescription } from '../../utils/pipeline';
+import { routeWithParams } from '../../utils/string';
 import { RadixJobConditionBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
-import { Step } from '../../store/radix-api';
-import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
-import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline';
-import { routeWithParams } from '../../utils/string';
 
 function getComponents(name: string, components: Array<string>): string {
   if (components?.length > 1) {
     const maxEnumeratedComponents = 3;
     return components.length > maxEnumeratedComponents
-      ? components.slice(0, maxEnumeratedComponents - 1).join(',') + '…'
-      : components.slice(0, -1).join(',') + ' and ' + components.slice(-1);
+      ? `${components.slice(0, maxEnumeratedComponents - 1).join(',')}…`
+      : `${components.slice(0, -1).join(',')} and ${components.slice(-1)}`;
   }
 
   return name;

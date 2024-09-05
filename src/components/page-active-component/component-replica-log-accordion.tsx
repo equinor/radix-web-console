@@ -11,25 +11,28 @@ import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 
-import AsyncResource from '../async-resource/async-resource';
-import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+import { addMinutes } from 'date-fns';
+import { pollingInterval } from '../../store/defaults';
 import {
-  ModelsContainer,
-  ModelsReplica,
+  type ModelsContainer,
+  type ModelsReplica,
   logApi,
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
-import { pollingInterval } from '../../store/defaults';
 import {
   dataSorter,
   sortCompareDate,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
-import { addMinutes } from 'date-fns';
+import AsyncResource from '../async-resource/async-resource';
+import {
+  type LazyQueryTriggerPlain,
+  downloadLazyLogCb,
+} from '../code/log-helper';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 
 interface ComponentNameProps {
   appName: string;
@@ -182,7 +185,7 @@ function ReplicaLogTableRow({
 
   return (
     <Table.Row className={clsx({ 'border-bottom-transparent': isExpanded })}>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <Typography link as="span" onClick={onClick}>
           <Icon
             title="Toggle more information"
@@ -202,7 +205,7 @@ function ReplicaLogTableRow({
       <Table.Cell>
         {Duration({ start: created, end: ended }) || 'N/A'}
       </Table.Cell>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
           title="Download Replica log"
           onClick={downloadLazyLogCb(
@@ -245,7 +248,7 @@ function ReplicaContainerTableRow({
 
   return (
     <Table.Row className={className}>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <Icon title="Container" data={invert} color="gray" />
       </Table.Cell>
       <Table.Cell>
@@ -264,7 +267,7 @@ function ReplicaContainerTableRow({
       <Table.Cell>
         <Duration start={created} end={ended} />
       </Table.Cell>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
           title="Download Container log"
           onClick={downloadLazyLogCb(

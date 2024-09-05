@@ -8,29 +8,29 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 
+import useLocalStorage from '../../effects/use-local-storage';
+import { externalUrls } from '../../externalUrls';
+import {
+  type ApplicationRegistration,
+  type ApplicationRegistrationUpsertResponse,
+  radixApi,
+  useRegisterApplicationMutation,
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import {
   AppConfigConfigurationItem,
-  OnConfigurationItemChangeCallback,
+  type OnConfigurationItemChangeCallback,
 } from '../app-config-ci';
-import { HandleAdGroupsChangeCB } from '../graph/adGroups';
-import { externalUrls } from '../../externalUrls';
-import {
-  ApplicationRegistration,
-  ApplicationRegistrationUpsertResponse,
-  radixApi,
-  useRegisterApplicationMutation,
-} from '../../store/radix-api';
 import {
   errorToast,
   successToast,
   warningToast,
 } from '../global-top-nav/styled-toaster';
-import { getFetchErrorMessage } from '../../store/utils';
-import useLocalStorage from '../../effects/use-local-storage';
+import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces

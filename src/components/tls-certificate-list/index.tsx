@@ -1,8 +1,8 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { FunctionComponent, useCallback, useState } from 'react';
+import { type FunctionComponent, useCallback, useState } from 'react';
 
-import { X509Certificate } from '../../store/radix-api';
+import type { X509Certificate } from '../../store/radix-api';
 import { formatDateTime } from '../../utils/datetime';
 
 import './style.css';
