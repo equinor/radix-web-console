@@ -1,55 +1,55 @@
-import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
-import { github, link, send } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type React from 'react';
-import { type FunctionComponent, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react'
+import { github, link, send } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type React from 'react'
+import { type FunctionComponent, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 
 import {
   EnvironmentCardStatus,
   type EnvironmentCardStatusMap,
   EnvironmentVulnerabilityIndicator,
-} from './environment-card-status';
-import { EnvironmentIngress } from './environment-ingress';
+} from './environment-card-status'
+import { EnvironmentIngress } from './environment-ingress'
 import {
   aggregateComponentEnvironmentStatus,
   aggregateComponentReplicaEnvironmentStatus,
   environmentVulnerabilitySummarizer,
-} from './environment-status-utils';
+} from './environment-status-utils'
 
-import AsyncResource from '../async-resource/async-resource';
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
-import { filterFields } from '../../utils/filter-fields';
-import { routes } from '../../routes';
+import AsyncResource from '../async-resource/async-resource'
+import { GitTagLinks } from '../git-tags/git-tag-links'
+import { RelativeToNow } from '../time/relative-to-now'
+import { filterFields } from '../../utils/filter-fields'
+import { routes } from '../../routes'
 import {
   type DeploymentSummary,
   type EnvironmentSummary,
   type ReplicaSummary,
   useComponentsQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { type Vulnerability, scanApi } from '../../store/scan-api';
-import { routeWithParams } from '../../utils/string';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { type Vulnerability, scanApi } from '../../store/scan-api'
+import { routeWithParams } from '../../utils/string'
 
-import './style.css';
+import './style.css'
 
-type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
+type CardContent = { header: React.JSX.Element; body: React.JSX.Element }
 
 export interface EnvironmentCardProps {
-  appName: string;
-  env: Readonly<EnvironmentSummary>;
-  repository?: string;
+  appName: string
+  env: Readonly<EnvironmentSummary>
+  repository?: string
 }
 
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
   'high',
-];
+]
 
 const DeploymentDetails: FunctionComponent<{
-  appName: string;
-  deployment: Readonly<DeploymentSummary>;
+  appName: string
+  deployment: Readonly<DeploymentSummary>
 }> = ({ appName, deployment }) =>
   !deployment ? (
     <Button className="button_link" variant="ghost" disabled>
@@ -75,7 +75,7 @@ const DeploymentDetails: FunctionComponent<{
         </Typography>
       </Typography>
     </Button>
-  );
+  )
 
 function CardContentBuilder(
   appName: string,
@@ -88,27 +88,27 @@ function CardContentBuilder(
       deploymentName,
     },
     { pollingInterval }
-  );
+  )
   const [envScanTrigger, { data: envScan, ...envScanState }] =
-    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
+    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery()
 
   useEffect(() => {
-    const request = envScanTrigger({ appName, envName });
-    return () => request?.abort();
-  }, [appName, envScanTrigger, envName]);
+    const request = envScanTrigger({ appName, envName })
+    return () => request?.abort()
+  }, [appName, envScanTrigger, envName])
 
-  const vulnerabilities = environmentVulnerabilitySummarizer(envScan);
+  const vulnerabilities = environmentVulnerabilitySummarizer(envScan)
   const replicas = (components ?? []).reduce<Array<ReplicaSummary>>(
     (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
     []
-  );
+  )
 
   const elements: EnvironmentCardStatusMap = {
     Components: aggregateComponentEnvironmentStatus(components),
     ...(replicas.length > 0 && {
       Replicas: aggregateComponentReplicaEnvironmentStatus(components),
     }),
-  };
+  }
 
   const statusElement = (
     <AsyncResource asyncState={componentsState} errorContent={false}>
@@ -129,7 +129,7 @@ function CardContentBuilder(
         </div>
       )}
     </AsyncResource>
-  );
+  )
 
   return {
     header: (
@@ -146,7 +146,7 @@ function CardContentBuilder(
         )}
       </AsyncResource>
     ),
-  };
+  }
 }
 
 export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
@@ -154,7 +154,7 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
   env,
   repository,
 }) => {
-  const deployment = env.activeDeployment;
+  const deployment = env.activeDeployment
   const { header, body }: CardContent = !deployment?.name
     ? {
         header: <></>,
@@ -167,7 +167,7 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
           </Button>
         ),
       }
-    : CardContentBuilder(appName, env.name, deployment.name);
+    : CardContentBuilder(appName, env.name, deployment.name)
 
   return (
     <div className="env_card">
@@ -224,11 +224,11 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 EnvironmentCard.propTypes = {
   appName: PropTypes.string.isRequired,
   env: PropTypes.object.isRequired as PropTypes.Validator<EnvironmentSummary>,
   repository: PropTypes.string,
-};
+}

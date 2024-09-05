@@ -1,16 +1,16 @@
-import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { settings } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react'
+import { settings } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import { EventSummary } from './event-summary';
+import { EventSummary } from './event-summary'
 
-import type { Event } from '../../store/radix-api';
+import type { Event } from '../../store/radix-api'
 
-import './style.css';
+import './style.css'
 
 export interface EventsListProps {
-  events: Readonly<Array<Event>>;
+  events: Readonly<Array<Event>>
 }
 
 export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
@@ -51,9 +51,9 @@ export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
       </Accordion.Panel>
     </Accordion.Item>
   </Accordion>
-);
+)
 
 EventsList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Event>)
     .isRequired,
-};
+}

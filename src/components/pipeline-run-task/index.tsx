@@ -1,18 +1,18 @@
-import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
 
-import { getTaskRunExecutionState } from '../component/execution-state';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
+import { getTaskRunExecutionState } from '../component/execution-state'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api'
 
 interface Props {
-  task: PipelineRunTaskModel;
+  task: PipelineRunTaskModel
 }
 
 export function PipelineRunTask({ task }: Props) {
-  const [now] = useState(new Date());
+  const [now] = useState(new Date())
 
   return (
     <div className="grid grid--gap-large">
@@ -65,9 +65,9 @@ export function PipelineRunTask({ task }: Props) {
         </section>
       )}
     </div>
-  );
+  )
 }
 
 PipelineRunTask.propTypes = {
   task: PropTypes.object.isRequired,
-};
+}

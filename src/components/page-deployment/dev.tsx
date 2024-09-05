@@ -1,10 +1,10 @@
-import { DeploymentOverview } from './deployment-overview';
+import { DeploymentOverview } from './deployment-overview'
 
 import type {
   Deployment,
   GetDeploymentApiResponse,
-} from '../../store/radix-api';
-import { Server } from 'miragejs';
+} from '../../store/radix-api'
+import { Server } from 'miragejs'
 
 const testData: Array<
   Parameters<typeof DeploymentOverview>[0] & { deployment: Deployment }
@@ -317,7 +317,7 @@ const testData: Array<
       ],
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -327,10 +327,10 @@ new Server({
       this.get<GetDeploymentApiResponse>(
         `/api/v1/applications/:appName/deployments/${deploymentName}`,
         () => deployment
-      );
-    });
+      )
+    })
   },
-});
+})
 
 export default (
   <div
@@ -355,4 +355,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

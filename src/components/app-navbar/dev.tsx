@@ -1,6 +1,6 @@
-import { AppNavbar } from '.';
+import { AppNavbar } from '.'
 
-const appName = 'radix-web-console';
+const appName = 'radix-web-console'
 
 export default (
   <div
@@ -16,4 +16,4 @@ export default (
       <AppNavbar appName={appName} />
     </div>
   </div>
-);
+)

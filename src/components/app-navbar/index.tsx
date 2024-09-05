@@ -1,4 +1,4 @@
-import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react'
 import {
   type IconData,
   desktop_mac,
@@ -11,39 +11,39 @@ import {
   star_filled,
   star_outlined,
   world,
-} from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import { type FunctionComponent, forwardRef } from 'react';
-import { NavLink } from 'react-router-dom';
+} from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import { type FunctionComponent, forwardRef } from 'react'
+import { NavLink } from 'react-router-dom'
 
-import { AppBadge } from '../app-badge';
-import { configVariables } from '../../utils/config';
-import { urlToAppMonitoring } from '../../utils/monitoring';
+import { AppBadge } from '../app-badge'
+import { configVariables } from '../../utils/config'
+import { urlToAppMonitoring } from '../../utils/monitoring'
 import {
   getAppConfigUrl,
   getAppDeploymentsUrl,
   getAppJobsUrl,
   getAppUrl,
   getEnvsUrl,
-} from '../../utils/routing';
+} from '../../utils/routing'
 
-import './style.css';
-import { uniq } from 'lodash';
-import useLocalStorage from '../../effects/use-local-storage';
+import './style.css'
+import { uniq } from 'lodash'
+import useLocalStorage from '../../effects/use-local-storage'
 
 type NavbarLinkItem = {
-  label: string;
-  to: string;
-  icon: IconData;
-  collapsed?: boolean;
-};
-type NavbarProps = { appName: string; links: Array<NavbarLinkItem> };
+  label: string
+  to: string
+  icon: IconData
+  collapsed?: boolean
+}
+type NavbarProps = { appName: string; links: Array<NavbarLinkItem> }
 
 export interface AppNavbarProps {
-  appName: string;
+  appName: string
 }
 
-const radixClusterType = configVariables.RADIX_CLUSTER_TYPE;
+const radixClusterType = configVariables.RADIX_CLUSTER_TYPE
 
 const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
   const NavbarLinkElement = forwardRef<
@@ -61,7 +61,7 @@ const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
         </Typography>
       )}
     </NavLink>
-  ));
+  ))
 
   return collapsed ? (
     <Tooltip title={link.label} placement="right" enterDelay={0}>
@@ -74,22 +74,22 @@ const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
       }
       {...link}
     />
-  );
-};
+  )
+}
 
 const NavbarExpanded = ({ appName, links }: NavbarProps) => {
   const [favourites, setFacourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
-  );
-  const isFavourite = favourites.includes(appName);
+  )
+  const isFavourite = favourites.includes(appName)
   const toggleFavouriteApp = (app: string) => {
     if (isFavourite) {
-      setFacourites((old) => old.filter((a) => a !== app));
+      setFacourites((old) => old.filter((a) => a !== app))
     } else {
-      setFacourites((old) => uniq([...old, app]));
+      setFacourites((old) => uniq([...old, app]))
     }
-  };
+  }
 
   return (
     <nav className="app-navbar" role="navigation" aria-label="Main navigation">
@@ -139,8 +139,8 @@ const NavbarExpanded = ({ appName, links }: NavbarProps) => {
         <Icon data={external_link} style={{ justifySelf: 'right' }} />
       </Typography>
     </nav>
-  );
-};
+  )
+}
 
 const NavbarMinimized = ({ appName, links }: NavbarProps) => (
   <nav
@@ -173,17 +173,17 @@ const NavbarMinimized = ({ appName, links }: NavbarProps) => (
       </Typography>
     </Tooltip>
   </nav>
-);
+)
 
 export const AppNavbar: FunctionComponent<AppNavbarProps> = ({ appName }) => {
-  const [toggle, setToggle] = useLocalStorage('app-nav', false);
+  const [toggle, setToggle] = useLocalStorage('app-nav', false)
 
   const links: Array<NavbarLinkItem> = [
     { label: 'Environments', to: getEnvsUrl(appName), icon: world },
     { label: 'Pipeline Jobs', to: getAppJobsUrl(appName), icon: engineering },
     { label: 'Deployments', to: getAppDeploymentsUrl(appName), icon: send },
     { label: 'Configuration', to: getAppConfigUrl(appName), icon: settings },
-  ];
+  ]
 
   return (
     <>
@@ -198,7 +198,7 @@ export const AppNavbar: FunctionComponent<AppNavbarProps> = ({ appName }) => {
         <NavbarMinimized appName={appName} links={links} />
       )}
     </>
-  );
-};
+  )
+}
 
-export default AppNavbar;
+export default AppNavbar

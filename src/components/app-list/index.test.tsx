@@ -1,20 +1,20 @@
-import { QueryStatus } from '@reduxjs/toolkit/query';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { QueryStatus } from '@reduxjs/toolkit/query'
+import { render } from '@testing-library/react'
+import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 
-import AppList from '.';
+import AppList from '.'
 
-import store from '../../store/store';
-import * as radixApi from '../../store/radix-api';
-import type { FetchQueryHookResult } from '../../store/types';
+import store from '../../store/store'
+import * as radixApi from '../../store/radix-api'
+import type { FetchQueryHookResult } from '../../store/types'
 
-const noop = () => void 0;
+const noop = () => void 0
 
 describe('AppList component', () => {
   beforeEach(() => {
-    vi.spyOn(radixApi, 'useShowApplicationsQuery');
-    vi.spyOn(radixApi, 'useGetSearchApplicationsQuery');
+    vi.spyOn(radixApi, 'useShowApplicationsQuery')
+    vi.spyOn(radixApi, 'useGetSearchApplicationsQuery')
 
     vi.mock('../../store/radix-api', async (importOriginal) => ({
       ...(await importOriginal<typeof radixApi>()),
@@ -45,8 +45,8 @@ describe('AppList component', () => {
             data: undefined,
           }),
       } as Record<keyof typeof radixApi, () => FetchQueryHookResult>),
-    }));
-  });
+    }))
+  })
 
   it('should render without error', () => {
     render(
@@ -55,6 +55,6 @@ describe('AppList component', () => {
           <AppList />
         </MemoryRouter>
       </Provider>
-    );
-  });
-});
+    )
+  })
+})

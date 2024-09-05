@@ -1,41 +1,41 @@
-import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { type FunctionComponent, type ReactNode, useState } from 'react';
+import { Accordion, List, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { type FunctionComponent, type ReactNode, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
-import { SecretForm } from '../secret-form';
-import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
+import AsyncResource from '../async-resource/async-resource'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
+import { SecretForm } from '../secret-form'
+import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge'
 import {
   type BuildSecret,
   useGetBuildSecretsQuery,
   useUpdateBuildSecretsSecretValueMutation,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 
-import './style.css';
+import './style.css'
 
 const BuildSecretForm: FunctionComponent<{
-  appName: string;
-  secret: BuildSecret;
-  fetchSecret: () => void;
-  onSave: () => void;
+  appName: string
+  secret: BuildSecret
+  fetchSecret: () => void
+  onSave: () => void
 }> = ({ appName, secret, fetchSecret, onSave }) => {
-  const [mutate, { isLoading }] = useUpdateBuildSecretsSecretValueMutation();
+  const [mutate, { isLoading }] = useUpdateBuildSecretsSecretValueMutation()
 
   const onSaveSecret = handlePromiseWithToast(async (secretValue: string) => {
     await mutate({
       appName,
       secretName: secret.name,
       secretParameters: { secretValue },
-    }).unwrap();
+    }).unwrap()
 
-    fetchSecret();
-    onSave();
-    return true;
-  });
+    fetchSecret()
+    onSave()
+    return true
+  })
 
   return (
     <SecretForm
@@ -45,8 +45,8 @@ const BuildSecretForm: FunctionComponent<{
       disableSave={isLoading}
       onSave={onSaveSecret}
     />
-  );
-};
+  )
+}
 
 const SecretLink: FunctionComponent<
   { title?: string; scrimTitle?: ReactNode } & Pick<
@@ -54,7 +54,7 @@ const SecretLink: FunctionComponent<
     'appName' | 'fetchSecret' | 'secret'
   >
 > = ({ secret, title, scrimTitle, ...rest }) => {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [visibleScrim, setVisibleScrim] = useState(false)
 
   return (
     <div>
@@ -82,8 +82,8 @@ const SecretLink: FunctionComponent<
         </div>
       </ScrimPopup>
     </div>
-  );
-};
+  )
+}
 
 export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
   appName,
@@ -91,7 +91,7 @@ export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
   const { data, refetch, ...state } = useGetBuildSecretsQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  );
+  )
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -126,9 +126,9 @@ export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}
 
 BuildSecretsAccordion.propTypes = {
   appName: PropTypes.string.isRequired,
-};
+}

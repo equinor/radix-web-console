@@ -5,42 +5,42 @@ import {
   List,
   Progress,
   Typography,
-} from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { useState } from 'react';
-import { nanoid } from 'nanoid';
+} from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
+import { nanoid } from 'nanoid'
 
-import imageDeployKey from './deploy-key02.png';
-import imageWebhook from './webhook02.png';
+import imageDeployKey from './deploy-key02.png'
+import imageWebhook from './webhook02.png'
 
-import { Alert } from '../alert';
-import { Code } from '../code';
-import { CompactCopyButton } from '../compact-copy-button';
-import { externalUrls } from '../../externalUrls';
-import { configVariables } from '../../utils/config';
+import { Alert } from '../alert'
+import { Code } from '../code'
+import { CompactCopyButton } from '../compact-copy-button'
+import { externalUrls } from '../../externalUrls'
+import { configVariables } from '../../utils/config'
 
-import './style.css';
+import './style.css'
 import {
   type ApplicationRegistration,
   useGetDeployKeyAndSecretQuery,
   useRegenerateDeployKeyMutation,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { getFetchErrorMessage } from '../../store/utils';
-import { ScrimPopup } from '../scrim-popup';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { getFetchErrorMessage } from '../../store/utils'
+import { ScrimPopup } from '../scrim-popup'
 
-const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
+const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE
 
 interface Props {
-  app: ApplicationRegistration;
-  refetch?: Function;
-  onDeployKeyChange: (appName: string) => void;
-  startVisible?: boolean;
-  useOtherCiToolOptionVisible?: boolean;
-  deployKeyTitle?: string;
-  webhookTitle?: string;
-  initialSecretPollInterval: number;
+  app: ApplicationRegistration
+  refetch?: Function
+  onDeployKeyChange: (appName: string) => void
+  startVisible?: boolean
+  useOtherCiToolOptionVisible?: boolean
+  deployKeyTitle?: string
+  webhookTitle?: string
+  initialSecretPollInterval: number
 }
 
 export const ConfigureApplicationGithub = ({
@@ -51,28 +51,28 @@ export const ConfigureApplicationGithub = ({
   deployKeyTitle = 'Add deploy key',
   webhookTitle = 'Add webhook',
 }: Props) => {
-  const isExpanded = !!startVisible;
-  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
-  const [useOtherCiTool, setUseOtherCiTool] = useState(false);
+  const isExpanded = !!startVisible
+  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`
+  const [useOtherCiTool, setUseOtherCiTool] = useState(false)
   const [visibleRegenerateScrim, setVisibleRegenerateScrim] =
-    useState<boolean>(false);
+    useState<boolean>(false)
   const [regenerateSecrets, { isLoading, error }] =
-    useRegenerateDeployKeyMutation();
+    useRegenerateDeployKeyMutation()
   const { data: secrets, refetch: refetchSecrets } =
     useGetDeployKeyAndSecretQuery(
       { appName: app.name },
       { pollingInterval, skip: useOtherCiTool }
-    );
+    )
 
   const onRegenerate = handlePromiseWithToast(async () => {
-    setVisibleRegenerateScrim(false);
+    setVisibleRegenerateScrim(false)
     await regenerateSecrets({
       appName: app.name,
       regenerateDeployKeyAndSecretData: { sharedSecret: nanoid() },
-    }).unwrap();
-    await refetchSecrets();
-    await refetch?.();
-  }, 'Successfully regenerated deploy key and webhook secret');
+    }).unwrap()
+    await refetchSecrets()
+    await refetch?.()
+  }, 'Successfully regenerated deploy key and webhook secret')
 
   return (
     <div className="configure-application-github grid grid--gap-medium">
@@ -284,8 +284,8 @@ export const ConfigureApplicationGithub = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 ConfigureApplicationGithub.propTypes = {
   app: PropTypes.object
@@ -296,4 +296,4 @@ ConfigureApplicationGithub.propTypes = {
   deployKeyTitle: PropTypes.string,
   webhookTitle: PropTypes.string,
   initialSecretPollInterval: PropTypes.number,
-};
+}

@@ -1,19 +1,19 @@
-import { Table, Tooltip } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Table, Tooltip } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
 
-import { CommitHash } from '../commit-hash';
-import { RadixJobConditionBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
-import type { JobSummary } from '../../store/radix-api';
-import { routeWithParams } from '../../utils/string';
+import { CommitHash } from '../commit-hash'
+import { RadixJobConditionBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
+import { routes } from '../../routes'
+import type { JobSummary } from '../../store/radix-api'
+import { routeWithParams } from '../../utils/string'
 
 export const JobSummaryTableRow: FunctionComponent<{
-  appName: string;
-  job: Readonly<JobSummary>;
+  appName: string
+  job: Readonly<JobSummary>
 }> = ({ appName, job }) => (
   <Table.Row>
     <Table.Cell>
@@ -70,9 +70,9 @@ export const JobSummaryTableRow: FunctionComponent<{
     </Table.Cell>
     <Table.Cell>{job.pipeline}</Table.Cell>
   </Table.Row>
-);
+)
 
 JobSummaryTableRow.propTypes = {
   appName: PropTypes.string.isRequired,
   job: PropTypes.object.isRequired as PropTypes.Validator<JobSummary>,
-};
+}

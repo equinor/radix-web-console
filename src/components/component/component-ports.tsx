@@ -1,8 +1,8 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { List, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import type { Port } from '../../store/radix-api';
+import type { Port } from '../../store/radix-api'
 
 export const ComponentPorts: FunctionComponent<{ ports: Array<Port> }> = ({
   ports,
@@ -20,9 +20,9 @@ export const ComponentPorts: FunctionComponent<{ ports: Array<Port> }> = ({
     </div>
   ) : (
     <Typography>No open ports</Typography>
-  );
+  )
 
 ComponentPorts.propTypes = {
   ports: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Port>)
     .isRequired,
-};
+}

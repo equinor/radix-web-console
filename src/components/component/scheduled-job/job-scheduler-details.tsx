@@ -1,13 +1,13 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { List, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import { Alert } from '../../alert';
-import { ComponentStatusBadge } from '../../status-badges';
-import type { Component } from '../../../store/radix-api';
+import { Alert } from '../../alert'
+import { ComponentStatusBadge } from '../../status-badges'
+import type { Component } from '../../../store/radix-api'
 
 export const JobSchedulerDetails: FunctionComponent<{
-  component: Component;
+  component: Component
 }> = ({ component }) => (
   <>
     <Typography>Job manager:</Typography>
@@ -59,8 +59,8 @@ export const JobSchedulerDetails: FunctionComponent<{
       </Alert>
     )}
   </>
-);
+)
 
 JobSchedulerDetails.propTypes = {
   component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
-};
+}

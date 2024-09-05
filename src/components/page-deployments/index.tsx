@@ -1,21 +1,21 @@
-import * as PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types'
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DeploymentsList } from '../deployments-list';
-import { DocumentTitle } from '../document-title';
-import { routes } from '../../routes';
-import { useGetDeploymentsQuery } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { withRouteParams } from '../../utils/router';
-import { routeWithParams } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { DeploymentsList } from '../deployments-list'
+import { DocumentTitle } from '../document-title'
+import { routes } from '../../routes'
+import { useGetDeploymentsQuery } from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { withRouteParams } from '../../utils/router'
+import { routeWithParams } from '../../utils/string'
 
-type Props = { appName: string };
+type Props = { appName: string }
 export function PageDeployments({ appName }: Props) {
   const { data: deployments, ...state } = useGetDeploymentsQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  );
+  )
 
   return (
     <>
@@ -30,11 +30,11 @@ export function PageDeployments({ appName }: Props) {
         <DeploymentsList appName={appName} deployments={deployments} />
       </AsyncResource>
     </>
-  );
+  )
 }
 
 PageDeployments.propTypes = {
   appName: PropTypes.string.isRequired,
-};
+}
 
-export default withRouteParams(PageDeployments);
+export default withRouteParams(PageDeployments)

@@ -4,7 +4,7 @@ import {
   Menu,
   Table,
   Typography,
-} from '@equinor/eds-core-react';
+} from '@equinor/eds-core-react'
 import {
   apps,
   chevron_down,
@@ -12,53 +12,53 @@ import {
   delete_to_trash,
   stop,
   replay,
-} from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
+} from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import * as PropTypes from 'prop-types'
 import {
   Fragment,
   type FunctionComponent,
   useCallback,
   useMemo,
   useState,
-} from 'react';
-import { Link } from 'react-router-dom';
+} from 'react'
+import { Link } from 'react-router-dom'
 
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './payload';
-import { RestartJob } from './restart-job';
+import { JobContextMenu } from './job-context-menu'
+import { JobDeploymentLink } from './job-deployment-link'
+import { Payload } from './payload'
+import { RestartJob } from './restart-job'
 
-import { ReplicaImage } from '../../replica-image';
-import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
-import { Duration } from '../../time/duration';
-import { RelativeToNow } from '../../time/relative-to-now';
+import { ReplicaImage } from '../../replica-image'
+import { ScrimPopup } from '../../scrim-popup'
+import { ProgressStatusBadge } from '../../status-badges'
+import { Duration } from '../../time/duration'
+import { RelativeToNow } from '../../time/relative-to-now'
 import {
   type ReplicaSummary,
   type ScheduledJobSummary,
   useDeleteJobMutation,
   useStopJobMutation,
-} from '../../../store/radix-api';
-import { promiseHandler } from '../../../utils/promise-handler';
-import { getScheduledJobUrl } from '../../../utils/routing';
+} from '../../../store/radix-api'
+import { promiseHandler } from '../../../utils/promise-handler'
+import { getScheduledJobUrl } from '../../../utils/routing'
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
   type sortDirection,
-} from '../../../utils/sort-utils';
-import { smallScheduledJobName } from '../../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
+} from '../../../utils/sort-utils'
+import { smallScheduledJobName } from '../../../utils/string'
+import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils'
 
-import '../style.css';
+import '../style.css'
 
 function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
-  return status === 'Waiting' || status === 'Running';
+  return status === 'Waiting' || status === 'Running'
 }
 
 const JobReplicaInfo: FunctionComponent<{
-  replicaList: Array<ReplicaSummary>;
+  replicaList: Array<ReplicaSummary>
 }> = ({ replicaList }) =>
   replicaList?.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
@@ -67,17 +67,17 @@ const JobReplicaInfo: FunctionComponent<{
       Unable to get image tag and digest. The container for this job no longer
       exists.
     </Typography>
-  );
+  )
 
 export const ScheduledJobList: FunctionComponent<{
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  totalJobCount: number;
-  scheduledJobList?: Array<ScheduledJobSummary>;
-  isExpanded?: boolean;
-  isDeletable?: boolean; // set if jobs can be deleted
-  fetchJobs?: () => void;
+  appName: string
+  envName: string
+  jobComponentName: string
+  totalJobCount: number
+  scheduledJobList?: Array<ScheduledJobSummary>
+  isExpanded?: boolean
+  isDeletable?: boolean // set if jobs can be deleted
+  fetchJobs?: () => void
 }> = ({
   appName,
   envName,
@@ -88,34 +88,34 @@ export const ScheduledJobList: FunctionComponent<{
   isDeletable,
   fetchJobs: refreshJobs,
 }) => {
-  const [deleteJob] = useDeleteJobMutation();
-  const [stopJob] = useStopJobMutation();
-  const [dateSort, setDateSort] = useState<sortDirection>();
-  const [statusSort, setStatusSort] = useState<sortDirection>();
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [deleteJob] = useDeleteJobMutation()
+  const [stopJob] = useStopJobMutation()
+  const [dateSort, setDateSort] = useState<sortDirection>()
+  const [statusSort, setStatusSort] = useState<sortDirection>()
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
   const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<
     Record<string, boolean>
-  >({});
+  >({})
   const [visibleRestartScrims, setVisibleRestartScrims] = useState<
     Record<string, boolean>
-  >({});
+  >({})
 
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
+  )
   const setVisiblePayloadScrim = useCallback<
     (id: string, visible: boolean) => void
   >(
     (id, visible) => setVisiblePayloadScrims((x) => ({ ...x, [id]: visible })),
     []
-  );
+  )
   const setVisibleRestartScrim = useCallback<
     (id: string, visible: boolean) => void
   >(
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
-  );
+  )
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledJobList, [
@@ -129,8 +129,8 @@ export const ScheduledJobList: FunctionComponent<{
           false,
           () => !!statusSort
         ),
-    ]);
-  }, [dateSort, scheduledJobList, statusSort]);
+    ])
+  }, [dateSort, scheduledJobList, statusSort])
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -369,8 +369,8 @@ export const ScheduledJobList: FunctionComponent<{
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}
 
 ScheduledJobList.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -383,4 +383,4 @@ ScheduledJobList.propTypes = {
   isExpanded: PropTypes.bool,
   isDeletable: PropTypes.bool,
   fetchJobs: PropTypes.func,
-};
+}

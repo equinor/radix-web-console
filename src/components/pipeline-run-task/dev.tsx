@@ -1,9 +1,9 @@
-import { Divider } from '@equinor/eds-core-react';
-import { Fragment } from 'react';
+import { Divider } from '@equinor/eds-core-react'
+import { Fragment } from 'react'
 
-import { PipelineRunTask } from '.';
+import { PipelineRunTask } from '.'
 
-import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api'
 
 const testData: Array<PipelineRunTaskModel> = [
   {
@@ -40,7 +40,7 @@ const testData: Array<PipelineRunTaskModel> = [
     status: 'Succeeded',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
   },
-];
+]
 
 export default (
   <div
@@ -67,4 +67,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

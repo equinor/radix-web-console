@@ -1,10 +1,10 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { error_outlined } from '@equinor/eds-icons';
-import type { ComponentType } from 'react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { error_outlined } from '@equinor/eds-icons'
+import type { ComponentType } from 'react'
 
-import { Alert } from '.';
+import { Alert } from '.'
 
-import { externalUrls } from '../../externalUrls';
+import { externalUrls } from '../../externalUrls'
 
 const testData: Array<ComponentType> = [
   () => <Alert>A simple alert</Alert>,
@@ -144,7 +144,7 @@ const testData: Array<ComponentType> = [
       </div>
     </Alert>
   ),
-];
+]
 
 export default (
   <div
@@ -164,4 +164,4 @@ export default (
       ))}
     </div>
   </div>
-);
+)

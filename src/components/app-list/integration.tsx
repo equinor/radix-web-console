@@ -1,10 +1,10 @@
-import type { Server } from 'mock-socket';
+import type { Server } from 'mock-socket'
 
-import AppList from '.';
+import AppList from '.'
 
 export const injectMockSocketServers = (servers: {
-  rr: Server;
-  ra: Server;
+  rr: Server
+  ra: Server
 }): void => {
   // Provide mock socket response data on connection
 
@@ -33,7 +33,7 @@ export const injectMockSocketServers = (servers: {
         },
       })
     )
-  );
+  )
 
   servers.ra.on('connection', (socket) =>
     socket.send(
@@ -63,7 +63,7 @@ export const injectMockSocketServers = (servers: {
         },
       })
     )
-  );
-};
+  )
+}
 
-export default <AppList />;
+export default <AppList />

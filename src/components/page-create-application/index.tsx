@@ -1,36 +1,36 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { add } from '@equinor/eds-icons';
-import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { add } from '@equinor/eds-icons'
+import { useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import { ConfigureApplicationGithub } from '../configure-application-github';
-import CreateApplicationForm from '../create-application-form';
-import { ScrimPopup } from '../scrim-popup';
-import { routes } from '../../routes';
-import { routeWithParams } from '../../utils/string';
+import { ConfigureApplicationGithub } from '../configure-application-github'
+import CreateApplicationForm from '../create-application-form'
+import { ScrimPopup } from '../scrim-popup'
+import { routes } from '../../routes'
+import { routeWithParams } from '../../utils/string'
 
-import './style.css';
-import type { ApplicationRegistration } from '../../store/radix-api';
+import './style.css'
+import type { ApplicationRegistration } from '../../store/radix-api'
 
 function scrollToPosition(elementRef: Element, x: number, y: number): void {
-  elementRef.scrollTo?.(x, y);
+  elementRef.scrollTo?.(x, y)
 }
 
 export default function PageCreateApplication() {
-  const [visibleScrim, setVisibleScrim] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [visibleScrim, setVisibleScrim] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
   const [registration, setRegistration] =
-    useState<ApplicationRegistration | null>(null);
+    useState<ApplicationRegistration | null>(null)
 
   const onCloseScrim = () => {
-    setVisibleScrim(false);
-    setRegistration(null);
-  };
+    setVisibleScrim(false)
+    setRegistration(null)
+  }
 
   const onCreated = (newRegistration: ApplicationRegistration) => {
-    scrollToPosition(containerRef.current, 0, 0);
-    setRegistration(newRegistration);
-  };
+    scrollToPosition(containerRef.current, 0, 0)
+    setRegistration(newRegistration)
+  }
 
   return (
     <>
@@ -91,5 +91,5 @@ export default function PageCreateApplication() {
         </div>
       </ScrimPopup>
     </>
-  );
+  )
 }

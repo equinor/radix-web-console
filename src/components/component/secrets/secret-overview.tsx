@@ -1,33 +1,33 @@
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import AsyncResource from '../../async-resource/async-resource';
-import { errorToast, successToast } from '../../global-top-nav/styled-toaster';
-import { SecretForm } from '../../secret-form';
-import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api';
-import { pollingInterval } from '../../../store/defaults';
-import { getFetchErrorMessage } from '../../../store/utils';
+import AsyncResource from '../../async-resource/async-resource'
+import { errorToast, successToast } from '../../global-top-nav/styled-toaster'
+import { SecretForm } from '../../secret-form'
+import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api'
+import { pollingInterval } from '../../../store/defaults'
+import { getFetchErrorMessage } from '../../../store/utils'
 
 export const SecretOverview: FunctionComponent<{
-  appName: string;
-  componentName: string;
-  envName: string;
-  secretName: string;
-  onSave?: () => void;
+  appName: string
+  componentName: string
+  envName: string
+  secretName: string
+  onSave?: () => void
 }> = ({ appName, componentName, envName, secretName, onSave }) => {
   const { data, refetch, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  );
+  )
 
   const [trigger, { isLoading }] =
-    radixApi.endpoints.changeComponentSecret.useMutation();
+    radixApi.endpoints.changeComponentSecret.useMutation()
 
   const secret =
     data?.activeDeployment &&
     data.secrets?.find(
       (x) => x.name === secretName && x.component === componentName
-    );
+    )
 
   return (
     <AsyncResource asyncState={envState}>
@@ -45,24 +45,24 @@ export const SecretOverview: FunctionComponent<{
                 componentName,
                 secretName,
                 secretParameters: { secretValue: value?.toString() },
-              }).unwrap();
+              }).unwrap()
 
-              refetch();
-              successToast('Saved');
+              refetch()
+              successToast('Saved')
             } catch (error) {
-              errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
-              return false;
+              errorToast(`Error while saving. ${getFetchErrorMessage(error)}`)
+              return false
             }
-            onSave?.();
-            return true;
+            onSave?.()
+            return true
           }}
         />
       ) : (
         <>No secret…</>
       )}
     </AsyncResource>
-  );
-};
+  )
+}
 
 SecretOverview.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -70,4 +70,4 @@ SecretOverview.propTypes = {
   envName: PropTypes.string.isRequired,
   secretName: PropTypes.string.isRequired,
   onSave: PropTypes.func,
-};
+}

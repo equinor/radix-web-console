@@ -1,6 +1,6 @@
-import { Outlet } from 'react-router';
+import { Outlet } from 'react-router'
 
-import { GlobalTopNav } from '../../components/global-top-nav';
+import { GlobalTopNav } from '../../components/global-top-nav'
 
 export default function PageRoot() {
   return (
@@ -10,5 +10,5 @@ export default function PageRoot() {
         <Outlet />
       </div>
     </div>
-  );
+  )
 }

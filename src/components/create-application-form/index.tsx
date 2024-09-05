@@ -6,43 +6,43 @@ import {
   List,
   TextField,
   Typography,
-} from '@equinor/eds-core-react';
-import { info_circle } from '@equinor/eds-icons';
-import { type ChangeEvent, type FormEvent, useState } from 'react';
+} from '@equinor/eds-core-react'
+import { info_circle } from '@equinor/eds-icons'
+import { type ChangeEvent, type FormEvent, useState } from 'react'
 
-import { Alert } from '../alert';
-import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { Alert } from '../alert'
+import { AppConfigAdGroups } from '../app-config-ad-groups'
 import {
   AppConfigConfigurationItem,
   type OnConfigurationItemChangeCallback,
-} from '../app-config-ci';
-import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
-import { externalUrls } from '../../externalUrls';
+} from '../app-config-ci'
+import type { HandleAdGroupsChangeCB } from '../graph/adGroups'
+import { externalUrls } from '../../externalUrls'
 import {
   type ApplicationRegistration,
   type ApplicationRegistrationUpsertResponse,
   radixApi,
   useRegisterApplicationMutation,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 import {
   errorToast,
   successToast,
   warningToast,
-} from '../global-top-nav/styled-toaster';
-import { getFetchErrorMessage } from '../../store/utils';
-import useLocalStorage from '../../effects/use-local-storage';
+} from '../global-top-nav/styled-toaster'
+import { getFetchErrorMessage } from '../../store/utils'
+import useLocalStorage from '../../effects/use-local-storage'
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces
-  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? '';
+  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? ''
 }
 
 type Props = {
-  onCreated: (application: ApplicationRegistration) => void;
-};
+  onCreated: (application: ApplicationRegistration) => void
+}
 export default function CreateApplicationForm({ onCreated }: Props) {
-  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
-  const [createApp, creationState] = useRegisterApplicationMutation();
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false)
+  const [createApp, creationState] = useRegisterApplicationMutation()
   const [applicationRegistration, setAppRegistration] =
     useState<ApplicationRegistration>({
       name: '',
@@ -56,21 +56,21 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       radixConfigFullName: 'radixconfig.yaml',
       configurationItem: '',
       readerAdGroups: [],
-    });
+    })
 
-  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
+  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({})
 
   const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
     'knownApplications',
     []
-  );
+  )
 
   const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
     setAppRegistration((current) => ({
       ...current,
       adGroups: value.map((x) => x.id),
-    }));
-  };
+    }))
+  }
 
   const handleConfigurationItemChange: OnConfigurationItemChangeCallback = (
     value
@@ -78,48 +78,48 @@ export default function CreateApplicationForm({ onCreated }: Props) {
     setAppRegistration((current) => ({
       ...current,
       configurationItem: value?.id,
-    }));
-  };
+    }))
+  }
 
   const handleAppRegistrationChange = ({
     target: { name, value },
   }: ChangeEvent<HTMLInputElement>) => {
-    const key = name as keyof ApplicationRegistration;
-    if (key === 'name') value = sanitizeName(value);
+    const key = name as keyof ApplicationRegistration
+    if (key === 'name') value = sanitizeName(value)
 
-    setAppRegistration((current) => ({ ...current, [key]: value }));
-  };
+    setAppRegistration((current) => ({ ...current, [key]: value }))
+  }
 
   const addAppNameToLocalStorage = (appName: string) => {
     if (knownAppNames.some((knownAppName) => knownAppName === appName)) {
-      return;
+      return
     }
-    setKnownAppNames([...knownAppNames, appName].sort());
-  };
+    setKnownAppNames([...knownAppNames, appName].sort())
+  }
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     try {
-      ev.preventDefault();
+      ev.preventDefault()
       const response: ApplicationRegistrationUpsertResponse = await createApp({
         applicationRegistrationRequest: {
           applicationRegistration,
           acknowledgeWarnings,
         },
-      }).unwrap();
+      }).unwrap()
 
       //Only call onCreated when created without warnings, or created with ack warnings
       if (!response.warnings?.length || acknowledgeWarnings) {
-        onCreated(response.applicationRegistration);
-        addAppNameToLocalStorage(response.applicationRegistration.name);
-        refreshApps({});
-        successToast('Saved');
+        onCreated(response.applicationRegistration)
+        addAppNameToLocalStorage(response.applicationRegistration.name)
+        refreshApps({})
+        successToast('Saved')
       } else {
-        warningToast('Registration had warnings');
+        warningToast('Registration had warnings')
       }
     } catch (e) {
-      errorToast(`Error while saving. ${getFetchErrorMessage(e)}`);
+      errorToast(`Error while saving. ${getFetchErrorMessage(e)}`)
     }
-  };
+  }
 
   return (
     <form onSubmit={handleSubmit} className="grid grid--gap-medium">
@@ -247,5 +247,5 @@ export default function CreateApplicationForm({ onCreated }: Props) {
         </div>
       </fieldset>
     </form>
-  );
+  )
 }

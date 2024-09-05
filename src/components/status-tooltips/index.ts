@@ -1,1 +1,1 @@
-export * from './replica-status-tooltip';
+export * from './replica-status-tooltip'

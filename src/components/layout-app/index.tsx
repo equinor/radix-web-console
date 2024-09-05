@@ -1,8 +1,8 @@
-import { Component, type PropsWithChildren } from 'react';
+import { Component, type PropsWithChildren } from 'react'
 
-import AppNavbar from '../app-navbar';
+import AppNavbar from '../app-navbar'
 
-import './style.css';
+import './style.css'
 
 export class LayoutApp extends Component<
   PropsWithChildren<{ appName: string }>
@@ -15,6 +15,6 @@ export class LayoutApp extends Component<
         </div>
         <div className="layout-app__content">{this.props.children}</div>
       </div>
-    );
+    )
   }
 }

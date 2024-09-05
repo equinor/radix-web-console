@@ -1,28 +1,28 @@
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { ComponentSecrets } from '../component/component-secrets';
-import { EnvironmentVariables } from '../environment-variables';
-import { Overview } from '../page-active-component/overview';
-import { routes } from '../../routes';
-import { useGetDeploymentQuery } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { ComponentSecrets } from '../component/component-secrets'
+import { EnvironmentVariables } from '../environment-variables'
+import { Overview } from '../page-active-component/overview'
+import { routes } from '../../routes'
+import { useGetDeploymentQuery } from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { routeWithParams, smallDeploymentName } from '../../utils/string'
 
 export const DeploymentComponentOverview: FunctionComponent<{
-  appName: string;
-  deploymentName: string;
-  componentName: string;
+  appName: string
+  deploymentName: string
+  componentName: string
 }> = ({ appName, deploymentName, componentName }) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
-  );
+  )
   const component = deployment?.components?.find(
     ({ name }) => name === componentName
-  );
+  )
 
   return (
     <>
@@ -71,11 +71,11 @@ export const DeploymentComponentOverview: FunctionComponent<{
         )}
       </AsyncResource>
     </>
-  );
-};
+  )
+}
 
 DeploymentComponentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-};
+}

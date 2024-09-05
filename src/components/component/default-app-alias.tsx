@@ -1,14 +1,14 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { link } from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { link } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
 
-import type { ApplicationAlias } from '../../store/radix-api';
-import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
+import type { ApplicationAlias } from '../../store/radix-api'
+import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing'
 
 export interface DefaultAppAliasProps {
-  appName: string;
-  appAlias: Readonly<ApplicationAlias>;
+  appName: string
+  appAlias: Readonly<ApplicationAlias>
 }
 
 export const DefaultAppAlias: FunctionComponent<DefaultAppAliasProps> = ({
@@ -36,4 +36,4 @@ export const DefaultAppAlias: FunctionComponent<DefaultAppAliasProps> = ({
       </Typography>
     </Typography>
   </div>
-);
+)

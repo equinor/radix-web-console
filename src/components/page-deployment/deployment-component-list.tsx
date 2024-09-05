@@ -1,18 +1,18 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { List, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
-import { DockerImage } from '../docker-image';
-import { routes } from '../../routes';
-import type { Component, Deployment } from '../../store/radix-api';
-import { routeWithParams } from '../../utils/string';
-import { GitCommitTags } from '../component/git-commit-tags';
+import { DockerImage } from '../docker-image'
+import { routes } from '../../routes'
+import type { Component, Deployment } from '../../store/radix-api'
+import { routeWithParams } from '../../utils/string'
+import { GitCommitTags } from '../component/git-commit-tags'
 
 type Props = {
-  appName: string;
-  deployment: Deployment;
-  components?: Array<Component>;
-};
+  appName: string
+  deployment: Deployment
+  components?: Array<Component>
+}
 
 export const DeploymentComponentList = ({
   appName,
@@ -55,7 +55,7 @@ export const DeploymentComponentList = ({
       </>
     )}
   </>
-);
+)
 
 DeploymentComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -63,4 +63,4 @@ DeploymentComponentList.propTypes = {
   components: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<Component>
   ),
-};
+}

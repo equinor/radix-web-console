@@ -1,18 +1,18 @@
-import { Typography } from '@equinor/eds-core-react';
-import { Server } from 'miragejs';
+import { Typography } from '@equinor/eds-core-react'
+import { Server } from 'miragejs'
 
-import AppList from '.';
+import AppList from '.'
 
 import type {
   GetSearchApplicationsApiArg,
   GetSearchApplicationsApiResponse,
   ShowApplicationsApiResponse,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 import type {
   GetApplicationVulnerabilitySummariesApiArg,
   GetApplicationVulnerabilitySummariesApiResponse,
-} from '../../store/scan-api';
-import type { ComponentProps } from 'react';
+} from '../../store/scan-api'
+import type { ComponentProps } from 'react'
 
 const testApps: ShowApplicationsApiResponse = [
   {
@@ -42,7 +42,7 @@ const testApps: ShowApplicationsApiResponse = [
       started: new Date('2023-12-01T12:27:17Z').toISOString(),
     },
   },
-];
+]
 
 const testVulns: GetApplicationVulnerabilitySummariesApiResponse = [
   {
@@ -78,7 +78,7 @@ const testVulns: GetApplicationVulnerabilitySummariesApiResponse = [
       },
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -95,7 +95,7 @@ new Server({
         { name: 'another-app' },
         { name: 'yet-another-app' },
       ]
-    );
+    )
 
     // Mock response for SearchApplications
     this.get(
@@ -108,10 +108,10 @@ new Server({
               .includes(name)
           )
           .reduce<GetSearchApplicationsApiResponse>((obj, app) => {
-            return [...obj, app];
+            return [...obj, app]
           }, []),
       ]
-    );
+    )
 
     // Mock response for ApplicationVulnerabilitySummaries
     this.get(
@@ -124,9 +124,9 @@ new Server({
               ?.appName
         ),
       ]
-    );
+    )
   },
-});
+})
 
 const testData: Array<
   { description: string } & ComponentProps<typeof AppList>
@@ -143,7 +143,7 @@ const testData: Array<
     description: 'With applications, with favourites',
     // favouriteAppNames: testApps.map(({ name }) => name),
   },
-];
+]
 
 export default (
   <div style={{ maxWidth: '1000px' }}>
@@ -157,4 +157,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

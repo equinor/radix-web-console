@@ -1,7 +1,7 @@
-import { Divider } from '@equinor/eds-core-react';
-import { EnvironmentsSummary } from '.';
+import { Divider } from '@equinor/eds-core-react'
+import { EnvironmentsSummary } from '.'
 
-import type { EnvironmentSummary } from '../../store/radix-api';
+import type { EnvironmentSummary } from '../../store/radix-api'
 
 const testData: Array<Array<EnvironmentSummary>> = [
   [
@@ -68,7 +68,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
     },
   ],
   [],
-];
+]
 
 export default (
   <div
@@ -85,4 +85,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

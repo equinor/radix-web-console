@@ -1,11 +1,11 @@
-import { Divider, Typography } from '@equinor/eds-core-react';
-import { type ComponentProps, Fragment } from 'react';
+import { Divider, Typography } from '@equinor/eds-core-react'
+import { type ComponentProps, Fragment } from 'react'
 
-import { PipelineRunTasks } from '.';
+import { PipelineRunTasks } from '.'
 
 const testData: Array<{
-  description: string;
-  data: ComponentProps<typeof PipelineRunTasks>;
+  description: string
+  data: ComponentProps<typeof PipelineRunTasks>
 }> = [
   {
     description: 'PipelineRun - succeeded',
@@ -109,7 +109,7 @@ const testData: Array<{
       tasks: [],
     },
   },
-];
+]
 
 export default (
   <div
@@ -137,4 +137,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

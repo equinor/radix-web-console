@@ -1,27 +1,27 @@
-import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { Button, List, Radio, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
 
-import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
-import { formatDateTime } from '../../../utils/datetime';
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster'
+import { formatDateTime } from '../../../utils/datetime'
 
-import './style.css';
+import './style.css'
 import {
   useCopyBatchMutation,
   useGetJobComponentDeploymentsQuery,
   useRestartBatchMutation,
-} from '../../../store/radix-api';
-import { pollingInterval } from '../../../store/defaults';
+} from '../../../store/radix-api'
+import { pollingInterval } from '../../../store/defaults'
 
 interface Props {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  deploymentName: string;
-  batchName: string;
-  smallBatchName: string;
-  onSuccess: () => void;
-  onDone: () => void;
+  appName: string
+  envName: string
+  jobComponentName: string
+  deploymentName: string
+  batchName: string
+  smallBatchName: string
+  onSuccess: () => void
+  onDone: () => void
 }
 
 export function RestartBatch({
@@ -41,12 +41,12 @@ export function RestartBatch({
       jobComponentName,
     },
     { pollingInterval }
-  );
-  const [copyBatch] = useCopyBatchMutation();
-  const [restartBatch] = useRestartBatchMutation();
-  const batchDeployment = deployments?.find((d) => d.name === deploymentName);
-  const activeDeployment = deployments?.find((d) => !d.activeTo);
-  const [shouldRestart, setShouldRestart] = useState(true);
+  )
+  const [copyBatch] = useCopyBatchMutation()
+  const [restartBatch] = useRestartBatchMutation()
+  const batchDeployment = deployments?.find((d) => d.name === deploymentName)
+  const activeDeployment = deployments?.find((d) => !d.activeTo)
+  const [shouldRestart, setShouldRestart] = useState(true)
 
   async function onCopyBatch(activeDeploymentName: string) {
     try {
@@ -56,14 +56,14 @@ export function RestartBatch({
         batchName,
         jobComponentName,
         scheduledBatchRequest: { deploymentName: activeDeploymentName },
-      }).unwrap();
+      }).unwrap()
 
-      infoToast(`Batch '${smallBatchName}' successfully copied.`);
-      onSuccess();
+      infoToast(`Batch '${smallBatchName}' successfully copied.`)
+      onSuccess()
     } catch (e) {
-      errorToast(`Error copying batch '${smallBatchName}'`);
+      errorToast(`Error copying batch '${smallBatchName}'`)
     } finally {
-      onDone();
+      onDone()
     }
   }
 
@@ -74,13 +74,13 @@ export function RestartBatch({
         envName,
         jobComponentName,
         batchName,
-      }).unwrap();
-      infoToast(`Batch '${smallBatchName}' successfully restarted.`);
-      onSuccess();
+      }).unwrap()
+      infoToast(`Batch '${smallBatchName}' successfully restarted.`)
+      onSuccess()
     } catch (e) {
-      errorToast(`Error restarting batch '${smallBatchName}'`);
+      errorToast(`Error restarting batch '${smallBatchName}'`)
     } finally {
-      onDone();
+      onDone()
     }
   }
 
@@ -152,7 +152,7 @@ export function RestartBatch({
             onClick={() => {
               shouldRestart
                 ? onRestartBatch()
-                : onCopyBatch(activeDeployment.name);
+                : onCopyBatch(activeDeployment.name)
             }}
           >
             Restart
@@ -161,7 +161,7 @@ export function RestartBatch({
         </Button.Group>
       </div>
     </div>
-  );
+  )
 }
 
 RestartBatch.propTypes = {
@@ -173,4 +173,4 @@ RestartBatch.propTypes = {
   smallBatchName: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
   onDone: PropTypes.func.isRequired,
-};
+}

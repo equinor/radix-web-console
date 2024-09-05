@@ -1,28 +1,28 @@
-import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { Code } from '../code';
-import { downloadLazyLogCb } from '../code/log-helper';
-import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
-import { Replica } from '../replica';
-import { ProgressStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { Code } from '../code'
+import { downloadLazyLogCb } from '../code/log-helper'
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list'
+import { Replica } from '../replica'
+import { ProgressStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
+import { routes } from '../../routes'
 import {
   type ScheduledBatchSummary,
   radixApi,
   useGetBatchQuery,
   useJobLogQuery,
-} from '../../store/radix-api';
-import { withRouteParams } from '../../utils/router';
-import { getEnvsUrl } from '../../utils/routing';
-import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
+} from '../../store/radix-api'
+import { withRouteParams } from '../../utils/router'
+import { getEnvsUrl } from '../../utils/routing'
+import { routeWithParams, smallScheduledBatchName } from '../../utils/string'
 
-import './style.css';
+import './style.css'
 
 function ScheduleBatchDuration({ batch }: { batch: ScheduledBatchSummary }) {
   return (
@@ -59,7 +59,7 @@ function ScheduleBatchDuration({ batch }: { batch: ScheduledBatchSummary }) {
         </>
       )}
     </>
-  );
+  )
 }
 
 function ScheduledBatchState({ batch }: { batch: ScheduledBatchSummary }) {
@@ -74,22 +74,22 @@ function ScheduledBatchState({ batch }: { batch: ScheduledBatchSummary }) {
         )}
       {batch.message && <Code>{batch.message}</Code>}
     </>
-  );
+  )
 }
 
 type Props = {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  scheduledBatchName: string;
-};
+  appName: string
+  envName: string
+  jobComponentName: string
+  scheduledBatchName: string
+}
 export function PageScheduledBatch({
   appName,
   envName,
   jobComponentName,
   scheduledBatchName,
 }: Props) {
-  const [pollingInterval, setPollingInterval] = useState(5000);
+  const [pollingInterval, setPollingInterval] = useState(5000)
   const pollLogsState = useJobLogQuery(
     {
       appName,
@@ -102,8 +102,8 @@ export function PageScheduledBatch({
       skip: !appName || !envName || !jobComponentName || !scheduledBatchName,
       pollingInterval,
     }
-  );
-  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
+  )
+  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
 
   const { data: batch, ...scheduledBatchState } = useGetBatchQuery(
     { appName, envName, jobComponentName, batchName: scheduledBatchName },
@@ -111,12 +111,12 @@ export function PageScheduledBatch({
       skip: !appName || !envName || !jobComponentName || !scheduledBatchName,
       pollingInterval: 5000,
     }
-  );
+  )
 
-  const replica = batch?.replica;
+  const replica = batch?.replica
   useEffect(() => {
-    setPollingInterval(batch?.status === 'Running' ? 5000 : 0);
-  }, [batch]);
+    setPollingInterval(batch?.status === 'Running' ? 5000 : 0)
+  }, [batch])
 
   return (
     <main className="grid grid--gap-medium">
@@ -185,7 +185,7 @@ export function PageScheduledBatch({
         </div>
       )}
     </main>
-  );
+  )
 }
 
 PageScheduledBatch.propTypes = {
@@ -193,6 +193,6 @@ PageScheduledBatch.propTypes = {
   jobComponentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   scheduledBatchName: PropTypes.string.isRequired,
-};
+}
 
-export default withRouteParams(PageScheduledBatch);
+export default withRouteParams(PageScheduledBatch)

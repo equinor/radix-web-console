@@ -3,4 +3,4 @@ export const clusterBases = {
   playgroundWebConsole: 'playground.radix.equinor.com',
   radixPlatformWebConsole: 'radix.equinor.com',
   radixPlatform2WebConsole: 'c2.radix.equinor.com',
-} as const;
+} as const

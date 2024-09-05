@@ -11,37 +11,37 @@ export enum PipelineStep {
 export function getPipelineStepDescription(stepName: string): string {
   switch (stepName) {
     case PipelineStep.CloneConfig:
-      return 'Cloning Radix config from config branch';
+      return 'Cloning Radix config from config branch'
     case PipelineStep.CloneConfigToMap:
-      return 'Copying radixconfig.yaml from config branch';
+      return 'Copying radixconfig.yaml from config branch'
     case PipelineStep.OrchestratePipeline:
-      return 'Orchestrating pipeline';
+      return 'Orchestrating pipeline'
     case PipelineStep.PreparePipelines:
-      return 'Prepare pipeline';
+      return 'Prepare pipeline'
     case PipelineStep.RunSubPipeline:
-      return 'Run sub-pipeline';
+      return 'Run sub-pipeline'
     case PipelineStep.BuildComponent:
-      return 'Building component';
+      return 'Building component'
     default:
-      return null;
+      return null
   }
 }
 
 export function getPipelineStepTitle(stepName: string): string {
   switch (stepName) {
     case PipelineStep.CloneConfig:
-      return 'Cloning Radix config';
+      return 'Cloning Radix config'
     case PipelineStep.CloneRepository:
-      return 'Cloning repository';
+      return 'Cloning repository'
     case PipelineStep.CloneConfigToMap:
-      return 'Copying Radix config';
+      return 'Copying Radix config'
     case PipelineStep.OrchestratePipeline:
-      return 'Orchestrating pipeline';
+      return 'Orchestrating pipeline'
     case PipelineStep.PreparePipelines:
-      return 'Prepare pipeline';
+      return 'Prepare pipeline'
     case PipelineStep.RunSubPipeline:
-      return 'Run sub-pipeline';
+      return 'Run sub-pipeline'
     default:
-      return null;
+      return null
   }
 }

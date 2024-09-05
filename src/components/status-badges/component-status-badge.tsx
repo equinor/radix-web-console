@@ -1,19 +1,19 @@
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import { check_circle_outlined, info_circle, stop } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { CircularProgress, Icon } from '@equinor/eds-core-react'
+import { check_circle_outlined, info_circle, stop } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
-} from './status-badge-template';
+} from './status-badge-template'
 
 import type {
   AuxiliaryResourceDeployment,
   Component,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 
-type ComponentStatus = (AuxiliaryResourceDeployment | Component)['status'];
+type ComponentStatus = (AuxiliaryResourceDeployment | Component)['status']
 
 const BadgeTemplates = {
   Reconciling: { icon: <CircularProgress /> },
@@ -21,16 +21,16 @@ const BadgeTemplates = {
   Stopped: { icon: <Icon data={stop} /> },
   Outdated: { type: 'warning', icon: <Icon data={info_circle} /> },
   Consistent: { icon: <Icon data={check_circle_outlined} /> },
-} satisfies Record<ComponentStatus, StatusBadgeTemplateProps>;
+} satisfies Record<ComponentStatus, StatusBadgeTemplateProps>
 
 export const ComponentStatusBadge: FunctionComponent<{
-  status: ComponentStatus;
+  status: ComponentStatus
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
-);
+)
 
 ComponentStatusBadge.propTypes = {
   status: PropTypes.string.isRequired as PropTypes.Validator<ComponentStatus>,
-};
+}

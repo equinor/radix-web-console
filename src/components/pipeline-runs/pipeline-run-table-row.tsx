@@ -1,20 +1,20 @@
-import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Table, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
-import { PipelineRunStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
-import { routes } from '../../routes';
-import { routeWithParams } from '../../utils/string';
+import { PipelineRunStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
+import type { PipelineRun as PipelineRunModel } from '../../store/radix-api'
+import { routes } from '../../routes'
+import { routeWithParams } from '../../utils/string'
 
-import './style.css';
+import './style.css'
 
 interface Props {
-  appName: string;
-  jobName: string;
-  pipelineRun: PipelineRunModel;
+  appName: string
+  jobName: string
+  pipelineRun: PipelineRunModel
 }
 
 export function PipelineRunTableRow({ appName, jobName, pipelineRun }: Props) {
@@ -59,7 +59,7 @@ export function PipelineRunTableRow({ appName, jobName, pipelineRun }: Props) {
         <PipelineRunStatusBadge status={pipelineRun.status} />
       </Table.Cell>
     </Table.Row>
-  );
+  )
 }
 
 PipelineRunTableRow.propTypes = {
@@ -67,4 +67,4 @@ PipelineRunTableRow.propTypes = {
   jobName: PropTypes.string.isRequired,
   pipelineRun: PropTypes.object
     .isRequired as PropTypes.Validator<PipelineRunModel>,
-};
+}

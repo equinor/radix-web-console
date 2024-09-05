@@ -1,17 +1,17 @@
-import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import type { PropsWithChildren, ReactNode } from 'react';
+import { CircularProgress, Typography } from '@equinor/eds-core-react'
+import type { PropsWithChildren, ReactNode } from 'react'
 
-import { Alert } from '../alert';
-import { externalUrls } from '../../externalUrls';
-import type { FetchQueryResult } from '../../store/types';
-import { getFetchErrorCode, getFetchErrorData } from '../../store/utils';
+import { Alert } from '../alert'
+import { externalUrls } from '../../externalUrls'
+import type { FetchQueryResult } from '../../store/types'
+import { getFetchErrorCode, getFetchErrorData } from '../../store/utils'
 
 type AnotherAsyncResourceProps = PropsWithChildren<{
-  asyncState: Pick<FetchQueryResult, 'error' | 'isError' | 'isLoading'>;
-  loadingContent?: false | Exclude<ReactNode, true>;
-  errorContent?: false | Exclude<ReactNode, true>;
-  nonFailureErrorCodes?: Array<number | string>;
-}>;
+  asyncState: Pick<FetchQueryResult, 'error' | 'isError' | 'isLoading'>
+  loadingContent?: false | Exclude<ReactNode, true>
+  errorContent?: false | Exclude<ReactNode, true>
+  nonFailureErrorCodes?: Array<number | string>
+}>
 
 export default function AsyncResource({
   asyncState,
@@ -30,14 +30,14 @@ export default function AsyncResource({
           </span>
         }
       />
-    );
+    )
   }
 
   if (
     asyncState.isError &&
     !nonErrorCodes?.includes(getFetchErrorCode(asyncState.error))
   ) {
-    const { code, message } = getFetchErrorData(asyncState.error);
+    const { code, message } = getFetchErrorData(asyncState.error)
 
     return (
       <UseContentOrDefault
@@ -73,28 +73,28 @@ export default function AsyncResource({
           </Alert>
         }
       />
-    );
+    )
   }
 
-  return children;
+  return children
 }
 
 type LoadingComponentProps = {
-  content?: ReactNode;
-  defaultContent: ReactNode;
-};
+  content?: ReactNode
+  defaultContent: ReactNode
+}
 
 function UseContentOrDefault({
   content,
   defaultContent,
 }: LoadingComponentProps): ReactNode {
   if (content === false) {
-    return null;
+    return null
   }
 
   if (content) {
-    return <>{content}</>;
+    return <>{content}</>
   }
 
-  return defaultContent;
+  return defaultContent
 }

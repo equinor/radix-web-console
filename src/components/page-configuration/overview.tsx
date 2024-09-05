@@ -3,24 +3,24 @@ import {
   List,
   Tooltip,
   Typography,
-} from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
+} from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
 
-import { Alert } from '../alert';
-import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
-import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
-import AsyncResource from '../async-resource/async-resource';
+import { Alert } from '../alert'
+import { useGetAdGroupsQuery } from '../../store/ms-graph-api'
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert'
+import AsyncResource from '../async-resource/async-resource'
 
 interface Props {
-  adGroups?: Array<string>;
-  appName: string;
+  adGroups?: Array<string>
+  appName: string
 }
 
 export function Overview({ adGroups, appName }: Props) {
-  const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups });
+  const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups })
   const unknownADGroups = adGroups?.filter(
     (adGroupId) => !data?.some((adGroup) => adGroup.id === adGroupId)
-  );
+  )
 
   return (
     <div className="grid grid--gap-medium">
@@ -77,10 +77,10 @@ export function Overview({ adGroups, appName }: Props) {
         </div>
       </section>
     </div>
-  );
+  )
 }
 
 Overview.propTypes = {
   adGroups: PropTypes.arrayOf(PropTypes.string),
   appName: PropTypes.string.isRequired,
-};
+}

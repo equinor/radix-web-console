@@ -1,6 +1,6 @@
-import { JobsList } from '.';
+import { JobsList } from '.'
 
-import type { JobSummary } from '../../store/radix-api';
+import type { JobSummary } from '../../store/radix-api'
 
 const jobs: Array<JobSummary> = [
   {
@@ -83,7 +83,7 @@ const jobs: Array<JobSummary> = [
     pipeline: 'build-deploy',
     environments: ['qa'],
   },
-];
+]
 
 export default (
   <div style={{ backgroundColor: 'var(--color-bright)' }}>
@@ -91,4 +91,4 @@ export default (
     <div style={{ height: '100px' }} />
     <JobsList jobs={[]} appName="my-app" />
   </div>
-);
+)

@@ -1,23 +1,23 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { notifications, notifications_off } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { notifications, notifications_off } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
 
-import { Alerting } from '../alerting';
-import AsyncResource from '../async-resource/async-resource';
-import { ScrimPopup } from '../scrim-popup';
+import { Alerting } from '../alerting'
+import AsyncResource from '../async-resource/async-resource'
+import { ScrimPopup } from '../scrim-popup'
 
-import './style.css';
-import { radixApi, type UpdateAlertingConfig } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import './style.css'
+import { radixApi, type UpdateAlertingConfig } from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 
 interface Props {
-  appName: string;
-  envName: string;
+  appName: string
+  envName: string
 }
 export default function EnvironmentAlerting({ appName, envName }: Props) {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [visibleScrim, setVisibleScrim] = useState(false)
   const {
     data: alertingConfig,
     refetch,
@@ -28,35 +28,35 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
       envName,
     },
     { pollingInterval }
-  );
+  )
 
   const [enableAlertMutation, { isLoading: savingEnable }] =
-    radixApi.useEnableEnvironmentAlertingMutation();
+    radixApi.useEnableEnvironmentAlertingMutation()
   const [disableAlertMutation, { isLoading: savingDisable }] =
-    radixApi.useDisableEnvironmentAlertingMutation();
+    radixApi.useDisableEnvironmentAlertingMutation()
   const [updateAlertMutation, { isLoading: savingUpdate }] =
-    radixApi.useUpdateEnvironmentAlertingConfigMutation();
+    radixApi.useUpdateEnvironmentAlertingConfigMutation()
 
   const enableAlert = handlePromiseWithToast(async () => {
-    await enableAlertMutation({ appName, envName }).unwrap();
-    await refetch();
-  });
+    await enableAlertMutation({ appName, envName }).unwrap()
+    await refetch()
+  })
   const disableAlert = handlePromiseWithToast(async () => {
-    await disableAlertMutation({ appName, envName }).unwrap();
-    await refetch();
-    setVisibleScrim(false);
-  });
+    await disableAlertMutation({ appName, envName }).unwrap()
+    await refetch()
+    setVisibleScrim(false)
+  })
   const updateAlert = handlePromiseWithToast(
     async (updateAlertingConfig: UpdateAlertingConfig) => {
       await updateAlertMutation({
         appName,
         envName,
         updateAlertingConfig,
-      }).unwrap();
-      await refetch();
-      setVisibleScrim(false);
+      }).unwrap()
+      await refetch()
+      setVisibleScrim(false)
     }
-  );
+  )
 
   return (
     <AsyncResource asyncState={configState}>
@@ -95,10 +95,10 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
         </>
       )}
     </AsyncResource>
-  );
+  )
 }
 
 EnvironmentAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-};
+}

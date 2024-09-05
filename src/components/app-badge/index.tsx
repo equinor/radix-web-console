@@ -1,11 +1,11 @@
-import { configure, type JdenticonConfig, toSvg } from 'jdenticon';
-import type { FunctionComponent } from 'react';
+import { configure, type JdenticonConfig, toSvg } from 'jdenticon'
+import type { FunctionComponent } from 'react'
 
-import './style.css';
+import './style.css'
 
 export interface AppBadgeProps {
-  appName: string;
-  size?: number;
+  appName: string
+  size?: number
 }
 
 const badgeConfig: JdenticonConfig = {
@@ -19,17 +19,17 @@ const badgeConfig: JdenticonConfig = {
     grayscale: 0.5,
   },
   backColor: '#ffffff00',
-};
+}
 
 export const AppBadge: FunctionComponent<AppBadgeProps> = ({
   size = 64,
   ...rest
 }) => {
-  const previousConfig = configure();
+  const previousConfig = configure()
 
-  configure(badgeConfig);
-  const badge = { __html: toSvg(rest.appName, size) };
-  configure(previousConfig);
+  configure(badgeConfig)
+  const badge = { __html: toSvg(rest.appName, size) }
+  configure(previousConfig)
 
-  return <div className="app-badge" dangerouslySetInnerHTML={badge} />;
-};
+  return <div className="app-badge" dangerouslySetInnerHTML={badge} />
+}

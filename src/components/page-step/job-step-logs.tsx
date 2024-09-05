@@ -1,45 +1,42 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource';
-import { Code } from '../code';
-import { downloadLazyLogCb } from '../code/log-helper';
-import { addMinutes } from 'date-fns';
+import AsyncResource from '../async-resource/async-resource'
+import { Code } from '../code'
+import { downloadLazyLogCb } from '../code/log-helper'
+import { addMinutes } from 'date-fns'
 import {
   type ModelsContainer,
   type ModelsInventoryResponse,
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
-} from '../../store/log-api';
-import {
-  radixApi,
-  useGetPipelineJobStepLogsQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { getFetchErrorCode } from '../../store/utils';
+} from '../../store/log-api'
+import { radixApi, useGetPipelineJobStepLogsQuery } from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { getFetchErrorCode } from '../../store/utils'
 
-import './style.css';
+import './style.css'
 
-type BrandedContainerModel = ModelsContainer & { parentId: string };
+type BrandedContainerModel = ModelsContainer & { parentId: string }
 
 export interface StepLogsProps {
-  appName: string;
-  jobName: string;
-  stepName: string;
-  start?: string;
-  end?: string;
+  appName: string
+  jobName: string
+  stepName: string
+  start?: string
+  end?: string
 }
 
 function findContainer(data: ModelsInventoryResponse, stepName: string) {
   for (const replica of data?.replicas ?? []) {
     for (const container of replica.containers) {
       if (container.name === stepName) {
-        return { ...container, parentId: replica.name };
+        return { ...container, parentId: replica.name }
       }
     }
   }
-  return null;
+  return null
 }
 
 function HistoricalLog({
@@ -49,7 +46,7 @@ function HistoricalLog({
   start,
   end,
 }: StepLogsProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  end = end ? addMinutes(new Date(end), 10).toISOString() : null
   const { container, ...state } = useGetPipelineJobInventoryQuery(
     { appName, pipelineJobName: jobName, start, end },
     {
@@ -60,7 +57,7 @@ function HistoricalLog({
         ...state,
       }),
     }
-  );
+  )
 
   return (
     <AsyncResource asyncState={state}>
@@ -76,16 +73,16 @@ function HistoricalLog({
         <Typography>This replica has no log</Typography>
       )}
     </AsyncResource>
-  );
+  )
 }
 
 type ContainerLogProps = {
-  appName: string;
-  jobName: string;
-  container: BrandedContainerModel;
-  start?: string;
-  end?: string;
-};
+  appName: string
+  jobName: string
+  container: BrandedContainerModel
+  start?: string
+  end?: string
+}
 function ContainerLog({
   appName,
   container: { name, parentId, id },
@@ -93,7 +90,7 @@ function ContainerLog({
   start,
   end,
 }: ContainerLogProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  end = end ? addMinutes(new Date(end), 10).toISOString() : null
   const { data, ...state } = useGetPipelineJobContainerLogQuery(
     {
       appName,
@@ -104,7 +101,7 @@ function ContainerLog({
       end,
     },
     { skip: !appName || !jobName || !parentId || !id, pollingInterval }
-  );
+  )
 
   return (
     <AsyncResource asyncState={state}>
@@ -122,7 +119,7 @@ function ContainerLog({
         <Typography>This replica has no log</Typography>
       )}
     </AsyncResource>
-  );
+  )
 }
 
 export function JobStepLogs({
@@ -132,18 +129,18 @@ export function JobStepLogs({
   start,
   end,
 }: StepLogsProps) {
-  const [pollingInterval, setPollingInterval] = useState(5000);
-  const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery();
+  const [pollingInterval, setPollingInterval] = useState(5000)
+  const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
   const { data: liveLog, ...state } = useGetPipelineJobStepLogsQuery(
     { appName, jobName, stepName, lines: '1000' },
     { skip: !appName || !jobName || !stepName, pollingInterval }
-  );
+  )
 
-  const notFound = state.isError && getFetchErrorCode(state.error) === 404;
+  const notFound = state.isError && getFetchErrorCode(state.error) === 404
 
   useEffect(() => {
-    setPollingInterval(notFound || end ? 0 : 5000);
-  }, [notFound, end]);
+    setPollingInterval(notFound || end ? 0 : 5000)
+  }, [notFound, end])
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -187,7 +184,7 @@ export function JobStepLogs({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
+  )
 }
 
 JobStepLogs.propTypes = {
@@ -196,4 +193,4 @@ JobStepLogs.propTypes = {
   stepName: PropTypes.string.isRequired,
   start: PropTypes.string,
   end: PropTypes.string,
-};
+}

@@ -1,22 +1,22 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { type IconData, link, memory } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { type IconData, link, memory } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import type { Component } from '../../store/radix-api';
+import type { Component } from '../../store/radix-api'
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
-} from '../../utils/routing';
+} from '../../utils/routing'
 
 export interface EnvironmentIngressProps {
-  appName: string;
-  envName: string;
-  components: Readonly<Array<Component>>;
+  appName: string
+  envName: string
+  components: Readonly<Array<Component>>
 }
 
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
-const MAX_DISPLAY_COMPONENTS = 2;
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME'
+const MAX_DISPLAY_COMPONENTS = 2
 
 function getComponentUrl(
   appName: string,
@@ -25,12 +25,12 @@ function getComponentUrl(
 ): string {
   return component.type === 'job'
     ? getActiveJobComponentUrl(appName, environmentName, component.name)
-    : getActiveComponentUrl(appName, environmentName, component.name);
+    : getActiveComponentUrl(appName, environmentName, component.name)
 }
 
 const ComponentDetails: FunctionComponent<{
-  icon: IconData;
-  component: Readonly<Component>;
+  icon: IconData
+  component: Readonly<Component>
 }> = ({ icon, component }) => (
   <>
     <Icon data={icon} />
@@ -54,7 +54,7 @@ const ComponentDetails: FunctionComponent<{
       </Typography>
     )}
   </>
-);
+)
 
 export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
   appName,
@@ -62,24 +62,24 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
   components,
 }) => {
   const comps = components.reduce<{
-    public: Array<Component>;
-    passive: Array<Component>;
+    public: Array<Component>
+    passive: Array<Component>
   }>(
     (obj, x) => {
-      obj[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
-      return obj;
+      obj[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x)
+      return obj
     },
     { public: [], passive: [] }
-  );
+  )
 
-  const tooManyPublic = comps.public.length > MAX_DISPLAY_COMPONENTS;
-  const tooManyPassive = comps.passive.length > MAX_DISPLAY_COMPONENTS;
+  const tooManyPublic = comps.public.length > MAX_DISPLAY_COMPONENTS
+  const tooManyPassive = comps.passive.length > MAX_DISPLAY_COMPONENTS
 
   if (tooManyPublic) {
-    comps.public = comps.public.slice(0, MAX_DISPLAY_COMPONENTS);
+    comps.public = comps.public.slice(0, MAX_DISPLAY_COMPONENTS)
   }
   if (tooManyPassive) {
-    comps.passive = comps.passive.slice(0, MAX_DISPLAY_COMPONENTS);
+    comps.passive = comps.passive.slice(0, MAX_DISPLAY_COMPONENTS)
   }
 
   return (
@@ -116,8 +116,8 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
         ))}
       {tooManyPublic && tooManyPassive && <div>…</div>}
     </>
-  );
-};
+  )
+}
 
 EnvironmentIngress.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -125,4 +125,4 @@ EnvironmentIngress.propTypes = {
     PropTypes.object as PropTypes.Validator<Component>
   ).isRequired,
   envName: PropTypes.string.isRequired,
-};
+}

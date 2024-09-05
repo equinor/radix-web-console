@@ -1,60 +1,60 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import { ComponentList } from './component-list';
-import { StepsList } from './steps-list';
+import { ComponentList } from './component-list'
+import { StepsList } from './steps-list'
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { CommitHash } from '../commit-hash';
-import { getJobExecutionState } from '../component/execution-state';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { ScrimPopup } from '../scrim-popup';
-import { useInterval } from '../../effects/use-interval';
-import { routes } from '../../routes';
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { CommitHash } from '../commit-hash'
+import { getJobExecutionState } from '../component/execution-state'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
+import { ScrimPopup } from '../scrim-popup'
+import { useInterval } from '../../effects/use-interval'
+import { routes } from '../../routes'
 import {
   type Job,
   radixApi,
   useGetApplicationJobQuery,
   useGetApplicationQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
 import {
   routeWithParams,
   smallDeploymentName,
   smallJobName,
-} from '../../utils/string';
+} from '../../utils/string'
 
-import './style.css';
+import './style.css'
 
 function getStopButtonText(status: Job['status']): string {
   switch (status) {
     case 'Queued':
     case 'Waiting':
-      return 'Cancel';
+      return 'Cancel'
     case 'Running':
     case 'Stopping':
-      return 'Stop';
+      return 'Stop'
     default:
-      return '';
+      return ''
   }
 }
 
 type Props = {
-  appName: string;
-  jobName: string;
-};
+  appName: string
+  jobName: string
+}
 
 export const JobOverview = ({ appName, jobName }: Props) => {
-  const [now, setNow] = useState(new Date());
+  const [now, setNow] = useState(new Date())
   const { data: application } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  );
+  )
   const {
     data: job,
     refetch: refetchJob,
@@ -62,21 +62,21 @@ export const JobOverview = ({ appName, jobName }: Props) => {
   } = useGetApplicationJobQuery(
     { appName, jobName },
     { skip: !appName || !jobName, pollingInterval: 8000 }
-  );
+  )
   const [stopJobTrigger, stopJobState] =
-    radixApi.endpoints.stopApplicationJob.useMutation();
+    radixApi.endpoints.stopApplicationJob.useMutation()
   const [rerunJobTrigger, rerunJobState] =
-    radixApi.endpoints.rerunApplicationJob.useMutation();
-  const [visibleRerunScrim, setVisibleRerunScrim] = useState<boolean>(false);
+    radixApi.endpoints.rerunApplicationJob.useMutation()
+  const [visibleRerunScrim, setVisibleRerunScrim] = useState<boolean>(false)
 
-  const stopButtonText = getStopButtonText(job?.status);
-  const isStopping = stopJobState.isLoading || job?.status === 'Stopping';
+  const stopButtonText = getStopButtonText(job?.status)
+  const isStopping = stopJobState.isLoading || job?.status === 'Stopping'
   const canBeRerun =
     !stopJobState.isLoading &&
-    (job?.status === 'Failed' || job?.status === 'Stopped');
-  const isRerunning = rerunJobState.isLoading;
+    (job?.status === 'Failed' || job?.status === 'Stopped')
+  const isRerunning = rerunJobState.isLoading
 
-  useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
+  useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000)
 
   return (
     <>
@@ -101,8 +101,8 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                   {!!stopButtonText && (
                     <Button
                       onClick={handlePromiseWithToast(async () => {
-                        await stopJobTrigger({ appName, jobName }).unwrap();
-                        refetchJob();
+                        await stopJobTrigger({ appName, jobName }).unwrap()
+                        refetchJob()
                       }, 'Stopped')}
                       disabled={isStopping}
                     >
@@ -152,12 +152,12 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           disabled={isRerunning}
                           onClick={handlePromiseWithToast(
                             async () => {
-                              setVisibleRerunScrim(false);
+                              setVisibleRerunScrim(false)
                               await rerunJobTrigger({
                                 appName,
                                 jobName,
-                              }).unwrap();
-                              refetchJob();
+                              }).unwrap()
+                              refetchJob()
                             },
                             `Pipeline job '${smallJobName(
                               jobName
@@ -348,10 +348,10 @@ export const JobOverview = ({ appName, jobName }: Props) => {
         </AsyncResource>
       </main>
     </>
-  );
-};
+  )
+}
 
 JobOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
-};
+}

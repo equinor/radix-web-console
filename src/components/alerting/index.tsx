@@ -1,26 +1,26 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { info_circle } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import { useState } from 'react'
 
-import { AlertingActions } from './alerting-actions';
-import { AlertingConfigStatus } from './alerting-overview';
-import { UpdateSlackReceivers, type ChangedReceivers } from './edit-alerting';
-import { buildEditConfig } from './buildEditConfig';
+import { AlertingActions } from './alerting-actions'
+import { AlertingConfigStatus } from './alerting-overview'
+import { UpdateSlackReceivers, type ChangedReceivers } from './edit-alerting'
+import { buildEditConfig } from './buildEditConfig'
 
-import { Alert } from '../alert';
-import { externalUrls } from '../../externalUrls';
+import { Alert } from '../alert'
+import { externalUrls } from '../../externalUrls'
 import type {
   AlertingConfig,
   UpdateAlertingConfig,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 
 interface Props {
-  isSaving: boolean;
-  alertingConfig: AlertingConfig;
-  enableAlerting: () => Promise<void>;
-  updateAlerting: (config: UpdateAlertingConfig) => Promise<void>;
-  disableAlerting: () => Promise<void>;
+  isSaving: boolean
+  alertingConfig: AlertingConfig
+  enableAlerting: () => Promise<void>
+  updateAlerting: (config: UpdateAlertingConfig) => Promise<void>
+  disableAlerting: () => Promise<void>
 }
 
 export const Alerting = ({
@@ -30,22 +30,20 @@ export const Alerting = ({
   disableAlerting,
   updateAlerting,
 }: Props) => {
-  const [edit, setEdit] = useState(false);
-  const [changedReceivers, setChangedReceivers] = useState<ChangedReceivers>(
-    {}
-  );
+  const [edit, setEdit] = useState(false)
+  const [changedReceivers, setChangedReceivers] = useState<ChangedReceivers>({})
   const onSave = async () => {
-    const config: UpdateAlertingConfig = buildEditConfig(alertingConfig);
+    const config: UpdateAlertingConfig = buildEditConfig(alertingConfig)
     Object.entries(changedReceivers).forEach(([receiver, url]) => {
-      config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } };
-    });
+      config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } }
+    })
 
-    await updateAlerting(config);
-  };
+    await updateAlerting(config)
+  }
   const onCancel = () => {
-    setEdit(false);
-    setChangedReceivers({});
-  };
+    setEdit(false)
+    setChangedReceivers({})
+  }
 
   return (
     <div className="grid grid--gap-medium">
@@ -87,8 +85,8 @@ export const Alerting = ({
         onDisable={disableAlerting}
       />
     </div>
-  );
-};
+  )
+}
 
 Alerting.propTypes = {
   isSaving: PropTypes.bool.isRequired,
@@ -96,4 +94,4 @@ Alerting.propTypes = {
   enableAlerting: PropTypes.func.isRequired,
   updateAlerting: PropTypes.func.isRequired,
   disableAlerting: PropTypes.func.isRequired,
-};
+}

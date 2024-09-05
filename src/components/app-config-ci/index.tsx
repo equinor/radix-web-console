@@ -1,27 +1,27 @@
-import { Typography } from '@equinor/eds-core-react';
-import { debounce } from 'lodash';
-import * as PropTypes from 'prop-types';
-import { useEffect, useRef, useState } from 'react';
-import type { MultiValue, SingleValue } from 'react-select';
+import { Typography } from '@equinor/eds-core-react'
+import { debounce } from 'lodash'
+import * as PropTypes from 'prop-types'
+import { useEffect, useRef, useState } from 'react'
+import type { MultiValue, SingleValue } from 'react-select'
 
-import { ConfigurationItemPopover } from './ci-popover';
-import { ConfigurationItemSelect } from './ci-select';
+import { ConfigurationItemPopover } from './ci-popover'
+import { ConfigurationItemSelect } from './ci-select'
 
-import { Alert } from '../alert';
+import { Alert } from '../alert'
 
-import './style.css';
+import './style.css'
 import {
   useGetApplicationQuery,
   serviceNowApi,
   type GetApplicationsApiResponse,
   type Application,
-} from '../../store/service-now-api';
-import { getFetchErrorMessage } from '../../store/utils';
+} from '../../store/service-now-api'
+import { getFetchErrorMessage } from '../../store/utils'
 
-export type OnConfigurationItemChangeCallback = (ci?: Application) => void;
+export type OnConfigurationItemChangeCallback = (ci?: Application) => void
 type GetApplicationsFunction = ReturnType<
   typeof serviceNowApi.endpoints.getApplications.useLazyQuery
->[0];
+>[0]
 
 const loadOptions = debounce(
   (
@@ -30,47 +30,47 @@ const loadOptions = debounce(
     name: string
   ) => filterOptions(getApplications, name).then(callback),
   500
-);
+)
 
 async function filterOptions(
   getApplications: GetApplicationsFunction,
   inputValue: string
 ) {
-  return await getApplications({ name: inputValue, limit: 10 }).unwrap();
+  return await getApplications({ name: inputValue, limit: 10 }).unwrap()
 }
 
 export interface Props {
-  configurationItemChangeCallback: OnConfigurationItemChangeCallback;
-  disabled?: boolean;
-  configurationItem?: string;
+  configurationItemChangeCallback: OnConfigurationItemChangeCallback
+  disabled?: boolean
+  configurationItem?: string
 }
 export function AppConfigConfigurationItem({
   configurationItem,
   configurationItemChangeCallback,
   disabled,
 }: Props) {
-  const [selectedCI, setSelectedCI] = useState<Application | null>(null);
-  const [popoverCI, setPopoverCI] = useState<Application>();
-  const [popoverOpen, setPopoverOpen] = useState(false);
+  const [selectedCI, setSelectedCI] = useState<Application | null>(null)
+  const [popoverCI, setPopoverCI] = useState<Application>()
+  const [popoverOpen, setPopoverOpen] = useState(false)
   const [getApplications] =
-    serviceNowApi.endpoints.getApplications.useLazyQuery();
+    serviceNowApi.endpoints.getApplications.useLazyQuery()
 
   const { data: currentCI, ...currentCIState } = useGetApplicationQuery(
     {
       appId: configurationItem,
     },
     { skip: !configurationItem }
-  );
+  )
 
   useEffect(() => {
-    setSelectedCI(currentCI);
-  }, [currentCI]);
-  const containerRef = useRef<HTMLDivElement>(null);
+    setSelectedCI(currentCI)
+  }, [currentCI])
+  const containerRef = useRef<HTMLDivElement>(null)
 
   function onChange(newValue?: Application): void {
-    configurationItemChangeCallback(newValue);
-    setSelectedCI(newValue);
-    setPopoverOpen(false);
+    configurationItemChangeCallback(newValue)
+    setSelectedCI(newValue)
+    setPopoverOpen(false)
   }
 
   return (
@@ -80,13 +80,13 @@ export function AppConfigConfigurationItem({
       </Typography>
       <ConfigurationItemSelect<Application>
         onInfoIconClick={(ev, ci) => {
-          ev.stopPropagation();
+          ev.stopPropagation()
           setPopoverCI(
             Array.isArray(ci)
               ? (ci as MultiValue<Application>)[0]
               : (ci as SingleValue<Application>)
-          );
-          setPopoverOpen(!popoverOpen);
+          )
+          setPopoverOpen(!popoverOpen)
         }}
         containerRef={containerRef}
         name="ConfigurationItem"
@@ -98,7 +98,7 @@ export function AppConfigConfigurationItem({
         loadOptions={(inputValue, callback) => {
           inputValue?.length < 3
             ? callback([])
-            : loadOptions(callback, getApplications, inputValue);
+            : loadOptions(callback, getApplications, inputValue)
         }}
         onChange={onChange}
         getOptionLabel={({ name }) => name}
@@ -131,11 +131,11 @@ export function AppConfigConfigurationItem({
         />
       )}
     </div>
-  );
+  )
 }
 
 AppConfigConfigurationItem.propTypes = {
   configurationItemChangeCallback: PropTypes.func.isRequired,
   configurationItem: PropTypes.string,
   disabled: PropTypes.bool,
-};
+}

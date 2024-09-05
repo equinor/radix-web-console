@@ -1,17 +1,17 @@
-import { AuthenticatedTemplate } from '@azure/msal-react';
-import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { AuthenticatedTemplate } from '@azure/msal-react'
+import { Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import { ADGroups, type HandleAdGroupsChangeCB } from '../graph/adGroups';
+import { ADGroups, type HandleAdGroupsChangeCB } from '../graph/adGroups'
 
-import './style.css';
+import './style.css'
 
 export interface AppConfigAdGroupsProps {
-  labeling: string;
-  adGroups?: Array<string>;
-  isDisabled?: boolean;
-  handleAdGroupsChange: HandleAdGroupsChangeCB;
+  labeling: string
+  adGroups?: Array<string>
+  isDisabled?: boolean
+  handleAdGroupsChange: HandleAdGroupsChangeCB
 }
 
 export const AppConfigAdGroups: FunctionComponent<AppConfigAdGroupsProps> = ({
@@ -34,11 +34,11 @@ export const AppConfigAdGroups: FunctionComponent<AppConfigAdGroupsProps> = ({
       />
     </AuthenticatedTemplate>
   </div>
-);
+)
 
 AppConfigAdGroups.propTypes = {
   labeling: PropTypes.string.isRequired,
   adGroups: PropTypes.arrayOf(PropTypes.string),
   isDisabled: PropTypes.bool,
   handleAdGroupsChange: PropTypes.func.isRequired,
-};
+}

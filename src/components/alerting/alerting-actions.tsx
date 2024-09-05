@@ -1,19 +1,19 @@
-import { Button } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
+import { Button } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
 
-import './style.css';
-import type { AlertingConfig } from '../../store/radix-api';
+import './style.css'
+import type { AlertingConfig } from '../../store/radix-api'
 
 type Props = {
-  config: AlertingConfig;
-  isSaving: boolean;
-  isEdit: boolean;
-  onEdit: () => void;
-  onSave: () => void;
-  onCancel: () => void;
-  onEnable: () => void;
-  onDisable: () => void;
-};
+  config: AlertingConfig
+  isSaving: boolean
+  isEdit: boolean
+  onEdit: () => void
+  onSave: () => void
+  onCancel: () => void
+  onEnable: () => void
+  onDisable: () => void
+}
 
 export const AlertingActions = ({
   isEdit,
@@ -64,8 +64,8 @@ export const AlertingActions = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
 AlertingActions.propTypes = {
   isSaving: PropTypes.bool.isRequired,
@@ -77,4 +77,4 @@ AlertingActions.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onEnable: PropTypes.func.isRequired,
   onDisable: PropTypes.func.isRequired,
-};
+}

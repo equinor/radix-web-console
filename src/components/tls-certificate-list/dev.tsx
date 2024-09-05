@@ -1,6 +1,6 @@
-import { TLSCertificateList } from '.';
+import { TLSCertificateList } from '.'
 
-import type { X509Certificate } from '../../store/radix-api';
+import type { X509Certificate } from '../../store/radix-api'
 
 const certsGroups: Array<X509Certificate[]> = [
   [
@@ -33,7 +33,7 @@ const certsGroups: Array<X509Certificate[]> = [
       notAfter: '2023-12-01T12:16:54Z',
     },
   ],
-];
+]
 
 export default (
   <div className="grid grid--gap-medium">
@@ -43,4 +43,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

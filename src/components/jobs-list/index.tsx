@@ -1,24 +1,24 @@
-import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { type FunctionComponent, useEffect, useState } from 'react';
+import { Table, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { type FunctionComponent, useEffect, useState } from 'react'
 
-import { JobSummaryTableRow } from './job-summary-table-row';
+import { JobSummaryTableRow } from './job-summary-table-row'
 
-import type { JobSummary } from '../../store/radix-api';
+import type { JobSummary } from '../../store/radix-api'
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
   type sortDirection,
-} from '../../utils/sort-utils';
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+} from '../../utils/sort-utils'
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
 
-import './style.css';
+import './style.css'
 
 export interface JobsListProps {
-  appName: string;
-  jobs?: Readonly<Array<JobSummary>>;
-  limit?: number;
+  appName: string
+  jobs?: Readonly<Array<JobSummary>>
+  limit?: number
 }
 
 export const JobsList: FunctionComponent<JobsListProps> = ({
@@ -26,11 +26,11 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
   jobs,
   limit,
 }) => {
-  const [sortedData, setSortedData] = useState([...(jobs ?? [])]);
+  const [sortedData, setSortedData] = useState([...(jobs ?? [])])
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  const [envSort, setEnvSort] = useState<sortDirection>();
-  const [pipelineSort, setPipelineSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<sortDirection>('descending')
+  const [envSort, setEnvSort] = useState<sortDirection>()
+  const [pipelineSort, setPipelineSort] = useState<sortDirection>()
   useEffect(() => {
     setSortedData(
       dataSorter(jobs?.slice(0, limit || jobs.length), [
@@ -52,8 +52,8 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
             () => !!envSort
           ),
       ])
-    );
-  }, [dateSort, envSort, jobs, limit, pipelineSort]);
+    )
+  }, [dateSort, envSort, jobs, limit, pipelineSort])
 
   return sortedData.length > 0 ? (
     <div className="jobs-list grid grid--table-overflow">
@@ -97,11 +97,11 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
       <Typography variant="h4">No pipeline jobs yet</Typography>
       <Typography>Push to GitHub to trigger a job</Typography>
     </>
-  );
-};
+  )
+}
 
 JobsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobs: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<JobSummary>),
   limit: PropTypes.number,
-};
+}

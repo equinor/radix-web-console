@@ -1,14 +1,14 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { link } from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { link } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
 
-import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
+import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing'
 export interface EnvironmentComponentProps {
-  appName: string;
-  url: string;
-  componentName: string;
-  environmentName: string;
+  appName: string
+  url: string
+  componentName: string
+  environmentName: string
 }
 
 export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({
@@ -35,4 +35,4 @@ export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({
       {environmentName}
     </Typography>
   </>
-);
+)

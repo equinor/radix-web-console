@@ -1,57 +1,53 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { github, trending_up } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { github, trending_up } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
 
-import { ComponentList } from './component-list';
-import EnvironmentAlerting from './environment-alerting';
-import EnvironmentToolbar from './environment-toolbar';
+import { ComponentList } from './component-list'
+import EnvironmentAlerting from './environment-alerting'
+import EnvironmentToolbar from './environment-toolbar'
 
-import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DeploymentsList } from '../deployments-list';
-import { EventsList } from '../events-list';
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
+import { Alert } from '../alert'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { DeploymentsList } from '../deployments-list'
+import { EventsList } from '../events-list'
+import { GitTagLinks } from '../git-tags/git-tag-links'
+import { RelativeToNow } from '../time/relative-to-now'
+import { routes } from '../../routes'
 import {
   radixApi,
   useGetApplicationQuery,
   useGetEnvironmentEventsQuery,
   useGetEnvironmentQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { getFetchErrorMessage } from '../../store/utils';
-import { configVariables } from '../../utils/config';
-import {
-  getAppDeploymentUrl,
-  getAppUrl,
-  getEnvsUrl,
-} from '../../utils/routing';
-import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { getFetchErrorMessage } from '../../store/utils'
+import { configVariables } from '../../utils/config'
+import { getAppDeploymentUrl, getAppUrl, getEnvsUrl } from '../../utils/routing'
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import {
   linkToGitHubBranch,
   linkToGitHubCommit,
   routeWithParams,
   smallDeploymentName,
   smallGithubCommitHash,
-} from '../../utils/string';
+} from '../../utils/string'
 
-import './style.css';
-import { GitCommitTags } from '../component/git-commit-tags';
-import { DefaultAppAlias } from '../component/default-app-alias';
-import { DNSAliases } from '../component/dns-aliases';
+import './style.css'
+import { GitCommitTags } from '../component/git-commit-tags'
+import { DefaultAppAlias } from '../component/default-app-alias'
+import { DNSAliases } from '../component/dns-aliases'
 
 export const EnvironmentOverview: FunctionComponent<{
-  appName: string;
-  envName: string;
+  appName: string
+  envName: string
 }> = ({ appName, envName }) => {
   const { data: application } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  );
+  )
   const {
     data: environment,
     refetch: refetchEnv,
@@ -59,26 +55,26 @@ export const EnvironmentOverview: FunctionComponent<{
   } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  );
+  )
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  );
+  )
   const [deleteEnvTrigger, deleteEnvState] =
-    radixApi.endpoints.deleteEnvironment.useMutation();
-  const { appAlias, dnsAliases, dnsExternalAliases } = application ?? {};
+    radixApi.endpoints.deleteEnvironment.useMutation()
+  const { appAlias, dnsAliases, dnsExternalAliases } = application ?? {}
   const envDNSAliases = dnsAliases
     ? dnsAliases.filter((alias) => alias.environmentName == envName)
-    : [];
+    : []
   const envDNSExternalAliases = dnsExternalAliases
     ? dnsExternalAliases.filter((alias) => alias.environmentName == envName)
-    : [];
+    : []
 
-  const isLoaded = application && environment;
-  const isOrphan = environment?.status === 'Orphan';
-  const deployment = isLoaded && environment.activeDeployment;
+  const isLoaded = application && environment
+  const isOrphan = environment?.status === 'Orphan'
+  const deployment = isLoaded && environment.activeDeployment
   const skippedDeployComponents =
-    deployment?.components?.filter((c) => c.skipDeployment) ?? false;
+    deployment?.components?.filter((c) => c.skipDeployment) ?? false
 
   return (
     <>
@@ -118,7 +114,7 @@ export const EnvironmentOverview: FunctionComponent<{
                         `Confirm deleting '${envName}' environment.`
                       )
                     ) {
-                      await deleteEnvTrigger({ appName, envName });
+                      await deleteEnvTrigger({ appName, envName })
                     }
                   }}
                 >
@@ -312,12 +308,12 @@ export const EnvironmentOverview: FunctionComponent<{
         )}
       </AsyncResource>
     </>
-  );
-};
+  )
+}
 
 EnvironmentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
-};
+}
 
-export default EnvironmentOverview;
+export default EnvironmentOverview

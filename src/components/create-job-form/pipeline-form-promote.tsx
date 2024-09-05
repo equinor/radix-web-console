@@ -3,54 +3,52 @@ import {
   CircularProgress,
   NativeSelect,
   Typography,
-} from '@equinor/eds-core-react';
-import { type FormEvent, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+} from '@equinor/eds-core-react'
+import { type FormEvent, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
-import { RelativeToNow } from '../time/relative-to-now';
-import { formatDateTime } from '../../utils/datetime';
-import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
+import { RelativeToNow } from '../time/relative-to-now'
+import { formatDateTime } from '../../utils/datetime'
+import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string'
 import {
   type DeploymentSummary,
   useGetDeploymentsQuery,
   useGetEnvironmentSummaryQuery,
   useTriggerPipelinePromoteMutation,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
 
-import { Alert } from '../alert';
-import { getFetchErrorMessage } from '../../store/utils';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import type { FormProp } from './index';
+import { Alert } from '../alert'
+import { getFetchErrorMessage } from '../../store/utils'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import type { FormProp } from './index'
 
 export function PipelineFormPromote({
   children,
   appName,
   onSuccess,
 }: FormProp) {
-  const [searchParams] = useSearchParams();
-  const [trigger, state] = useTriggerPipelinePromoteMutation();
+  const [searchParams] = useSearchParams()
+  const [trigger, state] = useTriggerPipelinePromoteMutation()
   const { data: deployments } = useGetDeploymentsQuery(
     { appName },
     { pollingInterval }
-  );
+  )
   const { data: environments } = useGetEnvironmentSummaryQuery(
     { appName },
     { pollingInterval }
-  );
-  const [toEnvironment, setToEnvironment] = useState('');
+  )
+  const [toEnvironment, setToEnvironment] = useState('')
   const [deploymentName, setDeploymentName] = useState(
     searchParams.get('deploymentName') ?? ''
-  );
+  )
 
-  const selectedDeployment = deployments?.find(
-    (x) => x.name === deploymentName
-  );
-  const fromEnvironment = selectedDeployment?.environment;
+  const selectedDeployment = deployments?.find((x) => x.name === deploymentName)
+  const fromEnvironment = selectedDeployment?.environment
 
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+      e.preventDefault()
 
       const response = await trigger({
         appName,
@@ -59,10 +57,10 @@ export function PipelineFormPromote({
           deploymentName,
           fromEnvironment,
         },
-      }).unwrap();
-      onSuccess(response.name);
+      }).unwrap()
+      onSuccess(response.name)
     }
-  );
+  )
 
   // Show deployments grouped by environment
   const groupedDeployments = (deployments || []).reduce<
@@ -73,9 +71,9 @@ export function PipelineFormPromote({
       [x.environment]: [...(obj[x.environment] || []), x],
     }),
     {}
-  );
+  )
 
-  const isValid = !!(toEnvironment && deploymentName && fromEnvironment);
+  const isValid = !!(toEnvironment && deploymentName && fromEnvironment)
 
   return (
     <form onSubmit={handleSubmit}>
@@ -191,5 +189,5 @@ export function PipelineFormPromote({
         </div>
       </fieldset>
     </form>
-  );
+  )
 }

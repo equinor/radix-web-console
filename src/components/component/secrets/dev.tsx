@@ -1,14 +1,14 @@
-import { Divider, Typography } from '@equinor/eds-core-react';
-import { Server } from 'miragejs';
-import { Fragment } from 'react';
+import { Divider, Typography } from '@equinor/eds-core-react'
+import { Server } from 'miragejs'
+import { Fragment } from 'react'
 
-import { SecretOverview } from './secret-overview';
+import { SecretOverview } from './secret-overview'
 
 import type {
   ChangeComponentSecretApiResponse,
   GetEnvironmentApiArg,
   GetEnvironmentApiResponse,
-} from '../../../store/radix-api';
+} from '../../../store/radix-api'
 
 const testData: Array<GetEnvironmentApiResponse> = [
   {
@@ -27,7 +27,7 @@ const testData: Array<GetEnvironmentApiResponse> = [
       { name: 'ellipsis', status: 'NotAvailable', component: 'component_2' },
     ],
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -40,15 +40,15 @@ new Server({
           ({ name }) =>
             name === (request.params as GetEnvironmentApiArg).envName
         )
-    );
+    )
 
     // Mock response for ChangeComponentSecret
     this.put(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/secrets/:secretName',
       (): ChangeComponentSecretApiResponse => void 0
-    );
+    )
   },
-});
+})
 
 export default (
   <div
@@ -77,4 +77,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

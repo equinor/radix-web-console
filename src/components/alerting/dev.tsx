@@ -1,9 +1,9 @@
-import { type ComponentProps, Fragment } from 'react';
+import { type ComponentProps, Fragment } from 'react'
 
-import { Alerting } from '.';
+import { Alerting } from '.'
 
-const noopFunc = async () => {};
-type AlertingProps = ComponentProps<typeof Alerting>;
+const noopFunc = async () => {}
+type AlertingProps = ComponentProps<typeof Alerting>
 const testData: Array<AlertingProps> = [
   {
     isSaving: false,
@@ -65,7 +65,7 @@ const testData: Array<AlertingProps> = [
     enableAlerting: noopFunc,
     updateAlerting: noopFunc,
   },
-];
+]
 
 export default (
   <div style={{ maxWidth: '1000px', margin: '20px' }}>
@@ -76,4 +76,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

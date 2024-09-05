@@ -1,12 +1,12 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { ApplicationAlias } from '../../store/radix-api';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { external_link } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type { ApplicationAlias } from '../../store/radix-api'
 
 export interface Props {
-  appAlias?: ApplicationAlias;
-  envName: string;
-  componentName: string;
+  appAlias?: ApplicationAlias
+  envName: string
+  componentName: string
 }
 
 export function DefaultAlias({ appAlias, envName, componentName }: Props) {
@@ -28,11 +28,11 @@ export function DefaultAlias({ appAlias, envName, componentName }: Props) {
           </Typography>
         )}
     </>
-  );
+  )
 }
 
 DefaultAlias.propTypes = {
   appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-};
+}

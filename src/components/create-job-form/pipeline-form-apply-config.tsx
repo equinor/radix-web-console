@@ -1,29 +1,29 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import type { FormEvent } from 'react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
+import type { FormEvent } from 'react'
 
-import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api';
-import { Alert } from '../alert';
-import { getFetchErrorMessage } from '../../store/utils';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import type { FormProp } from './index';
+import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api'
+import { Alert } from '../alert'
+import { getFetchErrorMessage } from '../../store/utils'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import type { FormProp } from './index'
 
 export function PipelineFormApplyConfig({
   children,
   appName,
   onSuccess,
 }: FormProp) {
-  const [trigger, state] = useTriggerPipelineApplyConfigMutation();
+  const [trigger, state] = useTriggerPipelineApplyConfigMutation()
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+      e.preventDefault()
 
       const response = await trigger({
         appName,
         pipelineParametersApplyConfig: {},
-      }).unwrap();
-      onSuccess(response.name);
+      }).unwrap()
+      onSuccess(response.name)
     }
-  );
+  )
 
   return (
     <form onSubmit={handleSubmit}>
@@ -57,5 +57,5 @@ export function PipelineFormApplyConfig({
         </div>
       </fieldset>
     </form>
-  );
+  )
 }

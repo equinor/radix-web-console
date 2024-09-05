@@ -1,6 +1,6 @@
-import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { upperFirst } from 'lodash';
-import * as PropTypes from 'prop-types';
+import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react'
+import { upperFirst } from 'lodash'
+import * as PropTypes from 'prop-types'
 import {
   Fragment,
   type FunctionComponent,
@@ -8,41 +8,41 @@ import {
   useEffect,
   useMemo,
   useState,
-} from 'react';
-import { Link } from 'react-router-dom';
+} from 'react'
+import { Link } from 'react-router-dom'
 
-import AsyncResource from '../async-resource/async-resource';
-import { ComponentStatusBadge } from '../status-badges';
-import { ReplicaStatusTooltip } from '../status-tooltips';
-import { VulnerabilitySummary } from '../vulnerability-summary';
-import { buildComponentMap } from '../../utils/build-component-map';
+import AsyncResource from '../async-resource/async-resource'
+import { ComponentStatusBadge } from '../status-badges'
+import { ReplicaStatusTooltip } from '../status-tooltips'
+import { VulnerabilitySummary } from '../vulnerability-summary'
+import { buildComponentMap } from '../../utils/build-component-map'
 import type {
   Component,
   Environment,
   ReplicaSummary,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 import {
   type EnvironmentVulnerabilities,
   type ImageWithLastScan,
   scanApi,
-} from '../../store/scan-api';
-import { getFetchErrorData } from '../../store/utils';
+} from '../../store/scan-api'
+import { getFetchErrorData } from '../../store/utils'
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
   getOAuthReplicaUrl,
   getReplicaUrl,
-} from '../../utils/routing';
-import { smallReplicaName } from '../../utils/string';
-import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
-import clsx from 'clsx';
+} from '../../utils/routing'
+import { smallReplicaName } from '../../utils/string'
+import { chevron_down, chevron_up, security } from '@equinor/eds-icons'
+import clsx from 'clsx'
 
-import './style.css';
+import './style.css'
 
 export interface ComponentListProps {
-  appName: string;
-  environment: Readonly<Environment>;
-  components: Readonly<Array<Component>>;
+  appName: string
+  environment: Readonly<Environment>
+  components: Readonly<Array<Component>>
 }
 
 function getComponentUrl(
@@ -52,7 +52,7 @@ function getComponentUrl(
 ): string {
   return type === 'job'
     ? getActiveJobComponentUrl(appName, envName, name)
-    : getActiveComponentUrl(appName, envName, name);
+    : getActiveComponentUrl(appName, envName, name)
 }
 
 function getEnvironmentComponentScanModel(
@@ -60,32 +60,32 @@ function getEnvironmentComponentScanModel(
   name: string,
   type: Component['type']
 ): ImageWithLastScan {
-  let componentKey = '' as keyof EnvironmentVulnerabilities;
+  let componentKey = '' as keyof EnvironmentVulnerabilities
   switch (type) {
     case 'component':
-      componentKey = 'components';
-      break;
+      componentKey = 'components'
+      break
     case 'job':
-      componentKey = 'jobs';
-      break;
+      componentKey = 'jobs'
+      break
     default:
-      break;
+      break
   }
 
-  return data?.[componentKey]?.[name];
+  return data?.[componentKey]?.[name]
 }
 
 function hasComponentOAuth2Service(c: Component): boolean {
-  return !!c.oauth2;
+  return !!c.oauth2
 }
 
 function hasComponentAdditionalInfo(c: Component): boolean {
-  return hasComponentOAuth2Service(c);
+  return hasComponentOAuth2Service(c)
 }
 
 const ReplicaLinks: FunctionComponent<{
-  replicaList?: Readonly<Array<ReplicaSummary>>;
-  urlFunc: (replica: ReplicaSummary) => string;
+  replicaList?: Readonly<Array<ReplicaSummary>>
+  urlFunc: (replica: ReplicaSummary) => string
 }> = ({ replicaList, urlFunc }) =>
   replicaList?.length > 0 ? (
     <div className="component-replica__link-container">
@@ -104,10 +104,10 @@ const ReplicaLinks: FunctionComponent<{
     </div>
   ) : (
     <Typography>No active replicas</Typography>
-  );
+  )
 
 const EnvironmentComponentScanSummary: FunctionComponent<{
-  scan?: Readonly<ImageWithLastScan>;
+  scan?: Readonly<ImageWithLastScan>
 }> = ({ scan }) =>
   scan?.scanSuccess ? (
     <VulnerabilitySummary summary={scan?.vulnerabilitySummary} />
@@ -121,7 +121,7 @@ const EnvironmentComponentScanSummary: FunctionComponent<{
         ? 'No data'
         : ['Not scanned', 'Scan failed'][+(scan.scanSuccess === false)]}
     </Typography>
-  );
+  )
 
 export const ComponentList: FunctionComponent<ComponentListProps> = ({
   appName,
@@ -136,23 +136,23 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
         .filter(hasComponentOAuth2Service)
         .map((c) => [c.name, c.oauth2.deployment.status !== 'Consistent'])
     )
-  );
+  )
   const [trigger, { data: vulnerabilities, ...state }] =
-    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
+    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery()
   const expandComponent = useCallback(
     (name: string) =>
       setExpandedComponents((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
+  )
   useEffect(() => {
-    const request = trigger({ appName, envName });
-    return () => request?.abort();
-  }, [appName, envName, trigger]);
-  const compMap = useMemo(() => buildComponentMap(components), [components]);
+    const request = trigger({ appName, envName })
+    return () => request?.abort()
+  }, [appName, envName, trigger])
+  const compMap = useMemo(() => buildComponentMap(components), [components])
   const showChevronColumn = useMemo(
     () => components.some(hasComponentAdditionalInfo),
     [components]
-  );
+  )
   return (
     <>
       {Object.keys(compMap).map((type) => (
@@ -318,8 +318,8 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
         </Accordion>
       ))}
     </>
-  );
-};
+  )
+}
 
 ComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -327,4 +327,4 @@ ComponentList.propTypes = {
   components: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<Component>
   ).isRequired,
-};
+}

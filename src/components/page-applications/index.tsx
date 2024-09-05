@@ -1,7 +1,7 @@
-import AppList from '../app-list';
-import { DocumentTitle } from '../document-title';
+import AppList from '../app-list'
+import { DocumentTitle } from '../document-title'
 
-import './style.css';
+import './style.css'
 
 export default function PageApplications() {
   return (
@@ -10,5 +10,5 @@ export default function PageApplications() {
 
       <AppList />
     </div>
-  );
+  )
 }

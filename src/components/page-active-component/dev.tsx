@@ -1,5 +1,5 @@
-import { HorizontalScalingSummary } from './horizontal-scaling-summary';
-import type { HorizontalScalingSummary as HorizontalScalingSummaryModel } from '../../store/radix-api';
+import { HorizontalScalingSummary } from './horizontal-scaling-summary'
+import type { HorizontalScalingSummary as HorizontalScalingSummaryModel } from '../../store/radix-api'
 
 const testData: Array<HorizontalScalingSummaryModel> = [
   {
@@ -35,7 +35,7 @@ const testData: Array<HorizontalScalingSummaryModel> = [
     desiredReplicas: 3,
     triggers: [],
   },
-];
+]
 
 export default (
   <>
@@ -54,4 +54,4 @@ export default (
       </div>
     ))}
   </>
-);
+)

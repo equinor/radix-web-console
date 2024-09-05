@@ -1,13 +1,13 @@
-import { ActiveJobComponentOverview } from './active-job-component-overview';
+import { ActiveJobComponentOverview } from './active-job-component-overview'
 
-import { DocumentTitle } from '../document-title';
-import { withRouteParams } from '../../utils/router';
+import { DocumentTitle } from '../document-title'
+import { withRouteParams } from '../../utils/router'
 
 type Props = {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-};
+  appName: string
+  envName: string
+  jobComponentName: string
+}
 export function PageActiveJobComponent({
   appName,
   envName,
@@ -18,7 +18,7 @@ export function PageActiveJobComponent({
       <DocumentTitle title={`${jobComponentName} in ${envName}`} />
       <ActiveJobComponentOverview {...{ appName, envName, jobComponentName }} />
     </>
-  );
+  )
 }
 
-export default withRouteParams(PageActiveJobComponent);
+export default withRouteParams(PageActiveJobComponent)

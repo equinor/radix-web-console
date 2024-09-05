@@ -1,19 +1,19 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import { type FunctionComponent, useEffect, useState } from 'react';
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
+import { type FunctionComponent, useEffect, useState } from 'react'
 
-import { AppListItem } from '../app-list-item';
-import AsyncResource from '../async-resource/async-resource';
-import PageCreateApplication from '../page-create-application';
-import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
+import { AppListItem } from '../app-list-item'
+import AsyncResource from '../async-resource/async-resource'
+import PageCreateApplication from '../page-create-application'
+import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
+import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 
-import './style.css';
-import useLocalStorage from '../../effects/use-local-storage';
-import { pollingInterval } from '../../store/defaults';
-import { promiseHandler } from '../../utils/promise-handler';
-import { Alert } from '../alert';
-import { getFetchErrorMessage } from '../../store/utils';
-import { isEqual, uniq } from 'lodash';
+import './style.css'
+import useLocalStorage from '../../effects/use-local-storage'
+import { pollingInterval } from '../../store/defaults'
+import { promiseHandler } from '../../utils/promise-handler'
+import { Alert } from '../alert'
+import { getFetchErrorMessage } from '../../store/utils'
+import { isEqual, uniq } from 'lodash'
 
 const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">
@@ -26,21 +26,21 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
       />
     ))}
   </div>
-);
+)
 
 export default function AppList() {
-  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
+  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3)
   const [favourites, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
-  );
+  )
   const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
     'knownApplications',
     []
-  );
+  )
 
   const [refreshApps, appsState] =
-    radixApi.endpoints.showApplications.useLazyQuery({});
+    radixApi.endpoints.showApplications.useLazyQuery({})
 
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
@@ -49,22 +49,22 @@ export default function AppList() {
       includeLatestJobSummary: 'true',
     },
     { skip: favourites.length === 0, pollingInterval }
-  );
+  )
 
   const changeFavouriteApplication = (app: string, isFavourite: boolean) => {
     if (isFavourite) {
-      setFavourites((old) => uniq([...old, app]));
+      setFavourites((old) => uniq([...old, app]))
     } else {
-      setFavourites((old) => old.filter((a) => a !== app));
+      setFavourites((old) => old.filter((a) => a !== app))
     }
-  };
+  }
 
   const knownApps = dataSorter(knownAppNames ?? [], [
     (x, y) => sortCompareString(x, y),
   ]).map((appName) => ({
     name: appName,
     isFavourite: favourites.includes(appName),
-  }));
+  }))
 
   const favouriteApps = dataSorter(
     [
@@ -77,12 +77,12 @@ export default function AppList() {
         app.isFavourite && arr.findIndex((x) => x.name === app.name) === i // remove non-favourites and duplicates
     ),
     [(x, y) => sortCompareString(x.name, y.name)]
-  );
+  )
 
   // remove from know app names previously favorite knownApps, which do not currently exist
   useEffect(() => {
     if (!favsData || !knownApps) {
-      return;
+      return
     }
     const knownAppNames = knownApps
       .filter(
@@ -90,21 +90,21 @@ export default function AppList() {
           !knownApp.isFavourite ||
           favsData.some((favApp) => favApp.name === knownApp.name)
       )
-      .map((app) => app.name);
-    const favAppNames = favsData.map((app) => app.name);
+      .map((app) => app.name)
+    const favAppNames = favsData.map((app) => app.name)
     const mergedKnownAndFavoriteAppNames = uniq([
       ...knownAppNames,
       ...favAppNames,
-    ]).sort();
+    ]).sort()
     if (
       !isEqual(
         knownApps.map((app) => app.name),
         mergedKnownAndFavoriteAppNames
       )
     ) {
-      setKnownAppNames(mergedKnownAndFavoriteAppNames);
+      setKnownAppNames(mergedKnownAndFavoriteAppNames)
     }
-  }, [knownApps, favsData, setKnownAppNames]);
+  }, [knownApps, favsData, setKnownAppNames])
 
   return (
     <article className="grid grid--gap-medium">
@@ -135,8 +135,8 @@ export default function AppList() {
                       key={i}
                       app={app}
                       handler={(e) => {
-                        changeFavouriteApplication(app.name, false);
-                        e.preventDefault();
+                        changeFavouriteApplication(app.name, false)
+                        e.preventDefault()
                       }}
                       isFavourite
                       showStatus
@@ -195,8 +195,8 @@ export default function AppList() {
                       key={i}
                       app={app}
                       handler={(e) => {
-                        changeFavouriteApplication(app.name, !app.isFavourite);
-                        e.preventDefault();
+                        changeFavouriteApplication(app.name, !app.isFavourite)
+                        e.preventDefault()
                       }}
                       isFavourite={app.isFavourite}
                     />
@@ -217,5 +217,5 @@ export default function AppList() {
         </>
       </div>
     </article>
-  );
+  )
 }

@@ -5,32 +5,32 @@ import {
   List,
   TextField,
   Typography,
-} from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { type FormEvent, type FunctionComponent, useState } from 'react';
-import { Link } from 'react-router-dom';
+} from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import { type FormEvent, type FunctionComponent, useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import { Alert } from '../alert';
-import { routes } from '../../routes';
-import { routeWithParams } from '../../utils/string';
-import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert'
+import { routes } from '../../routes'
+import { routeWithParams } from '../../utils/string'
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { getFetchErrorMessage } from '../../store/utils'
 
 export interface ChangeConfigBranchFormProps {
-  appName: string;
-  configBranch: string;
-  refetch?: Function;
+  appName: string
+  configBranch: string
+  refetch?: Function
 }
 
 export const ChangeConfigBranchForm: FunctionComponent<
   ChangeConfigBranchFormProps
 > = ({ appName, configBranch, refetch }) => {
-  const [configBranchState, setConfigBranchState] = useState(configBranch);
-  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
+  const [configBranchState, setConfigBranchState] = useState(configBranch)
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation()
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
-    ev.preventDefault();
+    ev.preventDefault()
 
     await mutate({
       appName,
@@ -39,10 +39,10 @@ export const ChangeConfigBranchForm: FunctionComponent<
           configBranch: configBranchState,
         },
       },
-    }).unwrap();
+    }).unwrap()
 
-    await refetch?.();
-  });
+    await refetch?.()
+  })
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -122,10 +122,10 @@ export const ChangeConfigBranchForm: FunctionComponent<
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}
 
 ChangeConfigBranchForm.propTypes = {
   appName: PropTypes.string.isRequired,
   configBranch: PropTypes.string.isRequired,
-};
+}

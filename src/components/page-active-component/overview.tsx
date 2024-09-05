@@ -1,15 +1,15 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { external_link } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import { DefaultAlias } from './default-alias';
+import { DefaultAlias } from './default-alias'
 
-import { Alert } from '../alert';
-import { ComponentIdentity } from '../component/component-identity';
-import { ComponentPorts } from '../component/component-ports';
-import { DockerImage } from '../docker-image';
-import { ComponentStatusBadge } from '../status-badges';
+import { Alert } from '../alert'
+import { ComponentIdentity } from '../component/component-identity'
+import { ComponentPorts } from '../component/component-ports'
+import { DockerImage } from '../docker-image'
+import { ComponentStatusBadge } from '../status-badges'
 
 import type {
   ApplicationAlias,
@@ -17,22 +17,22 @@ import type {
   Deployment,
   DnsAlias as DnsAliasModel,
   ExternalDns,
-} from '../../store/radix-api';
-import './style.css';
-import { DNSAliases } from './dns-aliases';
-import { ResourceRequirements } from '../resource-requirements';
-import { externalUrls } from '../../externalUrls';
-import { Runtime } from '../runtime';
+} from '../../store/radix-api'
+import './style.css'
+import { DNSAliases } from './dns-aliases'
+import { ResourceRequirements } from '../resource-requirements'
+import { externalUrls } from '../../externalUrls'
+import { Runtime } from '../runtime'
 
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME'
 
 export const Overview: FunctionComponent<{
-  appAlias?: ApplicationAlias;
-  dnsAliases?: DnsAliasModel[];
-  dnsExternalAliases?: ExternalDns[];
-  envName: string;
-  component: Component;
-  deployment: Deployment;
+  appAlias?: ApplicationAlias
+  dnsAliases?: DnsAliasModel[]
+  dnsExternalAliases?: ExternalDns[]
+  envName: string
+  component: Component
+  deployment: Deployment
 }> = ({
   appAlias,
   dnsAliases,
@@ -41,14 +41,14 @@ export const Overview: FunctionComponent<{
   component,
   deployment,
 }) => {
-  const dnsAliasUrls = dnsAliases ? dnsAliases.map((alias) => alias.url) : [];
+  const dnsAliasUrls = dnsAliases ? dnsAliases.map((alias) => alias.url) : []
   const dnsExternalAliasUrls = dnsExternalAliases
     ? dnsExternalAliases.map((alias) => alias.fqdn)
-    : [];
+    : []
 
-  const isStopped = component.status == 'Stopped';
+  const isStopped = component.status == 'Stopped'
   const isScaledDown =
-    component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped;
+    component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped
 
   return (
     <div className="grid grid--gap-medium">
@@ -133,8 +133,8 @@ export const Overview: FunctionComponent<{
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Overview.propTypes = {
   appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
@@ -144,4 +144,4 @@ Overview.propTypes = {
   envName: PropTypes.string.isRequired,
   component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
   deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
-};
+}

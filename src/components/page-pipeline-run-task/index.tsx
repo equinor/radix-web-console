@@ -1,24 +1,24 @@
-import * as PropTypes from 'prop-types';
+import * as PropTypes from 'prop-types'
 
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { PipelineRunTask } from '../pipeline-run-task';
-import { PipelineRunTaskSteps } from '../pipeline-run-task-steps';
-import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
-import { routes } from '../../routes';
-import { routeWithParams, smallJobName } from '../../utils/string';
-import { withRouteParams } from '../../utils/router';
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { PipelineRunTask } from '../pipeline-run-task'
+import { PipelineRunTaskSteps } from '../pipeline-run-task-steps'
+import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log'
+import { routes } from '../../routes'
+import { routeWithParams, smallJobName } from '../../utils/string'
+import { withRouteParams } from '../../utils/router'
 import {
   useGetTektonPipelineRunTaskQuery,
   useGetTektonPipelineRunTaskStepsQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
+} from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
 
 interface Props {
-  appName: string;
-  jobName: string;
-  pipelineRunName: string;
-  taskName: string;
+  appName: string
+  jobName: string
+  pipelineRunName: string
+  taskName: string
 }
 
 export function PagePipelineRunTask({
@@ -35,7 +35,7 @@ export function PagePipelineRunTask({
       appName,
     },
     { pollingInterval }
-  );
+  )
   const { data: steps, ...stepsState } = useGetTektonPipelineRunTaskStepsQuery(
     {
       pipelineRunName,
@@ -44,7 +44,7 @@ export function PagePipelineRunTask({
       appName,
     },
     { pollingInterval }
-  );
+  )
 
   return (
     <>
@@ -102,12 +102,12 @@ export function PagePipelineRunTask({
         )}
       </AsyncResource>
     </>
-  );
+  )
 }
 PagePipelineRunTask.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   pipelineRunName: PropTypes.string.isRequired,
   taskName: PropTypes.string.isRequired,
-};
-export default withRouteParams(PagePipelineRunTask);
+}
+export default withRouteParams(PagePipelineRunTask)

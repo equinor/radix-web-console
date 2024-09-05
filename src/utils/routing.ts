@@ -3,16 +3,16 @@ import {
   type FunctionComponent,
   type ReactElement,
   createElement,
-} from 'react';
-import { useParams } from 'react-router-dom';
+} from 'react'
+import { useParams } from 'react-router-dom'
 
-import { routeWithParams } from './string';
+import { routeWithParams } from './string'
 
-import { routes } from '../routes';
+import { routes } from '../routes'
 
 /** Mark specific keys of an object optional */
 type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &
-  Partial<Pick<T, K>>;
+  Partial<Pick<T, K>>
 
 /**
  * Maps route parameters as defined in react-router and injects them as
@@ -48,28 +48,28 @@ export function mapRouteParamsToProps<
   props: Optionalize<P, M extends (infer K)[] ? Extract<keyof P, K> : keyof M>
 ) => ReactElement<P> {
   return function (props) {
-    const params = useParams<P>();
+    const params = useParams<P>()
     const mappedProps = (
       Array.isArray(propMap) ? (propMap as Array<string>) : Object.keys(propMap)
     ).reduce<Partial<P>>(
       (obj, key) => ({ ...obj, [key]: params[propMap[key] || key] }),
       {}
-    );
+    )
 
-    return createElement(Component, { ...mappedProps, ...props } as P);
-  };
+    return createElement(Component, { ...mappedProps, ...props } as P)
+  }
 }
 
 export function getAppUrl(appName: string): string {
   return routeWithParams(routes.app, {
     appName,
-  });
+  })
 }
 
 export function getAppConfigUrl(appName: string): string {
   return routeWithParams(routes.appConfig, {
     appName,
-  });
+  })
 }
 
 export function getAppDeploymentUrl(
@@ -79,32 +79,32 @@ export function getAppDeploymentUrl(
   return routeWithParams(routes.appDeployment, {
     appName,
     deploymentName,
-  });
+  })
 }
 
 export function getAppDeploymentsUrl(appName: string): string {
   return routeWithParams(routes.appDeployments, {
     appName,
-  });
+  })
 }
 
 export function getAppJobsUrl(appName: string): string {
   return routeWithParams(routes.appJobs, {
     appName,
-  });
+  })
 }
 
 export function getEnvUrl(appName: string, envName: string): string {
   return routeWithParams(routes.appEnvironment, {
     appName,
     envName,
-  });
+  })
 }
 
 export function getEnvsUrl(appName: string): string {
   return routeWithParams(routes.appEnvironments, {
     appName,
-  });
+  })
 }
 
 export function getActiveComponentUrl(
@@ -116,7 +116,7 @@ export function getActiveComponentUrl(
     appName,
     envName,
     componentName,
-  });
+  })
 }
 
 export function getActiveJobComponentUrl(
@@ -128,7 +128,7 @@ export function getActiveJobComponentUrl(
     appName,
     envName,
     jobComponentName,
-  });
+  })
 }
 
 export function getReplicaUrl(
@@ -142,7 +142,7 @@ export function getReplicaUrl(
     envName,
     componentName,
     replicaName,
-  });
+  })
 }
 
 export function getOAuthReplicaUrl(
@@ -156,7 +156,7 @@ export function getOAuthReplicaUrl(
     envName,
     componentName,
     replicaName,
-  });
+  })
 }
 
 export function getScheduledJobUrl(
@@ -170,7 +170,7 @@ export function getScheduledJobUrl(
     envName,
     jobComponentName,
     scheduledJobName,
-  });
+  })
 }
 
 export function getScheduledBatchUrl(
@@ -184,5 +184,5 @@ export function getScheduledBatchUrl(
     envName,
     jobComponentName,
     scheduledBatchName,
-  });
+  })
 }

@@ -4,20 +4,20 @@ import {
   Icon,
   Scrim,
   Typography,
-} from '@equinor/eds-core-react';
-import { clear } from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
+} from '@equinor/eds-core-react'
+import { clear } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react'
 
-import './style.css';
+import './style.css'
 
 export interface ScrimPopupProps {
-  className?: string;
-  title: ReactNode;
-  open: boolean;
-  onClose?: () => void;
-  isDismissable?: boolean;
+  className?: string
+  title: ReactNode
+  open: boolean
+  onClose?: () => void
+  isDismissable?: boolean
 }
 
 export const ScrimPopup: FunctionComponent<
@@ -47,7 +47,7 @@ export const ScrimPopup: FunctionComponent<
       </div>
     </div>
   </Scrim>
-);
+)
 
 ScrimPopup.propTypes = {
   className: PropTypes.string,
@@ -56,4 +56,4 @@ ScrimPopup.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func,
   isDismissable: PropTypes.bool,
-};
+}

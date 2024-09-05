@@ -1,11 +1,11 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
+import { Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
 
-import { linkToGitHubTag } from '../../utils/string';
+import { linkToGitHubTag } from '../../utils/string'
 
 export const GitTagLinks: FunctionComponent<{
-  gitTags: string;
-  repository?: string;
+  gitTags: string
+  repository?: string
 }> = ({ gitTags, repository }) => (
   <>
     {gitTags
@@ -26,4 +26,4 @@ export const GitTagLinks: FunctionComponent<{
         </Typography>
       ))}
   </>
-);
+)

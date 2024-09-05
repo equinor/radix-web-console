@@ -1,28 +1,28 @@
-import { type FunctionComponent, useRef, useState } from 'react';
-import type { ReplicaSummary } from '../../store/radix-api';
+import { type FunctionComponent, useRef, useState } from 'react'
+import type { ReplicaSummary } from '../../store/radix-api'
 import {
   Icon,
   type IconProps,
   Popover,
   Typography,
-} from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { smallReplicaName } from '../../utils/string';
-import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
+} from '@equinor/eds-core-react'
+import { Link } from 'react-router-dom'
+import { smallReplicaName } from '../../utils/string'
+import { info_circle } from '@equinor/eds-icons'
+import * as PropTypes from 'prop-types'
 
 interface ReplicaNameWithHelpDescriptionProps {
-  displayName?: string;
-  replicaName: string;
-  description: string;
-  replicaUrlFunc: (name: string) => string;
+  displayName?: string
+  replicaName: string
+  description: string
+  replicaUrlFunc: (name: string) => string
 }
 
 const ReplicaNameWithHelpDescription: FunctionComponent<
   ReplicaNameWithHelpDescriptionProps
 > = ({ displayName, replicaName, description, replicaUrlFunc }) => {
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [popoverOpen, setPopoverOpen] = useState(false)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
     <>
@@ -54,12 +54,12 @@ const ReplicaNameWithHelpDescription: FunctionComponent<
         <Icon data={info_circle} size={16 as IconProps['size']} />
       </span>
     </>
-  );
-};
+  )
+}
 
 export const ReplicaName: FunctionComponent<{
-  replica: ReplicaSummary;
-  replicaUrlFunc: (name: string) => string;
+  replica: ReplicaSummary
+  replicaUrlFunc: (name: string) => string
 }> = ({ replica, replicaUrlFunc }) => {
   switch (replica.type) {
     case 'JobManager':
@@ -72,7 +72,7 @@ export const ReplicaName: FunctionComponent<{
           }
           replicaUrlFunc={replicaUrlFunc}
         ></ReplicaNameWithHelpDescription>
-      );
+      )
     case 'JobManagerAux':
       return (
         <ReplicaNameWithHelpDescription
@@ -83,17 +83,17 @@ export const ReplicaName: FunctionComponent<{
           }
           replicaUrlFunc={replicaUrlFunc}
         ></ReplicaNameWithHelpDescription>
-      );
+      )
     default:
       return (
         <Typography as={Link} to={replicaUrlFunc(replica.name)} link>
           {smallReplicaName(replica.name)}{' '}
         </Typography>
-      );
+      )
   }
-};
+}
 
 ReplicaName.propTypes = {
   replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
   replicaUrlFunc: PropTypes.func.isRequired,
-};
+}

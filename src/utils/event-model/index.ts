@@ -1,19 +1,19 @@
-import type { Event } from '../../store/radix-api';
+import type { Event } from '../../store/radix-api'
 
-type EventStateValidator = (event: Readonly<Event>) => boolean;
+type EventStateValidator = (event: Readonly<Event>) => boolean
 type EventStateValidators = {
-  resolved?: EventStateValidator;
-  obsolete?: EventStateValidator;
-};
+  resolved?: EventStateValidator
+  obsolete?: EventStateValidator
+}
 
 const isPodStateSet: EventStateValidator = (event) =>
-  !!event.involvedObjectState?.pod;
+  !!event.involvedObjectState?.pod
 
 const isPodStateReady: EventStateValidator = (event) =>
-  !!event.involvedObjectState?.pod?.ready;
+  !!event.involvedObjectState?.pod?.ready
 
 const isPodStateStarted: EventStateValidator = (event) =>
-  !!event.involvedObjectState?.pod?.started;
+  !!event.involvedObjectState?.pod?.started
 
 const warningStateHandler: Readonly<
   Record<string, Record<string, EventStateValidators>>
@@ -35,7 +35,7 @@ const warningStateHandler: Readonly<
       obsolete: (event) => !isPodStateSet(event),
     },
   },
-});
+})
 
 function getWarningStateHandler({
   involvedObjectKind,
@@ -43,21 +43,21 @@ function getWarningStateHandler({
 }: Readonly<Event>) {
   return warningStateHandler[involvedObjectKind?.toLowerCase()]?.[
     reason?.toLowerCase()
-  ];
+  ]
 }
 
 export function isEventObsolete(event: Readonly<Event>): boolean {
   return !!(
     isWarningEvent(event) && getWarningStateHandler(event)?.obsolete?.(event)
-  );
+  )
 }
 
 export function isEventResolved(event: Readonly<Event>): boolean {
   return !!(
     isWarningEvent(event) && getWarningStateHandler(event)?.resolved?.(event)
-  );
+  )
 }
 
 export function isWarningEvent({ type }: Readonly<Event>): boolean {
-  return type?.toLowerCase() === 'warning';
+  return type?.toLowerCase() === 'warning'
 }

@@ -1,19 +1,19 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import * as PropTypes from 'prop-types'
+import type { FunctionComponent } from 'react'
 
-import { OAuthToolbar } from './oauth-toolbar';
+import { OAuthToolbar } from './oauth-toolbar'
 
-import { ReplicaList } from '../replica-list';
-import { ComponentStatusBadge } from '../status-badges';
-import type { OAuth2AuxiliaryResource } from '../../store/radix-api';
-import { getOAuthReplicaUrl } from '../../utils/routing';
+import { ReplicaList } from '../replica-list'
+import { ComponentStatusBadge } from '../status-badges'
+import type { OAuth2AuxiliaryResource } from '../../store/radix-api'
+import { getOAuthReplicaUrl } from '../../utils/routing'
 
 export const OAuthService: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  oauth2: OAuth2AuxiliaryResource;
+  appName: string
+  envName: string
+  componentName: string
+  oauth2: OAuth2AuxiliaryResource
 }> = ({ appName, envName, componentName, oauth2 }) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
@@ -56,7 +56,7 @@ export const OAuthService: FunctionComponent<{
       </Accordion.Panel>
     </Accordion.Item>
   </Accordion>
-);
+)
 
 OAuthService.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -64,4 +64,4 @@ OAuthService.propTypes = {
   componentName: PropTypes.string.isRequired,
   oauth2: PropTypes.object
     .isRequired as PropTypes.Validator<OAuth2AuxiliaryResource>,
-};
+}

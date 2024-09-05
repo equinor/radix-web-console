@@ -1,15 +1,15 @@
-import type { StatusBadgeTemplateType } from '../status-badges/status-badge-template';
-import type { StatusPopoverType } from '../status-popover/status-popover';
-import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
+import type { StatusBadgeTemplateType } from '../status-badges/status-badge-template'
+import type { StatusPopoverType } from '../status-popover/status-popover'
+import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template'
 import type {
   AuxiliaryResourceDeployment,
   Component,
   ReplicaStatus,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 import type {
   EnvironmentVulnerabilities,
   ImageScan,
-} from '../../store/scan-api';
+} from '../../store/scan-api'
 
 export enum EnvironmentStatus {
   Consistent = 0,
@@ -22,28 +22,28 @@ export enum EnvironmentStatus {
 
 type EnvironmentStatusType = StatusBadgeTemplateType &
   StatusPopoverType &
-  StatusTooltipTemplateType;
+  StatusTooltipTemplateType
 
 const ComponentStatusMap = Object.freeze<
   Partial<Record<Component['status'], EnvironmentStatus>>
 >({
   Stopped: EnvironmentStatus.Stopped,
   Consistent: EnvironmentStatus.Consistent,
-});
+})
 
 const AuxiliaryResourceDeploymentStatusMap = Object.freeze<
   Partial<Record<AuxiliaryResourceDeployment['status'], EnvironmentStatus>>
 >({
   Stopped: EnvironmentStatus.Stopped,
   Consistent: EnvironmentStatus.Consistent,
-});
+})
 
 const ReplicaStatusMap = Object.freeze<
   Partial<Record<ReplicaStatus['status'], EnvironmentStatus>>
 >({
   Running: EnvironmentStatus.Running,
   Starting: EnvironmentStatus.Starting,
-});
+})
 
 export function aggregateComponentEnvironmentStatus(
   components: Readonly<Array<Component>>
@@ -58,7 +58,7 @@ export function aggregateComponentEnvironmentStatus(
         obj
       ),
     EnvironmentStatus.Consistent
-  );
+  )
 }
 
 export function aggregateComponentReplicaEnvironmentStatus(
@@ -66,7 +66,7 @@ export function aggregateComponentReplicaEnvironmentStatus(
 ): EnvironmentStatus {
   const replicas = (components ?? [])
     .flatMap((c) => c.replicaList)
-    .concat(components.flatMap((c) => c.oauth2?.deployment.replicaList ?? []));
+    .concat(components.flatMap((c) => c.oauth2?.deployment.replicaList ?? []))
 
   return replicas.reduce<EnvironmentStatus>(
     (obj, { replicaStatus }) =>
@@ -75,7 +75,7 @@ export function aggregateComponentReplicaEnvironmentStatus(
         obj
       ),
     EnvironmentStatus.Consistent
-  );
+  )
 }
 
 export function aggregateVulnerabilitySummaries(
@@ -90,7 +90,7 @@ export function aggregateVulnerabilitySummaries(
           o1
         ),
       {}
-    );
+    )
 }
 
 export function environmentVulnerabilitySummarizer(
@@ -110,7 +110,7 @@ export function environmentVulnerabilitySummarizer(
           ),
         ]),
       {}
-    );
+    )
 }
 
 export function getEnvironmentStatusType(
@@ -119,10 +119,10 @@ export function getEnvironmentStatusType(
 ): EnvironmentStatusType {
   switch (status) {
     case EnvironmentStatus.Warning:
-      return 'warning';
+      return 'warning'
     case EnvironmentStatus.Danger:
-      return 'danger';
+      return 'danger'
     default:
-      return defaultType;
+      return defaultType
   }
 }

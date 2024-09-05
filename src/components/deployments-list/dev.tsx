@@ -1,6 +1,6 @@
-import { DeploymentsList } from '.';
+import { DeploymentsList } from '.'
 
-import type { DeploymentSummary } from '../../store/radix-api';
+import type { DeploymentSummary } from '../../store/radix-api'
 
 const deployments: Array<DeploymentSummary> = [
   {
@@ -69,7 +69,7 @@ const deployments: Array<DeploymentSummary> = [
     activeFrom: '2019-01-18T14:38:25Z',
     activeTo: '2019-01-22T13:43:41Z',
   },
-];
+]
 
 export default (
   <div style={{ backgroundColor: 'var(--color-bright)' }}>
@@ -77,4 +77,4 @@ export default (
     <hr />
     <DeploymentsList deployments={[]} appName="my-app" />
   </div>
-);
+)

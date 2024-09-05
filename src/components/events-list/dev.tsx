@@ -1,4 +1,4 @@
-import { EventsList, type EventsListProps } from '.';
+import { EventsList, type EventsListProps } from '.'
 
 const testData: Array<EventsListProps> = [
   {
@@ -86,7 +86,7 @@ const testData: Array<EventsListProps> = [
   {
     events: [],
   },
-];
+]
 
 export default (
   <div
@@ -111,4 +111,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)
