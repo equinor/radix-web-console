@@ -11,19 +11,19 @@ import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 
 import {
-  ApplicationAlias,
-  Component,
-  Deployment,
-  DnsAlias as DnsAliasModel,
-  ExternalDns,
+  type ApplicationAlias,
+  type Component,
+  type Deployment,
+  type DnsAlias as DnsAliasModel,
+  type ExternalDns,
   useResetScaledComponentMutation,
 } from '../../store/radix-api';
 import './style.css';
-import { DNSAliases } from './dns-aliases';
+import { sleep } from '../../utils/sleep';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { sleep } from '../../utils/sleep';
+import { DNSAliases } from './dns-aliases';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
@@ -35,7 +35,7 @@ type Props = {
   envName: string;
   component: Component;
   deployment: Deployment;
-  refetch: Function;
+  refetch: () => unknown;
 };
 export const Overview = ({
   appName,
@@ -74,8 +74,9 @@ export const Overview = ({
     <div className="grid grid--gap-medium">
       {isManuallyStopped && (
         <Alert type={'warning'}>
-          Component has been manually stopped; Click reset below and resume
-          regular scaling.
+          Component has been manually stopped; Click reset to resume regular
+          scaling.
+          <br />
           <Button
             variant="outlined"
             color="primary"
@@ -88,8 +89,9 @@ export const Overview = ({
       )}
       {isManuallyScaled && (
         <Alert type={'warning'}>
-          Component has been manually scaled; Click reset below and resume
-          regular scaling.
+          Component has been manually scaled; Click reset tp resume regular
+          scaling.
+          <br />
           <Button
             variant="outlined"
             color="primary"
