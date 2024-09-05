@@ -89,7 +89,7 @@ export const Overview = ({
       )}
       {isManuallyScaled && (
         <Alert type={'warning'}>
-          Component has been manually scaled; Click reset tp resume regular
+          Component has been manually scaled; Click reset to resume regular
           scaling.
           <br />
           <Button
