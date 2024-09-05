@@ -13,11 +13,11 @@ import type {
 
 export enum EnvironmentStatus {
   Consistent = 0,
-  Running,
-  Starting,
-  Stopped,
-  Warning,
-  Danger,
+  Running = 1,
+  Starting = 2,
+  Stopped = 3,
+  Warning = 4,
+  Danger = 5,
 }
 
 type EnvironmentStatusType = StatusBadgeTemplateType &

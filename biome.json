@@ -4,7 +4,13 @@
     "enabled": false
   },
   "files": {
-    "ignore": [".vscode/", "src/style/hex-to-hsl.js", "build/", "dist/"]
+    "ignore": [
+      ".vscode/",
+      "src/style/hex-to-hsl.js",
+      "build/",
+      "dist/",
+      "src/store/*.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -40,7 +46,6 @@
         "useTemplate": "off",
         "noUnusedTemplateLiteral": "off",
         "useNumberNamespace": "off",
-        "useEnumInitializers": "off",
         "useSelfClosingElements": "off",
         "noNonNullAssertion": "off",
         "noParameterAssign": "off"

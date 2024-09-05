@@ -28,7 +28,7 @@ export const SecretForm: FunctionComponent<{
    * @param value form value
    * @returns true to prevent or disallow saving the same value twice, or false/void to allow this behavior
    */
-  onSave?: (value: string) => Promise<boolean | void>;
+  onSave?: (value: string) => Promise<boolean | undefined>;
 }> = ({
   secret,
   secretName,
