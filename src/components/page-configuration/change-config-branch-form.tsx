@@ -10,12 +10,12 @@ import * as PropTypes from 'prop-types'
 import { type FormEvent, type FunctionComponent, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Alert } from '../alert'
 import { routes } from '../../routes'
-import { routeWithParams } from '../../utils/string'
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { getFetchErrorMessage } from '../../store/utils'
+import { routeWithParams } from '../../utils/string'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 
 export interface ChangeConfigBranchFormProps {
   appName: string

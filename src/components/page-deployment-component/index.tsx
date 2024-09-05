@@ -1,7 +1,7 @@
 import { DeploymentComponentOverview } from './deployment-component-overview'
 
-import { DocumentTitle } from '../document-title'
 import { withRouteParams } from '../../utils/router'
+import { DocumentTitle } from '../document-title'
 
 export interface Props {
   appName: string

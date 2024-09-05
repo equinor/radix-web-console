@@ -21,10 +21,10 @@ import {
   getEnvironmentStatusType,
 } from './environment-status-utils'
 
+import type { ImageScan, Vulnerability } from '../../store/scan-api'
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template'
 import { StatusPopover } from '../status-popover/status-popover'
 import { VulnerabilitySummary } from '../vulnerability-summary'
-import type { ImageScan, Vulnerability } from '../../store/scan-api'
 
 import './style.css'
 

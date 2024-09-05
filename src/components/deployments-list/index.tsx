@@ -5,11 +5,11 @@ import { type FunctionComponent, useEffect, useState } from 'react'
 
 import { DeploymentSummaryTableRow } from './deployment-summary-table-row'
 
+import { pollingInterval } from '../../store/defaults'
 import {
   type DeploymentSummary,
   useGetApplicationQuery,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 import {
   dataSorter,
   sortCompareDate,

@@ -1,5 +1,5 @@
-import { configVariables } from '../../utils/config'
 import type { Configuration } from '@azure/msal-browser'
+import { configVariables } from '../../utils/config'
 
 export const msGraphConfig = {
   scopes: ['User.Read', 'GroupMember.Read.All'],

@@ -2,10 +2,9 @@ import { Table, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
-import { PipelineTaskTableRow } from './pipeline-task-table-row'
 import type {
-  PipelineRunTask as PipelineRunTaskModel,
   PipelineRun as PipelineRunModel,
+  PipelineRunTask as PipelineRunTaskModel,
 } from '../../store/radix-api'
 import {
   dataSorter,
@@ -13,6 +12,7 @@ import {
   type sortDirection,
 } from '../../utils/sort-utils'
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
+import { PipelineTaskTableRow } from './pipeline-task-table-row'
 
 import './style.css'
 import type { Validator } from 'prop-types'

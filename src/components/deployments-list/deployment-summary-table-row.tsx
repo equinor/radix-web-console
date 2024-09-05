@@ -3,9 +3,6 @@ import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { CommitHash } from '../commit-hash'
-import { StatusBadge } from '../status-badges'
-import { RelativeToNow } from '../time/relative-to-now'
 import { routes } from '../../routes'
 import type { DeploymentSummary } from '../../store/radix-api'
 import {
@@ -13,6 +10,9 @@ import {
   routeWithParams,
   smallDeploymentName,
 } from '../../utils/string'
+import { CommitHash } from '../commit-hash'
+import { StatusBadge } from '../status-badges'
+import { RelativeToNow } from '../time/relative-to-now'
 
 export interface DeploymentSummaryTableRowProps {
   appName: string

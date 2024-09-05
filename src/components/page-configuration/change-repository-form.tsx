@@ -13,18 +13,18 @@ import { type ChangeEvent, type FormEvent, useState } from 'react'
 import imageDeployKey from '../configure-application-github/deploy-key02.png'
 import imageWebhook from '../configure-application-github/webhook01.png'
 
-import { Alert } from '../alert'
-import AsyncResource from '../async-resource/async-resource'
-import { Code } from '../code'
-import { CompactCopyButton } from '../compact-copy-button'
-import { configVariables } from '../../utils/config'
+import { pollingInterval } from '../../store/defaults'
 import {
   useGetDeployKeyAndSecretQuery,
   useModifyRegistrationDetailsMutation,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { getFetchErrorMessage } from '../../store/utils'
+import { configVariables } from '../../utils/config'
+import { Alert } from '../alert'
+import AsyncResource from '../async-resource/async-resource'
+import { Code } from '../code'
+import { CompactCopyButton } from '../compact-copy-button'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE
 

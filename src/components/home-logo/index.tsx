@@ -1,9 +1,9 @@
 import { Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
 
-import { HomeIcon } from '../home-icon'
-import { routes } from '../../routes'
 import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import { HomeIcon } from '../home-icon'
 
 export const HomeLogo: FunctionComponent = () => (
   <Typography

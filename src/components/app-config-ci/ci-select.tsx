@@ -3,10 +3,10 @@ import { info_circle } from '@equinor/eds-icons'
 import type React from 'react'
 import type { MouseEvent, MutableRefObject } from 'react'
 import {
-  components,
   type GroupBase,
   type IndicatorsContainerProps,
   type PropsValue,
+  components,
 } from 'react-select'
 import AsyncSelect, { type AsyncProps } from 'react-select/async'
 

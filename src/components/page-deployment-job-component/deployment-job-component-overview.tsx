@@ -1,15 +1,15 @@
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetDeploymentQuery } from '../../store/radix-api'
+import { routeWithParams, smallDeploymentName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
 import { ComponentSecrets } from '../component/component-secrets'
 import { EnvironmentVariables } from '../environment-variables'
 import { Overview } from '../page-active-job-component/overview'
-import { routes } from '../../routes'
-import { routeWithParams, smallDeploymentName } from '../../utils/string'
-import { useGetDeploymentQuery } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 
 export const DeploymentJobComponentOverview: FunctionComponent<{
   appName: string

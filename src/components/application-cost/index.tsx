@@ -4,12 +4,12 @@ import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 import { connect } from 'react-redux'
 
-import AsyncResource from '../async-resource/async-resource'
 import {
   type ApplicationCostSet,
   useGetTotalCostQuery,
 } from '../../store/cost-api'
 import { formatDateTimeYear } from '../../utils/datetime'
+import AsyncResource from '../async-resource/async-resource'
 
 import '../application-cost/style.css'
 

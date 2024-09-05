@@ -1,5 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
-import { warning_outlined, check_circle_outlined } from '@equinor/eds-icons'
+import { check_circle_outlined, warning_outlined } from '@equinor/eds-icons'
 import * as PropTypes from 'prop-types'
 import { Fragment, type FunctionComponent } from 'react'
 import type { AlertingConfig } from '../../store/radix-api'

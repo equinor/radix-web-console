@@ -10,9 +10,9 @@ import {
 import { PipelineFormPromote } from './pipeline-form-promote'
 
 import './style.css'
-import { PipelineFormBuildBranches } from './pipeline-form-build-branches'
 import { useSearchParams } from 'react-router-dom'
 import { PipelineFormApplyConfig } from './pipeline-form-apply-config'
+import { PipelineFormBuildBranches } from './pipeline-form-build-branches'
 import { PipelineFormDeploy } from './pipeline-form-deploy'
 
 export interface CreateJobFormProps {

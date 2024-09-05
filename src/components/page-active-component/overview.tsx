@@ -19,10 +19,10 @@ import type {
   ExternalDns,
 } from '../../store/radix-api'
 import './style.css'
-import { DNSAliases } from './dns-aliases'
-import { ResourceRequirements } from '../resource-requirements'
 import { externalUrls } from '../../externalUrls'
+import { ResourceRequirements } from '../resource-requirements'
 import { Runtime } from '../runtime'
+import { DNSAliases } from './dns-aliases'
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME'
 

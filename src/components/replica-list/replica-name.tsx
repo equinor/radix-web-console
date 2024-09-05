@@ -1,15 +1,15 @@
-import { type FunctionComponent, useRef, useState } from 'react'
-import type { ReplicaSummary } from '../../store/radix-api'
 import {
   Icon,
   type IconProps,
   Popover,
   Typography,
 } from '@equinor/eds-core-react'
-import { Link } from 'react-router-dom'
-import { smallReplicaName } from '../../utils/string'
 import { info_circle } from '@equinor/eds-icons'
 import * as PropTypes from 'prop-types'
+import { type FunctionComponent, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
+import type { ReplicaSummary } from '../../store/radix-api'
+import { smallReplicaName } from '../../utils/string'
 
 interface ReplicaNameWithHelpDescriptionProps {
   displayName?: string

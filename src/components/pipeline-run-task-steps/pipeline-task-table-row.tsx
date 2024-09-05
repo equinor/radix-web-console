@@ -1,10 +1,10 @@
 import { Table, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 
+import type { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api'
 import { PipelineRunStatusBadge } from '../status-badges'
 import { Duration } from '../time/duration'
 import { RelativeToNow } from '../time/relative-to-now'
-import type { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api'
 
 interface Props {
   step: PipelineRunTaskStepModel

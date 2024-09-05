@@ -1,5 +1,5 @@
 import { Divider } from '@equinor/eds-core-react'
-import { Server, Response } from 'miragejs'
+import { Response, Server } from 'miragejs'
 import { Fragment } from 'react'
 
 import { JobOverview } from '.'

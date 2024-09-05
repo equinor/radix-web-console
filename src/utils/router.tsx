@@ -1,8 +1,8 @@
 import type { Attributes, ComponentType, FunctionComponent } from 'react'
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router'
 
-import type { RouteParams } from '../routes'
 import { useParams } from 'react-router-dom'
+import type { RouteParams } from '../routes'
 
 type PartializeProps<T extends object, U = object> = T extends U
   ? Omit<T, keyof U> & Partial<Extract<T, U>>

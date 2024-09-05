@@ -10,10 +10,6 @@ import {
   useState,
 } from 'react'
 
-import { ReplicaImage } from '../replica-image'
-import { ReplicaStatusBadge } from '../status-badges'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
 import type { ReplicaSummary } from '../../store/radix-api'
 import {
   dataSorter,
@@ -21,7 +17,11 @@ import {
   sortCompareString,
   type sortDirection,
 } from '../../utils/sort-utils'
-import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
+import { ReplicaImage } from '../replica-image'
+import { ReplicaStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 import './style.css'
 import { ReplicaName } from './replica-name'

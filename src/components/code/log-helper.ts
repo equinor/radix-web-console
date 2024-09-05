@@ -1,9 +1,9 @@
-import type { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query'
 import type { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
+import type { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query'
 
-import { errorToast } from '../global-top-nav/styled-toaster'
 import { getFetchErrorMessage } from '../../store/utils'
 import { copyToTextFile } from '../../utils/string'
+import { errorToast } from '../global-top-nav/styled-toaster'
 
 export type LazyQueryTriggerPlain<Args extends Record<string, unknown>> =
   LazyQueryTrigger<QueryDefinition<Args, BaseQueryFn, string, string>>

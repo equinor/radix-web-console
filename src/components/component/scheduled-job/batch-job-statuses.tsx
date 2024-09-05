@@ -1,9 +1,9 @@
-import type { FunctionComponent } from 'react'
-import type { ScheduledJobSummary } from '../../../store/radix-api'
 import { CircularProgress, Icon } from '@equinor/eds-core-react'
 import { check, error_outlined, time } from '@equinor/eds-icons'
-import type { StatusTooltipTemplateProps } from '../../status-tooltips/status-tooltip-template'
+import type { FunctionComponent } from 'react'
+import type { ScheduledJobSummary } from '../../../store/radix-api'
 import { StatusBadgeTemplate } from '../../status-badges/status-badge-template'
+import type { StatusTooltipTemplateProps } from '../../status-tooltips/status-tooltip-template'
 
 export type BatchJobStatus = 'Running' | 'Succeeded' | 'Failed' | 'Other'
 

@@ -1,9 +1,18 @@
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
-import { Overview } from './overview'
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details'
+import { Overview } from './overview'
 
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import {
+  useGetBatchesQuery,
+  useGetEnvironmentQuery,
+  useGetJobsQuery,
+} from '../../store/radix-api'
+import { getEnvsUrl } from '../../utils/routing'
+import { routeWithParams } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
 import { ScheduledBatchList } from '../component/scheduled-job/scheduled-batch-list'
@@ -12,15 +21,6 @@ import { ActiveComponentSecrets } from '../component/secrets/active-component-se
 import { Toolbar } from '../component/toolbar'
 import { EnvironmentVariables } from '../environment-variables'
 import { ComponentReplicaList } from '../page-active-component/component-replica-list'
-import { routes } from '../../routes'
-import {
-  useGetBatchesQuery,
-  useGetEnvironmentQuery,
-  useGetJobsQuery,
-} from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
-import { getEnvsUrl } from '../../utils/routing'
-import { routeWithParams } from '../../utils/string'
 
 export const ActiveJobComponentOverview: FunctionComponent<{
   appName: string

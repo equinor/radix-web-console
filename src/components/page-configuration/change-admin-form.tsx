@@ -7,13 +7,13 @@ import {
 import * as PropTypes from 'prop-types'
 import { type FormEvent, useState } from 'react'
 
-import { AppConfigAdGroups } from '../app-config-ad-groups'
+import { difference } from 'lodash'
 import {
   type ApplicationRegistration,
   useModifyRegistrationDetailsMutation,
 } from '../../store/radix-api'
+import { AppConfigAdGroups } from '../app-config-ad-groups'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import { difference } from 'lodash'
 
 const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
   a.length == b.length && difference(a, b).length === 0

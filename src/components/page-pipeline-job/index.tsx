@@ -1,6 +1,6 @@
+import { withRouteParams } from '../../utils/router'
 import { DocumentTitle } from '../document-title'
 import { JobOverview } from '../job-overview'
-import { withRouteParams } from '../../utils/router'
 
 type Props = {
   appName: string

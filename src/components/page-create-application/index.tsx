@@ -3,11 +3,11 @@ import { add } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import { routes } from '../../routes'
+import { routeWithParams } from '../../utils/string'
 import { ConfigureApplicationGithub } from '../configure-application-github'
 import CreateApplicationForm from '../create-application-form'
 import { ScrimPopup } from '../scrim-popup'
-import { routes } from '../../routes'
-import { routeWithParams } from '../../utils/string'
 
 import './style.css'
 import type { ApplicationRegistration } from '../../store/radix-api'

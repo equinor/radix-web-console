@@ -6,16 +6,16 @@ import {
   Typography,
 } from '@equinor/eds-core-react'
 import { type ChangeEvent, type FormEvent, useState } from 'react'
-import { TargetEnvs } from './target-envs'
-import { Alert } from '../alert'
 import {
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineBuildMutation,
 } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils'
-import { useGetApplicationBranches } from './use-get-application-branches'
+import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import type { FormProp } from './index'
+import { TargetEnvs } from './target-envs'
+import { useGetApplicationBranches } from './use-get-application-branches'
 
 export function PipelineFormBuildBranches({
   children,

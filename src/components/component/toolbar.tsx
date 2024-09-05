@@ -1,7 +1,6 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 
-import { errorToast } from '../global-top-nav/styled-toaster'
 import {
   type Component,
   useRestartComponentMutation,
@@ -9,6 +8,7 @@ import {
   useStopComponentMutation,
 } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils'
+import { errorToast } from '../global-top-nav/styled-toaster'
 
 type Props = {
   appName: string

@@ -1,7 +1,7 @@
 import { Icon } from '@equinor/eds-core-react'
+import { github } from '@equinor/eds-icons'
 import * as PropTypes from 'prop-types'
 import { CommitHash } from '../commit-hash'
-import { github } from '@equinor/eds-icons'
 import { GitTagLinks } from '../git-tags/git-tag-links'
 
 type Props = {

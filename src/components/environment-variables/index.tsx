@@ -15,9 +15,6 @@ import {
   type FormattedEnvVar,
 } from './environment-variable-table'
 
-import AsyncResource from '../async-resource/async-resource'
-import { errorToast } from '../global-top-nav/styled-toaster'
-import { HomeIcon } from '../home-icon'
 import {
   type Component,
   type EnvVar,
@@ -26,6 +23,9 @@ import {
   useEnvVarsQuery,
 } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils'
+import AsyncResource from '../async-resource/async-resource'
+import { errorToast } from '../global-top-nav/styled-toaster'
+import { HomeIcon } from '../home-icon'
 
 import './style.css'
 

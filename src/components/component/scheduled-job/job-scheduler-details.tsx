@@ -2,9 +2,9 @@ import { List, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
+import type { Component } from '../../../store/radix-api'
 import { Alert } from '../../alert'
 import { ComponentStatusBadge } from '../../status-badges'
-import type { Component } from '../../../store/radix-api'
 
 export const JobSchedulerDetails: FunctionComponent<{
   component: Component

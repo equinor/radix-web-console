@@ -12,7 +12,6 @@ import {
   googleChartDataBuilder,
 } from './data-chart-options'
 
-import { ScrimPopup } from '../scrim-popup'
 import { configVariables } from '../../utils/config'
 import { differenceInWords, formatDateMonthTime } from '../../utils/datetime'
 import {
@@ -20,15 +19,16 @@ import {
   sortCompareNumber,
   sortCompareString,
 } from '../../utils/sort-utils'
+import { ScrimPopup } from '../scrim-popup'
 
 import './style.css'
+import { isNull } from 'lodash'
+import { externalUrls } from '../../externalUrls'
 import {
   type GenericResponse,
   useGetAvailabilityItemsQuery,
   useLazyGetStatusItemsQuery,
 } from '../../store/dynatrace-api'
-import { isNull } from 'lodash'
-import { externalUrls } from '../../externalUrls'
 
 type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0]
 

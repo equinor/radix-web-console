@@ -4,18 +4,18 @@ import type React from 'react'
 import type { ComponentType, PropsWithChildren } from 'react'
 
 import {
-  JobConditionBadgeTemplates,
+  BadgeTemplates,
   BuildSecretStatusBadge,
   ComponentSecretStatusBadge,
   ComponentStatusBadge,
   GenericStatusBadge,
   type GenericStatusBadgeProps,
   ImageHubSecretStatusBadge,
+  JobConditionBadgeTemplates,
   PipelineRunStatusBadge,
   ProgressStatusBadge,
   RadixJobConditionBadge,
   ReplicaStatusBadge,
-  BadgeTemplates,
 } from '.'
 import {
   StatusBadgeTemplate,

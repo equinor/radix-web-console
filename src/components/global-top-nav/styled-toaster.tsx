@@ -9,10 +9,10 @@ import { clsx } from 'clsx'
 import type { FunctionComponent } from 'react'
 import {
   type Id,
-  toast,
   ToastContainer,
   type ToastContent,
   type ToastOptions,
+  toast,
 } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'

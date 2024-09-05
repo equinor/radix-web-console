@@ -1,9 +1,9 @@
 import { TextField } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import type {
-  FunctionComponent,
   ChangeEvent,
   Dispatch,
+  FunctionComponent,
   SetStateAction,
 } from 'react'
 

@@ -6,18 +6,18 @@ import {
   useState,
 } from 'react'
 
-import * as PropTypes from 'prop-types'
 import { Icon, Table, Typography } from '@equinor/eds-core-react'
-import type { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api'
-import { ExternalDNSStatusBadge } from '../status-badges'
 import { chevron_down, chevron_up } from '@equinor/eds-icons'
 import clsx from 'clsx'
-import { TLSCertificateList } from '../tls-certificate-list'
+import { differenceInDays } from 'date-fns'
+import * as PropTypes from 'prop-types'
+import type { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api'
 import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 import { pluraliser } from '../../utils/string'
-import { differenceInDays } from 'date-fns'
 import { Alert, type AlertProps } from '../alert'
+import { ExternalDNSStatusBadge } from '../status-badges'
 import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge'
+import { TLSCertificateList } from '../tls-certificate-list'
 
 type TlsStatus = Tls['status']
 

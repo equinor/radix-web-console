@@ -13,9 +13,9 @@ import type { FunctionComponent } from 'react'
 
 import { StepSummary } from './step-summary'
 
+import type { Step } from '../../store/radix-api'
 import { PipelineStep } from '../../utils/pipeline'
 import { sortCompareDate } from '../../utils/sort-utils'
-import type { Step } from '../../store/radix-api'
 
 function getStepIcon({ name }: Step): IconData {
   switch (name) {

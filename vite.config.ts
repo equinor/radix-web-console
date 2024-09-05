@@ -1,8 +1,8 @@
 import react from '@vitejs/plugin-react-swc'
 import { defineConfig } from 'vite'
 
-import packageJson from './package.json'
 import checker from 'vite-plugin-checker'
+import packageJson from './package.json'
 
 // regex filter for dev.* components
 const devComponentRegex =

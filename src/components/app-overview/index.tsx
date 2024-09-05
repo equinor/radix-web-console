@@ -1,18 +1,18 @@
 import { Typography } from '@equinor/eds-core-react'
 
-import { DefaultAppAlias } from '../component/default-app-alias'
-import { DNSAliases } from '../component/dns-aliases'
+import { clusterBases } from '../../clusterBases'
+import { pollingInterval } from '../../store/defaults'
+import { useGetApplicationQuery } from '../../store/radix-api'
+import { configVariables } from '../../utils/config'
+import { withRouteParams } from '../../utils/router'
 import { Alert } from '../alert'
 import ApplicationCost from '../application-cost'
 import { FutureApplicationCost } from '../application-future-cost'
 import AsyncResource from '../async-resource/async-resource'
+import { DefaultAppAlias } from '../component/default-app-alias'
+import { DNSAliases } from '../component/dns-aliases'
 import { EnvironmentsSummary } from '../environments-summary'
 import { JobsList } from '../jobs-list'
-import { clusterBases } from '../../clusterBases'
-import { useGetApplicationQuery } from '../../store/radix-api'
-import { configVariables } from '../../utils/config'
-import { withRouteParams } from '../../utils/router'
-import { pollingInterval } from '../../store/defaults'
 
 const LATEST_JOBS_LIMIT = 5
 

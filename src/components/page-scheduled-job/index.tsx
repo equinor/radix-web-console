@@ -1,7 +1,6 @@
+import { Accordion, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import { type FunctionComponent, useEffect, useMemo, useState } from 'react'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
 import { routes } from '../../routes'
 import {
   type ReplicaSummary,
@@ -13,9 +12,10 @@ import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { routeWithParams, smallScheduledJobName } from '../../utils/string'
-import { ScheduledJobOverview } from './scheduled-job-overview'
-import { Accordion, Typography } from '@equinor/eds-core-react'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
 import { JobReplica } from './job-replica'
+import { ScheduledJobOverview } from './scheduled-job-overview'
 
 import './style.css'
 

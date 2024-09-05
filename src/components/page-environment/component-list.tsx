@@ -11,11 +11,8 @@ import {
 } from 'react'
 import { Link } from 'react-router-dom'
 
-import AsyncResource from '../async-resource/async-resource'
-import { ComponentStatusBadge } from '../status-badges'
-import { ReplicaStatusTooltip } from '../status-tooltips'
-import { VulnerabilitySummary } from '../vulnerability-summary'
-import { buildComponentMap } from '../../utils/build-component-map'
+import { chevron_down, chevron_up, security } from '@equinor/eds-icons'
+import clsx from 'clsx'
 import type {
   Component,
   Environment,
@@ -27,6 +24,7 @@ import {
   scanApi,
 } from '../../store/scan-api'
 import { getFetchErrorData } from '../../store/utils'
+import { buildComponentMap } from '../../utils/build-component-map'
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
@@ -34,8 +32,10 @@ import {
   getReplicaUrl,
 } from '../../utils/routing'
 import { smallReplicaName } from '../../utils/string'
-import { chevron_down, chevron_up, security } from '@equinor/eds-icons'
-import clsx from 'clsx'
+import AsyncResource from '../async-resource/async-resource'
+import { ComponentStatusBadge } from '../status-badges'
+import { ReplicaStatusTooltip } from '../status-tooltips'
+import { VulnerabilitySummary } from '../vulnerability-summary'
 
 import './style.css'
 

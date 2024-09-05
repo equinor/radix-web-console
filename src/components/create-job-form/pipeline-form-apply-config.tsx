@@ -2,8 +2,8 @@ import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
 import type { FormEvent } from 'react'
 
 import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api'
-import { Alert } from '../alert'
 import { getFetchErrorMessage } from '../../store/utils'
+import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import type { FormProp } from './index'
 

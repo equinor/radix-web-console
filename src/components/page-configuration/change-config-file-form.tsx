@@ -13,10 +13,10 @@ import {
   useState,
 } from 'react'
 
-import { Alert } from '../alert'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 
 export interface ChangeConfigFileFormProps {
   appName: string

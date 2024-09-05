@@ -5,14 +5,14 @@ import {
   Typography,
 } from '@equinor/eds-core-react'
 import { type FormEvent, useState } from 'react'
+import { pollingInterval } from '../../store/defaults'
 import {
   useGetEnvironmentSummaryQuery,
   useTriggerPipelineDeployMutation,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 
-import { Alert } from '../alert'
 import { getFetchErrorMessage } from '../../store/utils'
+import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import type { FormProp } from './index'
 

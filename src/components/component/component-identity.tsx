@@ -8,13 +8,13 @@ import {
   useState,
 } from 'react'
 
-import { AzureIdentity } from '../identity/azure-identity'
 import type {
   AzureIdentity as AzureIdentityModel,
   Deployment,
   Identity,
 } from '../../store/radix-api'
 import { configVariables } from '../../utils/config'
+import { AzureIdentity } from '../identity/azure-identity'
 
 const AzureIdentityLink: FunctionComponent<{
   namespace: string

@@ -10,13 +10,7 @@ import {
 import { info_circle } from '@equinor/eds-icons'
 import { type ChangeEvent, type FormEvent, useState } from 'react'
 
-import { Alert } from '../alert'
-import { AppConfigAdGroups } from '../app-config-ad-groups'
-import {
-  AppConfigConfigurationItem,
-  type OnConfigurationItemChangeCallback,
-} from '../app-config-ci'
-import type { HandleAdGroupsChangeCB } from '../graph/adGroups'
+import useLocalStorage from '../../effects/use-local-storage'
 import { externalUrls } from '../../externalUrls'
 import {
   type ApplicationRegistration,
@@ -24,13 +18,19 @@ import {
   radixApi,
   useRegisterApplicationMutation,
 } from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils'
+import { Alert } from '../alert'
+import { AppConfigAdGroups } from '../app-config-ad-groups'
+import {
+  AppConfigConfigurationItem,
+  type OnConfigurationItemChangeCallback,
+} from '../app-config-ci'
 import {
   errorToast,
   successToast,
   warningToast,
 } from '../global-top-nav/styled-toaster'
-import { getFetchErrorMessage } from '../../store/utils'
-import useLocalStorage from '../../effects/use-local-storage'
+import type { HandleAdGroupsChangeCB } from '../graph/adGroups'
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces

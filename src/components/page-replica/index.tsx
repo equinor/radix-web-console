@@ -1,20 +1,20 @@
 import { Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { downloadLazyLogCb } from '../code/log-helper'
-import { Replica } from '../replica'
 import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
 import {
   radixApi,
   useGetEnvironmentQuery,
   useReplicaLogQuery,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { downloadLazyLogCb } from '../code/log-helper'
+import { Replica } from '../replica'
 
 interface Props {
   appName: string

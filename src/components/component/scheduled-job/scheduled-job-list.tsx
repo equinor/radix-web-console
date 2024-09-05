@@ -10,8 +10,8 @@ import {
   chevron_down,
   chevron_up,
   delete_to_trash,
-  stop,
   replay,
+  stop,
 } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
 import * as PropTypes from 'prop-types'
@@ -29,11 +29,6 @@ import { JobDeploymentLink } from './job-deployment-link'
 import { Payload } from './payload'
 import { RestartJob } from './restart-job'
 
-import { ReplicaImage } from '../../replica-image'
-import { ScrimPopup } from '../../scrim-popup'
-import { ProgressStatusBadge } from '../../status-badges'
-import { Duration } from '../../time/duration'
-import { RelativeToNow } from '../../time/relative-to-now'
 import {
   type ReplicaSummary,
   type ScheduledJobSummary,
@@ -50,6 +45,11 @@ import {
 } from '../../../utils/sort-utils'
 import { smallScheduledJobName } from '../../../utils/string'
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils'
+import { ReplicaImage } from '../../replica-image'
+import { ScrimPopup } from '../../scrim-popup'
+import { ProgressStatusBadge } from '../../status-badges'
+import { Duration } from '../../time/duration'
+import { RelativeToNow } from '../../time/relative-to-now'
 
 import '../style.css'
 

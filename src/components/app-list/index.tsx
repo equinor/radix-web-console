@@ -1,19 +1,19 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
 import { type FunctionComponent, useEffect, useState } from 'react'
 
+import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
+import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 import { AppListItem } from '../app-list-item'
 import AsyncResource from '../async-resource/async-resource'
 import PageCreateApplication from '../page-create-application'
-import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
-import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 
 import './style.css'
+import { isEqual, uniq } from 'lodash'
 import useLocalStorage from '../../effects/use-local-storage'
 import { pollingInterval } from '../../store/defaults'
+import { getFetchErrorMessage } from '../../store/utils'
 import { promiseHandler } from '../../utils/promise-handler'
 import { Alert } from '../alert'
-import { getFetchErrorMessage } from '../../store/utils'
-import { isEqual, uniq } from 'lodash'
 
 const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
   <div className="app-list__list loading">

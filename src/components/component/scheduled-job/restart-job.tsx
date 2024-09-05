@@ -2,16 +2,16 @@ import { Button, List, Radio, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import { useState } from 'react'
 
-import { errorToast, infoToast } from '../../global-top-nav/styled-toaster'
 import { formatDateTime } from '../../../utils/datetime'
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster'
 
 import './style.css'
+import { pollingInterval } from '../../../store/defaults'
 import {
   useCopyJobMutation,
-  useRestartJobMutation,
   useGetJobComponentDeploymentsQuery,
+  useRestartJobMutation,
 } from '../../../store/radix-api'
-import { pollingInterval } from '../../../store/defaults'
 
 interface Props {
   appName: string

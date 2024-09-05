@@ -2,10 +2,8 @@ import { Accordion, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource'
-import { Code } from '../code'
-import { downloadLazyLogCb } from '../code/log-helper'
 import { addMinutes } from 'date-fns'
+import { pollingInterval } from '../../store/defaults'
 import {
   type ModelsContainer,
   type ModelsInventoryResponse,
@@ -13,8 +11,10 @@ import {
   useGetPipelineJobInventoryQuery,
 } from '../../store/log-api'
 import { radixApi, useGetPipelineJobStepLogsQuery } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 import { getFetchErrorCode } from '../../store/utils'
+import AsyncResource from '../async-resource/async-resource'
+import { Code } from '../code'
+import { downloadLazyLogCb } from '../code/log-helper'
 
 import './style.css'
 

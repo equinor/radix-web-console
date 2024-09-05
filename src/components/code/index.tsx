@@ -9,8 +9,8 @@ import {
   useState,
 } from 'react'
 
-import { copyToClipboard, copyToTextFile } from '../../utils/string'
 import stripAnsi from 'strip-ansi'
+import { copyToClipboard, copyToTextFile } from '../../utils/string'
 
 import './style.css'
 

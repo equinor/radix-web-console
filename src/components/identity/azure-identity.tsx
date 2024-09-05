@@ -3,9 +3,9 @@ import { info_circle } from '@equinor/eds-icons'
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
+import { externalUrls } from '../../externalUrls'
 import { Alert } from '../alert'
 import { CompactCopyButton } from '../compact-copy-button'
-import { externalUrls } from '../../externalUrls'
 
 export interface AzureIdentityProps {
   oidcIssuerUrl: string

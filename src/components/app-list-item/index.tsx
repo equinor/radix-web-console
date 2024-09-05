@@ -16,20 +16,6 @@ import {
 } from 'react'
 import { Link } from 'react-router-dom'
 
-import AsyncResource from '../async-resource/async-resource'
-import { AppBadge } from '../app-badge'
-import {
-  EnvironmentCardStatus,
-  EnvironmentVulnerabilityIndicator,
-} from '../environments-summary/environment-card-status'
-import {
-  aggregateComponentEnvironmentStatus,
-  aggregateComponentReplicaEnvironmentStatus,
-  aggregateVulnerabilitySummaries,
-  EnvironmentStatus,
-  environmentVulnerabilitySummarizer,
-} from '../environments-summary/environment-status-utils'
-import { filterFields } from '../../utils/filter-fields'
 import { routes } from '../../routes'
 import type {
   ApplicationSummary,
@@ -41,7 +27,21 @@ import {
   type Vulnerability,
   scanApi,
 } from '../../store/scan-api'
+import { filterFields } from '../../utils/filter-fields'
 import { routeWithParams } from '../../utils/string'
+import { AppBadge } from '../app-badge'
+import AsyncResource from '../async-resource/async-resource'
+import {
+  EnvironmentCardStatus,
+  EnvironmentVulnerabilityIndicator,
+} from '../environments-summary/environment-card-status'
+import {
+  EnvironmentStatus,
+  aggregateComponentEnvironmentStatus,
+  aggregateComponentReplicaEnvironmentStatus,
+  aggregateVulnerabilitySummaries,
+  environmentVulnerabilitySummarizer,
+} from '../environments-summary/environment-status-utils'
 
 import './style.css'
 

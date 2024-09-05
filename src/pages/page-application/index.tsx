@@ -6,8 +6,8 @@ import { withRouteParams } from '../../utils/router'
 import { Alert } from '../../components/alert'
 import { DocumentTitle } from '../../components/document-title'
 import { LayoutApp } from '../../components/layout-app'
-import { useGetApplicationQuery } from '../../store/radix-api'
 import { pollingInterval } from '../../store/defaults'
+import { useGetApplicationQuery } from '../../store/radix-api'
 
 export function PageApplication({ appName }: { appName: string }) {
   const { data: application, isSuccess } = useGetApplicationQuery(

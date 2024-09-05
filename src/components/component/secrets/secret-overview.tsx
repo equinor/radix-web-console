@@ -1,12 +1,12 @@
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
+import { pollingInterval } from '../../../store/defaults'
+import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api'
+import { getFetchErrorMessage } from '../../../store/utils'
 import AsyncResource from '../../async-resource/async-resource'
 import { errorToast, successToast } from '../../global-top-nav/styled-toaster'
 import { SecretForm } from '../../secret-form'
-import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api'
-import { pollingInterval } from '../../../store/defaults'
-import { getFetchErrorMessage } from '../../../store/utils'
 
 export const SecretOverview: FunctionComponent<{
   appName: string

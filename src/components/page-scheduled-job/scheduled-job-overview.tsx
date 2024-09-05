@@ -1,15 +1,15 @@
 import { Typography } from '@equinor/eds-core-react'
+import { isNil } from 'lodash'
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
-import { Code } from '../code'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
 import type { ScheduledJobSummary } from '../../store/radix-api'
 import { smallScheduledJobName } from '../../utils/string'
+import { Code } from '../code'
 import { ResourceRequirements } from '../resource-requirements'
-import { isNil } from 'lodash'
-import { RadixJobConditionBadge } from '../status-badges'
 import { Runtime } from '../runtime'
+import { RadixJobConditionBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 const ScheduledJobDuration: FunctionComponent<{
   started: string

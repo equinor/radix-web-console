@@ -13,8 +13,8 @@ import {
   msGraphApi,
   useGetAdGroupsQuery,
 } from '../../store/ms-graph-api'
-import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert'
 import AsyncResource from '../async-resource/async-resource'
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert'
 
 type DisplayAdGroups = AdGroup & { deleted?: boolean }
 

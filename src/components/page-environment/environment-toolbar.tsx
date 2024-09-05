@@ -2,9 +2,9 @@ import { Button, CircularProgress } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
-import { errorToast } from '../global-top-nav/styled-toaster'
 import { type Environment, radixApi } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils'
+import { errorToast } from '../global-top-nav/styled-toaster'
 
 export const EnvironmentToolbar: FunctionComponent<{
   appName: string

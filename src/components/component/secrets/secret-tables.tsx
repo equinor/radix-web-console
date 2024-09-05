@@ -7,16 +7,16 @@ import {
   useState,
 } from 'react'
 
-import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item'
-import { SecretOverview } from './secret-overview'
-import { ScrimPopup } from '../../scrim-popup'
-import { ComponentSecretStatusBadge } from '../../status-badges'
 import type { Secret } from '../../../store/radix-api'
 import {
   dataSorter,
   sortCompareString,
   type sortDirection,
 } from '../../../utils/sort-utils'
+import { ScrimPopup } from '../../scrim-popup'
+import { ComponentSecretStatusBadge } from '../../status-badges'
+import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item'
+import { SecretOverview } from './secret-overview'
 
 import './style.css'
 

@@ -1,5 +1,5 @@
-import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime'
 import { isValid } from 'date-fns'
+import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime'
 
 type Props = {
   time: number | string | Date

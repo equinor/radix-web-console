@@ -1,5 +1,5 @@
-import { HorizontalScalingSummary } from './horizontal-scaling-summary'
 import type { HorizontalScalingSummary as HorizontalScalingSummaryModel } from '../../store/radix-api'
+import { HorizontalScalingSummary } from './horizontal-scaling-summary'
 
 const testData: Array<HorizontalScalingSummaryModel> = [
   {

@@ -1,10 +1,10 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react'
 import type { PropsWithChildren, ReactNode } from 'react'
 
-import { Alert } from '../alert'
 import { externalUrls } from '../../externalUrls'
 import type { FetchQueryResult } from '../../store/types'
 import { getFetchErrorCode, getFetchErrorData } from '../../store/utils'
+import { Alert } from '../alert'
 
 type AnotherAsyncResourceProps = PropsWithChildren<{
   asyncState: Pick<FetchQueryResult, 'error' | 'isError' | 'isLoading'>

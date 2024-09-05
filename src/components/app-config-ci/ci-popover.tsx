@@ -2,8 +2,8 @@ import { Icon, Popover, Typography } from '@equinor/eds-core-react'
 import { external_link } from '@equinor/eds-icons'
 import { type FunctionComponent, useEffect } from 'react'
 
-import { configVariables } from '../../utils/config'
 import type { Application } from '../../store/service-now-api'
+import { configVariables } from '../../utils/config'
 
 export interface ConfigurationItemPopoverProps {
   open?: boolean

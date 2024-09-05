@@ -2,8 +2,8 @@ import {
   Accordion,
   Button,
   Icon,
-  Typography,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react'
 import { warning_outlined } from '@equinor/eds-icons'
 import * as PropTypes from 'prop-types'
@@ -14,10 +14,10 @@ import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { ScrimPopup } from '../scrim-popup'
 
 import './style.css'
-import { useDeleteApplicationMutation } from '../../store/radix-api'
 import { useNavigate } from 'react-router'
-import { routes } from '../../routes'
 import useLocalStorage from '../../effects/use-local-storage'
+import { routes } from '../../routes'
+import { useDeleteApplicationMutation } from '../../store/radix-api'
 
 interface Props {
   appName: string

@@ -8,21 +8,14 @@ import { ComponentList } from './component-list'
 import EnvironmentAlerting from './environment-alerting'
 import EnvironmentToolbar from './environment-toolbar'
 
-import { Alert } from '../alert'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { DeploymentsList } from '../deployments-list'
-import { EventsList } from '../events-list'
-import { GitTagLinks } from '../git-tags/git-tag-links'
-import { RelativeToNow } from '../time/relative-to-now'
 import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
 import {
   radixApi,
   useGetApplicationQuery,
   useGetEnvironmentEventsQuery,
   useGetEnvironmentQuery,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 import { getFetchErrorMessage } from '../../store/utils'
 import { configVariables } from '../../utils/config'
 import { getAppDeploymentUrl, getAppUrl, getEnvsUrl } from '../../utils/routing'
@@ -34,11 +27,18 @@ import {
   smallDeploymentName,
   smallGithubCommitHash,
 } from '../../utils/string'
+import { Alert } from '../alert'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { DeploymentsList } from '../deployments-list'
+import { EventsList } from '../events-list'
+import { GitTagLinks } from '../git-tags/git-tag-links'
+import { RelativeToNow } from '../time/relative-to-now'
 
 import './style.css'
-import { GitCommitTags } from '../component/git-commit-tags'
 import { DefaultAppAlias } from '../component/default-app-alias'
 import { DNSAliases } from '../component/dns-aliases'
+import { GitCommitTags } from '../component/git-commit-tags'
 
 export const EnvironmentOverview: FunctionComponent<{
   appName: string

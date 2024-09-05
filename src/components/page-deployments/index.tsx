@@ -1,14 +1,14 @@
 import * as PropTypes from 'prop-types'
 
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetDeploymentsQuery } from '../../store/radix-api'
+import { withRouteParams } from '../../utils/router'
+import { routeWithParams } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
 import { DeploymentsList } from '../deployments-list'
 import { DocumentTitle } from '../document-title'
-import { routes } from '../../routes'
-import { useGetDeploymentsQuery } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
-import { withRouteParams } from '../../utils/router'
-import { routeWithParams } from '../../utils/string'
 
 type Props = { appName: string }
 export function PageDeployments({ appName }: Props) {

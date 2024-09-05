@@ -4,10 +4,10 @@ import type { FunctionComponent } from 'react'
 
 import { OAuthToolbar } from './oauth-toolbar'
 
-import { ReplicaList } from '../replica-list'
-import { ComponentStatusBadge } from '../status-badges'
 import type { OAuth2AuxiliaryResource } from '../../store/radix-api'
 import { getOAuthReplicaUrl } from '../../utils/routing'
+import { ReplicaList } from '../replica-list'
+import { ComponentStatusBadge } from '../status-badges'
 
 export const OAuthService: FunctionComponent<{
   appName: string

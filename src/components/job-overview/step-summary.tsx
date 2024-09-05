@@ -4,13 +4,13 @@ import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 import { Link } from 'react-router-dom'
 
-import { RadixJobConditionBadge } from '../status-badges'
-import { RelativeToNow } from '../time/relative-to-now'
 import { routes } from '../../routes'
 import type { Step } from '../../store/radix-api'
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime'
-import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline'
+import { PipelineStep, getPipelineStepDescription } from '../../utils/pipeline'
 import { routeWithParams } from '../../utils/string'
+import { RadixJobConditionBadge } from '../status-badges'
+import { RelativeToNow } from '../time/relative-to-now'
 
 function getComponents(name: string, components: Array<string>): string {
   if (components?.length > 1) {

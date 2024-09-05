@@ -1,14 +1,14 @@
 import * as PropTypes from 'prop-types'
 
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetApplicationQuery } from '../../store/radix-api'
+import { withRouteParams } from '../../utils/router'
+import { routeWithParams } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
 import { DocumentTitle } from '../document-title'
 import { EnvironmentsSummary } from '../environments-summary'
-import { routes } from '../../routes'
-import { useGetApplicationQuery } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
-import { withRouteParams } from '../../utils/router'
-import { routeWithParams } from '../../utils/string'
 
 type Props = { appName: string }
 export function PageEnvironments({ appName }: Props) {

@@ -4,8 +4,8 @@ import type { FunctionComponent } from 'react'
 import { Code } from '../../code'
 
 import './style.css'
-import { useGetJobPayloadQuery } from '../../../store/radix-api'
 import { pollingInterval } from '../../../store/defaults'
+import { useGetJobPayloadQuery } from '../../../store/radix-api'
 
 export interface PayloadProps {
   appName: string

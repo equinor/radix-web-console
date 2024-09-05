@@ -7,19 +7,19 @@ import {
 import { type FormEvent, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import { RelativeToNow } from '../time/relative-to-now'
-import { formatDateTime } from '../../utils/datetime'
-import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string'
+import { pollingInterval } from '../../store/defaults'
 import {
   type DeploymentSummary,
   useGetDeploymentsQuery,
   useGetEnvironmentSummaryQuery,
   useTriggerPipelinePromoteMutation,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
+import { formatDateTime } from '../../utils/datetime'
+import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string'
+import { RelativeToNow } from '../time/relative-to-now'
 
-import { Alert } from '../alert'
 import { getFetchErrorMessage } from '../../store/utils'
+import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import type { FormProp } from './index'
 

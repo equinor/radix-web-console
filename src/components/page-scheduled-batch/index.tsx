@@ -2,15 +2,6 @@ import { Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { Code } from '../code'
-import { downloadLazyLogCb } from '../code/log-helper'
-import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list'
-import { Replica } from '../replica'
-import { ProgressStatusBadge } from '../status-badges'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
 import { routes } from '../../routes'
 import {
   type ScheduledBatchSummary,
@@ -21,6 +12,15 @@ import {
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { routeWithParams, smallScheduledBatchName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { Code } from '../code'
+import { downloadLazyLogCb } from '../code/log-helper'
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list'
+import { Replica } from '../replica'
+import { ProgressStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 import './style.css'
 

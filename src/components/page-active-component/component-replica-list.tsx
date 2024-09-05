@@ -2,9 +2,9 @@ import { Accordion, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import type { FunctionComponent } from 'react'
 
-import { ReplicaList } from '../replica-list'
 import type { ReplicaSummary } from '../../store/radix-api'
 import { getReplicaUrl } from '../../utils/routing'
+import { ReplicaList } from '../replica-list'
 
 export const ComponentReplicaList: FunctionComponent<{
   title: string

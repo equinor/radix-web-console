@@ -11,10 +11,10 @@ import { Alert } from '../alert'
 
 import './style.css'
 import {
-  useGetApplicationQuery,
-  serviceNowApi,
-  type GetApplicationsApiResponse,
   type Application,
+  type GetApplicationsApiResponse,
+  serviceNowApi,
+  useGetApplicationQuery,
 } from '../../store/service-now-api'
 import { getFetchErrorMessage } from '../../store/utils'
 

@@ -7,8 +7,8 @@ import {
   useState,
 } from 'react'
 
-import { SecretStatus } from '../secret-status'
 import type { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api'
+import { SecretStatus } from '../secret-status'
 
 import './style.css'
 

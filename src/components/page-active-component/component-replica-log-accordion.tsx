@@ -11,20 +11,14 @@ import { clsx } from 'clsx'
 import * as PropTypes from 'prop-types'
 import { Fragment, useCallback, useMemo, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource'
-import {
-  type LazyQueryTriggerPlain,
-  downloadLazyLogCb,
-} from '../code/log-helper'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
+import { addMinutes } from 'date-fns'
+import { pollingInterval } from '../../store/defaults'
 import {
   type ModelsContainer,
   type ModelsReplica,
   logApi,
   useGetComponentInventoryQuery,
 } from '../../store/log-api'
-import { pollingInterval } from '../../store/defaults'
 import {
   dataSorter,
   sortCompareDate,
@@ -32,7 +26,13 @@ import {
 } from '../../utils/sort-utils'
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string'
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
-import { addMinutes } from 'date-fns'
+import AsyncResource from '../async-resource/async-resource'
+import {
+  type LazyQueryTriggerPlain,
+  downloadLazyLogCb,
+} from '../code/log-helper'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 interface ComponentNameProps {
   appName: string

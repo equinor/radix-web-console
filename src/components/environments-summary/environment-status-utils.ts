@@ -1,6 +1,3 @@
-import type { StatusBadgeTemplateType } from '../status-badges/status-badge-template'
-import type { StatusPopoverType } from '../status-popover/status-popover'
-import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template'
 import type {
   AuxiliaryResourceDeployment,
   Component,
@@ -10,6 +7,9 @@ import type {
   EnvironmentVulnerabilities,
   ImageScan,
 } from '../../store/scan-api'
+import type { StatusBadgeTemplateType } from '../status-badges/status-badge-template'
+import type { StatusPopoverType } from '../status-popover/status-popover'
+import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template'
 
 export enum EnvironmentStatus {
   Consistent = 0,

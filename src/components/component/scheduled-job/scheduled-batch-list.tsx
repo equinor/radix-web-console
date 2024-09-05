@@ -21,10 +21,6 @@ import { JobContextMenu } from './job-context-menu'
 import { JobDeploymentLink } from './job-deployment-link'
 import { RestartBatch } from './restart-batch'
 
-import { ScrimPopup } from '../../scrim-popup'
-import { ProgressStatusBadge } from '../../status-badges'
-import { Duration } from '../../time/duration'
-import { RelativeToNow } from '../../time/relative-to-now'
 import {
   type ScheduledBatchSummary,
   useDeleteBatchMutation,
@@ -39,8 +35,12 @@ import {
   type sortDirection,
 } from '../../../utils/sort-utils'
 import { smallScheduledBatchName } from '../../../utils/string'
+import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils'
+import { ScrimPopup } from '../../scrim-popup'
+import { ProgressStatusBadge } from '../../status-badges'
+import { Duration } from '../../time/duration'
+import { RelativeToNow } from '../../time/relative-to-now'
 import { BatchJobStatuses } from './batch-job-statuses'
-import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils'
 
 import './style.css'
 

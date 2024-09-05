@@ -7,12 +7,12 @@ import {
 import * as PropTypes from 'prop-types'
 import { type FormEvent, useState } from 'react'
 
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
+import type { Application } from '../../store/service-now-api'
+import { getFetchErrorMessage } from '../../store/utils'
 import { Alert } from '../alert'
 import { AppConfigConfigurationItem } from '../app-config-ci'
-import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import { getFetchErrorMessage } from '../../store/utils'
-import type { Application } from '../../store/service-now-api'
 
 interface Props {
   appName: string

@@ -1,20 +1,20 @@
-import { Typography, Table, Icon } from '@equinor/eds-core-react'
+import { Icon, Table, Typography } from '@equinor/eds-core-react'
 import { stop } from '@equinor/eds-icons'
 import * as PropTypes from 'prop-types'
 import { type FunctionComponent, useState } from 'react'
 
-import { ScrimPopup } from '../../scrim-popup'
-import { Duration } from '../../time/duration'
 import {
   type AzureKeyVaultSecretVersion,
   type Secret,
   useGetAzureKeyVaultSecretVersionsQuery,
 } from '../../../store/radix-api'
 import {
+  smallReplicaName,
   smallScheduledBatchName,
   smallScheduledJobName,
-  smallReplicaName,
 } from '../../../utils/string'
+import { ScrimPopup } from '../../scrim-popup'
+import { Duration } from '../../time/duration'
 
 import '../style.css'
 

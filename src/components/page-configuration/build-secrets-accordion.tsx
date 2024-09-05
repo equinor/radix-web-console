@@ -2,18 +2,18 @@ import { Accordion, List, Typography } from '@equinor/eds-core-react'
 import * as PropTypes from 'prop-types'
 import { type FunctionComponent, type ReactNode, useState } from 'react'
 
-import AsyncResource from '../async-resource/async-resource'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import { ScrimPopup } from '../scrim-popup'
-import { SecretForm } from '../secret-form'
-import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge'
+import { pollingInterval } from '../../store/defaults'
 import {
   type BuildSecret,
   useGetBuildSecretsQuery,
   useUpdateBuildSecretsSecretValueMutation,
 } from '../../store/radix-api'
-import { pollingInterval } from '../../store/defaults'
 import { dataSorter, sortCompareString } from '../../utils/sort-utils'
+import AsyncResource from '../async-resource/async-resource'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
+import { SecretForm } from '../secret-form'
+import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge'
 
 import './style.css'
 

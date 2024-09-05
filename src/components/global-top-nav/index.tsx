@@ -10,11 +10,11 @@ import {
 
 import { StyledToastContainer } from './styled-toaster'
 
-import { HomeLogo } from '../home-logo'
 import { clusterBases } from '../../clusterBases'
 import { externalUrls } from '../../externalUrls'
 import { routes } from '../../routes'
 import { configVariables } from '../../utils/config'
+import { HomeLogo } from '../home-logo'
 
 import './style.css'
 import { Link } from 'react-router-dom'

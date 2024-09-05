@@ -3,6 +3,7 @@ import { Server } from 'miragejs'
 
 import AppList from '.'
 
+import type { ComponentProps } from 'react'
 import type {
   GetSearchApplicationsApiArg,
   GetSearchApplicationsApiResponse,
@@ -12,7 +13,6 @@ import type {
   GetApplicationVulnerabilitySummariesApiArg,
   GetApplicationVulnerabilitySummariesApiResponse,
 } from '../../store/scan-api'
-import type { ComponentProps } from 'react'
 
 const testApps: ShowApplicationsApiResponse = [
   {
