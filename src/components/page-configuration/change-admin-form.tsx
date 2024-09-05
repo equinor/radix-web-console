@@ -5,11 +5,11 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import {
-  ApplicationRegistration,
+  type ApplicationRegistration,
   useModifyRegistrationDetailsMutation,
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';

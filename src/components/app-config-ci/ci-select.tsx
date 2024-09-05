@@ -1,13 +1,14 @@
 import { Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import React, { MouseEvent, MutableRefObject } from 'react';
+import type React from 'react';
+import type { MouseEvent, MutableRefObject } from 'react';
 import {
   components,
-  GroupBase,
-  IndicatorsContainerProps,
-  PropsValue,
+  type GroupBase,
+  type IndicatorsContainerProps,
+  type PropsValue,
 } from 'react-select';
-import AsyncSelect, { AsyncProps } from 'react-select/async';
+import AsyncSelect, { type AsyncProps } from 'react-select/async';
 
 type InfoIconProps<Option> = {
   onInfoIconClick?: (

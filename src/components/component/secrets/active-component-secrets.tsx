@@ -1,16 +1,16 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent, useState, useEffect } from 'react';
+import { type FunctionComponent, useState, useEffect } from 'react';
 import * as PropTypes from 'prop-types';
 
 import {
-  SecretComponent,
+  type SecretComponent,
   GenericSecrets,
   VolumeMountSecrets,
   KeyVaultSecrets,
 } from './secret-tables';
 
 import AsyncResource from '../../async-resource/async-resource';
-import { Secret, useGetEnvironmentQuery } from '../../../store/radix-api';
+import { type Secret, useGetEnvironmentQuery } from '../../../store/radix-api';
 import { pollingInterval } from '../../../store/defaults';
 
 type SecretTable = { title: string; Component: SecretComponent };

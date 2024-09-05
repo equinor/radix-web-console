@@ -1,7 +1,7 @@
 import {
   CircularProgress,
   Icon,
-  IconProps,
+  type IconProps,
   Popover,
 } from '@equinor/eds-core-react';
 import {
@@ -13,7 +13,8 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 import { upperFirst } from 'lodash';
-import React, { FunctionComponent, useRef, useState } from 'react';
+import type React from 'react';
+import { type FunctionComponent, useRef, useState } from 'react';
 
 import {
   EnvironmentStatus,
@@ -23,7 +24,7 @@ import {
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import { StatusPopover } from '../status-popover/status-popover';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-import { ImageScan, Vulnerability } from '../../store/scan-api';
+import type { ImageScan, Vulnerability } from '../../store/scan-api';
 
 import './style.css';
 

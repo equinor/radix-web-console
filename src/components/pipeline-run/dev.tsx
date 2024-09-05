@@ -1,6 +1,6 @@
 import { Divider } from '@equinor/eds-core-react';
 import { Fragment } from 'react';
-import { PipelineRun as PipelineRinModel } from '../../store/radix-api';
+import type { PipelineRun as PipelineRinModel } from '../../store/radix-api';
 
 import { PipelineRun } from '.';
 

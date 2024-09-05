@@ -4,7 +4,7 @@
     "enabled": false
   },
   "files": {
-    "ignore": [".vscode/", "src/style/hex-to-hsl.js", "build/"]
+    "ignore": [".vscode/", "src/style/hex-to-hsl.js", "build/", "dist/"]
   },
   "formatter": {
     "enabled": true,
@@ -37,14 +37,12 @@
       },
       "style": {
         "noUselessElse": "off",
-        "useImportType": "off",
         "useTemplate": "off",
         "noUnusedTemplateLiteral": "off",
         "useNumberNamespace": "off",
         "useEnumInitializers": "off",
         "useSelfClosingElements": "off",
         "noNonNullAssertion": "off",
-        "noInferrableTypes": "off",
         "noParameterAssign": "off"
       },
       "suspicious": {

@@ -1,7 +1,7 @@
-import { Attributes, ComponentType, FunctionComponent } from 'react';
-import { LoaderFunctionArgs, useLoaderData } from 'react-router';
+import type { Attributes, ComponentType, FunctionComponent } from 'react';
+import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
 
-import { RouteParams } from '../routes';
+import type { RouteParams } from '../routes';
 import { useParams } from 'react-router-dom';
 
 type PartializeProps<T extends object, U = object> = T extends U

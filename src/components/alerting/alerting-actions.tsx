@@ -2,7 +2,7 @@ import { Button } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import './style.css';
-import { AlertingConfig } from '../../store/radix-api';
+import type { AlertingConfig } from '../../store/radix-api';
 
 type Props = {
   config: AlertingConfig;

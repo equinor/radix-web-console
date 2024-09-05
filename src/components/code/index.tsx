@@ -1,7 +1,13 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react';
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import { FunctionComponent, UIEvent, useEffect, useRef, useState } from 'react';
+import {
+  type FunctionComponent,
+  type UIEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 import { copyToClipboard, copyToTextFile } from '../../utils/string';
 import stripAnsi from 'strip-ansi';

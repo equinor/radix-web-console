@@ -8,19 +8,19 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import {
   AppConfigConfigurationItem,
-  OnConfigurationItemChangeCallback,
+  type OnConfigurationItemChangeCallback,
 } from '../app-config-ci';
-import { HandleAdGroupsChangeCB } from '../graph/adGroups';
+import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { externalUrls } from '../../externalUrls';
 import {
-  ApplicationRegistration,
-  ApplicationRegistrationUpsertResponse,
+  type ApplicationRegistration,
+  type ApplicationRegistrationUpsertResponse,
   radixApi,
   useRegisterApplicationMutation,
 } from '../../store/radix-api';

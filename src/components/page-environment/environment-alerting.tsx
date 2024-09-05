@@ -8,7 +8,7 @@ import AsyncResource from '../async-resource/async-resource';
 import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
-import { radixApi, UpdateAlertingConfig } from '../../store/radix-api';
+import { radixApi, type UpdateAlertingConfig } from '../../store/radix-api';
 import { pollingInterval } from '../../store/defaults';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 

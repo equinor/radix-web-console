@@ -1,7 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ApplicationAlias } from '../../store/radix-api';
+import type { ApplicationAlias } from '../../store/radix-api';
 
 export interface Props {
   appAlias?: ApplicationAlias;

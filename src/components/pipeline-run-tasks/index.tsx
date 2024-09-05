@@ -3,19 +3,19 @@ import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
-import {
+import type {
   PipelineRunTask as PipelineRunTaskModel,
   PipelineRun as PipelineRunModel,
 } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
 import './style.css';
-import { Validator } from 'prop-types';
+import type { Validator } from 'prop-types';
 
 interface Props {
   appName: string;

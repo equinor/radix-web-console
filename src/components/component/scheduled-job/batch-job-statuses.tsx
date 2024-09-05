@@ -1,17 +1,17 @@
-import { FunctionComponent } from 'react';
-import { ScheduledJobSummary } from '../../../store/radix-api';
+import type { FunctionComponent } from 'react';
+import type { ScheduledJobSummary } from '../../../store/radix-api';
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
-import { StatusTooltipTemplateProps } from '../../status-tooltips/status-tooltip-template';
+import type { StatusTooltipTemplateProps } from '../../status-tooltips/status-tooltip-template';
 import { StatusBadgeTemplate } from '../../status-badges/status-badge-template';
 
 export type BatchJobStatus = 'Running' | 'Succeeded' | 'Failed' | 'Other';
 
 class JobStatuses {
-  running: number = 0;
-  succeeded: number = 0;
-  failed: number = 0;
-  other: number = 0;
+  running = 0;
+  succeeded = 0;
+  failed = 0;
+  other = 0;
 }
 
 const JobStatusBadgeTemplates = {

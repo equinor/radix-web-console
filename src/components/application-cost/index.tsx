@@ -1,11 +1,14 @@
 import { Typography } from '@equinor/eds-core-react';
 import { format } from 'date-fns';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import AsyncResource from '../async-resource/async-resource';
-import { ApplicationCostSet, useGetTotalCostQuery } from '../../store/cost-api';
+import {
+  type ApplicationCostSet,
+  useGetTotalCostQuery,
+} from '../../store/cost-api';
 import { formatDateTimeYear } from '../../utils/datetime';
 
 import '../application-cost/style.css';

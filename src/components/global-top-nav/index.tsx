@@ -8,8 +8,8 @@ import {
 import { close, info_circle, menu } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {
-  FunctionComponent,
-  PropsWithChildren,
+  type FunctionComponent,
+  type PropsWithChildren,
   forwardRef,
   useState,
 } from 'react';

@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { PipelineRunStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
+import type { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
 
 interface Props {
   step: PipelineRunTaskStepModel;

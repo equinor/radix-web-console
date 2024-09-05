@@ -1,9 +1,9 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import { PropsWithChildren, ReactNode } from 'react';
+import type { PropsWithChildren, ReactNode } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
-import { FetchQueryResult } from '../../store/types';
+import type { FetchQueryResult } from '../../store/types';
 import { getFetchErrorCode, getFetchErrorData } from '../../store/utils';
 
 type AnotherAsyncResourceProps = PropsWithChildren<{

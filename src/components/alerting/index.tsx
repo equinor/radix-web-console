@@ -5,12 +5,15 @@ import { useState } from 'react';
 
 import { AlertingActions } from './alerting-actions';
 import { AlertingConfigStatus } from './alerting-overview';
-import { UpdateSlackReceivers, ChangedReceivers } from './edit-alerting';
+import { UpdateSlackReceivers, type ChangedReceivers } from './edit-alerting';
 import { buildEditConfig } from './buildEditConfig';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';
-import { AlertingConfig, UpdateAlertingConfig } from '../../store/radix-api';
+import type {
+  AlertingConfig,
+  UpdateAlertingConfig,
+} from '../../store/radix-api';
 
 interface Props {
   isSaving: boolean;

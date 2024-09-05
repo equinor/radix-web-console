@@ -1,11 +1,11 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { EventSummary } from './event-summary';
 
-import { Event } from '../../store/radix-api';
+import type { Event } from '../../store/radix-api';
 
 import './style.css';
 

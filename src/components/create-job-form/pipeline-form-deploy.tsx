@@ -4,7 +4,7 @@ import {
   NativeSelect,
   Typography,
 } from '@equinor/eds-core-react';
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
 import {
   useGetEnvironmentSummaryQuery,
   useTriggerPipelineDeployMutation,
@@ -14,7 +14,7 @@ import { pollingInterval } from '../../store/defaults';
 import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { FormProp } from './index';
+import type { FormProp } from './index';
 
 export function PipelineFormDeploy({ children, appName, onSuccess }: FormProp) {
   const [trigger, state] = useTriggerPipelineDeployMutation();

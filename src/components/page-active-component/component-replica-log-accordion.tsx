@@ -12,12 +12,15 @@ import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 
 import AsyncResource from '../async-resource/async-resource';
-import { LazyQueryTriggerPlain, downloadLazyLogCb } from '../code/log-helper';
+import {
+  type LazyQueryTriggerPlain,
+  downloadLazyLogCb,
+} from '../code/log-helper';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import {
-  ModelsContainer,
-  ModelsReplica,
+  type ModelsContainer,
+  type ModelsReplica,
   logApi,
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
@@ -25,7 +28,7 @@ import { pollingInterval } from '../../store/defaults';
 import {
   dataSorter,
   sortCompareDate,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';

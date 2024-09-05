@@ -7,8 +7,8 @@ import { Code } from '../code';
 import { downloadLazyLogCb } from '../code/log-helper';
 import { addMinutes } from 'date-fns';
 import {
-  ModelsContainer,
-  ModelsInventoryResponse,
+  type ModelsContainer,
+  type ModelsInventoryResponse,
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
 } from '../../store/log-api';

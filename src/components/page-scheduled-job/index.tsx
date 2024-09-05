@@ -1,11 +1,11 @@
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { type FunctionComponent, useEffect, useMemo, useState } from 'react';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { routes } from '../../routes';
 import {
-  ReplicaSummary,
-  ScheduledJobSummary,
+  type ReplicaSummary,
+  type ScheduledJobSummary,
   useGetJobQuery,
   useJobLogQuery,
 } from '../../store/radix-api';

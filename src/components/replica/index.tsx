@@ -1,6 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import type React from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
@@ -10,8 +11,8 @@ import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { useInterval } from '../../effects/use-interval';
-import { ReplicaSummary } from '../../store/radix-api';
-import { FetchQueryResult } from '../../store/types';
+import type { ReplicaSummary } from '../../store/radix-api';
+import type { FetchQueryResult } from '../../store/types';
 import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {

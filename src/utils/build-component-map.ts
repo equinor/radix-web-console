@@ -1,4 +1,4 @@
-import { Component, ComponentSummary } from '../store/radix-api';
+import type { Component, ComponentSummary } from '../store/radix-api';
 
 /* utility below, should be moved */
 export function buildComponentMap<T extends Component | ComponentSummary>(

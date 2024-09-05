@@ -7,7 +7,7 @@ import {
 } from '@equinor/eds-core-react';
 import { warning_outlined } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';

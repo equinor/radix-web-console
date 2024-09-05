@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import { errorToast } from '../global-top-nav/styled-toaster';
 import {
-  Component,
+  type Component,
   useRestartComponentMutation,
   useStartComponentMutation,
   useStopComponentMutation,

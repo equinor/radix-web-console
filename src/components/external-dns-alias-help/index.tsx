@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { Alert } from '../alert';
 import { externalUrls } from '../../externalUrls';

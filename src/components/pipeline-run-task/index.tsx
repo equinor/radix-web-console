@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { getTaskRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 
 interface Props {
   task: PipelineRunTaskModel;

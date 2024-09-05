@@ -17,7 +17,7 @@ import { ScrimPopup } from '../scrim-popup';
 import { useInterval } from '../../effects/use-interval';
 import { routes } from '../../routes';
 import {
-  Job,
+  type Job,
   radixApi,
   useGetApplicationJobQuery,
   useGetApplicationQuery,

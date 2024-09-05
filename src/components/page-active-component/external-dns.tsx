@@ -6,10 +6,15 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, useMemo, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FunctionComponent,
+  useMemo,
+  useState,
+} from 'react';
 
 import {
-  ExternalDns,
+  type ExternalDns,
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../store/radix-api';

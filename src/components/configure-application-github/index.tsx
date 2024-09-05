@@ -21,7 +21,7 @@ import { configVariables } from '../../utils/config';
 
 import './style.css';
 import {
-  ApplicationRegistration,
+  type ApplicationRegistration,
   useGetDeployKeyAndSecretQuery,
   useRegenerateDeployKeyMutation,
 } from '../../store/radix-api';

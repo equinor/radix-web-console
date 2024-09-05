@@ -10,7 +10,7 @@ import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 
 import './style.css';
-import { ApplicationRegistration } from '../../store/radix-api';
+import type { ApplicationRegistration } from '../../store/radix-api';
 
 function scrollToPosition(elementRef: Element, x: number, y: number): void {
   elementRef.scrollTo?.(x, y);

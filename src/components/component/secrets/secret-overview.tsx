@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import AsyncResource from '../../async-resource/async-resource';
 import { errorToast, successToast } from '../../global-top-nav/styled-toaster';

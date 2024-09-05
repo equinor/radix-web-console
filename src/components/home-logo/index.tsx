@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { HomeIcon } from '../home-icon';
 import { routes } from '../../routes';

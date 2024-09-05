@@ -6,7 +6,12 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, FunctionComponent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FormEvent,
+  type FunctionComponent,
+  useState,
+} from 'react';
 
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';

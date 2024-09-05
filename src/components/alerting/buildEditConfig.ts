@@ -1,4 +1,4 @@
-import {
+import type {
   AlertingConfig,
   ReceiverConfigMap,
   UpdateAlertingConfig,

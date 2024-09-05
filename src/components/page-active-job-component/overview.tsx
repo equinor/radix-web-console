@@ -1,12 +1,12 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import { JobSchedulerDetails } from '../component/scheduled-job/job-scheduler-details';
 import { DockerImage } from '../docker-image';
-import { Component, Deployment } from '../../store/radix-api';
+import type { Component, Deployment } from '../../store/radix-api';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 

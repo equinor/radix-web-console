@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { clsx } from 'clsx';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 import { Chart } from 'react-google-charts';
 
 import {
@@ -23,7 +23,7 @@ import {
 
 import './style.css';
 import {
-  GenericResponse,
+  type GenericResponse,
   useGetAvailabilityItemsQuery,
   useLazyGetStatusItemsQuery,
 } from '../../store/dynatrace-api';

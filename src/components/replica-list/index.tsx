@@ -4,7 +4,7 @@ import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
 import {
   Fragment,
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useEffect,
   useState,
@@ -14,12 +14,12 @@ import { ReplicaImage } from '../replica-image';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ReplicaSummary } from '../../store/radix-api';
+import type { ReplicaSummary } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
 import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
 

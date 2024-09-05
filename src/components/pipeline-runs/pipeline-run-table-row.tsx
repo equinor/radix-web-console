@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { PipelineRunStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
+import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 

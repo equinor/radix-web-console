@@ -1,5 +1,5 @@
-import { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query';
-import { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import type { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query';
+import type { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
 
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorMessage } from '../../store/utils';

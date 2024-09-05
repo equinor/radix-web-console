@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 export interface EnvironmentComponentProps {
   url: string;

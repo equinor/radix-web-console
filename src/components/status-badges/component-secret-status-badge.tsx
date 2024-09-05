@@ -1,14 +1,14 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, stop, time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
-  StatusBadgeTemplateProps,
+  type StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { Secret } from '../../store/radix-api';
+import type { Secret } from '../../store/radix-api';
 
 type SecretStatus = Secret['status'];
 

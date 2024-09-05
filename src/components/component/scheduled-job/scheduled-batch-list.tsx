@@ -26,7 +26,7 @@ import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import {
-  ScheduledBatchSummary,
+  type ScheduledBatchSummary,
   useDeleteBatchMutation,
   useStopBatchMutation,
 } from '../../../store/radix-api';
@@ -36,7 +36,7 @@ import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  sortDirection,
+  type sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../../utils/string';
 import { BatchJobStatuses } from './batch-job-statuses';

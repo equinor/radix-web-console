@@ -1,5 +1,5 @@
 import { Divider, Typography } from '@equinor/eds-core-react';
-import { ComponentProps, Fragment } from 'react';
+import { type ComponentProps, Fragment } from 'react';
 
 import { PipelineRunTasks } from '.';
 

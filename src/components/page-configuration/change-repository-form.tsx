@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 
 import imageDeployKey from '../configure-application-github/deploy-key02.png';
 import imageWebhook from '../configure-application-github/webhook01.png';

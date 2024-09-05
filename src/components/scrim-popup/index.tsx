@@ -8,7 +8,7 @@ import {
 import { clear } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
+import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import './style.css';
 

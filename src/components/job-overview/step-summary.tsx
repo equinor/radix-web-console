@@ -1,13 +1,13 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { time } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { RadixJobConditionBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
-import { Step } from '../../store/radix-api';
+import type { Step } from '../../store/radix-api';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline';
 import { routeWithParams } from '../../utils/string';

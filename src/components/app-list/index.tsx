@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
 import { AppListItem } from '../app-list-item';
 import AsyncResource from '../async-resource/async-resource';

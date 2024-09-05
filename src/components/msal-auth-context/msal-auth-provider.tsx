@@ -1,12 +1,12 @@
 import {
-  AuthenticationResult,
-  EventCallbackFunction,
+  type AuthenticationResult,
+  type EventCallbackFunction,
   EventType,
   InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
-import { PropsWithChildren, useEffect, useMemo } from 'react';
+import { type PropsWithChildren, useEffect, useMemo } from 'react';
 
 import { msGraphConfig, serviceNowApiConfig, msalConfig } from './config';
 import { useDispatch } from 'react-redux';

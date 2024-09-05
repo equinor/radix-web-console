@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useEffect, useState } from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
-import { ReplicaSummary } from '../../store/radix-api';
+import type { ReplicaSummary } from '../../store/radix-api';
 import { parseImageDigest, parseImageTag } from '../../utils/docker';
 
 export const ReplicaImage: FunctionComponent<{ replica?: ReplicaSummary }> = ({

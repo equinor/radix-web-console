@@ -1,9 +1,9 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import {
-  ComponentProps,
-  FunctionComponent,
-  PropsWithChildren,
+  type ComponentProps,
+  type FunctionComponent,
+  type PropsWithChildren,
   useState,
 } from 'react';
 

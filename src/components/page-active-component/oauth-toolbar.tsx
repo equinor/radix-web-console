@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 
 import { errorToast } from '../global-top-nav/styled-toaster';
 import {
-  OAuth2AuxiliaryResource,
+  type OAuth2AuxiliaryResource,
   useRestartOAuthAuxiliaryResourceMutation,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';

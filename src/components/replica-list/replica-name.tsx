@@ -1,6 +1,11 @@
-import { FunctionComponent, useRef, useState } from 'react';
-import { ReplicaSummary } from '../../store/radix-api';
-import { Icon, IconProps, Popover, Typography } from '@equinor/eds-core-react';
+import { type FunctionComponent, useRef, useState } from 'react';
+import type { ReplicaSummary } from '../../store/radix-api';
+import {
+  Icon,
+  type IconProps,
+  Popover,
+  Typography,
+} from '@equinor/eds-core-react';
 import { Link } from 'react-router-dom';
 import { smallReplicaName } from '../../utils/string';
 import { info_circle } from '@equinor/eds-icons';

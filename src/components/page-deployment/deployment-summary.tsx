@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
-import { Deployment } from '../../store/radix-api';
+import type { Deployment } from '../../store/radix-api';
 import {
   linkToGitHubCommit,
   routeWithParams,

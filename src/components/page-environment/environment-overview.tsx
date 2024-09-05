@@ -1,7 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { github, trending_up } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';

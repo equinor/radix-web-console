@@ -3,7 +3,7 @@ import { upperFirst } from 'lodash';
 import * as PropTypes from 'prop-types';
 import {
   Fragment,
-  FunctionComponent,
+  type FunctionComponent,
   useCallback,
   useEffect,
   useMemo,
@@ -16,10 +16,14 @@ import { ComponentStatusBadge } from '../status-badges';
 import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 import { buildComponentMap } from '../../utils/build-component-map';
-import { Component, Environment, ReplicaSummary } from '../../store/radix-api';
+import type {
+  Component,
+  Environment,
+  ReplicaSummary,
+} from '../../store/radix-api';
 import {
-  EnvironmentVulnerabilities,
-  ImageWithLastScan,
+  type EnvironmentVulnerabilities,
+  type ImageWithLastScan,
   scanApi,
 } from '../../store/scan-api';
 import { getFetchErrorData } from '../../store/utils';

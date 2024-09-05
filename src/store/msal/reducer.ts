@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { MsalContext } from '../../components/msal-auth-context/msal-auth-provider';
-import { AccountInfo } from '@azure/msal-browser';
+import type { MsalContext } from '../../components/msal-auth-context/msal-auth-provider';
+import type { AccountInfo } from '@azure/msal-browser';
 
 type Store = {
   provider?: MsalContext;

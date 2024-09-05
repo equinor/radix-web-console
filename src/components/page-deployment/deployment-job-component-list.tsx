@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { DockerImage } from '../docker-image';
 import { routes } from '../../routes';
-import { Component } from '../../store/radix-api';
+import type { Component } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
 
 type Props = {

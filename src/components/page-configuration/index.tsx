@@ -19,7 +19,7 @@ import { routeWithParams } from '../../utils/string';
 import { withRouteParams } from '../../utils/router';
 
 import './style.css';
-import { radixApi, ApplicationRegistration } from '../../store/radix-api';
+import { radixApi, type ApplicationRegistration } from '../../store/radix-api';
 import { pollingInterval } from '../../store/defaults';
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';

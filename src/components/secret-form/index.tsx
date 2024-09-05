@@ -1,9 +1,18 @@
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, ReactNode, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FunctionComponent,
+  type ReactNode,
+  useState,
+} from 'react';
 
 import { SecretStatus } from '../secret-status';
-import { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api';
+import type {
+  BuildSecret,
+  ImageHubSecret,
+  Secret,
+} from '../../store/radix-api';
 
 import './style.css';
 

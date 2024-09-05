@@ -1,6 +1,6 @@
 import { Button, Icon, Menu } from '@equinor/eds-core-react';
 import { more_vertical } from '@equinor/eds-icons';
-import { Fragment, FunctionComponent, useState } from 'react';
+import { Fragment, type FunctionComponent, useState } from 'react';
 
 import './style.css';
 

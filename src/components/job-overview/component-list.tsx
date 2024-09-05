@@ -1,6 +1,6 @@
 import * as PropTypes from 'prop-types';
 
-import { DeploymentSummary } from '../../store/radix-api';
+import type { DeploymentSummary } from '../../store/radix-api';
 import { DockerImage } from '../docker-image';
 import { GitCommitTags } from '../component/git-commit-tags';
 import { List, Typography } from '@equinor/eds-core-react';

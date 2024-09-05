@@ -1,10 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Code } from '../code';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { ScheduledJobSummary } from '../../store/radix-api';
+import type { ScheduledJobSummary } from '../../store/radix-api';
 import { smallScheduledJobName } from '../../utils/string';
 import { ResourceRequirements } from '../resource-requirements';
 import { isNil } from 'lodash';

@@ -4,10 +4,10 @@ import * as PropTypes from 'prop-types';
 
 import {
   StatusBadgeTemplate,
-  StatusBadgeTemplateProps,
+  type StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import { Tls } from '../../store/radix-api';
+import type { Tls } from '../../store/radix-api';
 
 type Status = Tls['status'];
 

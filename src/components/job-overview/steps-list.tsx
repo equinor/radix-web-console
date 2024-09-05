@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import {
-  IconData,
+  type IconData,
   copy,
   github,
   pressure,
@@ -9,13 +9,13 @@ import {
   track_changes,
 } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { StepSummary } from './step-summary';
 
 import { PipelineStep } from '../../utils/pipeline';
 import { sortCompareDate } from '../../utils/sort-utils';
-import { Step } from '../../store/radix-api';
+import type { Step } from '../../store/radix-api';
 
 function getStepIcon({ name }: Step): IconData {
   switch (name) {

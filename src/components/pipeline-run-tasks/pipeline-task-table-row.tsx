@@ -7,7 +7,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
-import { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 
 import './style.css';
 

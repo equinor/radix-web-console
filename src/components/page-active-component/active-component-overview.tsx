@@ -1,5 +1,5 @@
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { ComponentReplicaList } from './component-replica-list';
 import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';

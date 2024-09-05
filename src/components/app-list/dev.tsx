@@ -3,16 +3,16 @@ import { Server } from 'miragejs';
 
 import AppList from '.';
 
-import {
+import type {
   GetSearchApplicationsApiArg,
   GetSearchApplicationsApiResponse,
   ShowApplicationsApiResponse,
 } from '../../store/radix-api';
-import {
+import type {
   GetApplicationVulnerabilitySummariesApiArg,
   GetApplicationVulnerabilitySummariesApiResponse,
 } from '../../store/scan-api';
-import { ComponentProps } from 'react';
+import type { ComponentProps } from 'react';
 
 const testApps: ShowApplicationsApiResponse = [
   {

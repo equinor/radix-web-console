@@ -1,6 +1,9 @@
 import { DeploymentOverview } from './deployment-overview';
 
-import { Deployment, GetDeploymentApiResponse } from '../../store/radix-api';
+import type {
+  Deployment,
+  GetDeploymentApiResponse,
+} from '../../store/radix-api';
 import { Server } from 'miragejs';
 
 const testData: Array<

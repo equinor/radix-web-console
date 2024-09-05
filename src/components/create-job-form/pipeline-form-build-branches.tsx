@@ -5,7 +5,7 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 import { TargetEnvs } from './target-envs';
 import { Alert } from '../alert';
 import {
@@ -15,7 +15,7 @@ import {
 import { getFetchErrorMessage } from '../../store/utils';
 import { useGetApplicationBranches } from './use-get-application-branches';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { FormProp } from './index';
+import type { FormProp } from './index';
 
 export function PipelineFormBuildBranches({
   children,

@@ -4,7 +4,7 @@ import { Fragment } from 'react';
 
 import { JobOverview } from '.';
 
-import { Job } from '../../store/radix-api';
+import type { Job } from '../../store/radix-api';
 
 const testData: Array<Job> = [
   {

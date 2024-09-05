@@ -1,12 +1,15 @@
-import { StatusBadgeTemplateType } from '../status-badges/status-badge-template';
-import { StatusPopoverType } from '../status-popover/status-popover';
-import { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
-import {
+import type { StatusBadgeTemplateType } from '../status-badges/status-badge-template';
+import type { StatusPopoverType } from '../status-popover/status-popover';
+import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
+import type {
   AuxiliaryResourceDeployment,
   Component,
   ReplicaStatus,
 } from '../../store/radix-api';
-import { EnvironmentVulnerabilities, ImageScan } from '../../store/scan-api';
+import type {
+  EnvironmentVulnerabilities,
+  ImageScan,
+} from '../../store/scan-api';
 
 export enum EnvironmentStatus {
   Consistent = 0,

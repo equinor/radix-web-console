@@ -1,13 +1,13 @@
 import { TextField } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
+import type {
   FunctionComponent,
   ChangeEvent,
   Dispatch,
   SetStateAction,
 } from 'react';
 
-import { AlertingConfig } from '../../store/radix-api';
+import type { AlertingConfig } from '../../store/radix-api';
 
 export type ChangedReceivers = Record<string, string>;
 

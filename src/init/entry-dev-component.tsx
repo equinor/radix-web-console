@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import type React from 'react';
+import { Component } from 'react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 

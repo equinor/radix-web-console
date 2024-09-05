@@ -4,12 +4,12 @@ import { useMemo, useState } from 'react';
 
 import { PipelineRunTableRow } from './pipeline-run-table-row';
 
-import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
+import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 

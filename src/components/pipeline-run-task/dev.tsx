@@ -3,7 +3,7 @@ import { Fragment } from 'react';
 
 import { PipelineRunTask } from '.';
 
-import { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 
 const testData: Array<PipelineRunTaskModel> = [
   {

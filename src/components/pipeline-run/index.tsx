@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { getPipelineRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { PipelineRun as PipelineRunModel } from '../../store/radix-api';
+import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import { DurationToNow } from '../time/duration-to-now';
 
 interface Props {

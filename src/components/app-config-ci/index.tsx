@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash';
 import * as PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
-import { MultiValue, SingleValue } from 'react-select';
+import type { MultiValue, SingleValue } from 'react-select';
 
 import { ConfigurationItemPopover } from './ci-popover';
 import { ConfigurationItemSelect } from './ci-select';
@@ -13,8 +13,8 @@ import './style.css';
 import {
   useGetApplicationQuery,
   serviceNowApi,
-  GetApplicationsApiResponse,
-  Application,
+  type GetApplicationsApiResponse,
+  type Application,
 } from '../../store/service-now-api';
 import { getFetchErrorMessage } from '../../store/utils';
 

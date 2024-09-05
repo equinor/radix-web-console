@@ -1,6 +1,6 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import AsyncResource from '../async-resource/async-resource';
 import { errorToast, successToast } from '../global-top-nav/styled-toaster';
@@ -8,7 +8,7 @@ import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
 import {
-  ImageHubSecret,
+  type ImageHubSecret,
   radixApi,
   useGetPrivateImageHubsQuery,
 } from '../../store/radix-api';

@@ -1,4 +1,4 @@
-import { Code, CodeProps } from '.';
+import { Code, type CodeProps } from '.';
 
 const testdata: Array<CodeProps & { text: string }> = [
   {

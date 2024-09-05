@@ -9,7 +9,7 @@ import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { radixApi, UpdateAlertingConfig } from '../../store/radix-api';
+import { radixApi, type UpdateAlertingConfig } from '../../store/radix-api';
 import { pollingInterval } from '../../store/defaults';
 
 interface Props {

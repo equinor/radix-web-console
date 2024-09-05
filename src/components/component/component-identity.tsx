@@ -1,15 +1,15 @@
 import { List, Popover, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import {
-  FunctionComponent,
-  SyntheticEvent,
+  type FunctionComponent,
+  type SyntheticEvent,
   useEffect,
   useRef,
   useState,
 } from 'react';
 
 import { AzureIdentity } from '../identity/azure-identity';
-import {
+import type {
   AzureIdentity as AzureIdentityModel,
   Deployment,
   Identity,

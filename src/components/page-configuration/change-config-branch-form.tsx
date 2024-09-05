@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FormEvent, FunctionComponent, useState } from 'react';
+import { type FormEvent, type FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Alert } from '../alert';
