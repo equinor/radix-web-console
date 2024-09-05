@@ -114,7 +114,7 @@ export const ReplicaList: FunctionComponent<{
                   <ReplicaName
                     replica={replica}
                     replicaUrlFunc={replicaUrlFunc}
-                  ></ReplicaName>
+                  />
                 </Table.Cell>
                 <Table.Cell>
                   <ReplicaStatusBadge status={replica.replicaStatus?.status} />

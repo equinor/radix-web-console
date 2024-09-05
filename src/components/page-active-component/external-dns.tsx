@@ -101,7 +101,7 @@ const TlsEditForm: FunctionComponent<{
           label="Skip validation"
           disabled={isSaving}
           onChange={(ev) => setSkipValidation(ev.target.checked)}
-        ></Checkbox>
+        />
         {saveError && (
           <Alert type="danger">
             {saveError.error && <Typography>{saveError.error}</Typography>}

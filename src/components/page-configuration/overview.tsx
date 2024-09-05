@@ -62,9 +62,7 @@ export function Overview({ adGroups, appName }: Props) {
                     ))}
                   </List>
                   {!state.isFetching && unknownADGroups?.length > 0 && (
-                    <UnknownADGroupsAlert
-                      unknownADGroups={unknownADGroups}
-                    ></UnknownADGroupsAlert>
+                    <UnknownADGroupsAlert unknownADGroups={unknownADGroups} />
                   )}
                 </AsyncResource>
               )}

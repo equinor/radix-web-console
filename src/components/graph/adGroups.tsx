@@ -117,9 +117,7 @@ export function ADGroups({
         Azure Active Directory groups (type 3 characters to search)
       </Typography>
       {!state.isFetching && unknownADGroups?.length > 0 && (
-        <UnknownADGroupsAlert
-          unknownADGroups={unknownADGroups}
-        ></UnknownADGroupsAlert>
+        <UnknownADGroupsAlert unknownADGroups={unknownADGroups} />
       )}
     </AsyncResource>
   )

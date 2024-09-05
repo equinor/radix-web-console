@@ -194,9 +194,7 @@ export function ScheduledBatchList({
                             <ProgressStatusBadge status={batch.status} />
                           </Table.Cell>
                           <Table.Cell>
-                            <BatchJobStatuses
-                              jobs={batch.jobList}
-                            ></BatchJobStatuses>
+                            <BatchJobStatuses jobs={batch.jobList} />
                           </Table.Cell>
                           <Table.Cell>
                             <RelativeToNow

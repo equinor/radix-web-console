@@ -71,7 +71,7 @@ export const ReplicaName: FunctionComponent<{
             'Job Manager creates, gets, deletes singe jobs and batch jobs with Job API'
           }
           replicaUrlFunc={replicaUrlFunc}
-        ></ReplicaNameWithHelpDescription>
+        />
       )
     case 'JobManagerAux':
       return (
@@ -82,7 +82,7 @@ export const ReplicaName: FunctionComponent<{
             'Job Resources Validator validates accesses to Volume Mounts and Azure Key Vaults if they are used in a job-component'
           }
           replicaUrlFunc={replicaUrlFunc}
-        ></ReplicaNameWithHelpDescription>
+        />
       )
     default:
       return (

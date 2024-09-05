@@ -44,7 +44,6 @@
       "style": {
         "noUselessElse": "off",
         "useNumberNamespace": "off",
-        "useSelfClosingElements": "off",
         "noNonNullAssertion": "off",
         "noParameterAssign": "off"
       },
