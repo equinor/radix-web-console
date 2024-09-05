@@ -41,6 +41,7 @@ export const ReplicaList: FunctionComponent<{
     []
   )
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes
   useEffect(() => {
     setLastUpdate(new Date())
   }, [replicaList])

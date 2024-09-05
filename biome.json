@@ -55,9 +55,6 @@
       "performance": {
         "noAccumulatingSpread": "off"
       },
-      "correctness": {
-        "useExhaustiveDependencies": "off"
-      },
       "a11y": {
         "noRedundantRoles": "off",
         "useKeyWithClickEvents": "off"

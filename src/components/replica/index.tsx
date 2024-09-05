@@ -223,20 +223,20 @@ export const Replica: FunctionComponent<
   const [log, setLog] = useState('')
   const [historyLog, setHistoryLog] = useState('')
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data) {
       return
     }
     getLog?.().then(setLog)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replica, logState?.data])
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data || log) {
       return
     }
     getHistoryLog?.().then(setHistoryLog)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replica, logState?.data])
 
   return (
