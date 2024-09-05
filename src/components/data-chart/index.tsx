@@ -66,28 +66,13 @@ function availabilityTooltip(
   availability: number
 ): string {
   const availStr = availability !== -1 ? `${availability.toFixed(2)}%` : 'N/A'
-  return (
-    '<div class="chart-tooltip grid grid--gap-small">' +
-    `  <span>${formatDateMonthTime(timestamp)}</span>` +
-    `  <span>Availability: ${availStr}</span>` +
-    '</div>'
-  )
+  return `<div class="chart-tooltip grid grid--gap-small">  <span>${formatDateMonthTime(timestamp)}</span>  <span>Availability: ${availStr}</span></div>`
 }
 
 function timelineTooltip(start: Date, end: Date, status?: string): string {
   const period = `${formatDateMonthTime(start)} - ${formatDateMonthTime(end)}`
   const duration = differenceInWords(end, start, true)
-  return (
-    '<div class="chart-tooltip grid grid--gap-small">' +
-    '  <span>Status code: ' +
-    `    <span class="${clsx('status-code', { [status ?? '']: !!status })}">` +
-    (status?.substring(3) ?? 'N/A') +
-    '    </span>' +
-    '  </span>' +
-    `  <span>Period: ${period}</span>` +
-    `  <span>Duration: ${duration}</span>` +
-    '</div>'
-  )
+  return `<div class="chart-tooltip grid grid--gap-small">  <span>Status code:     <span class="${clsx('status-code', { [status ?? '']: !!status })}">${status?.substring(3) ?? 'N/A'}    </span>  </span>  <span>Period: ${period}</span>  <span>Duration: ${duration}</span></div>`
 }
 
 async function getStatusItems(

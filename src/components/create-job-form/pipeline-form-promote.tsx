@@ -111,7 +111,7 @@ export function PipelineFormPromote({
                     {smallDeploymentName(x.name)}{' '}
                     {x.activeTo
                       ? `(${formatDateTime(x.activeFrom)})`
-                      : `(currently active)`}
+                      : '(currently active)'}
                     {x.gitCommitHash &&
                       ` ${smallGithubCommitHash(x.gitCommitHash)}`}
                     {x.gitTags && `, ${x.gitTags}`}

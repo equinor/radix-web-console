@@ -185,7 +185,7 @@ function ReplicaLogTableRow({
 
   return (
     <Table.Row className={clsx({ 'border-bottom-transparent': isExpanded })}>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <Typography link as="span" onClick={onClick}>
           <Icon
             title="Toggle more information"
@@ -205,7 +205,7 @@ function ReplicaLogTableRow({
       <Table.Cell>
         {Duration({ start: created, end: ended }) || 'N/A'}
       </Table.Cell>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
           title="Download Replica log"
           onClick={downloadLazyLogCb(
@@ -248,7 +248,7 @@ function ReplicaContainerTableRow({
 
   return (
     <Table.Row className={className}>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <Icon title="Container" data={invert} color="gray" />
       </Table.Cell>
       <Table.Cell>
@@ -267,7 +267,7 @@ function ReplicaContainerTableRow({
       <Table.Cell>
         <Duration start={created} end={ended} />
       </Table.Cell>
-      <Table.Cell className={`fitwidth padding-right-0`} variant="icon">
+      <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
           title="Download Container log"
           onClick={downloadLazyLogCb(

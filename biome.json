@@ -43,8 +43,6 @@
       },
       "style": {
         "noUselessElse": "off",
-        "useTemplate": "off",
-        "noUnusedTemplateLiteral": "off",
         "useNumberNamespace": "off",
         "useSelfClosingElements": "off",
         "noNonNullAssertion": "off",

@@ -46,10 +46,10 @@ class IntegrationComponent extends Component<
           // Set up mock socket servers
           // TODO: When using only Socket.io, clean this up to provide only one socket
           const mockServerRR = new Server(
-            createRadixApiUrl('radixregistrations', 'wss:') + '?watch=true'
+            `${createRadixApiUrl('radixregistrations', 'wss:')}?watch=true`
           )
           const mockServerRA = new Server(
-            createRadixApiUrl('radixapplications', 'wss:') + '?watch=true'
+            `${createRadixApiUrl('radixapplications', 'wss:')}?watch=true`
           )
 
           module.injectMockSocketServers({

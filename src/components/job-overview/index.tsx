@@ -135,7 +135,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                   )}
 
                   <ScrimPopup
-                    title={`Rerun job`}
+                    title={'Rerun job'}
                     open={!!visibleRerunScrim}
                     onClose={() => setVisibleRerunScrim(false)}
                     isDismissable

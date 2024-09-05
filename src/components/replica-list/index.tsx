@@ -94,7 +94,7 @@ export const ReplicaList: FunctionComponent<{
                 className={clsx({ 'border-bottom-transparent': expanded })}
               >
                 <Table.Cell
-                  className={`fitwidth padding-right-0`}
+                  className={'fitwidth padding-right-0'}
                   variant="icon"
                 >
                   <Typography

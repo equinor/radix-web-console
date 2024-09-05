@@ -205,7 +205,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                           >
                             {showChevronColumn && (
                               <Table.Cell
-                                className={`fitwidth padding-right-0`}
+                                className={'fitwidth padding-right-0'}
                               >
                                 {hasComponentOAuth2Service(x) && (
                                   <Typography link as="span">

@@ -51,7 +51,7 @@ export const StepsList: FunctionComponent<{
 
   const getStepKey = (step: Step) => {
     return step.components?.length == 1
-      ? step.name + '-' + step.components[0]
+      ? `${step.name}-${step.components[0]}`
       : step.name
   }
   return (

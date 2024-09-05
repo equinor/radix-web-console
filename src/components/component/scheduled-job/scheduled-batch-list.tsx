@@ -155,7 +155,7 @@ export function ScheduledBatchList({
                           })}
                         >
                           <Table.Cell
-                            className={`fitwidth padding-right-0`}
+                            className={'fitwidth padding-right-0'}
                             variant="icon"
                           >
                             {batch.deploymentName && (

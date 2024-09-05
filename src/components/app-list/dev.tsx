@@ -85,7 +85,7 @@ new Server({
   routes() {
     // Mock response for ShowApplications
     this.get(
-      `/api/v1/applications`,
+      '/api/v1/applications',
       (): ShowApplicationsApiResponse => [
         ...testApps.reduce<ShowApplicationsApiResponse>(
           (obj, { name }) => [...obj, { name }],

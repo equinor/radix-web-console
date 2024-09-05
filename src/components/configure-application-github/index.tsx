@@ -141,7 +141,7 @@ export const ConfigureApplicationGithub = ({
                     ) : (
                       <>
                         <ScrimPopup
-                          title={`Warning`}
+                          title={'Warning'}
                           open={!!visibleRegenerateScrim}
                           onClose={() => setVisibleRegenerateScrim(false)}
                           isDismissable

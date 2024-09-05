@@ -187,7 +187,7 @@ export const ScheduledJobList: FunctionComponent<{
                           })}
                         >
                           <Table.Cell
-                            className={`fitwidth padding-right-0`}
+                            className={'fitwidth padding-right-0'}
                             variant="icon"
                           >
                             <Typography
