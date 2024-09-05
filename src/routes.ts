@@ -13,7 +13,7 @@ export type RouteParams = {
   taskName?: string;
 };
 
-// prettier-ignore
+// biome-ignore format: long lines
 export const routes = {
   home: '/',
 

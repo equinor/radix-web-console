@@ -1,0 +1,68 @@
+{
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "organizeImports": {
+    "enabled": false
+  },
+  "files": {
+    "ignore": [".vscode/", "src/style/hex-to-hsl.js", "build/"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 80
+  },
+  "javascript": {
+    "formatter": {
+      "arrowParentheses": "always",
+      "bracketSameLine": false,
+      "bracketSpacing": true,
+      "quoteStyle": "single",
+      "quoteProperties": "asNeeded",
+      "semicolons": "always",
+      "trailingCommas": "es5"
+    }
+  },
+  "linter": {
+    "rules": {
+      "security": {
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noBannedTypes": "off",
+        "useLiteralKeys": "off",
+        "noUselessFragments": "off",
+        "useArrowFunction": "off"
+      },
+      "style": {
+        "noUselessElse": "off",
+        "useImportType": "off",
+        "useTemplate": "off",
+        "noUnusedTemplateLiteral": "off",
+        "useNumberNamespace": "off",
+        "useEnumInitializers": "off",
+        "useSelfClosingElements": "off",
+        "noNonNullAssertion": "off",
+        "noInferrableTypes": "off",
+        "noParameterAssign": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off",
+        "noDoubleEquals": "off",
+        "noConfusingVoidType": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "off"
+      },
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      },
+      "a11y": {
+        "noRedundantRoles": "off",
+        "useKeyWithClickEvents": "off"
+      }
+    }
+  }
+}

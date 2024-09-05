@@ -74,7 +74,9 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
             <div className="grid grid--gap-medium grid--overview-columns">
               <div className="grid grid--gap-medium">
                 <Typography>
-                  Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
+                  Pipeline Step <strong>
+                    {step.status.toLowerCase()}
+                  </strong>{' '}
                 </Typography>
                 <Typography>
                   {getJobExecutionState(step.status)} Step{' '}

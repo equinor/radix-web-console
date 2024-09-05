@@ -41,11 +41,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Biome
+        uses: biomejs/setup-biome@v2
+        with:
+          version: latest
       - uses: actions/setup-node@v4
         with:
           node-version-file: 'package.json'
       - run: npm ci
-      - run: npm run lint
+      - run: biome ci .
       - run: npm run lint-ts
 
   validate-radixconfig:
