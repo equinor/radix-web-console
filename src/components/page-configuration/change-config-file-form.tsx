@@ -21,7 +21,7 @@ import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 export interface ChangeConfigFileFormProps {
   appName: string
   radixConfigFullName?: string
-  refetch?: Function
+  refetch?: () => undefined | Promise<undefined>
 }
 
 const defaultConfigName = 'radixconfig.yaml'

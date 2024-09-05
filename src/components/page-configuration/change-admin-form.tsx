@@ -20,7 +20,7 @@ const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
 
 interface Props {
   registration: ApplicationRegistration
-  refetch?: Function
+  refetch?: () => undefined
 }
 export default function ChangeAdminForm({ registration, refetch }: Props) {
   const [adminAdGroup, setAdminAdGroup] = useState<Array<string>>()

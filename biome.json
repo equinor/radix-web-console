@@ -36,7 +36,6 @@
       },
       "complexity": {
         "noForEach": "off",
-        "noBannedTypes": "off",
         "useLiteralKeys": "off",
         "noUselessFragments": "off",
         "useArrowFunction": "off"

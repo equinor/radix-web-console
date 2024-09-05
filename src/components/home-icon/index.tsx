@@ -38,9 +38,11 @@ function isDecember(date: Date): boolean {
   return date.getMonth() === 11
 }
 
+// biome-ignore lint/complexity/noBannedTypes: ignore {} props
 export class HomeIcon extends Component<{}, { svgLogo?: string }> {
   private isLoaded: boolean
 
+  // biome-ignore lint/complexity/noBannedTypes: ignore {} props
   constructor(props: {}) {
     super(props)
     this.state = {}

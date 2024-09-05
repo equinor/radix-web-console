@@ -42,7 +42,7 @@ const DeployKey = ({ appName }: { appName: string }) => {
 interface Props {
   appName: string
   repository: string
-  refetch?: Function
+  refetch?: () => undefined
   sharedSecret: string
 }
 export function ChangeRepositoryForm({

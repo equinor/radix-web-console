@@ -17,7 +17,7 @@ import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 interface Props {
   appName: string
   configurationItem?: string
-  refetch?: Function
+  refetch?: () => undefined | Promise<undefined>
 }
 
 export const ChangeConfigurationItemForm = ({

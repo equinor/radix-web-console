@@ -34,7 +34,7 @@ const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE
 
 interface Props {
   app: ApplicationRegistration
-  refetch?: Function
+  refetch?: () => undefined | Promise<undefined>
   onDeployKeyChange: (appName: string) => void
   startVisible?: boolean
   useOtherCiToolOptionVisible?: boolean

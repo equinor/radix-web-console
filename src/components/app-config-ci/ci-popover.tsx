@@ -7,7 +7,7 @@ import { configVariables } from '../../utils/config'
 
 export interface ConfigurationItemPopoverProps {
   open?: boolean
-  onClose: Function
+  onClose: () => undefined
   anchorEl: HTMLElement
   configurationItem: Application
 }

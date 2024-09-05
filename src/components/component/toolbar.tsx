@@ -16,7 +16,7 @@ type Props = {
   component?: Component
   startEnabled?: boolean
   stopEnabled?: boolean
-  refetch?: Function
+  refetch?: () => undefined
 }
 export function Toolbar({
   appName,
