@@ -20,7 +20,7 @@ import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 export interface ChangeConfigBranchFormProps {
   appName: string;
   configBranch: string;
-  refetch?: () => undefined | Promise<undefined>;
+  refetch?: () => unknown;
 }
 
 export const ChangeConfigBranchForm: FunctionComponent<

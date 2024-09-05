@@ -7,7 +7,7 @@ import { configVariables } from '../../utils/config';
 
 export interface ConfigurationItemPopoverProps {
   open?: boolean;
-  onClose: () => undefined;
+  onClose: () => unknown;
   anchorEl: HTMLElement;
   configurationItem: Application;
 }
