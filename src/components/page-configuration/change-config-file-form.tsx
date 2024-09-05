@@ -4,36 +4,36 @@ import {
   CircularProgress,
   TextField,
   Typography,
-} from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+} from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import {
   type ChangeEvent,
   type FormEvent,
   type FunctionComponent,
   useState,
-} from 'react'
+} from 'react';
 
-import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
-import { getFetchErrorMessage } from '../../store/utils'
-import { Alert } from '../alert'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 export interface ChangeConfigFileFormProps {
-  appName: string
-  radixConfigFullName?: string
-  refetch?: () => undefined | Promise<undefined>
+  appName: string;
+  radixConfigFullName?: string;
+  refetch?: () => undefined | Promise<undefined>;
 }
 
-const defaultConfigName = 'radixconfig.yaml'
+const defaultConfigName = 'radixconfig.yaml';
 
 export const ChangeConfigFileForm: FunctionComponent<
   ChangeConfigFileFormProps
 > = ({ appName, radixConfigFullName, refetch }) => {
-  const [configNameState, setConfigNameState] = useState<string>()
-  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation()
+  const [configNameState, setConfigNameState] = useState<string>();
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
-    ev.preventDefault()
+    ev.preventDefault();
 
     await mutate({
       appName,
@@ -42,10 +42,10 @@ export const ChangeConfigFileForm: FunctionComponent<
           radixConfigFullName: configNameState,
         },
       },
-    }).unwrap()
+    }).unwrap();
 
-    await refetch?.()
-  })
+    await refetch?.();
+  });
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -103,11 +103,11 @@ export const ChangeConfigFileForm: FunctionComponent<
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  )
-}
+  );
+};
 
 ChangeConfigFileForm.propTypes = {
   appName: PropTypes.string.isRequired,
   radixConfigFullName: PropTypes.string,
   refetch: PropTypes.func,
-}
+};

@@ -1,29 +1,29 @@
-import { Typography } from '@equinor/eds-core-react'
+import { Typography } from '@equinor/eds-core-react';
 
-import { clusterBases } from '../../clusterBases'
-import { pollingInterval } from '../../store/defaults'
-import { useGetApplicationQuery } from '../../store/radix-api'
-import { configVariables } from '../../utils/config'
-import { withRouteParams } from '../../utils/router'
-import { Alert } from '../alert'
-import ApplicationCost from '../application-cost'
-import { FutureApplicationCost } from '../application-future-cost'
-import AsyncResource from '../async-resource/async-resource'
-import { DefaultAppAlias } from '../component/default-app-alias'
-import { DNSAliases } from '../component/dns-aliases'
-import { EnvironmentsSummary } from '../environments-summary'
-import { JobsList } from '../jobs-list'
+import { clusterBases } from '../../clusterBases';
+import { pollingInterval } from '../../store/defaults';
+import { useGetApplicationQuery } from '../../store/radix-api';
+import { configVariables } from '../../utils/config';
+import { withRouteParams } from '../../utils/router';
+import { Alert } from '../alert';
+import ApplicationCost from '../application-cost';
+import { FutureApplicationCost } from '../application-future-cost';
+import AsyncResource from '../async-resource/async-resource';
+import { DefaultAppAlias } from '../component/default-app-alias';
+import { DNSAliases } from '../component/dns-aliases';
+import { EnvironmentsSummary } from '../environments-summary';
+import { JobsList } from '../jobs-list';
 
-const LATEST_JOBS_LIMIT = 5
+const LATEST_JOBS_LIMIT = 5;
 
 export function AppOverview({ appName }: { appName: string }) {
   const isPlayground: Readonly<boolean> =
-    configVariables.RADIX_CLUSTER_BASE === clusterBases.playgroundWebConsole
+    configVariables.RADIX_CLUSTER_BASE === clusterBases.playgroundWebConsole;
 
   const { data: application, ...state } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  )
+  );
 
   const {
     appAlias,
@@ -32,7 +32,7 @@ export function AppOverview({ appName }: { appName: string }) {
     environments,
     jobs,
     registration,
-  } = application ?? {}
+  } = application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
@@ -82,6 +82,6 @@ export function AppOverview({ appName }: { appName: string }) {
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>
     </main>
-  )
+  );
 }
-export default withRouteParams(AppOverview)
+export default withRouteParams(AppOverview);

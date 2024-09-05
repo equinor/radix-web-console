@@ -1,14 +1,14 @@
-import { Button, Icon, Menu } from '@equinor/eds-core-react'
-import { more_vertical } from '@equinor/eds-icons'
-import { Fragment, type FunctionComponent, useState } from 'react'
+import { Button, Icon, Menu } from '@equinor/eds-core-react';
+import { more_vertical } from '@equinor/eds-icons';
+import { Fragment, type FunctionComponent, useState } from 'react';
 
-import './style.css'
+import './style.css';
 
 export const JobContextMenu: FunctionComponent<{
-  menuItems: Array<ReturnType<(typeof Menu)['Item']>>
+  menuItems: Array<ReturnType<(typeof Menu)['Item']>>;
 }> = ({ menuItems }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
 
   return (
     <>
@@ -31,5 +31,5 @@ export const JobContextMenu: FunctionComponent<{
         ))}
       </Menu>
     </>
-  )
-}
+  );
+};

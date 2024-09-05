@@ -1,25 +1,25 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
-import { github } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { github } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import { routes } from '../../routes'
-import type { Deployment } from '../../store/radix-api'
+import { routes } from '../../routes';
+import type { Deployment } from '../../store/radix-api';
 import {
   linkToGitHubCommit,
   routeWithParams,
   smallGithubCommitHash,
   smallJobName,
-} from '../../utils/string'
-import { GitTagLinks } from '../git-tags/git-tag-links'
-import { RelativeToNow } from '../time/relative-to-now'
+} from '../../utils/string';
+import { GitTagLinks } from '../git-tags/git-tag-links';
+import { RelativeToNow } from '../time/relative-to-now';
 
-import './style.css'
+import './style.css';
 
 type Props = {
-  appName: string
-  deployment: Deployment
-}
+  appName: string;
+  deployment: Deployment;
+};
 
 export const DeploymentSummary = ({ appName, deployment }: Props) => (
   <div className="grid grid--gap-medium">
@@ -112,9 +112,9 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => (
       </div>
     </div>
   </div>
-)
+);
 
 DeploymentSummary.propTypes = {
   appName: PropTypes.string.isRequired,
   deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
-}
+};

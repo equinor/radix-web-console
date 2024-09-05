@@ -1,31 +1,31 @@
-import { Table } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+import { Table } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import type { Event } from '../../store/radix-api'
+import type { Event } from '../../store/radix-api';
 import {
   isEventObsolete,
   isEventResolved,
   isWarningEvent,
-} from '../../utils/event-model'
-import { StatusBadge } from '../status-badges'
-import { RelativeToNow } from '../time/relative-to-now'
+} from '../../utils/event-model';
+import { StatusBadge } from '../status-badges';
+import { RelativeToNow } from '../time/relative-to-now';
 
 export interface EventSummaryProps {
-  event: Readonly<Event>
+  event: Readonly<Event>;
 }
 
 const WarningState: FunctionComponent<{ event: Readonly<Event> }> = ({
   event,
 }) => {
   if (isEventObsolete(event)) {
-    return <StatusBadge type="success">Obsolete</StatusBadge>
+    return <StatusBadge type="success">Obsolete</StatusBadge>;
   } else if (isEventResolved(event)) {
-    return <StatusBadge type="success">Resolved</StatusBadge>
+    return <StatusBadge type="success">Resolved</StatusBadge>;
   }
 
-  return null
-}
+  return null;
+};
 
 export const EventSummary: FunctionComponent<EventSummaryProps> = ({
   event,
@@ -56,8 +56,8 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
       )}
     </Table.Cell>
   </Table.Row>
-)
+);
 
 EventSummary.propTypes = {
   event: PropTypes.object.isRequired as PropTypes.Validator<Event>,
-}
+};

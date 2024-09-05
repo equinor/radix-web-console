@@ -1,7 +1,7 @@
-import { Divider, Icon, Typography } from '@equinor/eds-core-react'
-import { coffee } from '@equinor/eds-icons'
-import type React from 'react'
-import type { ComponentType, PropsWithChildren } from 'react'
+import { Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { coffee } from '@equinor/eds-icons';
+import type React from 'react';
+import type { ComponentType, PropsWithChildren } from 'react';
 
 import {
   BadgeTemplates,
@@ -16,15 +16,15 @@ import {
   ProgressStatusBadge,
   RadixJobConditionBadge,
   ReplicaStatusBadge,
-} from '.'
+} from '.';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
-} from './status-badge-template'
+} from './status-badge-template';
 
 interface TestDataTemplate {
-  description: string
-  text?: string
+  description: string;
+  text?: string;
 }
 
 const templateTestData: Array<
@@ -45,7 +45,7 @@ const templateTestData: Array<
   { description: 'type Danger', text: 'Danger', type: 'danger' },
   { description: 'type None', text: 'None', type: 'none' },
   { description: 'type Default', text: 'Default', type: 'default' },
-]
+];
 
 const genericTestData: Array<
   TestDataTemplate &
@@ -74,7 +74,7 @@ const genericTestData: Array<
     text: 'TestLabel',
     customIconData: coffee,
   },
-]
+];
 
 const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
@@ -90,7 +90,7 @@ const GenericBadge: <P, S extends TestDataTemplate>(
       </div>
     ))}
   </>
-)
+);
 
 const EnumBadge: <P extends { status: S }, S extends string>(
   title: string,
@@ -105,7 +105,7 @@ const EnumBadge: <P extends { status: S }, S extends string>(
       </div>
     ))}
   </>
-)
+);
 
 const testData = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
@@ -165,7 +165,7 @@ const testData = [
     ],
     ReplicaStatusBadge
   ),
-] as const
+] as const;
 
 export default (
   <div
@@ -180,4 +180,4 @@ export default (
       </div>
     ))}
   </div>
-)
+);

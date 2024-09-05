@@ -1,4 +1,4 @@
-export type sortDirection = 'ascending' | 'descending'
+export type sortDirection = 'ascending' | 'descending';
 
 /**
  * Creates a copy of the array and performs multiple sort operations
@@ -11,13 +11,13 @@ export function dataSorter<T>(
   array: Readonly<Array<T>>,
   sorters: Array<Parameters<Array<T>['sort']>[0]>
 ): Array<T> {
-  const data = [...(array ?? [])]
-  sorters.map((x) => data.sort(x))
-  return data
+  const data = [...(array ?? [])];
+  sorters.map((x) => data.sort(x));
+  return data;
 }
 
 function sorter(direction: sortDirection): 1 | -1 {
-  return direction === 'ascending' ? 1 : -1
+  return direction === 'ascending' ? 1 : -1;
 }
 
 function sortWhenNull(
@@ -26,14 +26,14 @@ function sortWhenNull(
   direction: sortDirection
 ): number {
   if (a == null && b == null) {
-    return 0
+    return 0;
   }
 
   if (a == null) {
-    return -sorter(direction)
+    return -sorter(direction);
   }
 
-  return sorter(direction)
+  return sorter(direction);
 }
 
 export function sortCompareString(
@@ -44,20 +44,20 @@ export function sortCompareString(
   when?: () => boolean
 ): number {
   if (when && !when()) {
-    return 0
+    return 0;
   }
 
   if (a == null || b == null) {
-    return sortWhenNull(a, b, direction)
+    return sortWhenNull(a, b, direction);
   }
 
-  const internalA = caseInsensitive ? (a ? a.toLocaleLowerCase() : '') : a
-  const internalB = caseInsensitive ? (b ? b.toLocaleLowerCase() : '') : b
+  const internalA = caseInsensitive ? (a ? a.toLocaleLowerCase() : '') : a;
+  const internalB = caseInsensitive ? (b ? b.toLocaleLowerCase() : '') : b;
 
   if (internalA === internalB) {
-    return 0
+    return 0;
   } else {
-    return (internalA > internalB ? 1 : -1) * sorter(direction)
+    return (internalA > internalB ? 1 : -1) * sorter(direction);
   }
 }
 
@@ -68,17 +68,17 @@ export function sortCompareBoolean(
   when?: () => boolean
 ): number {
   if (when && !when()) {
-    return 0
+    return 0;
   }
 
   if (a == null || b == null) {
-    return sortWhenNull(a, b, direction)
+    return sortWhenNull(a, b, direction);
   }
 
   if (a === b) {
-    return 0
+    return 0;
   } else {
-    return (a && !b ? 1 : -1) * sorter(direction)
+    return (a && !b ? 1 : -1) * sorter(direction);
   }
 }
 
@@ -89,17 +89,17 @@ export function sortCompareNumber(
   when?: () => boolean
 ): number {
   if (when && !when()) {
-    return 0
+    return 0;
   }
 
   if (a == null || b == null) {
-    return sortWhenNull(a, b, direction)
+    return sortWhenNull(a, b, direction);
   }
 
   if (a === b) {
-    return 0
+    return 0;
   } else {
-    return (a > b ? 1 : -1) * sorter(direction)
+    return (a > b ? 1 : -1) * sorter(direction);
   }
 }
 
@@ -110,20 +110,20 @@ export function sortCompareDate(
   when?: () => boolean
 ): number {
   if (when && !when()) {
-    return 0
+    return 0;
   }
 
   if (a == null || b == null) {
-    return sortWhenNull(a, b, direction)
+    return sortWhenNull(a, b, direction);
   }
 
-  const internalA = (a instanceof Date ? a : new Date(a)).getTime()
-  const internalB = (b instanceof Date ? b : new Date(b)).getTime()
+  const internalA = (a instanceof Date ? a : new Date(a)).getTime();
+  const internalB = (b instanceof Date ? b : new Date(b)).getTime();
 
   if (internalA === internalB) {
-    return 0
+    return 0;
   } else {
-    return (internalA > internalB ? 1 : -1) * sorter(direction)
+    return (internalA > internalB ? 1 : -1) * sorter(direction);
   }
 }
 
@@ -131,5 +131,5 @@ export function resolveSortFunctions(funcArray: Array<() => number>): number {
   return funcArray.reduce<number>(
     (prev, curr) => (prev === 0 ? curr() : prev),
     0
-  )
+  );
 }

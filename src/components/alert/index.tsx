@@ -1,15 +1,15 @@
-import { clsx } from 'clsx'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react'
+import { clsx } from 'clsx';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
-import './style.css'
+import './style.css';
 
-export type AlertType = 'info' | 'success' | 'warning' | 'danger'
+export type AlertType = 'info' | 'success' | 'warning' | 'danger';
 
 export interface AlertProps {
-  actions?: ReactNode
-  className?: string
-  type?: AlertType
+  actions?: ReactNode;
+  className?: string;
+  type?: AlertType;
 }
 
 export const Alert: FunctionComponent<PropsWithChildren<AlertProps>> = ({
@@ -35,11 +35,11 @@ export const Alert: FunctionComponent<PropsWithChildren<AlertProps>> = ({
       children
     )}
   </div>
-)
+);
 
 Alert.propTypes = {
   children: PropTypes.node,
   actions: PropTypes.node,
   className: PropTypes.string,
   type: PropTypes.oneOf<AlertType>(['info', 'success', 'warning', 'danger']),
-}
+};

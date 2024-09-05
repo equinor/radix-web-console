@@ -1,41 +1,41 @@
-import { Typography } from '@equinor/eds-core-react'
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Typography } from '@equinor/eds-core-react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux'
-import { routes } from '../../routes'
-import { radixApi } from '../../store/radix-api'
-import { withRouteParams } from '../../utils/router'
-import { routeWithParams } from '../../utils/string'
-import { Alert } from '../alert'
-import { Breadcrumb } from '../breadcrumb'
-import CreateJobForm from '../create-job-form'
-import { DocumentTitle } from '../document-title'
+import { useDispatch } from 'react-redux';
+import { routes } from '../../routes';
+import { radixApi } from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams } from '../../utils/string';
+import { Alert } from '../alert';
+import { Breadcrumb } from '../breadcrumb';
+import CreateJobForm from '../create-job-form';
+import { DocumentTitle } from '../document-title';
 
 function JobLink(props: { appName: string; jobName: string }) {
   return (
     <Typography as={Link} to={routeWithParams(routes.appJob, props)} link>
       Pipeline Job
     </Typography>
-  )
+  );
 }
 function JobsLink(props: { appName: string }) {
   return (
     <Typography as={Link} to={routeWithParams(routes.appJobs, props)} link>
       Pipeline Jobs
     </Typography>
-  )
+  );
 }
 
 interface Props {
-  appName: string
+  appName: string;
 }
 export function PagePipelineJobNew({ appName }: Props) {
-  const [createdJob, setCreatedJob] = useState<string>()
-  const dispatch = useDispatch()
+  const [createdJob, setCreatedJob] = useState<string>();
+  const dispatch = useDispatch();
 
   const onSuccess = (jobName: string) => {
-    setCreatedJob(jobName)
+    setCreatedJob(jobName);
 
     // Force refetch list of jobs
     dispatch(
@@ -44,8 +44,8 @@ export function PagePipelineJobNew({ appName }: Props) {
         { appName },
         { subscribe: false, forceRefetch: true }
       )
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -86,6 +86,6 @@ export function PagePipelineJobNew({ appName }: Props) {
         )}
       </div>
     </>
-  )
+  );
 }
-export default withRouteParams(PagePipelineJobNew)
+export default withRouteParams(PagePipelineJobNew);

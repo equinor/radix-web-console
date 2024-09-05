@@ -1,19 +1,19 @@
-import { Typography } from '@equinor/eds-core-react'
-import { isNil } from 'lodash'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
-import type { ScheduledJobSummary } from '../../store/radix-api'
-import { smallScheduledJobName } from '../../utils/string'
-import { Code } from '../code'
-import { ResourceRequirements } from '../resource-requirements'
-import { Runtime } from '../runtime'
-import { RadixJobConditionBadge } from '../status-badges'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
+import { Typography } from '@equinor/eds-core-react';
+import { isNil } from 'lodash';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
+import type { ScheduledJobSummary } from '../../store/radix-api';
+import { smallScheduledJobName } from '../../utils/string';
+import { Code } from '../code';
+import { ResourceRequirements } from '../resource-requirements';
+import { Runtime } from '../runtime';
+import { RadixJobConditionBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 
 const ScheduledJobDuration: FunctionComponent<{
-  started: string
-  finished: string
+  started: string;
+  finished: string;
 }> = ({ started, finished }) => {
   return (
     <>
@@ -40,8 +40,8 @@ const ScheduledJobDuration: FunctionComponent<{
         </>
       )}
     </>
-  )
-}
+  );
+};
 
 const ScheduledJobState: FunctionComponent<
   Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>
@@ -64,11 +64,11 @@ const ScheduledJobState: FunctionComponent<
       </>
     )}
   </>
-)
+);
 
 export const ScheduledJobOverview: FunctionComponent<{
-  job: ScheduledJobSummary
-  jobComponentName: string
+  job: ScheduledJobSummary;
+  jobComponentName: string;
 }> = ({ job, jobComponentName }) => (
   <>
     <Typography variant="h4">Overview</Typography>
@@ -121,9 +121,9 @@ export const ScheduledJobOverview: FunctionComponent<{
       {job.status && <ScheduledJobState {...job} />}
     </section>
   </>
-)
+);
 
 ScheduledJobOverview.propTypes = {
   job: PropTypes.object.isRequired as PropTypes.Validator<ScheduledJobSummary>,
   jobComponentName: PropTypes.string.isRequired,
-}
+};

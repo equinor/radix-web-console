@@ -3,43 +3,43 @@ import {
   CircularProgress,
   NativeSelect,
   Typography,
-} from '@equinor/eds-core-react'
-import { type FormEvent, useState } from 'react'
-import { pollingInterval } from '../../store/defaults'
+} from '@equinor/eds-core-react';
+import { type FormEvent, useState } from 'react';
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetEnvironmentSummaryQuery,
   useTriggerPipelineDeployMutation,
-} from '../../store/radix-api'
+} from '../../store/radix-api';
 
-import { getFetchErrorMessage } from '../../store/utils'
-import { Alert } from '../alert'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import type { FormProp } from './index'
+import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import type { FormProp } from './index';
 
 export function PipelineFormDeploy({ children, appName, onSuccess }: FormProp) {
-  const [trigger, state] = useTriggerPipelineDeployMutation()
+  const [trigger, state] = useTriggerPipelineDeployMutation();
   const { data: environments } = useGetEnvironmentSummaryQuery(
     { appName },
     { pollingInterval }
-  )
-  const [toEnvironment, setToEnvironment] = useState('')
+  );
+  const [toEnvironment, setToEnvironment] = useState('');
 
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+      e.preventDefault();
 
       const response = await trigger({
         appName,
         pipelineParametersDeploy: {
           toEnvironment,
         },
-      }).unwrap()
-      onSuccess(response.name)
+      }).unwrap();
+      onSuccess(response.name);
     }
-  )
+  );
 
   // Show deployments grouped by environment
-  const isValid = !!toEnvironment
+  const isValid = !!toEnvironment;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -98,5 +98,5 @@ export function PipelineFormDeploy({ children, appName, onSuccess }: FormProp) {
         </div>
       </fieldset>
     </form>
-  )
+  );
 }

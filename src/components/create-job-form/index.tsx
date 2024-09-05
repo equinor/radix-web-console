@@ -1,35 +1,35 @@
-import { NativeSelect, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+import { NativeSelect, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import {
   type ComponentProps,
   type FunctionComponent,
   type PropsWithChildren,
   useState,
-} from 'react'
+} from 'react';
 
-import { PipelineFormPromote } from './pipeline-form-promote'
+import { PipelineFormPromote } from './pipeline-form-promote';
 
-import './style.css'
-import { useSearchParams } from 'react-router-dom'
-import { PipelineFormApplyConfig } from './pipeline-form-apply-config'
-import { PipelineFormBuildBranches } from './pipeline-form-build-branches'
-import { PipelineFormDeploy } from './pipeline-form-deploy'
+import './style.css';
+import { useSearchParams } from 'react-router-dom';
+import { PipelineFormApplyConfig } from './pipeline-form-apply-config';
+import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
+import { PipelineFormDeploy } from './pipeline-form-deploy';
 
 export interface CreateJobFormProps {
-  appName: string
-  onSuccess: (jobName: string) => void
+  appName: string;
+  onSuccess: (jobName: string) => void;
 }
 
 type SupportedPipelineNames =
   | ComponentProps<typeof PipelineFormBuildBranches>['pipelineName']
   | ComponentProps<typeof PipelineFormPromote>['pipelineName']
-  | ComponentProps<typeof PipelineFormApplyConfig>['pipelineName']
+  | ComponentProps<typeof PipelineFormApplyConfig>['pipelineName'];
 
 export type FormProp = PropsWithChildren<{
-  appName: string
-  onSuccess: (jobName: string) => void
-  pipelineName: string
-}>
+  appName: string;
+  onSuccess: (jobName: string) => void;
+  pipelineName: string;
+}>;
 
 const Pipelines = {
   build: PipelineFormBuildBranches,
@@ -37,23 +37,23 @@ const Pipelines = {
   promote: PipelineFormPromote,
   deploy: PipelineFormDeploy,
   'apply-config': PipelineFormApplyConfig,
-} satisfies Record<SupportedPipelineNames, FunctionComponent<FormProp>>
+} satisfies Record<SupportedPipelineNames, FunctionComponent<FormProp>>;
 
 export default function CreateJobForm({
   appName,
   onSuccess,
 }: CreateJobFormProps) {
-  const [searchParams] = useSearchParams()
+  const [searchParams] = useSearchParams();
   const [pipeline, setPipeline] = useState<SupportedPipelineNames>(() => {
-    const urlPipeline = searchParams.get('pipeline')
+    const urlPipeline = searchParams.get('pipeline');
     if (Object.keys(Pipelines).includes(urlPipeline)) {
-      return urlPipeline as SupportedPipelineNames
+      return urlPipeline as SupportedPipelineNames;
     }
 
-    return 'build-deploy'
-  })
+    return 'build-deploy';
+  });
 
-  const PipelineForm = Pipelines[pipeline]
+  const PipelineForm = Pipelines[pipeline];
 
   return (
     <PipelineForm
@@ -84,9 +84,9 @@ export default function CreateJobForm({
         ))}
       </NativeSelect>
     </PipelineForm>
-  )
+  );
 }
 CreateJobForm.propTypes = {
   appName: PropTypes.string.isRequired,
   onSuccess: PropTypes.func.isRequired,
-}
+};

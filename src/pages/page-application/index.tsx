@@ -1,19 +1,19 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { Outlet } from 'react-router'
-import { withRouteParams } from '../../utils/router'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { Outlet } from 'react-router';
+import { withRouteParams } from '../../utils/router';
 
-import { Alert } from '../../components/alert'
-import { DocumentTitle } from '../../components/document-title'
-import { LayoutApp } from '../../components/layout-app'
-import { pollingInterval } from '../../store/defaults'
-import { useGetApplicationQuery } from '../../store/radix-api'
+import { Alert } from '../../components/alert';
+import { DocumentTitle } from '../../components/document-title';
+import { LayoutApp } from '../../components/layout-app';
+import { pollingInterval } from '../../store/defaults';
+import { useGetApplicationQuery } from '../../store/radix-api';
 
 export function PageApplication({ appName }: { appName: string }) {
   const { data: application, isSuccess } = useGetApplicationQuery(
     { appName },
     { pollingInterval }
-  )
+  );
 
   return (
     <LayoutApp appName={appName}>
@@ -31,11 +31,11 @@ export function PageApplication({ appName }: { appName: string }) {
         <Outlet />
       </div>
     </LayoutApp>
-  )
+  );
 }
 
 PageApplication.propTypes = {
   appName: PropTypes.string.isRequired,
-}
+};
 
-export default withRouteParams(PageApplication)
+export default withRouteParams(PageApplication);

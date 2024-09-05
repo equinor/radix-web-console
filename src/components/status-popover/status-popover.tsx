@@ -1,28 +1,33 @@
-import { Chip, Icon, Popover, type PopoverProps } from '@equinor/eds-core-react'
-import { info_circle } from '@equinor/eds-icons'
+import {
+  Chip,
+  Icon,
+  Popover,
+  type PopoverProps,
+} from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
 import {
   type FunctionComponent,
   type PropsWithChildren,
   type ReactNode,
   useRef,
   useState,
-} from 'react'
+} from 'react';
 
-import './style.css'
+import './style.css';
 
 export type StatusPopoverType =
   | 'success'
   | 'warning'
   | 'danger'
   | 'none'
-  | 'default'
+  | 'default';
 
 export type StatusPopoverProps = {
-  className?: string
-  title?: ReactNode
-  icon?: ReactNode
-  type?: StatusPopoverType
-} & Pick<PopoverProps, 'placement'>
+  className?: string;
+  title?: ReactNode;
+  icon?: ReactNode;
+  type?: StatusPopoverType;
+} & Pick<PopoverProps, 'placement'>;
 
 export const StatusPopover: FunctionComponent<
   PropsWithChildren<StatusPopoverProps>
@@ -34,8 +39,8 @@ export const StatusPopover: FunctionComponent<
   type,
   placement = 'top',
 }) => {
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="status-popover">
@@ -62,5 +67,5 @@ export const StatusPopover: FunctionComponent<
         {icon}
       </Chip>
     </div>
-  )
-}
+  );
+};

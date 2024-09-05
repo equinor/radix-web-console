@@ -4,18 +4,18 @@ import {
   NativeSelect,
   TextField,
   Typography,
-} from '@equinor/eds-core-react'
-import { type ChangeEvent, type FormEvent, useState } from 'react'
+} from '@equinor/eds-core-react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 import {
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineBuildMutation,
-} from '../../store/radix-api'
-import { getFetchErrorMessage } from '../../store/utils'
-import { Alert } from '../alert'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import type { FormProp } from './index'
-import { TargetEnvs } from './target-envs'
-import { useGetApplicationBranches } from './use-get-application-branches'
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import type { FormProp } from './index';
+import { TargetEnvs } from './target-envs';
+import { useGetApplicationBranches } from './use-get-application-branches';
 
 export function PipelineFormBuildBranches({
   children,
@@ -23,55 +23,55 @@ export function PipelineFormBuildBranches({
   appName,
   pipelineName,
 }: FormProp) {
-  const [triggerBuild, buildState] = useTriggerPipelineBuildMutation()
+  const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
-    useTriggerPipelineBuildDeployMutation()
+    useTriggerPipelineBuildDeployMutation();
 
-  const state = pipelineName === 'build-deploy' ? buildDeployState : buildState
+  const state = pipelineName === 'build-deploy' ? buildDeployState : buildState;
 
-  const [branch, setBranch] = useState('')
-  const [selectedBranch, setSelectedBranch] = useState('')
-  const [branchFullName, setBranchFullName] = useState('')
-  const branches = useGetApplicationBranches(appName)
+  const [branch, setBranch] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState('');
+  const [branchFullName, setBranchFullName] = useState('');
+  const branches = useGetApplicationBranches(appName);
 
   const handleOnTextChange = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
-    setBranch(value)
-    setBranchFullName(value)
-  }
+    setBranch(value);
+    setBranchFullName(value);
+  };
   const handleChange = ({
     target: { value },
   }: ChangeEvent<HTMLSelectElement>) => {
-    setBranch(value)
-    setSelectedBranch(value)
-    setBranchFullName(value)
-  }
+    setBranch(value);
+    setSelectedBranch(value);
+    setBranchFullName(value);
+  };
 
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
+      e.preventDefault();
 
       const body = {
         appName,
         pipelineParametersBuild: { branch },
-      }
-      let jobName = ''
+      };
+      let jobName = '';
       if (pipelineName === 'build-deploy') {
-        jobName = (await triggerBuildDeploy(body).unwrap()).name
+        jobName = (await triggerBuildDeploy(body).unwrap()).name;
       } else {
-        jobName = (await triggerBuild(body).unwrap()).name
+        jobName = (await triggerBuild(body).unwrap()).name;
       }
-      onSuccess(jobName)
+      onSuccess(jobName);
     },
     `Created ${pipelineName} pipeline job`
-  )
+  );
   const isAnyValidRegex = (pattern: string): boolean => {
-    return pattern && /[\^$.*+?()[\]{}|\\]/.test(pattern)
-  }
+    return pattern && /[\^$.*+?()[\]{}|\\]/.test(pattern);
+  };
   const isValidBranchName = (branch: string): boolean => {
-    return branch && !/[\^$*+?()[\]{}|\\]/.test(branch)
-  }
+    return branch && !/[\^$*+?()[\]{}|\\]/.test(branch);
+  };
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
@@ -141,5 +141,5 @@ export function PipelineFormBuildBranches({
         </div>
       </fieldset>
     </form>
-  )
+  );
 }

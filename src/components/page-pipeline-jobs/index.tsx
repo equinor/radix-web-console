@@ -1,26 +1,26 @@
-import { Button, Icon } from '@equinor/eds-core-react'
-import { add } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
-import { withRouteParams } from '../../utils/router'
+import { Button, Icon } from '@equinor/eds-core-react';
+import { add } from '@equinor/eds-icons';
+import { Link } from 'react-router-dom';
+import { withRouteParams } from '../../utils/router';
 
-import ApplicationAlerting from './application-alerting'
+import ApplicationAlerting from './application-alerting';
 
-import { routes } from '../../routes'
-import { pollingInterval } from '../../store/defaults'
-import { useGetApplicationJobsQuery } from '../../store/radix-api'
-import { routeWithParams } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { DocumentTitle } from '../document-title'
-import { JobsList } from '../jobs-list'
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import { useGetApplicationJobsQuery } from '../../store/radix-api';
+import { routeWithParams } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { DocumentTitle } from '../document-title';
+import { JobsList } from '../jobs-list';
 
-import './style.css'
+import './style.css';
 
 export function PipelinePageJobs({ appName }: { appName: string }) {
   const { data: jobs, ...state } = useGetApplicationJobsQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  )
+  );
 
   return (
     <>
@@ -54,6 +54,6 @@ export function PipelinePageJobs({ appName }: { appName: string }) {
         </AsyncResource>
       </main>
     </>
-  )
+  );
 }
-export default withRouteParams(PipelinePageJobs)
+export default withRouteParams(PipelinePageJobs);

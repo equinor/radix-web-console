@@ -4,58 +4,58 @@ import {
   Menu,
   Table,
   Typography,
-} from '@equinor/eds-core-react'
+} from '@equinor/eds-core-react';
 import {
   chevron_down,
   chevron_up,
   delete_to_trash,
   replay,
   stop,
-} from '@equinor/eds-icons'
-import { clsx } from 'clsx'
-import * as PropTypes from 'prop-types'
-import { Fragment, useCallback, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+} from '@equinor/eds-icons';
+import { clsx } from 'clsx';
+import * as PropTypes from 'prop-types';
+import { Fragment, useCallback, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { JobContextMenu } from './job-context-menu'
-import { JobDeploymentLink } from './job-deployment-link'
-import { RestartBatch } from './restart-batch'
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
+import { RestartBatch } from './restart-batch';
 
 import {
   type ScheduledBatchSummary,
   useDeleteBatchMutation,
   useStopBatchMutation,
-} from '../../../store/radix-api'
-import { promiseHandler } from '../../../utils/promise-handler'
-import { getScheduledBatchUrl } from '../../../utils/routing'
+} from '../../../store/radix-api';
+import { promiseHandler } from '../../../utils/promise-handler';
+import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
   type sortDirection,
-} from '../../../utils/sort-utils'
-import { smallScheduledBatchName } from '../../../utils/string'
-import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils'
-import { ScrimPopup } from '../../scrim-popup'
-import { ProgressStatusBadge } from '../../status-badges'
-import { Duration } from '../../time/duration'
-import { RelativeToNow } from '../../time/relative-to-now'
-import { BatchJobStatuses } from './batch-job-statuses'
+} from '../../../utils/sort-utils';
+import { smallScheduledBatchName } from '../../../utils/string';
+import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
+import { ScrimPopup } from '../../scrim-popup';
+import { ProgressStatusBadge } from '../../status-badges';
+import { Duration } from '../../time/duration';
+import { RelativeToNow } from '../../time/relative-to-now';
+import { BatchJobStatuses } from './batch-job-statuses';
 
-import './style.css'
+import './style.css';
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
-  return status === 'Waiting' || status === 'Running'
+  return status === 'Waiting' || status === 'Running';
 }
 
 type Props = {
-  appName: string
-  envName: string
-  jobComponentName: string
-  scheduledBatchList?: Array<ScheduledBatchSummary>
-  isExpanded?: boolean
-  fetchBatches?: () => void
-}
+  appName: string;
+  envName: string;
+  jobComponentName: string;
+  scheduledBatchList?: Array<ScheduledBatchSummary>;
+  isExpanded?: boolean;
+  fetchBatches?: () => void;
+};
 
 export function ScheduledBatchList({
   appName,
@@ -65,25 +65,25 @@ export function ScheduledBatchList({
   isExpanded,
   fetchBatches: refreshBatches,
 }: Props) {
-  const [deleteBatch] = useDeleteBatchMutation()
-  const [stopBatch] = useStopBatchMutation()
-  const [dateSort, setDateSort] = useState<sortDirection>()
-  const [statusSort, setStatusSort] = useState<sortDirection>()
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
+  const [deleteBatch] = useDeleteBatchMutation();
+  const [stopBatch] = useStopBatchMutation();
+  const [dateSort, setDateSort] = useState<sortDirection>();
+  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [visibleRestartScrims, setVisibleRestartScrims] = useState<
     Record<string, boolean>
-  >({})
+  >({});
 
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  )
+  );
   const setVisibleRestartScrim = useCallback<
     (id: string, visible: boolean) => void
   >(
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
-  )
+  );
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledBatchList, [
@@ -97,8 +97,8 @@ export function ScheduledBatchList({
           false,
           () => !!statusSort
         ),
-    ])
-  }, [dateSort, scheduledBatchList, statusSort])
+    ]);
+  }, [dateSort, scheduledBatchList, statusSort]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -310,7 +310,7 @@ export function ScheduledBatchList({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  )
+  );
 }
 
 ScheduledBatchList.propTypes = {
@@ -322,4 +322,4 @@ ScheduledBatchList.propTypes = {
   ),
   isExpanded: PropTypes.bool,
   fetchBatches: PropTypes.func,
-}
+};

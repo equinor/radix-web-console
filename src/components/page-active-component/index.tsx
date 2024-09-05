@@ -1,12 +1,12 @@
-import { withRouteParams } from '../../utils/router'
-import { DocumentTitle } from '../document-title'
-import { ActiveComponentOverview } from './active-component-overview'
+import { withRouteParams } from '../../utils/router';
+import { DocumentTitle } from '../document-title';
+import { ActiveComponentOverview } from './active-component-overview';
 
 type Props = {
-  appName: string
-  envName: string
-  componentName: string
-}
+  appName: string;
+  envName: string;
+  componentName: string;
+};
 export function PageActiveComponent({
   appName,
   envName,
@@ -21,7 +21,7 @@ export function PageActiveComponent({
         componentName={componentName}
       />
     </>
-  )
+  );
 }
 
-export default withRouteParams(PageActiveComponent)
+export default withRouteParams(PageActiveComponent);

@@ -1,33 +1,33 @@
-import { Button, Card, Icon } from '@equinor/eds-core-react'
-import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons'
-import { clsx } from 'clsx'
+import { Button, Card, Icon } from '@equinor/eds-core-react';
+import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons';
+import { clsx } from 'clsx';
 import {
   type FunctionComponent,
   type UIEvent,
   useEffect,
   useRef,
   useState,
-} from 'react'
+} from 'react';
 
-import stripAnsi from 'strip-ansi'
-import { copyToClipboard, copyToTextFile } from '../../utils/string'
+import stripAnsi from 'strip-ansi';
+import { copyToClipboard, copyToTextFile } from '../../utils/string';
 
-import './style.css'
+import './style.css';
 
 export type CodeProps = {
-  autoscroll?: boolean
-  copy?: boolean
-  download?: boolean
-  downloadCb?: () => void
-  filename?: string
-  resizable?: boolean
-}
+  autoscroll?: boolean;
+  copy?: boolean;
+  download?: boolean;
+  downloadCb?: () => void;
+  filename?: string;
+  resizable?: boolean;
+};
 
 function scrollToBottom(elementRef: Element): void {
   // HACK elementRef.scrollHeight is incorrect when called directly
   // the callback in setTimeout is scheduled as a task to run after
   // PageCreateApplication has rendered DOM... it seems
-  setTimeout(() => elementRef?.scrollTo?.(0, elementRef.scrollHeight), 0)
+  setTimeout(() => elementRef?.scrollTo?.(0, elementRef.scrollHeight), 0);
 }
 
 export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
@@ -39,19 +39,19 @@ export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
   resizable,
   children,
 }) => {
-  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
+  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   function handleScroll(ev: UIEvent<HTMLDivElement>) {
-    const tg = ev.target as Element
-    setScrollOffsetFromBottom(tg.scrollHeight - tg.scrollTop - tg.clientHeight)
+    const tg = ev.target as Element;
+    setScrollOffsetFromBottom(tg.scrollHeight - tg.scrollTop - tg.clientHeight);
   }
 
   useEffect(() => {
     if (autoscroll && scrollOffsetFromBottom === 0) {
-      scrollToBottom(containerRef.current)
+      scrollToBottom(containerRef.current);
     }
-  })
+  });
 
   return (
     <div className="code">
@@ -84,5 +84,5 @@ export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
         {stripAnsi(children)}
       </Card>
     </div>
-  )
-}
+  );
+};

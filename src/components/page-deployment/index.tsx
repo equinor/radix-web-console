@@ -1,12 +1,12 @@
-import { withRouteParams } from '../../utils/router'
-import { smallDeploymentName } from '../../utils/string'
-import { DocumentTitle } from '../document-title'
-import { DeploymentOverview } from './deployment-overview'
+import { withRouteParams } from '../../utils/router';
+import { smallDeploymentName } from '../../utils/string';
+import { DocumentTitle } from '../document-title';
+import { DeploymentOverview } from './deployment-overview';
 
 type Props = {
-  appName: string
-  deploymentName: string
-}
+  appName: string;
+  deploymentName: string;
+};
 
 export function PageDeployment({ appName, deploymentName }: Props) {
   return (
@@ -16,7 +16,7 @@ export function PageDeployment({ appName, deploymentName }: Props) {
       />
       <DeploymentOverview appName={appName} deploymentName={deploymentName} />
     </>
-  )
+  );
 }
 
-export default withRouteParams(PageDeployment)
+export default withRouteParams(PageDeployment);

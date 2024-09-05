@@ -1,10 +1,10 @@
-import { Accordion, List, Typography } from '@equinor/eds-core-react'
-import type { FunctionComponent } from 'react'
-import { DNSAlias } from './dns-alias'
+import { Accordion, List, Typography } from '@equinor/eds-core-react';
+import type { FunctionComponent } from 'react';
+import { DNSAlias } from './dns-alias';
 
 export interface DefaultAppAliasProps {
-  urls?: string[]
-  title: string
+  urls?: string[];
+  title: string;
 }
 
 export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
@@ -48,4 +48,4 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
         </>
       ))}
   </>
-)
+);

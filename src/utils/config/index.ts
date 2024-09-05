@@ -1,9 +1,9 @@
-import jsonConfig from '../../config.json'
+import jsonConfig from '../../config.json';
 
 function arrayTransformer(
   delimiter = ','
 ): (value: string | Array<string>) => Array<string> {
-  return (v) => (Array.isArray(v) ? v : v?.split(delimiter) ?? [])
+  return (v) => (Array.isArray(v) ? v : v?.split(delimiter) ?? []);
 }
 
 const transformers: Partial<
@@ -15,9 +15,9 @@ const transformers: Partial<
   CLUSTER_EGRESS_IPS: arrayTransformer(),
   CLUSTER_INGRESS_IPS: arrayTransformer(),
   SERVICENOW_PROXY_SCOPES: arrayTransformer(' '),
-}
+};
 
-const injectEnvKey = 'injectEnv'
+const injectEnvKey = 'injectEnv';
 
 export const configVariables: Readonly<typeof jsonConfig> = Object.freeze(
   Object.keys(jsonConfig).reduce<typeof jsonConfig>(
@@ -27,11 +27,11 @@ export const configVariables: Readonly<typeof jsonConfig> = Object.freeze(
         !window[injectEnvKey][key] ||
         window[injectEnvKey][key].startsWith('${')
           ? jsonConfig[key]
-          : window[injectEnvKey][key]
+          : window[injectEnvKey][key];
 
-      config[key] = transformers[key] ? transformers[key](value) : value
-      return config
+      config[key] = transformers[key] ? transformers[key](value) : value;
+      return config;
     },
     Object.create({})
   )
-)
+);

@@ -1,4 +1,4 @@
-import { ConfigureApplicationGithub } from '.'
+import { ConfigureApplicationGithub } from '.';
 
 export default (
   <div className="o-layout-single">
@@ -19,4 +19,4 @@ export default (
       initialSecretPollInterval={5000}
     />
   </div>
-)
+);

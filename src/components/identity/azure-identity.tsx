@@ -1,17 +1,17 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
-import { info_circle } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import { externalUrls } from '../../externalUrls'
-import { Alert } from '../alert'
-import { CompactCopyButton } from '../compact-copy-button'
+import { externalUrls } from '../../externalUrls';
+import { Alert } from '../alert';
+import { CompactCopyButton } from '../compact-copy-button';
 
 export interface AzureIdentityProps {
-  oidcIssuerUrl: string
-  namespace: string
-  serviceAccountName: string
-  clientId: string
+  oidcIssuerUrl: string;
+  namespace: string;
+  serviceAccountName: string;
+  clientId: string;
 }
 
 const WorkloadIdentityHelp: FunctionComponent = () => (
@@ -32,7 +32,7 @@ const WorkloadIdentityHelp: FunctionComponent = () => (
       </Typography>
     </div>
   </Alert>
-)
+);
 
 export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
   oidcIssuerUrl,
@@ -81,11 +81,11 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
     </div>
     <WorkloadIdentityHelp />
   </div>
-)
+);
 
 AzureIdentity.propTypes = {
   oidcIssuerUrl: PropTypes.string.isRequired,
   namespace: PropTypes.string.isRequired,
   serviceAccountName: PropTypes.string.isRequired,
   clientId: PropTypes.string.isRequired,
-}
+};

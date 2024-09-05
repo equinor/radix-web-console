@@ -1,4 +1,4 @@
-import type { ConfigFile } from '@rtk-query/codegen-openapi'
+import type { ConfigFile } from '@rtk-query/codegen-openapi';
 
 const config: ConfigFile = {
   schemaFile:
@@ -8,6 +8,6 @@ const config: ConfigFile = {
   outputFile: '../service-now-api.ts',
   exportName: 'serviceNowApi',
   hooks: true,
-}
+};
 
-export default config
+export default config;

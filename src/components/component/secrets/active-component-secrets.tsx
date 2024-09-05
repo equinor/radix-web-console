@@ -1,21 +1,21 @@
-import { Accordion, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { Accordion, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
 import {
   GenericSecrets,
   KeyVaultSecrets,
   type SecretComponent,
   VolumeMountSecrets,
-} from './secret-tables'
+} from './secret-tables';
 
-import { pollingInterval } from '../../../store/defaults'
-import { type Secret, useGetEnvironmentQuery } from '../../../store/radix-api'
-import AsyncResource from '../../async-resource/async-resource'
+import { pollingInterval } from '../../../store/defaults';
+import { type Secret, useGetEnvironmentQuery } from '../../../store/radix-api';
+import AsyncResource from '../../async-resource/async-resource';
 
-type SecretTable = { title: string; Component: SecretComponent }
-type SecretTableGroup = SecretTable & { types: Array<Secret['type']> }
-type SecretTableItem = SecretTable & { secrets: Array<Secret> }
+type SecretTable = { title: string; Component: SecretComponent };
+type SecretTableGroup = SecretTable & { types: Array<Secret['type']> };
+type SecretTableItem = SecretTable & { secrets: Array<Secret> };
 
 const secretGrouping = Object.freeze<Array<SecretTableGroup>>([
   {
@@ -43,45 +43,45 @@ const secretGrouping = Object.freeze<Array<SecretTableGroup>>([
     Component: GenericSecrets,
     types: ['oauth2-proxy'],
   },
-])
+]);
 
 function groupSecrets(
   secrets: Array<Secret>,
   groups: Readonly<Array<SecretTableGroup>>
 ): Array<SecretTableItem> {
-  const groupTypes = groups.flatMap(({ types }) => types)
+  const groupTypes = groups.flatMap(({ types }) => types);
   const grouped = groups
     .map<SecretTableItem>(({ types, ...rest }) => ({
       secrets: secrets.filter(({ type }) => types.includes(type)),
       ...rest,
     }))
-    .filter(({ secrets }) => secrets.length > 0)
+    .filter(({ secrets }) => secrets.length > 0);
 
   // add any non-grouped secrets to an ungrouped list
-  const uncategorized = secrets.filter((x) => !groupTypes.includes(x.type))
+  const uncategorized = secrets.filter((x) => !groupTypes.includes(x.type));
   if (uncategorized.length > 0) {
     grouped.push({
       title: 'Uncategorized',
       Component: GenericSecrets,
       secrets: uncategorized,
-    })
+    });
   }
 
-  return grouped
+  return grouped;
 }
 
 export const ActiveComponentSecrets: FunctionComponent<{
-  appName: string
-  envName: string
-  componentName: string
-  secretNames?: Array<string>
+  appName: string;
+  envName: string;
+  componentName: string;
+  secretNames?: Array<string>;
 }> = ({ appName, envName, componentName, secretNames }) => {
   const { data: environment, ...environmentState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  )
+  );
 
-  const [secretTables, setSecretTables] = useState<Array<SecretTableItem>>([])
+  const [secretTables, setSecretTables] = useState<Array<SecretTableItem>>([]);
   useEffect(() => {
     const componentSecrets = [
       ...(secretNames || [])
@@ -93,10 +93,10 @@ export const ActiveComponentSecrets: FunctionComponent<{
             )
         )
         .filter((x) => !!x),
-    ]
+    ];
 
-    setSecretTables(groupSecrets(componentSecrets, secretGrouping))
-  }, [secretNames, componentName, environment])
+    setSecretTables(groupSecrets(componentSecrets, secretGrouping));
+  }, [secretNames, componentName, environment]);
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -154,12 +154,12 @@ export const ActiveComponentSecrets: FunctionComponent<{
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  )
-}
+  );
+};
 
 ActiveComponentSecrets.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
   secretNames: PropTypes.arrayOf(PropTypes.string),
-}
+};

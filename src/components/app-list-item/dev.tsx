@@ -1,12 +1,12 @@
-import { Typography } from '@equinor/eds-core-react'
+import { Typography } from '@equinor/eds-core-react';
 
 import {
   AppListItem,
   type AppListItemProps,
   type FavouriteClickedHandler,
-} from '.'
+} from '.';
 
-const noop: FavouriteClickedHandler = (evt) => evt.preventDefault()
+const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 
 const testData: Array<{ description: string } & AppListItemProps> = [
   {
@@ -43,7 +43,7 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     handler: noop,
     isPlaceholder: true,
   },
-]
+];
 
 export default (
   <div style={{ background: '#eee', padding: 'var(--eds_spacing_medium)' }}>
@@ -54,4 +54,4 @@ export default (
       </div>
     ))}
   </div>
-)
+);

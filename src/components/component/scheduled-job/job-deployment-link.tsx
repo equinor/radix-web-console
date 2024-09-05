@@ -1,16 +1,16 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 
-import { routes } from '../../../routes'
-import { getAppDeploymentUrl } from '../../../utils/routing'
-import { routeWithParams } from '../../../utils/string'
+import { routes } from '../../../routes';
+import { getAppDeploymentUrl } from '../../../utils/routing';
+import { routeWithParams } from '../../../utils/string';
 
 export interface ScheduledJobListProps {
-  appName: string
-  jobComponentName: string
-  deploymentName: string
+  appName: string;
+  jobComponentName: string;
+  deploymentName: string;
 }
 
 export const JobDeploymentLink: FunctionComponent<ScheduledJobListProps> = ({
@@ -40,10 +40,10 @@ export const JobDeploymentLink: FunctionComponent<ScheduledJobListProps> = ({
       {deploymentName}
     </Typography>
   </Typography>
-)
+);
 
 JobDeploymentLink.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
-}
+};

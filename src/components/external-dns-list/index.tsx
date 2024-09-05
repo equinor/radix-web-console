@@ -4,33 +4,33 @@ import {
   useCallback,
   useMemo,
   useState,
-} from 'react'
+} from 'react';
 
-import { Icon, Table, Typography } from '@equinor/eds-core-react'
-import { chevron_down, chevron_up } from '@equinor/eds-icons'
-import clsx from 'clsx'
-import { differenceInDays } from 'date-fns'
-import * as PropTypes from 'prop-types'
-import type { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api'
-import { dataSorter, sortCompareString } from '../../utils/sort-utils'
-import { pluraliser } from '../../utils/string'
-import { Alert, type AlertProps } from '../alert'
-import { ExternalDNSStatusBadge } from '../status-badges'
-import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge'
-import { TLSCertificateList } from '../tls-certificate-list'
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import clsx from 'clsx';
+import { differenceInDays } from 'date-fns';
+import * as PropTypes from 'prop-types';
+import type { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
+import { pluraliser } from '../../utils/string';
+import { Alert, type AlertProps } from '../alert';
+import { ExternalDNSStatusBadge } from '../status-badges';
+import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge';
+import { TLSCertificateList } from '../tls-certificate-list';
 
-type TlsStatus = Tls['status']
+type TlsStatus = Tls['status'];
 
 const StatusMessageAlertTemplate = {
   Pending: { type: 'info' },
   Consistent: { type: 'info' },
   Invalid: { type: 'danger' },
-} satisfies Record<TlsStatus, AlertProps>
+} satisfies Record<TlsStatus, AlertProps>;
 
 type StatusMessagesProps = {
-  status: TlsStatus
-  messages: Array<string>
-}
+  status: TlsStatus;
+  messages: Array<string>;
+};
 
 function StatusMessages({ status, messages }: StatusMessagesProps) {
   return (
@@ -41,22 +41,22 @@ function StatusMessages({ status, messages }: StatusMessagesProps) {
         ))}
       </div>
     </Alert>
-  )
+  );
 }
 
-type AutomationStatus = TlsAutomation['status'] | 'Unknown'
+type AutomationStatus = TlsAutomation['status'] | 'Unknown';
 
 const TlsAutomationMessageAlertTemplate = {
   Pending: { type: 'warning' },
   Success: { type: 'info' },
   Failed: { type: 'danger' },
   Unknown: { type: 'warning' },
-} satisfies Record<AutomationStatus, AlertProps>
+} satisfies Record<AutomationStatus, AlertProps>;
 
 type TlsAutomationMessageProps = {
-  status: AutomationStatus
-  message: string
-}
+  status: AutomationStatus;
+  message: string;
+};
 
 function TlsAutomationStatusMessage({
   status,
@@ -68,14 +68,14 @@ function TlsAutomationStatusMessage({
         <Typography>{message}</Typography>
       </div>
     </Alert>
-  )
+  );
 }
 
-const dayPluraliser = pluraliser('day', 'days')
+const dayPluraliser = pluraliser('day', 'days');
 
 export const ExternalDNSList: FunctionComponent<{
-  externalDnsList: Array<ExternalDns>
-  onItemClick?: (item: ExternalDns) => void
+  externalDnsList: Array<ExternalDns>;
+  onItemClick?: (item: ExternalDns) => void;
 }> = ({ externalDnsList, onItemClick }) => {
   const sortedExternalDnsList = useMemo(
     () =>
@@ -83,12 +83,12 @@ export const ExternalDNSList: FunctionComponent<{
         (x, y) => sortCompareString(x.fqdn, y.fqdn),
       ]),
     [externalDnsList]
-  )
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
+  );
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  )
+  );
 
   return (
     <Table>
@@ -220,12 +220,12 @@ export const ExternalDNSList: FunctionComponent<{
           )}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
 ExternalDNSList.propTypes = {
   externalDnsList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ExternalDns>
   ).isRequired,
   onItemClick: PropTypes.func,
-}
+};

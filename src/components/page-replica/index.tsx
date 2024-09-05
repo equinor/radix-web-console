@@ -1,45 +1,45 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 
-import { routes } from '../../routes'
-import { pollingInterval } from '../../store/defaults'
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
 import {
   radixApi,
   useGetEnvironmentQuery,
   useReplicaLogQuery,
-} from '../../store/radix-api'
-import { withRouteParams } from '../../utils/router'
-import { getEnvsUrl } from '../../utils/routing'
-import { routeWithParams, smallReplicaName } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { downloadLazyLogCb } from '../code/log-helper'
-import { Replica } from '../replica'
+} from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
+import { routeWithParams, smallReplicaName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { downloadLazyLogCb } from '../code/log-helper';
+import { Replica } from '../replica';
 
 interface Props {
-  appName: string
-  envName: string
-  componentName: string
-  replicaName: string
+  appName: string;
+  envName: string;
+  componentName: string;
+  replicaName: string;
 }
 
 function PageReplica({ appName, envName, componentName, replicaName }: Props) {
   const environmentState = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  )
+  );
   const pollLogsState = useReplicaLogQuery(
     { appName, envName, componentName, podName: replicaName, lines: '1000' },
     {
       skip: !appName || !envName || !componentName || !replicaName,
       pollingInterval: 5000,
     }
-  )
-  const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery()
+  );
+  const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery();
 
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
-    ?.replicaList?.find((x) => x.name === replicaName)
+    ?.replicaList?.find((x) => x.name === replicaName);
 
   return (
     <>
@@ -98,7 +98,7 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
         )}
       </AsyncResource>
     </>
-  )
+  );
 }
 
 PageReplica.propTypes = {
@@ -106,6 +106,6 @@ PageReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-}
+};
 
-export default withRouteParams(PageReplica)
+export default withRouteParams(PageReplica);

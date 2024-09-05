@@ -6,44 +6,44 @@ import {
   List,
   TextField,
   Typography,
-} from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { type ChangeEvent, type FormEvent, useState } from 'react'
+} from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 
-import imageDeployKey from '../configure-application-github/deploy-key02.png'
-import imageWebhook from '../configure-application-github/webhook01.png'
+import imageDeployKey from '../configure-application-github/deploy-key02.png';
+import imageWebhook from '../configure-application-github/webhook01.png';
 
-import { pollingInterval } from '../../store/defaults'
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetDeployKeyAndSecretQuery,
   useModifyRegistrationDetailsMutation,
-} from '../../store/radix-api'
-import { getFetchErrorMessage } from '../../store/utils'
-import { configVariables } from '../../utils/config'
-import { Alert } from '../alert'
-import AsyncResource from '../async-resource/async-resource'
-import { Code } from '../code'
-import { CompactCopyButton } from '../compact-copy-button'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
+import { configVariables } from '../../utils/config';
+import { Alert } from '../alert';
+import AsyncResource from '../async-resource/async-resource';
+import { Code } from '../code';
+import { CompactCopyButton } from '../compact-copy-button';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
-const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE
+const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 const DeployKey = ({ appName }: { appName: string }) => {
   const { data: deployKeAndSecret, ...depAndSecState } =
-    useGetDeployKeyAndSecretQuery({ appName }, { pollingInterval })
+    useGetDeployKeyAndSecretQuery({ appName }, { pollingInterval });
 
   return (
     <AsyncResource asyncState={depAndSecState}>
       <Code copy>{deployKeAndSecret?.publicDeployKey}</Code>
     </AsyncResource>
-  )
-}
+  );
+};
 
 interface Props {
-  appName: string
-  repository: string
-  refetch?: () => undefined
-  sharedSecret: string
+  appName: string;
+  repository: string;
+  refetch?: () => undefined;
+  sharedSecret: string;
 }
 export function ChangeRepositoryForm({
   appName,
@@ -51,15 +51,15 @@ export function ChangeRepositoryForm({
   refetch,
   sharedSecret,
 }: Props) {
-  const [currentRepository, setCurrentRepository] = useState(repository)
-  const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false)
+  const [currentRepository, setCurrentRepository] = useState(repository);
+  const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [mutate, { isLoading, error, data: modifyState, isSuccess }] =
-    useModifyRegistrationDetailsMutation()
+    useModifyRegistrationDetailsMutation();
 
-  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${appName}`
+  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${appName}`;
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
-    ev.preventDefault()
+    ev.preventDefault();
 
     await mutate({
       appName,
@@ -69,10 +69,10 @@ export function ChangeRepositoryForm({
         },
         acknowledgeWarnings: useAcknowledgeWarnings,
       },
-    }).unwrap()
+    }).unwrap();
 
-    await refetch?.()
-  })
+    await refetch?.();
+  });
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -248,7 +248,7 @@ export function ChangeRepositoryForm({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  )
+  );
 }
 
 ChangeRepositoryForm.propTypes = {
@@ -256,4 +256,4 @@ ChangeRepositoryForm.propTypes = {
   repository: PropTypes.string.isRequired,
   refetch: PropTypes.func,
   sharedSecret: PropTypes.string.isRequired,
-}
+};

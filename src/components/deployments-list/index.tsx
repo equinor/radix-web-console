@@ -1,30 +1,30 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react'
-import { external_link, send } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { external_link, send } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
-import { DeploymentSummaryTableRow } from './deployment-summary-table-row'
+import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
 
-import { pollingInterval } from '../../store/defaults'
+import { pollingInterval } from '../../store/defaults';
 import {
   type DeploymentSummary,
   useGetApplicationQuery,
-} from '../../store/radix-api'
+} from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
   type sortDirection,
-} from '../../utils/sort-utils'
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
+} from '../../utils/sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
-import './style.css'
+import './style.css';
 
 export interface DeploymentsListProps {
-  appName: string
-  deployments?: Readonly<Array<DeploymentSummary>>
-  limit?: number
-  inEnv?: boolean
+  appName: string;
+  deployments?: Readonly<Array<DeploymentSummary>>;
+  limit?: number;
+  inEnv?: boolean;
 }
 
 export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
@@ -33,13 +33,13 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   limit,
   inEnv,
 }) => {
-  const { data } = useGetApplicationQuery({ appName }, { pollingInterval })
-  const repo = data?.registration.repository
+  const { data } = useGetApplicationQuery({ appName }, { pollingInterval });
+  const repo = data?.registration.repository;
 
-  const [sortedData, setSortedData] = useState(deployments || [])
-  const [dateSort, setDateSort] = useState<sortDirection>('descending')
-  const [envSort, setEnvSort] = useState<sortDirection>()
-  const [pipelineSort, setPipelineSort] = useState<sortDirection>()
+  const [sortedData, setSortedData] = useState(deployments || []);
+  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [envSort, setEnvSort] = useState<sortDirection>();
+  const [pipelineSort, setPipelineSort] = useState<sortDirection>();
 
   useEffect(() => {
     setSortedData(
@@ -62,8 +62,8 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
             () => !!envSort
           ),
       ])
-    )
-  }, [dateSort, deployments, envSort, limit, pipelineSort])
+    );
+  }, [dateSort, deployments, envSort, limit, pipelineSort]);
 
   return (
     <div className="deployments-list grid grid--gap-medium">
@@ -129,8 +129,8 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
 DeploymentsList.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -139,4 +139,4 @@ DeploymentsList.propTypes = {
   ),
   limit: PropTypes.number,
   inEnv: PropTypes.bool,
-}
+};

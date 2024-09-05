@@ -1,50 +1,50 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react'
-import { chevron_down, chevron_up } from '@equinor/eds-icons'
-import { clsx } from 'clsx'
-import * as PropTypes from 'prop-types'
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { chevron_down, chevron_up } from '@equinor/eds-icons';
+import { clsx } from 'clsx';
+import * as PropTypes from 'prop-types';
 import {
   Fragment,
   type FunctionComponent,
   useCallback,
   useEffect,
   useState,
-} from 'react'
+} from 'react';
 
-import type { ReplicaSummary } from '../../store/radix-api'
+import type { ReplicaSummary } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
   type sortDirection,
-} from '../../utils/sort-utils'
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
-import { ReplicaImage } from '../replica-image'
-import { ReplicaStatusBadge } from '../status-badges'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
+} from '../../utils/sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { ReplicaImage } from '../replica-image';
+import { ReplicaStatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 
-import './style.css'
-import { ReplicaName } from './replica-name'
+import './style.css';
+import { ReplicaName } from './replica-name';
 
 export const ReplicaList: FunctionComponent<{
-  replicaList: Array<ReplicaSummary>
-  replicaUrlFunc: (name: string) => string
+  replicaList: Array<ReplicaSummary>;
+  replicaUrlFunc: (name: string) => string;
 }> = ({ replicaList, replicaUrlFunc }) => {
-  const [sortedData, setSortedData] = useState(replicaList || [])
-  const [dateSort, setDateSort] = useState<sortDirection>()
-  const [statusSort, setStatusSort] = useState<sortDirection>()
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
-  const [lastUpdate, setLastUpdate] = useState(new Date())
+  const [sortedData, setSortedData] = useState(replicaList || []);
+  const [dateSort, setDateSort] = useState<sortDirection>();
+  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  const [lastUpdate, setLastUpdate] = useState(new Date());
 
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  )
+  );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes
   useEffect(() => {
-    setLastUpdate(new Date())
-  }, [replicaList])
+    setLastUpdate(new Date());
+  }, [replicaList]);
 
   useEffect(() => {
     setSortedData(
@@ -60,8 +60,8 @@ export const ReplicaList: FunctionComponent<{
             () => !!statusSort
           ),
       ])
-    )
-  }, [dateSort, replicaList, statusSort])
+    );
+  }, [dateSort, replicaList, statusSort]);
 
   return (
     <Table>
@@ -144,12 +144,12 @@ export const ReplicaList: FunctionComponent<{
           ))}
       </Table.Body>
     </Table>
-  )
-}
+  );
+};
 
 ReplicaList.propTypes = {
   replicaList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ReplicaSummary>
   ).isRequired,
   replicaUrlFunc: PropTypes.func.isRequired,
-}
+};

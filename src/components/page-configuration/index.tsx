@@ -1,39 +1,39 @@
-import { Typography } from '@equinor/eds-core-react'
-import { BuildSecretsAccordion } from './build-secrets-accordion'
-import ChangeAdminForm from './change-admin-form'
-import { ChangeConfigurationItemForm } from './change-ci-form'
-import { ChangeConfigBranchForm } from './change-config-branch-form'
-import { ChangeConfigFileForm } from './change-config-file-form'
-import { ChangeRepositoryForm } from './change-repository-form'
-import DeleteApplicationForm from './delete-application-form'
-import { ImageHubsAccordion } from './image-hubs-accordion'
-import { Overview } from './overview'
+import { Typography } from '@equinor/eds-core-react';
+import { BuildSecretsAccordion } from './build-secrets-accordion';
+import ChangeAdminForm from './change-admin-form';
+import { ChangeConfigurationItemForm } from './change-ci-form';
+import { ChangeConfigBranchForm } from './change-config-branch-form';
+import { ChangeConfigFileForm } from './change-config-file-form';
+import { ChangeRepositoryForm } from './change-repository-form';
+import DeleteApplicationForm from './delete-application-form';
+import { ImageHubsAccordion } from './image-hubs-accordion';
+import { Overview } from './overview';
 
-import { routes } from '../../routes'
-import { configVariables } from '../../utils/config'
-import { withRouteParams } from '../../utils/router'
-import { routeWithParams } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { ConfigureApplicationGithub } from '../configure-application-github'
-import { DocumentTitle } from '../document-title'
+import { routes } from '../../routes';
+import { configVariables } from '../../utils/config';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { ConfigureApplicationGithub } from '../configure-application-github';
+import { DocumentTitle } from '../document-title';
 
-import './style.css'
-import { pollingInterval } from '../../store/defaults'
-import { type ApplicationRegistration, radixApi } from '../../store/radix-api'
+import './style.css';
+import { pollingInterval } from '../../store/defaults';
+import { type ApplicationRegistration, radixApi } from '../../store/radix-api';
 function getConfigBranch(configBranch: string): string {
-  return configBranch || 'master'
+  return configBranch || 'master';
 }
 
 function getRadixConfigFullName(radixConfigFullName: string): string {
-  return radixConfigFullName || 'radixconfig.yaml'
+  return radixConfigFullName || 'radixconfig.yaml';
 }
 
 function getConfigBranchUrl({
   configBranch,
   repository,
 }: ApplicationRegistration): string {
-  return `${repository}/tree/${getConfigBranch(configBranch)}`
+  return `${repository}/tree/${getConfigBranch(configBranch)}`;
 }
 
 function getConfigFileUrl({
@@ -43,7 +43,7 @@ function getConfigFileUrl({
 }: ApplicationRegistration): string {
   return `${repository}/blob/${configBranch}/${getRadixConfigFullName(
     radixConfigFullName
-  )}`
+  )}`;
 }
 
 export function PageConfiguration({ appName }: { appName: string }) {
@@ -51,8 +51,8 @@ export function PageConfiguration({ appName }: { appName: string }) {
     data: application,
     refetch,
     ...reqState
-  } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval })
-  const registration = application?.registration
+  } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval });
+  const registration = application?.registration;
 
   return (
     <main>
@@ -139,6 +139,6 @@ export function PageConfiguration({ appName }: { appName: string }) {
         )}
       </AsyncResource>
     </main>
-  )
+  );
 }
-export default withRouteParams(PageConfiguration)
+export default withRouteParams(PageConfiguration);

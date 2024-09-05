@@ -3,33 +3,33 @@ import {
   Button,
   CircularProgress,
   Typography,
-} from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { type FormEvent, useState } from 'react'
+} from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { type FormEvent, useState } from 'react';
 
-import { difference } from 'lodash'
+import { difference } from 'lodash';
 import {
   type ApplicationRegistration,
   useModifyRegistrationDetailsMutation,
-} from '../../store/radix-api'
-import { AppConfigAdGroups } from '../app-config-ad-groups'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+} from '../../store/radix-api';
+import { AppConfigAdGroups } from '../app-config-ad-groups';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 const isEqual = (a: Array<unknown>, b: Array<unknown>) =>
-  a.length == b.length && difference(a, b).length === 0
+  a.length == b.length && difference(a, b).length === 0;
 
 interface Props {
-  registration: ApplicationRegistration
-  refetch?: () => undefined
+  registration: ApplicationRegistration;
+  refetch?: () => undefined;
 }
 export default function ChangeAdminForm({ registration, refetch }: Props) {
-  const [adminAdGroup, setAdminAdGroup] = useState<Array<string>>()
-  const [readerAdGroup, setReaderAdGroup] = useState<Array<string>>()
-  const [mutate, { isLoading }] = useModifyRegistrationDetailsMutation()
+  const [adminAdGroup, setAdminAdGroup] = useState<Array<string>>();
+  const [readerAdGroup, setReaderAdGroup] = useState<Array<string>>();
+  const [mutate, { isLoading }] = useModifyRegistrationDetailsMutation();
 
   const handleSubmit = handlePromiseWithToast(
     async (ev: FormEvent<HTMLFormElement>) => {
-      ev.preventDefault()
+      ev.preventDefault();
 
       await mutate({
         appName: registration.name,
@@ -40,21 +40,21 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
             readerAdGroups: readerAdGroup || registration.readerAdGroups,
           },
         },
-      }).unwrap()
-      await refetch?.()
-      setAdminAdGroup(undefined)
-      setReaderAdGroup(undefined)
+      }).unwrap();
+      await refetch?.();
+      setAdminAdGroup(undefined);
+      setReaderAdGroup(undefined);
     }
-  )
+  );
 
   const adminUnchanged =
-    adminAdGroup == null || isEqual(adminAdGroup, registration.adGroups ?? [])
+    adminAdGroup == null || isEqual(adminAdGroup, registration.adGroups ?? []);
 
   const readerUnchanged =
     readerAdGroup == null ||
-    isEqual(readerAdGroup, registration.readerAdGroups ?? [])
+    isEqual(readerAdGroup, registration.readerAdGroups ?? []);
 
-  const isUnchanged = adminUnchanged && readerUnchanged
+  const isUnchanged = adminUnchanged && readerUnchanged;
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -97,10 +97,10 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  )
+  );
 }
 
 ChangeAdminForm.proptypes = {
   registration: PropTypes.object.isRequired,
   refetch: PropTypes.func,
-}
+};

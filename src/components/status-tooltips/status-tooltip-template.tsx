@@ -1,24 +1,24 @@
-import { Icon, Tooltip, type TooltipProps } from '@equinor/eds-core-react'
-import { info_circle } from '@equinor/eds-icons'
-import { clsx } from 'clsx'
-import type React from 'react'
-import type { FunctionComponent, PropsWithChildren } from 'react'
+import { Icon, Tooltip, type TooltipProps } from '@equinor/eds-core-react';
+import { info_circle } from '@equinor/eds-icons';
+import { clsx } from 'clsx';
+import type React from 'react';
+import type { FunctionComponent, PropsWithChildren } from 'react';
 
-import './style.css'
+import './style.css';
 
 export type StatusTooltipTemplateType =
   | 'success'
   | 'warning'
   | 'danger'
   | 'none'
-  | 'default'
+  | 'default';
 
 export type StatusTooltipTemplateProps = {
-  className?: string
-  icon?: React.JSX.Element
-  type?: StatusTooltipTemplateType
+  className?: string;
+  icon?: React.JSX.Element;
+  type?: StatusTooltipTemplateType;
 } & Pick<TooltipProps, 'placement'> &
-  Required<Pick<TooltipProps, 'title'>>
+  Required<Pick<TooltipProps, 'title'>>;
 
 /** StatusTooltip template */
 export const StatusTooltipTemplate: FunctionComponent<
@@ -43,4 +43,4 @@ export const StatusTooltipTemplate: FunctionComponent<
       {children ?? <></>}
     </div>
   </Tooltip>
-)
+);

@@ -1,55 +1,55 @@
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import { ComponentReplicaList } from './component-replica-list'
-import { ComponentReplicaLogAccordion } from './component-replica-log-accordion'
-import { ComponentVulnerabilityDetails } from './component-vulnerability-details'
-import { ExternalDNSAccordion } from './external-dns'
-import { HorizontalScalingSummary } from './horizontal-scaling-summary'
-import { OAuthService } from './oauth-service'
-import { Overview } from './overview'
+import { ComponentReplicaList } from './component-replica-list';
+import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';
+import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
+import { ExternalDNSAccordion } from './external-dns';
+import { HorizontalScalingSummary } from './horizontal-scaling-summary';
+import { OAuthService } from './oauth-service';
+import { Overview } from './overview';
 
-import { routes } from '../../routes'
-import { pollingInterval } from '../../store/defaults'
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetApplicationQuery,
   useGetEnvironmentQuery,
-} from '../../store/radix-api'
-import { getEnvsUrl } from '../../utils/routing'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets'
-import { Toolbar } from '../component/toolbar'
-import { EnvironmentVariables } from '../environment-variables'
+} from '../../store/radix-api';
+import { getEnvsUrl } from '../../utils/routing';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
+import { Toolbar } from '../component/toolbar';
+import { EnvironmentVariables } from '../environment-variables';
 
-import { routeWithParams } from '../../utils/string'
-import './style.css'
+import { routeWithParams } from '../../utils/string';
+import './style.css';
 
 export const ActiveComponentOverview: FunctionComponent<{
-  appName: string
-  envName: string
-  componentName: string
+  appName: string;
+  envName: string;
+  componentName: string;
 }> = ({ appName, envName, componentName }) => {
   const { data: application, refetch } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
-  )
+  );
   const { data: environment, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  )
+  );
 
-  const { appAlias } = application || {}
-  const deployment = environment?.activeDeployment
+  const { appAlias } = application || {};
+  const deployment = environment?.activeDeployment;
   const component = deployment?.components?.find(
     ({ name }) => name === componentName
-  )
+  );
 
   const componentDNSAliases = application?.dnsAliases?.filter(
     (dnsAlias) =>
       dnsAlias.componentName === componentName &&
       dnsAlias.environmentName == envName
-  )
+  );
 
   return (
     <>
@@ -150,11 +150,11 @@ export const ActiveComponentOverview: FunctionComponent<{
         )}
       </AsyncResource>
     </>
-  )
-}
+  );
+};
 
 ActiveComponentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   componentName: PropTypes.string.isRequired,
-}
+};

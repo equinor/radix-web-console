@@ -1,39 +1,39 @@
-import { Accordion, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { type FunctionComponent, useEffect, useMemo, useState } from 'react'
-import { routes } from '../../routes'
+import { Accordion, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { type FunctionComponent, useEffect, useMemo, useState } from 'react';
+import { routes } from '../../routes';
 import {
   type ReplicaSummary,
   type ScheduledJobSummary,
   useGetJobQuery,
   useJobLogQuery,
-} from '../../store/radix-api'
-import { withRouteParams } from '../../utils/router'
-import { getEnvsUrl } from '../../utils/routing'
-import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
-import { routeWithParams, smallScheduledJobName } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { JobReplica } from './job-replica'
-import { ScheduledJobOverview } from './scheduled-job-overview'
+} from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
+import { routeWithParams, smallScheduledJobName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { JobReplica } from './job-replica';
+import { ScheduledJobOverview } from './scheduled-job-overview';
 
-import './style.css'
+import './style.css';
 
 function isJobSettled(status: ScheduledJobSummary['status']): boolean {
   switch (status) {
     case 'Failed':
     case 'Stopped':
     case 'Succeeded':
-      return true
+      return true;
   }
-  return false
+  return false;
 }
 
 export const PageScheduledJob: FunctionComponent<{
-  appName: string
-  jobComponentName: string
-  envName: string
-  scheduledJobName: string
+  appName: string;
+  jobComponentName: string;
+  envName: string;
+  scheduledJobName: string;
 }> = ({ appName, envName, jobComponentName, scheduledJobName }) => {
   const { data: job, ...scheduledJobState } = useGetJobQuery(
     { appName, envName, jobComponentName, jobName: scheduledJobName },
@@ -41,24 +41,24 @@ export const PageScheduledJob: FunctionComponent<{
       skip: !appName || !envName || !jobComponentName || !scheduledJobName,
       pollingInterval: 5000,
     }
-  )
-  const [pollingInterval, setPollingInterval] = useState(5000)
+  );
+  const [pollingInterval, setPollingInterval] = useState(5000);
   const pollLogsState = useJobLogQuery(
     { appName, envName, jobComponentName, scheduledJobName, lines: '1000' },
     {
       skip: !appName || !envName || !jobComponentName || !scheduledJobName,
       pollingInterval,
     }
-  )
+  );
   useEffect(() => {
-    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000)
-  }, [job?.status])
+    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000);
+  }, [job?.status]);
 
   const jobReplicas = useMemo(() => {
     return dataSorter(job?.replicaList, [
       (a, b) => sortCompareDate(a.created, b.created, 'descending'),
-    ])
-  }, [job?.replicaList])
+    ]);
+  }, [job?.replicaList]);
 
   return (
     <main className="grid grid--gap-medium">
@@ -158,14 +158,14 @@ export const PageScheduledJob: FunctionComponent<{
         )}
       </AsyncResource>
     </main>
-  )
-}
+  );
+};
 
 PageScheduledJob.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   scheduledJobName: PropTypes.string.isRequired,
-}
+};
 
-export default withRouteParams(PageScheduledJob)
+export default withRouteParams(PageScheduledJob);

@@ -1,23 +1,23 @@
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
-import { logApi } from '../../store/log-api'
-import { type ReplicaSummary, radixApi } from '../../store/radix-api'
-import type { FetchQueryResult } from '../../store/types'
-import { downloadLazyLogCb, downloadLazyLogPromise } from '../code/log-helper'
-import { Replica } from '../replica'
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
+import { logApi } from '../../store/log-api';
+import { type ReplicaSummary, radixApi } from '../../store/radix-api';
+import type { FetchQueryResult } from '../../store/types';
+import { downloadLazyLogCb, downloadLazyLogPromise } from '../code/log-helper';
+import { Replica } from '../replica';
 
-import './style.css'
-import { Accordion, Typography } from '@equinor/eds-core-react'
+import './style.css';
+import { Accordion, Typography } from '@equinor/eds-core-react';
 
 export const JobReplica: FunctionComponent<{
-  header?: string
-  appName: string
-  jobComponentName: string
-  envName: string
-  scheduledJobName: string
-  replica?: ReplicaSummary
-  logState?: FetchQueryResult<string>
-  isExpanded?: boolean
+  header?: string;
+  appName: string;
+  jobComponentName: string;
+  envName: string;
+  scheduledJobName: string;
+  replica?: ReplicaSummary;
+  logState?: FetchQueryResult<string>;
+  isExpanded?: boolean;
 }> = ({
   header,
   appName,
@@ -28,8 +28,8 @@ export const JobReplica: FunctionComponent<{
   logState,
   isExpanded,
 }) => {
-  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
-  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
+  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
+  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery();
   return (
     <div className="grid grid--gap-medium">
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -64,7 +64,7 @@ export const JobReplica: FunctionComponent<{
                   jobName: scheduledJobName,
                   replicaName: replica.name,
                   tail: 1000,
-                }).unwrap()
+                }).unwrap();
               }}
               downloadHistoryCb={() =>
                 downloadLazyLogPromise(
@@ -85,8 +85,8 @@ export const JobReplica: FunctionComponent<{
         </Accordion.Item>
       </Accordion>
     </div>
-  )
-}
+  );
+};
 
 JobReplica.propTypes = {
   header: PropTypes.string,
@@ -97,4 +97,4 @@ JobReplica.propTypes = {
   replica: PropTypes.object as PropTypes.Validator<ReplicaSummary>,
   logState: PropTypes.object as PropTypes.Validator<FetchQueryResult<string>>,
   isExpanded: PropTypes.bool,
-}
+};

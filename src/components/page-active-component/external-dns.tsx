@@ -4,53 +4,53 @@ import {
   Checkbox,
   TextField,
   Typography,
-} from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+} from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import {
   type ChangeEvent,
   type FunctionComponent,
   useMemo,
   useState,
-} from 'react'
+} from 'react';
 
-import { pollingInterval } from '../../store/defaults'
+import { pollingInterval } from '../../store/defaults';
 import {
   type ExternalDns,
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
-} from '../../store/radix-api'
-import { getFetchErrorData } from '../../store/utils'
-import { Alert } from '../alert'
-import { ExternalDnsAliasHelp } from '../external-dns-alias-help'
-import { ExternalDNSList } from '../external-dns-list'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import { ScrimPopup } from '../scrim-popup'
+} from '../../store/radix-api';
+import { getFetchErrorData } from '../../store/utils';
+import { Alert } from '../alert';
+import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
+import { ExternalDNSList } from '../external-dns-list';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ScrimPopup } from '../scrim-popup';
 
 type TlsData = {
-  certificate?: string
-  privateKey?: string
-}
+  certificate?: string;
+  privateKey?: string;
+};
 
 const TlsEditForm: FunctionComponent<{
-  appName: string
-  envName: string
-  componentName: string
-  fqdn: string
-  onSaveSuccess?: () => void
+  appName: string;
+  envName: string;
+  componentName: string;
+  fqdn: string;
+  onSaveSuccess?: () => void;
 }> = ({ appName, envName, componentName, fqdn, onSaveSuccess }) => {
-  const [{ certificate, privateKey }, setTlsData] = useState<TlsData>({})
-  const [skipValidation, setSkipValidation] = useState(false)
+  const [{ certificate, privateKey }, setTlsData] = useState<TlsData>({});
+  const [skipValidation, setSkipValidation] = useState(false);
   const tlsDataIsValid = useMemo(
     () => certificate?.length > 0 && privateKey?.length > 0,
     [certificate, privateKey]
-  )
+  );
   const { refetch } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  )
+  );
   const [mutateTls, { isLoading: isSaving, isError, error }] =
-    useUpdateComponentExternalDnsTlsMutation()
-  const saveError = isError ? getFetchErrorData(error) : null
+    useUpdateComponentExternalDnsTlsMutation();
+  const saveError = isError ? getFetchErrorData(error) : null;
 
   const saveTls = handlePromiseWithToast(async () => {
     await mutateTls({
@@ -63,16 +63,16 @@ const TlsEditForm: FunctionComponent<{
         privateKey,
         skipValidation,
       },
-    }).unwrap()
-    refetch()
-    onSaveSuccess?.()
-  })
+    }).unwrap();
+    refetch();
+    onSaveSuccess?.();
+  });
 
   return (
     <form
       onSubmit={async (ev) => {
-        ev.preventDefault()
-        await saveTls()
+        ev.preventDefault();
+        await saveTls();
       }}
     >
       <div className="grid grid--gap-large">
@@ -115,17 +115,17 @@ const TlsEditForm: FunctionComponent<{
         </div>
       </div>
     </form>
-  )
-}
+  );
+};
 
 export const ExternalDNSAccordion: FunctionComponent<{
-  appName: string
-  envName: string
-  componentName: string
-  externalDNSList: Array<ExternalDns>
+  appName: string;
+  envName: string;
+  componentName: string;
+  externalDNSList: Array<ExternalDns>;
 }> = ({ appName, envName, componentName, externalDNSList }) => {
-  const [visibleScrim, setVisibleScrim] = useState(false)
-  const [selectedExternalDns, setSelectedExternalDns] = useState<ExternalDns>()
+  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [selectedExternalDns, setSelectedExternalDns] = useState<ExternalDns>();
 
   return (
     <>
@@ -149,10 +149,10 @@ export const ExternalDNSAccordion: FunctionComponent<{
                 externalDnsList={externalDNSList}
                 onItemClick={(v) => {
                   if (v.tls.useAutomation) {
-                    return
+                    return;
                   }
-                  setSelectedExternalDns(v)
-                  setVisibleScrim(true)
+                  setSelectedExternalDns(v);
+                  setVisibleScrim(true);
                 }}
               />
             </div>
@@ -165,7 +165,7 @@ export const ExternalDNSAccordion: FunctionComponent<{
           title={selectedExternalDns.fqdn}
           open={visibleScrim}
           onClose={() => {
-            setVisibleScrim(false)
+            setVisibleScrim(false);
           }}
         >
           <div className="secret-item__scrim-content grid grid--gap-large">
@@ -184,8 +184,8 @@ export const ExternalDNSAccordion: FunctionComponent<{
         </ScrimPopup>
       )}
     </>
-  )
-}
+  );
+};
 
 ExternalDNSAccordion.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -194,4 +194,4 @@ ExternalDNSAccordion.propTypes = {
   externalDNSList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ExternalDns>
   ),
-}
+};

@@ -1,12 +1,12 @@
-import react from '@vitejs/plugin-react-swc'
-import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
 
-import checker from 'vite-plugin-checker'
-import packageJson from './package.json'
+import checker from 'vite-plugin-checker';
+import packageJson from './package.json';
 
 // regex filter for dev.* components
 const devComponentRegex =
-  /\.\.\/(components|pages)\/([A-Za-z0-9_-]+(\/[A-Za-z0-9_-]+)?)\/dev\.(tsx|jsx|js)/i
+  /\.\.\/(components|pages)\/([A-Za-z0-9_-]+(\/[A-Za-z0-9_-]+)?)\/dev\.(tsx|jsx|js)/i;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -34,4 +34,4 @@ export default defineConfig({
       },
     }),
   ],
-})
+});

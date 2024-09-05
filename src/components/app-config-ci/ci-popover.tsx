@@ -1,33 +1,33 @@
-import { Icon, Popover, Typography } from '@equinor/eds-core-react'
-import { external_link } from '@equinor/eds-icons'
-import { type FunctionComponent, useEffect } from 'react'
+import { Icon, Popover, Typography } from '@equinor/eds-core-react';
+import { external_link } from '@equinor/eds-icons';
+import { type FunctionComponent, useEffect } from 'react';
 
-import type { Application } from '../../store/service-now-api'
-import { configVariables } from '../../utils/config'
+import type { Application } from '../../store/service-now-api';
+import { configVariables } from '../../utils/config';
 
 export interface ConfigurationItemPopoverProps {
-  open?: boolean
-  onClose: () => undefined
-  anchorEl: HTMLElement
-  configurationItem: Application
+  open?: boolean;
+  onClose: () => undefined;
+  anchorEl: HTMLElement;
+  configurationItem: Application;
 }
 
 function urlStringForCI(id: string): string {
-  return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id))
+  return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id));
 }
 
 export const ConfigurationItemPopover: FunctionComponent<
   ConfigurationItemPopoverProps
 > = ({ open, onClose, anchorEl, configurationItem }) => {
-  const externalUrl = urlStringForCI(configurationItem.id)
+  const externalUrl = urlStringForCI(configurationItem.id);
 
   useEffect(() => {
-    const handleBodyClick = () => onClose()
-    document.body.addEventListener('click', handleBodyClick)
+    const handleBodyClick = () => onClose();
+    document.body.addEventListener('click', handleBodyClick);
     return () => {
-      document.body.removeEventListener('click', handleBodyClick)
-    }
-  }, [onClose])
+      document.body.removeEventListener('click', handleBodyClick);
+    };
+  }, [onClose]);
 
   return (
     <Popover
@@ -81,5 +81,5 @@ export const ConfigurationItemPopover: FunctionComponent<
         )}
       </Popover.Content>
     </Popover>
-  )
-}
+  );
+};

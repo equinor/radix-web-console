@@ -4,39 +4,39 @@ import type {
   GoogleDataTableColumnRoleType,
   GoogleDataTableRow,
   ReactGoogleChartEvent,
-} from 'react-google-charts/dist/types'
+} from 'react-google-charts/dist/types';
 
 // there seems to be an unresolved issue with enums for 'react-google-charts/dist/types'
 // issue: https://github.com/rakannimer/react-google-charts/issues/377
-const _tooltipRoleKey: keyof typeof GoogleDataTableColumnRoleType = 'tooltip'
-const tooltipRoleKey = _tooltipRoleKey as GoogleDataTableColumnRoleType
+const _tooltipRoleKey: keyof typeof GoogleDataTableColumnRoleType = 'tooltip';
+const tooltipRoleKey = _tooltipRoleKey as GoogleDataTableColumnRoleType;
 
 export const DataChartItemColumnOptions: GoogleDataTableColumn[] = [
   { label: 'Time', type: 'date' },
   { label: 'Availability', type: 'number' },
   { type: 'string', role: tooltipRoleKey, p: { html: true } },
-]
+];
 
 export const DataChartItemEvents: ReactGoogleChartEvent[] = [
   {
     eventName: 'ready',
     callback: ({ chartWrapper }) => {
-      const container = document.getElementById(chartWrapper.getContainerId())
+      const container = document.getElementById(chartWrapper.getContainerId());
       const observer = new MutationObserver(() => {
         container
           .getElementsByTagName('svg')[0]
-          .setAttribute('xmlns', 'http://www.w3.org/2000/svg')
+          .setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         Array.prototype.forEach.call(
           container.getElementsByTagName('path'),
           (rect: SVGPathElement) =>
             rect.getAttribute('fill') === '#007079' &&
             rect.setAttribute('fill', 'url(#chart-gradient) #007079')
-        )
-      })
-      observer.observe(container, { childList: true, subtree: true })
+        );
+      });
+      observer.observe(container, { childList: true, subtree: true });
     },
   },
-]
+];
 
 export const DataChartItemOptions: ChartWrapperOptions['options'] = {
   colors: ['#007079'],
@@ -60,7 +60,7 @@ export const DataChartItemOptions: ChartWrapperOptions['options'] = {
     trigger: 'both',
   },
   aggregationTarget: 'none',
-}
+};
 
 export const DataChartTimelineColumnOptions: GoogleDataTableColumn[] = [
   { id: 'Position', type: 'string' },
@@ -68,7 +68,7 @@ export const DataChartTimelineColumnOptions: GoogleDataTableColumn[] = [
   { type: 'string', role: tooltipRoleKey, p: { html: true } },
   { id: 'Start', type: 'date' },
   { id: 'End', type: 'date' },
-]
+];
 
 export const DataChartTimelineOptions: ChartWrapperOptions['options'] = {
   timeline: {
@@ -83,11 +83,11 @@ export const DataChartTimelineOptions: ChartWrapperOptions['options'] = {
     isHtml: true,
     trigger: 'focus',
   },
-}
+};
 
 export function googleChartDataBuilder(
   options: GoogleDataTableColumn[],
   ...data: GoogleDataTableRow[]
 ): (GoogleDataTableColumn | GoogleDataTableRow)[] {
-  return [[...options], ...data]
+  return [[...options], ...data];
 }

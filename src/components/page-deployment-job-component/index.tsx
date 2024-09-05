@@ -1,13 +1,13 @@
-import { DeploymentJobComponentOverview } from './deployment-job-component-overview'
+import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
-import { withRouteParams } from '../../utils/router'
-import { DocumentTitle } from '../document-title'
+import { withRouteParams } from '../../utils/router';
+import { DocumentTitle } from '../document-title';
 
 type Props = {
-  appName: string
-  deploymentName: string
-  jobComponentName: string
-}
+  appName: string;
+  deploymentName: string;
+  jobComponentName: string;
+};
 export function PageDeploymentJobComponent({
   appName,
   deploymentName,
@@ -20,7 +20,7 @@ export function PageDeploymentJobComponent({
         {...{ appName, deploymentName, jobComponentName }}
       />
     </>
-  )
+  );
 }
 
-export default withRouteParams(PageDeploymentJobComponent)
+export default withRouteParams(PageDeploymentJobComponent);

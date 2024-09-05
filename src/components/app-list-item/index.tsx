@@ -3,71 +3,71 @@ import {
   CircularProgress,
   Icon,
   Typography,
-} from '@equinor/eds-core-react'
-import { star_filled, star_outlined } from '@equinor/eds-icons'
-import { clsx } from 'clsx'
-import { formatDistanceToNow } from 'date-fns'
-import * as PropTypes from 'prop-types'
+} from '@equinor/eds-core-react';
+import { star_filled, star_outlined } from '@equinor/eds-icons';
+import { clsx } from 'clsx';
+import { formatDistanceToNow } from 'date-fns';
+import * as PropTypes from 'prop-types';
 import {
   type FunctionComponent,
   type HTMLAttributes,
   type MouseEvent,
   useEffect,
-} from 'react'
-import { Link } from 'react-router-dom'
+} from 'react';
+import { Link } from 'react-router-dom';
 
-import { routes } from '../../routes'
+import { routes } from '../../routes';
 import type {
   ApplicationSummary,
   Component,
   JobSummary,
-} from '../../store/radix-api'
+} from '../../store/radix-api';
 import {
   type ImageScan,
   type Vulnerability,
   scanApi,
-} from '../../store/scan-api'
-import { filterFields } from '../../utils/filter-fields'
-import { routeWithParams } from '../../utils/string'
-import { AppBadge } from '../app-badge'
-import AsyncResource from '../async-resource/async-resource'
+} from '../../store/scan-api';
+import { filterFields } from '../../utils/filter-fields';
+import { routeWithParams } from '../../utils/string';
+import { AppBadge } from '../app-badge';
+import AsyncResource from '../async-resource/async-resource';
 import {
   EnvironmentCardStatus,
   EnvironmentVulnerabilityIndicator,
-} from '../environments-summary/environment-card-status'
+} from '../environments-summary/environment-card-status';
 import {
   EnvironmentStatus,
   aggregateComponentEnvironmentStatus,
   aggregateComponentReplicaEnvironmentStatus,
   aggregateVulnerabilitySummaries,
   environmentVulnerabilitySummarizer,
-} from '../environments-summary/environment-status-utils'
+} from '../environments-summary/environment-status-utils';
 
-import './style.css'
+import './style.css';
 
 export type FavouriteClickedHandler = (
   event: MouseEvent<HTMLButtonElement>,
   name: string
-) => void
+) => void;
 
 export interface AppListItemProps {
-  app: Readonly<ApplicationSummary>
-  handler: FavouriteClickedHandler
-  isPlaceholder?: boolean
-  isFavourite?: boolean
-  showStatus?: boolean
+  app: Readonly<ApplicationSummary>;
+  handler: FavouriteClickedHandler;
+  isPlaceholder?: boolean;
+  isFavourite?: boolean;
+  showStatus?: boolean;
 }
 
 const latestJobStatus: Partial<
   Record<JobSummary['status'], EnvironmentStatus>
 > = {
   Failed: EnvironmentStatus.Danger,
-}
+};
 
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
   'high',
-]
+];
 
 function aggregateEnvironmentStatus(
   components: Readonly<Array<Component>>
@@ -75,7 +75,7 @@ function aggregateEnvironmentStatus(
   return Math.max(
     aggregateComponentEnvironmentStatus(components),
     aggregateComponentReplicaEnvironmentStatus(components)
-  )
+  );
 }
 
 const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
@@ -84,12 +84,12 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
   name,
 }) => {
   const [trigger, state] =
-    scanApi.endpoints.getApplicationVulnerabilitySummaries.useLazyQuery()
+    scanApi.endpoints.getApplicationVulnerabilitySummaries.useLazyQuery();
 
   useEffect(() => {
-    const request = trigger({ appName: name })
-    return () => request?.abort()
-  }, [name, trigger])
+    const request = trigger({ appName: name });
+    return () => request?.abort();
+  }, [name, trigger]);
 
   const vulnerabilities = (state?.data ?? []).reduce<
     ImageScan['vulnerabilitySummary']
@@ -100,13 +100,13 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
         environmentVulnerabilitySummarizer(x),
       ]),
     {}
-  )
+  );
 
   const time =
     latestJob &&
     (latestJob.status === 'Running' || !latestJob.ended
       ? latestJob.started
-      : latestJob.ended)
+      : latestJob.ended);
 
   return (
     <div className="grid grid--gap-small">
@@ -170,8 +170,8 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const WElement: FunctionComponent<
   { appName: string; isPlaceholder?: boolean } & HTMLAttributes<
@@ -185,7 +185,7 @@ const WElement: FunctionComponent<
     <div {...rest} />
   ) : (
     <Link to={routeWithParams(routes.app, { appName })} {...rest} />
-  )
+  );
 
 export const AppListItem: FunctionComponent<AppListItemProps> = ({
   app,
@@ -220,7 +220,7 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
       </div>
     </div>
   </WElement>
-)
+);
 
 AppListItem.propTypes = {
   app: PropTypes.object.isRequired as PropTypes.Validator<ApplicationSummary>,
@@ -228,4 +228,4 @@ AppListItem.propTypes = {
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
   showStatus: PropTypes.bool,
-}
+};

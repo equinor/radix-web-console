@@ -1,14 +1,14 @@
-import { Typography } from '@equinor/eds-core-react'
-import { Fragment } from 'react'
+import { Typography } from '@equinor/eds-core-react';
+import { Fragment } from 'react';
 
 type Props = {
-  selectedBranch?: string
-  branches: Record<string, Array<string>>
-  branch?: string
-}
+  selectedBranch?: string;
+  branches: Record<string, Array<string>>;
+  branch?: string;
+};
 export function TargetEnvs({ selectedBranch, branches, branch }: Props) {
-  const targetEnvs = branches[selectedBranch] || []
-  const penultimateId = targetEnvs.length - 2
+  const targetEnvs = branches[selectedBranch] || [];
+  const penultimateId = targetEnvs.length - 2;
 
   return targetEnvs.length > 0 ? (
     <Typography>
@@ -36,5 +36,5 @@ export function TargetEnvs({ selectedBranch, branches, branch }: Props) {
       <code>{branch}</code> to any environment <code>{branch}</code> is mapped
       to
     </Typography>
-  ) : null
+  ) : null;
 }

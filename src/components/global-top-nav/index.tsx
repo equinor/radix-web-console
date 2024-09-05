@@ -1,27 +1,33 @@
-import { Button, Icon, Tabs, TopBar, Typography } from '@equinor/eds-core-react'
-import { close, info_circle, menu } from '@equinor/eds-icons'
-import { clsx } from 'clsx'
+import {
+  Button,
+  Icon,
+  Tabs,
+  TopBar,
+  Typography,
+} from '@equinor/eds-core-react';
+import { close, info_circle, menu } from '@equinor/eds-icons';
+import { clsx } from 'clsx';
 import {
   type FunctionComponent,
   type PropsWithChildren,
   forwardRef,
   useState,
-} from 'react'
+} from 'react';
 
-import { StyledToastContainer } from './styled-toaster'
+import { StyledToastContainer } from './styled-toaster';
 
-import { clusterBases } from '../../clusterBases'
-import { externalUrls } from '../../externalUrls'
-import { routes } from '../../routes'
-import { configVariables } from '../../utils/config'
-import { HomeLogo } from '../home-logo'
+import { clusterBases } from '../../clusterBases';
+import { externalUrls } from '../../externalUrls';
+import { routes } from '../../routes';
+import { configVariables } from '../../utils/config';
+import { HomeLogo } from '../home-logo';
 
-import './style.css'
-import { Link } from 'react-router-dom'
+import './style.css';
+import { Link } from 'react-router-dom';
 
 interface TabItemTemplateProps {
-  href: string
-  mark?: boolean
+  href: string;
+  mark?: boolean;
 }
 
 const TabItemTemplate = forwardRef<
@@ -33,7 +39,7 @@ const TabItemTemplate = forwardRef<
       {children}
     </Button>
   </Tabs.Tab>
-))
+));
 
 const AboutButton: FunctionComponent = () => (
   <Typography
@@ -47,12 +53,12 @@ const AboutButton: FunctionComponent = () => (
   >
     <Icon data={info_circle} />
   </Typography>
-)
+);
 
 export const GlobalTopNav: FunctionComponent = () => {
-  const [menuIsClosed, setOpenMenu] = useState(false)
-  const handleClick = () => setOpenMenu(!menuIsClosed)
-  const radixClusterBase = configVariables.RADIX_CLUSTER_BASE
+  const [menuIsClosed, setOpenMenu] = useState(false);
+  const handleClick = () => setOpenMenu(!menuIsClosed);
+  const radixClusterBase = configVariables.RADIX_CLUSTER_BASE;
 
   return (
     <TopBar className="global-top-nav">
@@ -111,5 +117,5 @@ export const GlobalTopNav: FunctionComponent = () => {
       </div>
       <StyledToastContainer />
     </TopBar>
-  )
-}
+  );
+};

@@ -1,38 +1,38 @@
-import { Table, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { useMemo, useState } from 'react'
+import { Table, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useMemo, useState } from 'react';
 
-import { PipelineRunTableRow } from './pipeline-run-table-row'
+import { PipelineRunTableRow } from './pipeline-run-table-row';
 
-import type { PipelineRun as PipelineRunModel } from '../../store/radix-api'
+import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   sortCompareString,
   type sortDirection,
-} from '../../utils/sort-utils'
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
+} from '../../utils/sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
-import './style.css'
+import './style.css';
 
 interface Props {
-  appName: string
-  jobName: string
-  pipelineRuns: Array<PipelineRunModel>
-  limit?: number
+  appName: string;
+  jobName: string;
+  pipelineRuns: Array<PipelineRunModel>;
+  limit?: number;
 }
 
 export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
-  const [dateSort, setDateSort] = useState<sortDirection>('descending')
-  const [envSort, setEnvSort] = useState<sortDirection>()
+  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [envSort, setEnvSort] = useState<sortDirection>();
 
   const sortedData = useMemo(() => {
     return dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
       (x, y) => sortCompareDate(x.started, y.started, dateSort),
       (x, y) =>
         sortCompareString(x.env, y.env, envSort, false, () => !!envSort),
-    ])
-  }, [dateSort, envSort, limit, pipelineRuns])
+    ]);
+  }, [dateSort, envSort, limit, pipelineRuns]);
 
   return sortedData.length > 0 ? (
     <div className="pipeline-runs__list grid grid--table-overflow">
@@ -71,7 +71,7 @@ export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
     </div>
   ) : (
     <Typography variant="h4">No pipeline runs yet</Typography>
-  )
+  );
 }
 
 PipelineRuns.propTypes = {
@@ -81,4 +81,4 @@ PipelineRuns.propTypes = {
     PropTypes.object as PropTypes.Validator<PipelineRunModel>
   ).isRequired,
   limit: PropTypes.number,
-}
+};

@@ -1,33 +1,33 @@
-import { Accordion, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import type React from 'react'
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { Accordion, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import type React from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
-import { useInterval } from '../../effects/use-interval'
-import type { ReplicaSummary } from '../../store/radix-api'
-import type { FetchQueryResult } from '../../store/types'
-import { smallReplicaName } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Code } from '../code'
-import { ReplicaImage } from '../replica-image'
-import { ResourceRequirements } from '../resource-requirements'
-import { ReplicaStatusBadge } from '../status-badges'
-import { Duration } from '../time/duration'
-import { RelativeToNow } from '../time/relative-to-now'
+import { useInterval } from '../../effects/use-interval';
+import type { ReplicaSummary } from '../../store/radix-api';
+import type { FetchQueryResult } from '../../store/types';
+import { smallReplicaName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Code } from '../code';
+import { ReplicaImage } from '../replica-image';
+import { ResourceRequirements } from '../resource-requirements';
+import { ReplicaStatusBadge } from '../status-badges';
+import { Duration } from '../time/duration';
+import { RelativeToNow } from '../time/relative-to-now';
 
 interface ReplicaElements {
-  title?: React.JSX.Element
-  duration?: React.JSX.Element
-  status?: React.JSX.Element
-  state?: React.JSX.Element
+  title?: React.JSX.Element;
+  duration?: React.JSX.Element;
+  status?: React.JSX.Element;
+  state?: React.JSX.Element;
 }
 
 const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
   created,
   ended,
 }) => {
-  const [now, setNow] = useState(new Date())
-  useInterval(() => setNow(new Date()), 1000)
+  const [now, setNow] = useState(new Date());
+  useInterval(() => setNow(new Date()), 1000);
 
   return (
     <>
@@ -52,15 +52,15 @@ const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
         </strong>
       </Typography>
     </>
-  )
-}
+  );
+};
 
 const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
   started,
   ended,
 }) => {
-  const [now, setNow] = useState(new Date())
-  useInterval(() => setNow(new Date()), 1000)
+  const [now, setNow] = useState(new Date());
+  useInterval(() => setNow(new Date()), 1000);
 
   return (
     <>
@@ -85,8 +85,8 @@ const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
         </strong>
       </Typography>
     </>
-  )
-}
+  );
+};
 
 const ReplicaState: FunctionComponent<
   Pick<ReplicaSummary, 'restartCount' | 'statusMessage'>
@@ -107,7 +107,7 @@ const ReplicaState: FunctionComponent<
       </>
     )}
   </>
-)
+);
 
 const Overview: FunctionComponent<
   { replica: ReplicaSummary } & ReplicaElements
@@ -159,14 +159,14 @@ const Overview: FunctionComponent<
       {state || <ReplicaState {...replica} />}
     </section>
   </>
-)
+);
 
 const ReplicaLog: FunctionComponent<{
-  isCollapsibleLog: boolean
-  isLogExpanded: boolean
-  downloadCb: () => void
-  log?: string
-  logState?: FetchQueryResult<string>
+  isCollapsibleLog: boolean;
+  isLogExpanded: boolean;
+  downloadCb: () => void;
+  log?: string;
+  logState?: FetchQueryResult<string>;
 }> = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState }) => (
   <>
     {isCollapsibleLog ? (
@@ -192,20 +192,20 @@ const ReplicaLog: FunctionComponent<{
       </Code>
     )}
   </>
-)
+);
 
 export const Replica: FunctionComponent<
   {
-    header?: string
-    replica: ReplicaSummary
-    logState?: FetchQueryResult<string>
-    getLog?: () => Promise<string>
-    isCollapsibleOverview?: boolean
-    isCollapsibleLog?: boolean
-    downloadCb?: () => void
-    downloadHistoryCb?: () => void
-    isLogExpanded?: boolean
-    getHistoryLog?: () => Promise<unknown>
+    header?: string;
+    replica: ReplicaSummary;
+    logState?: FetchQueryResult<string>;
+    getLog?: () => Promise<string>;
+    isCollapsibleOverview?: boolean;
+    isCollapsibleLog?: boolean;
+    downloadCb?: () => void;
+    downloadHistoryCb?: () => void;
+    isLogExpanded?: boolean;
+    getHistoryLog?: () => Promise<unknown>;
   } & ReplicaElements
 > = ({
   header,
@@ -220,24 +220,24 @@ export const Replica: FunctionComponent<
   replica,
   ...rest
 }) => {
-  const [log, setLog] = useState('')
-  const [historyLog, setHistoryLog] = useState('')
+  const [log, setLog] = useState('');
+  const [historyLog, setHistoryLog] = useState('');
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data) {
-      return
+      return;
     }
-    getLog?.().then(setLog)
-  }, [replica, logState?.data])
+    getLog?.().then(setLog);
+  }, [replica, logState?.data]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data || log) {
-      return
+      return;
     }
-    getHistoryLog?.().then(setHistoryLog)
-  }, [replica, logState?.data])
+    getHistoryLog?.().then(setHistoryLog);
+  }, [replica, logState?.data]);
 
   return (
     <>
@@ -288,8 +288,8 @@ export const Replica: FunctionComponent<
         )}
       </section>
     </>
-  )
-}
+  );
+};
 
 Replica.propTypes = {
   replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
@@ -304,4 +304,4 @@ Replica.propTypes = {
   state: PropTypes.element,
   getHistoryLog: PropTypes.func,
   downloadHistoryCb: PropTypes.func,
-}
+};

@@ -1,18 +1,18 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import { EnvironmentCard } from './environment-card'
+import { EnvironmentCard } from './environment-card';
 
-import { externalUrls } from '../../externalUrls'
-import type { EnvironmentSummary } from '../../store/radix-api'
+import { externalUrls } from '../../externalUrls';
+import type { EnvironmentSummary } from '../../store/radix-api';
 
-import './style.css'
+import './style.css';
 
 export interface EnvironmentsSummaryProps {
-  appName: string
-  envs?: Readonly<Array<EnvironmentSummary>>
-  repository?: string
+  appName: string;
+  envs?: Readonly<Array<EnvironmentSummary>>;
+  repository?: string;
 }
 
 export const EnvironmentsSummary: FunctionComponent<
@@ -38,7 +38,7 @@ export const EnvironmentsSummary: FunctionComponent<
       </Typography>
     )}
   </div>
-)
+);
 
 EnvironmentsSummary.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -46,4 +46,4 @@ EnvironmentsSummary.propTypes = {
     PropTypes.object as PropTypes.Validator<EnvironmentSummary>
   ),
   repository: PropTypes.string,
-}
+};

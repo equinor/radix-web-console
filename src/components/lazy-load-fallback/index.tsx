@@ -1,7 +1,7 @@
-import { CircularProgress } from '@equinor/eds-core-react'
-import type { FunctionComponent } from 'react'
+import { CircularProgress } from '@equinor/eds-core-react';
+import type { FunctionComponent } from 'react';
 
-import './style.css'
+import './style.css';
 
 const messages = Object.freeze([
   'Adding Hidden Agendas',
@@ -55,7 +55,7 @@ const messages = Object.freeze([
   'Stratifying Ground Layers',
   'Synthesizing Gravity',
   'Time-Compressing Simulator Clock',
-])
+]);
 
 /**
  * Loading component with text
@@ -64,7 +64,7 @@ export const LazyLoadMainFallback: FunctionComponent = () => (
   <div className="lazy-load-fallback">
     {messages[Math.floor(Math.random() * messages.length)]}…
   </div>
-)
+);
 
 /**
  * Loading component with spinner
@@ -73,4 +73,4 @@ export const LazyLoadFallback: FunctionComponent = () => (
   <div className="lazy-load-fallback">
     <CircularProgress size={16} /> Loading…
   </div>
-)
+);

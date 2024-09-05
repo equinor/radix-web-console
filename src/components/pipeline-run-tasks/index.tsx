@@ -1,28 +1,28 @@
-import { Table, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { useEffect, useState } from 'react'
+import { Table, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { useEffect, useState } from 'react';
 
 import type {
   PipelineRun as PipelineRunModel,
   PipelineRunTask as PipelineRunTaskModel,
-} from '../../store/radix-api'
+} from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
   type sortDirection,
-} from '../../utils/sort-utils'
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils'
-import { PipelineTaskTableRow } from './pipeline-task-table-row'
+} from '../../utils/sort-utils';
+import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { PipelineTaskTableRow } from './pipeline-task-table-row';
 
-import './style.css'
-import type { Validator } from 'prop-types'
+import './style.css';
+import type { Validator } from 'prop-types';
 
 interface Props {
-  appName: string
-  jobName: string
-  pipelineRun?: PipelineRunModel
-  tasks?: Array<PipelineRunTaskModel>
-  limit?: number
+  appName: string;
+  jobName: string;
+  pipelineRun?: PipelineRunModel;
+  tasks?: Array<PipelineRunTaskModel>;
+  limit?: number;
 }
 export function PipelineRunTasks({
   appName,
@@ -31,16 +31,16 @@ export function PipelineRunTasks({
   limit,
   pipelineRun,
 }: Props) {
-  const [sortedData, setSortedData] = useState(tasks || [])
+  const [sortedData, setSortedData] = useState(tasks || []);
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending')
+  const [dateSort, setDateSort] = useState<sortDirection>('descending');
   useEffect(() => {
     setSortedData(
       dataSorter(tasks?.slice(0, limit || tasks?.length), [
         (x, y) => sortCompareDate(x.started, y.started, dateSort),
       ])
-    )
-  }, [dateSort, limit, tasks])
+    );
+  }, [dateSort, limit, tasks]);
 
   return sortedData.length > 0 ? (
     <div className="pipeline-run-tasks__list grid grid--table-overflow">
@@ -71,7 +71,7 @@ export function PipelineRunTasks({
     </div>
   ) : (
     <Typography variant="h4">No pipeline tasks</Typography>
-  )
+  );
 }
 
 PipelineRunTasks.propTypes = {
@@ -82,4 +82,4 @@ PipelineRunTasks.propTypes = {
     PipelineRunTaskModel[]
   >,
   limit: PropTypes.number,
-}
+};

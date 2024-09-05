@@ -1,7 +1,7 @@
-import { CircularProgress, Typography } from '@equinor/eds-core-react'
-import { clsx } from 'clsx'
-import { type FunctionComponent, useEffect, useState } from 'react'
-import { Chart } from 'react-google-charts'
+import { CircularProgress, Typography } from '@equinor/eds-core-react';
+import { clsx } from 'clsx';
+import { type FunctionComponent, useEffect, useState } from 'react';
+import { Chart } from 'react-google-charts';
 
 import {
   DataChartItemColumnOptions,
@@ -10,45 +10,45 @@ import {
   DataChartTimelineColumnOptions,
   DataChartTimelineOptions,
   googleChartDataBuilder,
-} from './data-chart-options'
+} from './data-chart-options';
 
-import { configVariables } from '../../utils/config'
-import { differenceInWords, formatDateMonthTime } from '../../utils/datetime'
+import { configVariables } from '../../utils/config';
+import { differenceInWords, formatDateMonthTime } from '../../utils/datetime';
 import {
   dataSorter,
   sortCompareNumber,
   sortCompareString,
-} from '../../utils/sort-utils'
-import { ScrimPopup } from '../scrim-popup'
+} from '../../utils/sort-utils';
+import { ScrimPopup } from '../scrim-popup';
 
-import './style.css'
-import { isNull } from 'lodash'
-import { externalUrls } from '../../externalUrls'
+import './style.css';
+import { isNull } from 'lodash';
+import { externalUrls } from '../../externalUrls';
 import {
   type GenericResponse,
   useGetAvailabilityItemsQuery,
   useLazyGetStatusItemsQuery,
-} from '../../store/dynatrace-api'
+} from '../../store/dynatrace-api';
 
-type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0]
+type GetStatusItemsFunction = ReturnType<typeof useLazyGetStatusItemsQuery>[0];
 
 interface AvailabilityItem {
-  date: Date
-  value: number
-  description: string
+  date: Date;
+  value: number;
+  description: string;
 }
 
 interface StatusCodeItem {
-  timestamp: number
-  statusCode: string
+  timestamp: number;
+  statusCode: string;
 }
 
 interface TimelineDataPoint {
-  timelineType: string
-  statusCode: string
-  description: string
-  timeStart: Date
-  timeEnd: Date
+  timelineType: string;
+  statusCode: string;
+  description: string;
+  timeStart: Date;
+  timeEnd: Date;
 }
 
 /**
@@ -59,20 +59,20 @@ const timelineColorMap: Record<string, string> = {
   'Status code: SC_2xx': '#007079',
   'Status code: SC_4xx': '#7D0023',
   'Status code: SC_5xx': '#7D0023',
-}
+};
 
 function availabilityTooltip(
   timestamp: number | Date,
   availability: number
 ): string {
-  const availStr = availability !== -1 ? `${availability.toFixed(2)}%` : 'N/A'
-  return `<div class="chart-tooltip grid grid--gap-small">  <span>${formatDateMonthTime(timestamp)}</span>  <span>Availability: ${availStr}</span></div>`
+  const availStr = availability !== -1 ? `${availability.toFixed(2)}%` : 'N/A';
+  return `<div class="chart-tooltip grid grid--gap-small">  <span>${formatDateMonthTime(timestamp)}</span>  <span>Availability: ${availStr}</span></div>`;
 }
 
 function timelineTooltip(start: Date, end: Date, status?: string): string {
-  const period = `${formatDateMonthTime(start)} - ${formatDateMonthTime(end)}`
-  const duration = differenceInWords(end, start, true)
-  return `<div class="chart-tooltip grid grid--gap-small">  <span>Status code:     <span class="${clsx('status-code', { [status ?? '']: !!status })}">${status?.substring(3) ?? 'N/A'}    </span>  </span>  <span>Period: ${period}</span>  <span>Duration: ${duration}</span></div>`
+  const period = `${formatDateMonthTime(start)} - ${formatDateMonthTime(end)}`;
+  const duration = differenceInWords(end, start, true);
+  return `<div class="chart-tooltip grid grid--gap-small">  <span>Status code:     <span class="${clsx('status-code', { [status ?? '']: !!status })}">${status?.substring(3) ?? 'N/A'}    </span>  </span>  <span>Period: ${period}</span>  <span>Duration: ${duration}</span></div>`;
 }
 
 async function getStatusItems(
@@ -109,60 +109,60 @@ async function getStatusItems(
                     )
                   )
                   .catch((err) => {
-                    throw err
-                  })
+                    throw err;
+                  });
               } else {
                 obj.push({
                   timestamp: loRes.timestamps[i],
                   statusCode: loRes.dimensionMap['Status code'],
-                })
+                });
               }
             }
-            return obj
+            return obj;
           }, items),
         []
       )
     )
     .catch((err) => {
-      throw err
-    })
+      throw err;
+    });
 }
 
 function generateTimelineData(
   statusItems: Array<StatusCodeItem>
 ): Array<TimelineDataPoint> {
-  let start = new Date(statusItems[0]?.timestamp)
+  let start = new Date(statusItems[0]?.timestamp);
   return statusItems.reduce<Array<TimelineDataPoint>>(
     (obj, { statusCode, timestamp }, i, a) => {
-      i++ // focus on next item
+      i++; // focus on next item
       if (a[i] && (a.length - 1 === i || statusCode !== a[i].statusCode)) {
         // end of list or status is different from previous item, set end and prepare start
-        const end = new Date(timestamp)
+        const end = new Date(timestamp);
         obj.push({
           timelineType: 'Period',
           statusCode: `Status code: ${statusCode}`,
           description: timelineTooltip(start, end, statusCode),
           timeStart: start,
           timeEnd: end,
-        })
-        start = end
+        });
+        start = end;
       }
-      return obj
+      return obj;
     },
     []
-  )
+  );
 }
 
 function capitalize(word: string) {
-  return word.replace(/\w/, (firstChar) => firstChar.toUpperCase())
+  return word.replace(/\w/, (firstChar) => firstChar.toUpperCase());
 }
 
 function reduceAvailabilityData(data: GenericResponse) {
-  const { timestamps, values } = data?.result?.[0]?.data[0] ?? {}
+  const { timestamps, values } = data?.result?.[0]?.data[0] ?? {};
 
   const reduced =
     timestamps?.reduce<Array<AvailabilityItem>>((carry, x, i) => {
-      if (isNull(values[i])) return carry
+      if (isNull(values[i])) return carry;
 
       return [
         ...carry,
@@ -171,16 +171,16 @@ function reduceAvailabilityData(data: GenericResponse) {
           value: values[i],
           description: availabilityTooltip(x, values[i]),
         },
-      ]
-    }, []) ?? []
+      ];
+    }, []) ?? [];
 
-  return reduced
+  return reduced;
 }
 
 export const AvailabilityCharts: FunctionComponent = () => {
-  const { RADIX_CLUSTER_TYPE } = configVariables
-  const monitorName = `Radix Services ${capitalize(RADIX_CLUSTER_TYPE)}`
-  const [getStatusCodes] = useLazyGetStatusItemsQuery()
+  const { RADIX_CLUSTER_TYPE } = configVariables;
+  const monitorName = `Radix Services ${capitalize(RADIX_CLUSTER_TYPE)}`;
+  const [getStatusCodes] = useLazyGetStatusItemsQuery();
 
   const { data: availabilityData, isLoading: isAvailabilityLoading } =
     useGetAvailabilityItemsQuery(
@@ -190,34 +190,34 @@ export const AvailabilityCharts: FunctionComponent = () => {
           return {
             data: data ? reduceAvailabilityData(data) : undefined,
             ...stats,
-          }
+          };
         },
       }
-    )
+    );
 
-  const [error, setError] = useState<Error>()
-  const [statusLoading, setStatusLoading] = useState(true)
-  const [visibleScrim, setVisibleScrim] = useState(false)
-  const [statusCodes, setStatusCodes] = useState<Array<StatusCodeItem>>([])
+  const [error, setError] = useState<Error>();
+  const [statusLoading, setStatusLoading] = useState(true);
+  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [statusCodes, setStatusCodes] = useState<Array<StatusCodeItem>>([]);
 
   useEffect(() => {
-    let mounted = true
-    const { RADIX_CLUSTER_TYPE } = configVariables
-    const monitorName = `Radix Services ${capitalize(RADIX_CLUSTER_TYPE)}`
+    let mounted = true;
+    const { RADIX_CLUSTER_TYPE } = configVariables;
+    const monitorName = `Radix Services ${capitalize(RADIX_CLUSTER_TYPE)}`;
 
     // get all status codes from the specified HTTP monitor step
     getStatusItems(getStatusCodes, monitorName)
       .then((res) => (mounted ? setStatusCodes(res) : null))
       .catch((err) => (mounted ? setError(err) : null))
-      .finally(() => (mounted ? setStatusLoading(false) : null))
+      .finally(() => (mounted ? setStatusLoading(false) : null));
 
     return () => {
-      mounted = false
-    }
-  }, [getStatusCodes])
+      mounted = false;
+    };
+  }, [getStatusCodes]);
 
   if (error) {
-    return <span>Failed to load chart</span>
+    return <span>Failed to load chart</span>;
   }
 
   if (isAvailabilityLoading || statusLoading) {
@@ -225,7 +225,7 @@ export const AvailabilityCharts: FunctionComponent = () => {
       <strong>
         <CircularProgress size={16} /> Loading
       </strong>
-    )
+    );
   }
 
   if (
@@ -236,7 +236,7 @@ export const AvailabilityCharts: FunctionComponent = () => {
       <Typography variant="body_short_bold">
         Not enough data to display charts
       </Typography>
-    )
+    );
   }
 
   // calculate availability percentage
@@ -245,35 +245,35 @@ export const AvailabilityCharts: FunctionComponent = () => {
       (Number(availabilityData.reduce((prev, cur) => (prev += cur.value), 0)) /
         availabilityData.length) *
         100
-    ) / 100
+    ) / 100;
 
   const timelineData = generateTimelineData(
     dataSorter(statusCodes, [
       ({ statusCode: s1, timestamp: t1 }, { statusCode: s2, timestamp: t2 }) =>
         sortCompareNumber(t1, t2) || sortCompareString(s1, s2),
     ])
-  )
+  );
 
   // adjust charts to match start and end
   if (timelineData.length > 0 && availabilityData.length > 0) {
     // add dummy data to match charts timeStart
     if (availabilityData[0].date < timelineData[0].timeStart) {
-      const timeStart = availabilityData[0].date
-      const timeEnd = timelineData[0].timeStart
+      const timeStart = availabilityData[0].date;
+      const timeEnd = timelineData[0].timeStart;
       timelineData.unshift({
         description: timelineTooltip(timeStart, timeEnd),
         statusCode: 'Status code: SC_0xx',
         timeEnd: timeEnd,
         timeStart: timeStart,
         timelineType: 'Period',
-      })
+      });
     } else if (availabilityData[0].date > timelineData[0].timeStart) {
-      const { timeStart } = timelineData[0]
+      const { timeStart } = timelineData[0];
       availabilityData.unshift({
         date: timeStart,
         description: availabilityTooltip(timeStart, -1),
         value: 100,
-      })
+      });
     }
 
     // add dummy data to match charts timeEnd
@@ -281,25 +281,25 @@ export const AvailabilityCharts: FunctionComponent = () => {
       availabilityData[availabilityData.length - 1].date >
       timelineData[timelineData.length - 1].timeEnd
     ) {
-      const timeStart = timelineData[timelineData.length - 1].timeEnd
-      const timeEnd = availabilityData[availabilityData.length - 1].date
+      const timeStart = timelineData[timelineData.length - 1].timeEnd;
+      const timeEnd = availabilityData[availabilityData.length - 1].date;
       timelineData.push({
         description: timelineTooltip(timeStart, timeEnd),
         statusCode: 'Status code: SC_0xx',
         timeEnd: timeEnd,
         timeStart: timeStart,
         timelineType: 'Period',
-      })
+      });
     } else if (
       availabilityData[availabilityData.length - 1].date <
       timelineData[timelineData.length - 1].timeEnd
     ) {
-      const { timeEnd } = timelineData[timelineData.length - 1]
+      const { timeEnd } = timelineData[timelineData.length - 1];
       availabilityData.push({
         date: timeEnd,
         description: availabilityTooltip(timeEnd, -1),
         value: 100,
-      })
+      });
     }
   }
 
@@ -400,5 +400,5 @@ export const AvailabilityCharts: FunctionComponent = () => {
         </div>
       </ScrimPopup>
     </>
-  )
-}
+  );
+};

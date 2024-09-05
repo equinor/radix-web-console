@@ -1,8 +1,8 @@
-import { Response, Server } from 'miragejs'
+import { Response, Server } from 'miragejs';
 
-import { PageScheduledJob } from '.'
+import { PageScheduledJob } from '.';
 
-import type { ScheduledJobSummary } from '../../store/radix-api'
+import type { ScheduledJobSummary } from '../../store/radix-api';
 
 const testData: Array<
   Parameters<typeof PageScheduledJob>[0] & { jobData?: ScheduledJobSummary }
@@ -64,7 +64,7 @@ const testData: Array<
     jobComponentName: 'empty-component',
     scheduledJobName: 'no-job',
   },
-]
+];
 
 // Mock API response
 new Server({
@@ -74,8 +74,8 @@ new Server({
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/jobs/${scheduledJobName}`,
         () => jobData
-      )
-    })
+      );
+    });
 
     // Mock response for logs
     this.get(
@@ -84,9 +84,9 @@ new Server({
         scheduledJobName !== 'no-job'
           ? `fake log data for job ${scheduledJobName}`
           : new Response(404)
-    )
+    );
   },
-})
+});
 
 export default (
   <>
@@ -108,4 +108,4 @@ export default (
       )
     )}
   </>
-)
+);

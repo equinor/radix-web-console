@@ -1,4 +1,4 @@
-import { errorToast } from '../components/global-top-nav/styled-toaster'
+import { errorToast } from '../components/global-top-nav/styled-toaster';
 
 export function promiseHandler<T>(
   promise: Promise<T>,
@@ -7,5 +7,5 @@ export function promiseHandler<T>(
 ): void {
   promise
     .then(onSuccess)
-    .catch((err) => errorToast(`${errMsg}: ${err.message}`))
+    .catch((err) => errorToast(`${errMsg}: ${err.message}`));
 }

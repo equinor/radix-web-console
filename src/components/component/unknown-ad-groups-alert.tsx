@@ -1,8 +1,8 @@
-import { List } from '@equinor/eds-core-react'
-import { Alert } from '../alert'
+import { List } from '@equinor/eds-core-react';
+import { Alert } from '../alert';
 
 interface Props {
-  unknownADGroups?: Array<string>
+  unknownADGroups?: Array<string>;
 }
 export function UnknownADGroupsAlert({ unknownADGroups }: Props) {
   return (
@@ -18,5 +18,5 @@ export function UnknownADGroupsAlert({ unknownADGroups }: Props) {
         </Alert>
       )}
     </>
-  )
+  );
 }

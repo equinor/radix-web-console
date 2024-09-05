@@ -1,14 +1,14 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 
-import type { PipelineRun as PipelineRunModel } from '../../store/radix-api'
-import { getPipelineRunExecutionState } from '../component/execution-state'
-import { Duration } from '../time/duration'
-import { DurationToNow } from '../time/duration-to-now'
-import { RelativeToNow } from '../time/relative-to-now'
+import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
+import { getPipelineRunExecutionState } from '../component/execution-state';
+import { Duration } from '../time/duration';
+import { DurationToNow } from '../time/duration-to-now';
+import { RelativeToNow } from '../time/relative-to-now';
 
 interface Props {
-  pipelineRun: PipelineRunModel
+  pipelineRun: PipelineRunModel;
 }
 export function PipelineRun({ pipelineRun }: Props) {
   return (
@@ -63,9 +63,9 @@ export function PipelineRun({ pipelineRun }: Props) {
         </section>
       )}
     </main>
-  )
+  );
 }
 
 PipelineRun.propTypes = {
   pipelineRun: PropTypes.object.isRequired,
-}
+};

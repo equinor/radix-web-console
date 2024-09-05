@@ -1,38 +1,38 @@
-import { List, Popover, Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+import { List, Popover, Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 import {
   type FunctionComponent,
   type SyntheticEvent,
   useEffect,
   useRef,
   useState,
-} from 'react'
+} from 'react';
 
 import type {
   AzureIdentity as AzureIdentityModel,
   Deployment,
   Identity,
-} from '../../store/radix-api'
-import { configVariables } from '../../utils/config'
-import { AzureIdentity } from '../identity/azure-identity'
+} from '../../store/radix-api';
+import { configVariables } from '../../utils/config';
+import { AzureIdentity } from '../identity/azure-identity';
 
 const AzureIdentityLink: FunctionComponent<{
-  namespace: string
-  azure: AzureIdentityModel
+  namespace: string;
+  azure: AzureIdentityModel;
 }> = ({
   namespace,
   azure: { clientId, serviceAccountName, azureKeyVaults },
 }) => {
-  const [popoverOpen, setPopoverOpen] = useState(false)
-  const containerRef = useRef<HTMLElement>(null)
+  const [popoverOpen, setPopoverOpen] = useState(false);
+  const containerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleBodyClick = () => setPopoverOpen(false)
-    document.body.addEventListener('click', handleBodyClick)
+    const handleBodyClick = () => setPopoverOpen(false);
+    document.body.addEventListener('click', handleBodyClick);
     return () => {
-      document.body.removeEventListener('click', handleBodyClick)
-    }
-  }, [])
+      document.body.removeEventListener('click', handleBodyClick);
+    };
+  }, []);
 
   return (
     <>
@@ -41,8 +41,8 @@ const AzureIdentityLink: FunctionComponent<{
         link
         token={{ textDecoration: 'none' }}
         onClick={(ev: SyntheticEvent) => {
-          ev.stopPropagation()
-          setPopoverOpen(!popoverOpen)
+          ev.stopPropagation();
+          setPopoverOpen(!popoverOpen);
         }}
       >
         Azure
@@ -84,12 +84,12 @@ const AzureIdentityLink: FunctionComponent<{
         </Popover.Content>
       </Popover>
     </>
-  )
-}
+  );
+};
 
 export const ComponentIdentity: FunctionComponent<{
-  identity: Identity
-  deployment: Deployment
+  identity: Identity;
+  deployment: Deployment;
 }> = ({ identity: { azure }, deployment }) => (
   <Typography as="span">
     Identity enabled for{' '}
@@ -97,14 +97,14 @@ export const ComponentIdentity: FunctionComponent<{
       <AzureIdentityLink namespace={deployment.namespace} azure={azure} />
     )}
   </Typography>
-)
+);
 
 AzureIdentityLink.propTypes = {
   namespace: PropTypes.string.isRequired,
   azure: PropTypes.object.isRequired as PropTypes.Validator<AzureIdentityModel>,
-}
+};
 
 ComponentIdentity.propTypes = {
   identity: PropTypes.object.isRequired as PropTypes.Validator<Identity>,
   deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
-}
+};

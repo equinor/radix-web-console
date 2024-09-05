@@ -1,12 +1,12 @@
-import type { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks'
-import type { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query'
+import type { LazyQueryTrigger } from '@reduxjs/toolkit/dist/query/react/buildHooks';
+import type { BaseQueryFn, QueryDefinition } from '@reduxjs/toolkit/query';
 
-import { getFetchErrorMessage } from '../../store/utils'
-import { copyToTextFile } from '../../utils/string'
-import { errorToast } from '../global-top-nav/styled-toaster'
+import { getFetchErrorMessage } from '../../store/utils';
+import { copyToTextFile } from '../../utils/string';
+import { errorToast } from '../global-top-nav/styled-toaster';
 
 export type LazyQueryTriggerPlain<Args extends Record<string, unknown>> =
-  LazyQueryTrigger<QueryDefinition<Args, BaseQueryFn, string, string>>
+  LazyQueryTrigger<QueryDefinition<Args, BaseQueryFn, string, string>>;
 
 export function downloadLazyLogCb<
   T extends LazyQueryTriggerPlain<Record<string, unknown>>,
@@ -14,15 +14,15 @@ export function downloadLazyLogCb<
   return async () => {
     const { data, error, isError, isSuccess } = await (
       func as unknown as (...args: Parameters<T>) => ReturnType<T>
-    )(...((args || []) as Parameters<T>))
+    )(...((args || []) as Parameters<T>));
 
     if (isSuccess) {
-      copyToTextFile(filename, data)
+      copyToTextFile(filename, data);
     } else if (isError) {
-      const message = getFetchErrorMessage(error)
-      errorToast(`Failed to download: ${message}`)
+      const message = getFetchErrorMessage(error);
+      errorToast(`Failed to download: ${message}`);
     }
-  }
+  };
 }
 
 export async function downloadLazyLogPromise(
@@ -30,10 +30,10 @@ export async function downloadLazyLogPromise(
   func: () => Promise<string>
 ) {
   try {
-    const data = await func()
-    copyToTextFile(filename, data)
+    const data = await func();
+    copyToTextFile(filename, data);
   } catch (e) {
-    const message = getFetchErrorMessage(e)
-    errorToast(`Failed to download: ${message}`)
+    const message = getFetchErrorMessage(e);
+    errorToast(`Failed to download: ${message}`);
   }
 }

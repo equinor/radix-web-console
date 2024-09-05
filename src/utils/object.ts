@@ -1,12 +1,12 @@
-import { get } from 'lodash'
+import { get } from 'lodash';
 
 type NestedKeyOf<T extends object> = {
   [K in keyof T & (string | number)]: T[K] extends object
     ?
         | `${K}`
         | `${K}.${NestedKeyOf<T[K]> extends infer U extends string ? U : never}`
-    : `${K}`
-}[keyof T & (string | number)]
+    : `${K}`;
+}[keyof T & (string | number)];
 
 /**
  * Transforms an array of strings onto an object where the strings are keys and
@@ -27,7 +27,7 @@ export function stringsToObject<T extends string = string>(
   return strings.reduce<Record<string, string>>(
     (obj, str) => ({ ...obj, [str]: mapper(str) }),
     {}
-  )
+  );
 }
 
 /**
@@ -57,8 +57,8 @@ export function makeLocalGetter<O extends object>(
   localPath: NestedKeyOf<O> | Array<string>
 ): <T>(obj: O, path: string | Array<string>, defaultValue?: T) => T {
   return function (obj, path, defaultValue) {
-    return get(get(obj, localPath), path, defaultValue)
-  }
+    return get(get(obj, localPath), path, defaultValue);
+  };
 }
 
 /**
@@ -88,7 +88,7 @@ export function paramStringToObject<T extends string = string>(
   keyValSep = '='
 ): Record<T, string> {
   return str.split(itemSep).reduce<Record<string, string>>((obj, keyVal) => {
-    const keyValArr = keyVal.split(keyValSep)
-    return { ...obj, [keyValArr[0]]: keyValArr[1] }
-  }, {})
+    const keyValArr = keyVal.split(keyValSep);
+    return { ...obj, [keyValArr[0]]: keyValArr[1] };
+  }, {});
 }

@@ -1,17 +1,17 @@
-import { Server } from 'miragejs'
+import { Server } from 'miragejs';
 
-import { DeploymentJobComponentOverview } from './deployment-job-component-overview'
+import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
 import type {
   ChangeEnvVarApiResponse,
   Deployment,
   EnvVarsApiResponse,
   GetDeploymentApiResponse,
-} from '../../store/radix-api'
+} from '../../store/radix-api';
 
 const testData: Array<
   Parameters<typeof DeploymentJobComponentOverview>[0] & {
-    deployment: Deployment
+    deployment: Deployment;
   }
 > = [
   {
@@ -418,7 +418,7 @@ const testData: Array<
       ],
     },
   },
-]
+];
 
 // Mock API response
 new Server({
@@ -428,22 +428,22 @@ new Server({
       this.get<GetDeploymentApiResponse>(
         `/api/v1/applications/:appName/deployments/${deploymentName}`,
         () => deployment
-      )
-    })
+      );
+    });
 
     // Mock response for EnvVars
     this.get<EnvVarsApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => []
-    )
+    );
 
     // Mock response for ChangeEnvVar
     this.patch<ChangeEnvVarApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => void 0
-    )
+    );
   },
-})
+});
 
 export default (
   <div
@@ -461,4 +461,4 @@ export default (
       ))}
     </div>
   </div>
-)
+);

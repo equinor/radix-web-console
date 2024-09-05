@@ -1,9 +1,9 @@
-import { Breadcrumbs } from '@equinor/eds-core-react'
-import type { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Breadcrumbs } from '@equinor/eds-core-react';
+import type { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
 
 export interface BreadcrumbProps {
-  links: Readonly<Array<{ label: string; to?: string }>>
+  links: Readonly<Array<{ label: string; to?: string }>>;
 }
 
 export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
@@ -14,4 +14,4 @@ export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
       </Breadcrumbs.Breadcrumb>
     ))}
   </Breadcrumbs>
-)
+);

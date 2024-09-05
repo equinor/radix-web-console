@@ -1,17 +1,17 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
-import { routes } from '../../routes'
-import type { Component } from '../../store/radix-api'
-import { routeWithParams } from '../../utils/string'
-import { DockerImage } from '../docker-image'
+import { routes } from '../../routes';
+import type { Component } from '../../store/radix-api';
+import { routeWithParams } from '../../utils/string';
+import { DockerImage } from '../docker-image';
 
 type Props = {
-  appName: string
-  deploymentName: string
-  components?: Array<Component>
-}
+  appName: string;
+  deploymentName: string;
+  components?: Array<Component>;
+};
 
 export const DeploymentJobComponentList = ({
   appName,
@@ -41,7 +41,7 @@ export const DeploymentJobComponentList = ({
       </>
     )}
   </>
-)
+);
 
 DeploymentJobComponentList.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -49,4 +49,4 @@ DeploymentJobComponentList.propTypes = {
   components: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<Component>
   ),
-}
+};

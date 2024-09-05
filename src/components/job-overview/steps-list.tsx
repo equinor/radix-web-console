@@ -1,4 +1,4 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
+import { Icon, Typography } from '@equinor/eds-core-react';
 import {
   type IconData,
   copy,
@@ -7,53 +7,53 @@ import {
   radio_button_unselected,
   record,
   track_changes,
-} from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+} from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import { StepSummary } from './step-summary'
+import { StepSummary } from './step-summary';
 
-import type { Step } from '../../store/radix-api'
-import { PipelineStep } from '../../utils/pipeline'
-import { sortCompareDate } from '../../utils/sort-utils'
+import type { Step } from '../../store/radix-api';
+import { PipelineStep } from '../../utils/pipeline';
+import { sortCompareDate } from '../../utils/sort-utils';
 
 function getStepIcon({ name }: Step): IconData {
   switch (name) {
     case PipelineStep.CloneConfig:
     case PipelineStep.CloneRepository:
-      return github
+      return github;
 
     case PipelineStep.CloneConfigToMap: // outdated, needed for old jobs
     case PipelineStep.PreparePipelines:
-      return copy
+      return copy;
 
     case PipelineStep.OrchestratePipeline:
-      return pressure
+      return pressure;
 
     default: {
       if (name === PipelineStep.RunSubPipeline || name.match(/^build-(.+)$/)) {
-        return track_changes
+        return track_changes;
       } else if (name.match(/^scan-(.+)$/)) {
-        return record
+        return record;
       }
 
-      return radio_button_unselected
+      return radio_button_unselected;
     }
   }
 }
 
 export const StepsList: FunctionComponent<{
-  appName: string
-  jobName: string
-  steps?: Array<Step>
+  appName: string;
+  jobName: string;
+  steps?: Array<Step>;
 }> = ({ appName, jobName, steps }) => {
-  const namedSteps = (steps ?? []).filter(({ name }) => !!name)
+  const namedSteps = (steps ?? []).filter(({ name }) => !!name);
 
   const getStepKey = (step: Step) => {
     return step.components?.length == 1
       ? `${step.name}-${step.components[0]}`
-      : step.name
-  }
+      : step.name;
+  };
   return (
     <>
       <Typography variant="h4">Steps</Typography>
@@ -81,11 +81,11 @@ export const StepsList: FunctionComponent<{
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
 StepsList.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   steps: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Step>),
-}
+};

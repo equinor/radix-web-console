@@ -1,15 +1,15 @@
-import { Icon } from '@equinor/eds-core-react'
-import { check, error_outlined, time } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
+import { Icon } from '@equinor/eds-core-react';
+import { check, error_outlined, time } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
 
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
-} from './status-badge-template'
+} from './status-badge-template';
 
-import type { TlsAutomation } from '../../store/radix-api'
+import type { TlsAutomation } from '../../store/radix-api';
 
-type Status = TlsAutomation['status'] | 'Unknown'
+type Status = TlsAutomation['status'] | 'Unknown';
 
 const BadgeTemplates: Record<
   Status,
@@ -31,21 +31,21 @@ const BadgeTemplates: Record<
     icon: <Icon data={time} />,
     text: 'Order Status Unknown',
   },
-}
+};
 
 type Props = {
-  status: Status
-}
+  status: Status;
+};
 export function TLSAutomationStatusBadge({ status }: Props) {
-  const { type, icon, text } = BadgeTemplates[status]
+  const { type, icon, text } = BadgeTemplates[status];
 
   return (
     <StatusBadgeTemplate type={type} icon={icon}>
       {text || status}
     </StatusBadgeTemplate>
-  )
+  );
 }
 
 TLSAutomationStatusBadge.propTypes = {
   status: PropTypes.string.isRequired as PropTypes.Validator<Status>,
-}
+};

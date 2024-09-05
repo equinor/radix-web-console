@@ -1,20 +1,20 @@
-import { Chip, type ChipProps } from '@equinor/eds-core-react'
-import { clsx } from 'clsx'
-import type React from 'react'
+import { Chip, type ChipProps } from '@equinor/eds-core-react';
+import { clsx } from 'clsx';
+import type React from 'react';
 
-import './style.css'
+import './style.css';
 
 export type StatusBadgeTemplateType =
   | 'success'
   | 'warning'
   | 'danger'
   | 'none'
-  | 'default'
+  | 'default';
 
 export type StatusBadgeTemplateProps = {
-  icon?: React.JSX.Element
-  type?: StatusBadgeTemplateType
-} & ChipProps
+  icon?: React.JSX.Element;
+  type?: StatusBadgeTemplateType;
+} & ChipProps;
 
 /** StatusBadge template */
 export function StatusBadgeTemplate({
@@ -37,5 +37,5 @@ export function StatusBadgeTemplate({
       {icon ?? <></>}
       <div className="status-badge-content">{children}</div>
     </Chip>
-  )
+  );
 }

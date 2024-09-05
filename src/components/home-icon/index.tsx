@@ -1,52 +1,52 @@
-import { clsx } from 'clsx'
-import { getDayOfYear } from 'date-fns'
-import { Component } from 'react'
+import { clsx } from 'clsx';
+import { getDayOfYear } from 'date-fns';
+import { Component } from 'react';
 
-import './style.css'
+import './style.css';
 
 function isEasterTime(date: Date): boolean {
-  const year = date.getFullYear()
-  const a = Math.trunc(year % 19)
-  const b = Math.trunc(year / 100)
-  const c = Math.trunc(year % 100)
-  const d = Math.trunc(b / 4)
-  const e = Math.trunc(b % 4)
-  const f = Math.trunc((b + 8) / 25)
-  const g = Math.trunc((b - f + 1) / 3)
-  const h = Math.trunc((19 * a + b - d - g + 15) % 30)
-  const i = Math.trunc(c / 4)
-  const k = Math.trunc(c % 4)
-  const l = Math.trunc((32 + 2 * e + 2 * i - h - k) % 7)
-  const m = Math.trunc((a + 11 * h + 22 * l) / 451)
-  const month = Math.trunc((h + l - 7 * m + 114) / 31)
-  const day = Math.trunc(((h + l - 7 * m + 114) % 31) + 1)
+  const year = date.getFullYear();
+  const a = Math.trunc(year % 19);
+  const b = Math.trunc(year / 100);
+  const c = Math.trunc(year % 100);
+  const d = Math.trunc(b / 4);
+  const e = Math.trunc(b % 4);
+  const f = Math.trunc((b + 8) / 25);
+  const g = Math.trunc((b - f + 1) / 3);
+  const h = Math.trunc((19 * a + b - d - g + 15) % 30);
+  const i = Math.trunc(c / 4);
+  const k = Math.trunc(c % 4);
+  const l = Math.trunc((32 + 2 * e + 2 * i - h - k) % 7);
+  const m = Math.trunc((a + 11 * h + 22 * l) / 451);
+  const month = Math.trunc((h + l - 7 * m + 114) / 31);
+  const day = Math.trunc(((h + l - 7 * m + 114) % 31) + 1);
 
-  const today = getDayOfYear(date)
-  const easter = getDayOfYear(new Date(year, month - 1, day))
-  return today > easter - 14 && today < easter + 3
+  const today = getDayOfYear(date);
+  const easter = getDayOfYear(new Date(year, month - 1, day));
+  return today > easter - 14 && today < easter + 3;
 }
 
 function isAprilFirst(date: Date): boolean {
-  return date.getMonth() === 3 && date.getDate() === 1
+  return date.getMonth() === 3 && date.getDate() === 1;
 }
 
 function isHalloween(date: Date): boolean {
-  return date.getMonth() === 9 && date.getDate() === 31
+  return date.getMonth() === 9 && date.getDate() === 31;
 }
 
 function isDecember(date: Date): boolean {
-  return date.getMonth() === 11
+  return date.getMonth() === 11;
 }
 
 // biome-ignore lint/complexity/noBannedTypes: ignore {} props
 export class HomeIcon extends Component<{}, { svgLogo?: string }> {
-  private isLoaded: boolean
+  private isLoaded: boolean;
 
   // biome-ignore lint/complexity/noBannedTypes: ignore {} props
   constructor(props: {}) {
-    super(props)
-    this.state = {}
-    this.isLoaded = true
+    super(props);
+    this.state = {};
+    this.isLoaded = true;
   }
 
   private async fetchLogo(date: Date): Promise<typeof import('*.svg')> {
@@ -56,18 +56,18 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
         ? 'logo-radix-halloween'
         : isDecember(date)
           ? 'logo-radix-christmas'
-          : 'logo-radix'
-    return await import(`./logos/${filename}.svg`)
+          : 'logo-radix';
+    return await import(`./logos/${filename}.svg`);
   }
 
   override componentDidMount() {
     this.fetchLogo(new Date())
       .then((logo) => this.isLoaded && this.setState({ svgLogo: logo.default }))
-      .catch(() => void 0) // noop
+      .catch(() => void 0); // noop
   }
 
   override componentWillUnmount() {
-    this.isLoaded = false
+    this.isLoaded = false;
   }
 
   override render() {
@@ -79,6 +79,6 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
         })}
         src={this.state.svgLogo}
       />
-    )
+    );
   }
 }

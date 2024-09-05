@@ -1,26 +1,26 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
 
-import { routes } from '../../routes'
-import { pollingInterval } from '../../store/defaults'
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
 import {
   radixApi,
   useGetEnvironmentQuery,
   useGetOAuthPodLogQuery,
-} from '../../store/radix-api'
-import { withRouteParams } from '../../utils/router'
-import { getEnvsUrl } from '../../utils/routing'
-import { routeWithParams, smallReplicaName } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { downloadLazyLogCb } from '../code/log-helper'
-import { Replica } from '../replica'
+} from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { getEnvsUrl } from '../../utils/routing';
+import { routeWithParams, smallReplicaName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { downloadLazyLogCb } from '../code/log-helper';
+import { Replica } from '../replica';
 
 interface Props {
-  appName: string
-  envName: string
-  componentName: string
-  replicaName: string
+  appName: string;
+  envName: string;
+  componentName: string;
+  replicaName: string;
 }
 
 export function PageOAuthAuxiliaryReplica({
@@ -32,7 +32,7 @@ export function PageOAuthAuxiliaryReplica({
   const environmentState = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  )
+  );
 
   const pollLogsState = useGetOAuthPodLogQuery(
     { appName, envName, componentName, podName: replicaName, lines: '1000' },
@@ -40,12 +40,12 @@ export function PageOAuthAuxiliaryReplica({
       skip: !appName || !envName || !componentName || !replicaName,
       pollingInterval: 5000,
     }
-  )
-  const [getLog] = radixApi.endpoints.getOAuthPodLog.useLazyQuery()
+  );
+  const [getLog] = radixApi.endpoints.getOAuthPodLog.useLazyQuery();
 
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
-    ?.oauth2?.deployment?.replicaList?.find((x) => x.name === replicaName)
+    ?.oauth2?.deployment?.replicaList?.find((x) => x.name === replicaName);
 
   return (
     <>
@@ -100,7 +100,7 @@ export function PageOAuthAuxiliaryReplica({
         )}
       </AsyncResource>
     </>
-  )
+  );
 }
 
 PageOAuthAuxiliaryReplica.propTypes = {
@@ -108,6 +108,6 @@ PageOAuthAuxiliaryReplica.propTypes = {
   componentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
   replicaName: PropTypes.string.isRequired,
-}
+};
 
-export default withRouteParams(PageOAuthAuxiliaryReplica)
+export default withRouteParams(PageOAuthAuxiliaryReplica);

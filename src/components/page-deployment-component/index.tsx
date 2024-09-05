@@ -1,12 +1,12 @@
-import { DeploymentComponentOverview } from './deployment-component-overview'
+import { DeploymentComponentOverview } from './deployment-component-overview';
 
-import { withRouteParams } from '../../utils/router'
-import { DocumentTitle } from '../document-title'
+import { withRouteParams } from '../../utils/router';
+import { DocumentTitle } from '../document-title';
 
 export interface Props {
-  appName: string
-  deploymentName: string
-  componentName: string
+  appName: string;
+  deploymentName: string;
+  componentName: string;
 }
 
 export function PageDeploymentComponent({
@@ -23,6 +23,6 @@ export function PageDeploymentComponent({
         componentName={componentName}
       />
     </>
-  )
+  );
 }
-export default withRouteParams(PageDeploymentComponent)
+export default withRouteParams(PageDeploymentComponent);

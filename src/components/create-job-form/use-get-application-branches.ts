@@ -1,18 +1,18 @@
-import { pollingInterval } from '../../store/defaults'
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetApplicationQuery,
   useGetEnvironmentSummaryQuery,
-} from '../../store/radix-api'
+} from '../../store/radix-api';
 
 export function useGetApplicationBranches(appName: string) {
   const { data: envSummary } = useGetEnvironmentSummaryQuery(
     { appName },
     { pollingInterval }
-  )
+  );
   const { data: application } = useGetApplicationQuery(
     { appName },
     { pollingInterval }
-  )
+  );
   const branches =
     envSummary
       ?.filter(({ branchMapping }) => !!branchMapping)
@@ -22,13 +22,13 @@ export function useGetApplicationBranches(appName: string) {
           [branchMapping]: [...(obj[branchMapping] || []), name],
         }),
         {}
-      ) ?? {}
+      ) ?? {};
 
   if (Object.keys(branches).length === 0 && envSummary?.length === 0) {
-    const configBranch = application?.registration?.configBranch
+    const configBranch = application?.registration?.configBranch;
     if (configBranch) {
-      branches[configBranch] = []
+      branches[configBranch] = [];
     }
   }
-  return branches
+  return branches;
 }

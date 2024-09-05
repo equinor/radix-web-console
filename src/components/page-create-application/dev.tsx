@@ -1,4 +1,4 @@
-import PageCreateApplication from '.'
+import PageCreateApplication from '.';
 
 export default (
   <div
@@ -11,4 +11,4 @@ export default (
   >
     <PageCreateApplication />
   </div>
-)
+);

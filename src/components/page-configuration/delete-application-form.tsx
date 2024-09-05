@@ -4,51 +4,51 @@ import {
   Icon,
   TextField,
   Typography,
-} from '@equinor/eds-core-react'
-import { warning_outlined } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import { type ChangeEvent, useState } from 'react'
+} from '@equinor/eds-core-react';
+import { warning_outlined } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { type ChangeEvent, useState } from 'react';
 
-import { Alert } from '../alert'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import { ScrimPopup } from '../scrim-popup'
+import { Alert } from '../alert';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ScrimPopup } from '../scrim-popup';
 
-import './style.css'
-import { useNavigate } from 'react-router'
-import useLocalStorage from '../../effects/use-local-storage'
-import { routes } from '../../routes'
-import { useDeleteApplicationMutation } from '../../store/radix-api'
+import './style.css';
+import { useNavigate } from 'react-router';
+import useLocalStorage from '../../effects/use-local-storage';
+import { routes } from '../../routes';
+import { useDeleteApplicationMutation } from '../../store/radix-api';
 
 interface Props {
-  appName: string
+  appName: string;
 }
 
 export default function DeleteApplicationForm({ appName }: Props) {
-  const [mutate] = useDeleteApplicationMutation()
-  const [inputValue, setInputValue] = useState('')
-  const [visibleScrim, setVisibleScrim] = useState(false)
-  const navigate = useNavigate()
+  const [mutate] = useDeleteApplicationMutation();
+  const [inputValue, setInputValue] = useState('');
+  const [visibleScrim, setVisibleScrim] = useState(false);
+  const navigate = useNavigate();
 
   const [, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
-  )
+  );
   const [, setKnownAppNames] = useLocalStorage<Array<string>>(
     'knownApplications',
     []
-  )
+  );
 
   const deleteAppNameFromLocalStorage = (appName: string) => {
-    setKnownAppNames((old) => old.filter((name) => name != appName))
-    setFavourites((old) => old.filter((name) => name != appName))
-  }
+    setKnownAppNames((old) => old.filter((name) => name != appName));
+    setFavourites((old) => old.filter((name) => name != appName));
+  };
 
   const doDelete = handlePromiseWithToast(async () => {
-    setVisibleScrim(false)
-    mutate({ appName })
-    deleteAppNameFromLocalStorage(appName)
-    navigate(routes.apps)
-  }, 'Deleted')
+    setVisibleScrim(false);
+    mutate({ appName });
+    deleteAppNameFromLocalStorage(appName);
+    navigate(routes.apps);
+  }, 'Deleted');
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
@@ -113,8 +113,8 @@ export default function DeleteApplicationForm({ appName }: Props) {
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  )
+  );
 }
 DeleteApplicationForm.propTypes = {
   appName: PropTypes.string.isRequired,
-}
+};

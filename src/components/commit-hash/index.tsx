@@ -1,12 +1,12 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
-import { github } from '@equinor/eds-icons'
-import type { FunctionComponent } from 'react'
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { github } from '@equinor/eds-icons';
+import type { FunctionComponent } from 'react';
 
-import { smallGithubCommitHash } from '../../utils/string'
+import { smallGithubCommitHash } from '../../utils/string';
 
 export interface CommitHashProps {
-  commit: string
-  repo?: string
+  commit: string;
+  repo?: string;
 }
 
 export const CommitHash: FunctionComponent<CommitHashProps> = ({
@@ -26,4 +26,4 @@ export const CommitHash: FunctionComponent<CommitHashProps> = ({
     >
       {smallGithubCommitHash(commit)} {repo && <Icon data={github} size={18} />}
     </Typography>
-  ) : null
+  ) : null;

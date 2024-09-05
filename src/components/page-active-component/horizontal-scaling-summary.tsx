@@ -1,17 +1,17 @@
-import { Accordion, Typography } from '@equinor/eds-core-react'
-import { isNil } from 'lodash'
-import * as PropTypes from 'prop-types'
+import { Accordion, Typography } from '@equinor/eds-core-react';
+import { isNil } from 'lodash';
+import * as PropTypes from 'prop-types';
 
 import type {
   HorizontalScalingSummary as HorizontalScalingSummaryModel,
   HorizontalScalingSummaryTriggerStatus,
-} from '../../store/radix-api'
-import { pluraliser } from '../../utils/string'
-import { Alert } from '../alert'
+} from '../../store/radix-api';
+import { pluraliser } from '../../utils/string';
+import { Alert } from '../alert';
 
 type Props = {
-  summary: HorizontalScalingSummaryModel
-}
+  summary: HorizontalScalingSummaryModel;
+};
 
 export const HorizontalScalingSummary = ({ summary }: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
@@ -80,7 +80,7 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
       </Accordion.Panel>
     </Accordion.Item>
   </Accordion>
-)
+);
 
 HorizontalScalingSummary.propTypes = {
   currentCPUUtilizationPercentage: PropTypes.number,
@@ -89,17 +89,17 @@ HorizontalScalingSummary.propTypes = {
   minReplicas: PropTypes.number,
   targetCPUUtilizationPercentage: PropTypes.number,
   targetMemoryUtilizationPercentage: PropTypes.number,
-}
+};
 
 type TriggerStatusProps = {
-  trigger: HorizontalScalingSummaryTriggerStatus
-}
+  trigger: HorizontalScalingSummaryTriggerStatus;
+};
 const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
-  let unitFn = pluraliser('%', '%')
+  let unitFn = pluraliser('%', '%');
 
-  if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas')
+  if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas');
   if (trigger.type == 'azure-servicebus')
-    unitFn = pluraliser('message', 'messages')
+    unitFn = pluraliser('message', 'messages');
 
   return (
     <>
@@ -120,5 +120,5 @@ const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
         )}
       </Typography>
     </>
-  )
-}
+  );
+};

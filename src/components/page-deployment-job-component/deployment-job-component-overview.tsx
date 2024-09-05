@@ -1,28 +1,28 @@
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import { routes } from '../../routes'
-import { pollingInterval } from '../../store/defaults'
-import { useGetDeploymentQuery } from '../../store/radix-api'
-import { routeWithParams, smallDeploymentName } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { ComponentSecrets } from '../component/component-secrets'
-import { EnvironmentVariables } from '../environment-variables'
-import { Overview } from '../page-active-job-component/overview'
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import { useGetDeploymentQuery } from '../../store/radix-api';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { ComponentSecrets } from '../component/component-secrets';
+import { EnvironmentVariables } from '../environment-variables';
+import { Overview } from '../page-active-job-component/overview';
 
 export const DeploymentJobComponentOverview: FunctionComponent<{
-  appName: string
-  deploymentName: string
-  jobComponentName: string
+  appName: string;
+  deploymentName: string;
+  jobComponentName: string;
 }> = ({ appName, deploymentName, jobComponentName }) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
-  )
+  );
   const component = deployment?.components?.find(
     ({ name }) => name === jobComponentName
-  )
+  );
 
   return (
     <>
@@ -65,11 +65,11 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
         )}
       </AsyncResource>
     </>
-  )
-}
+  );
+};
 
 DeploymentJobComponentOverview.propTypes = {
   appName: PropTypes.string.isRequired,
   deploymentName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
-}
+};

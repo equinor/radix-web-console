@@ -1,22 +1,22 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react'
-import { stop } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import { type FunctionComponent, useState } from 'react'
+import { Icon, Table, Typography } from '@equinor/eds-core-react';
+import { stop } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { type FunctionComponent, useState } from 'react';
 
 import {
   type AzureKeyVaultSecretVersion,
   type Secret,
   useGetAzureKeyVaultSecretVersionsQuery,
-} from '../../../store/radix-api'
+} from '../../../store/radix-api';
 import {
   smallReplicaName,
   smallScheduledBatchName,
   smallScheduledJobName,
-} from '../../../utils/string'
-import { ScrimPopup } from '../../scrim-popup'
-import { Duration } from '../../time/duration'
+} from '../../../utils/string';
+import { ScrimPopup } from '../../scrim-popup';
+import { Duration } from '../../time/duration';
 
-import '../style.css'
+import '../style.css';
 
 function consumerSecretName(
   replicaName: string,
@@ -25,15 +25,15 @@ function consumerSecretName(
 ): string {
   if (batchName?.length > 0) {
     // show only first secret-version entry for pods of this batch
-    return `batch: ${smallScheduledBatchName(batchName)}`
+    return `batch: ${smallScheduledBatchName(batchName)}`;
   }
   if (jobName?.length > 0) {
-    return `job: ${smallScheduledJobName(jobName)}`
+    return `job: ${smallScheduledJobName(jobName)}`;
   }
   if (replicaName.toLowerCase() === 'new jobs') {
-    return 'New job'
+    return 'New job';
   }
-  return `replica: ${smallReplicaName(replicaName)}`
+  return `replica: ${smallReplicaName(replicaName)}`;
 }
 
 const ConsumerSecretCreated: FunctionComponent<AzureKeyVaultSecretVersion> = ({
@@ -45,27 +45,27 @@ const ConsumerSecretCreated: FunctionComponent<AzureKeyVaultSecretVersion> = ({
   jobName,
 }) => {
   if (batchName?.length > 0) {
-    return <Duration start={new Date(batchCreated)} end={new Date()} />
+    return <Duration start={new Date(batchCreated)} end={new Date()} />;
   }
   if (jobName?.length > 0) {
-    return <Duration start={new Date(jobCreated)} end={new Date()} />
+    return <Duration start={new Date(jobCreated)} end={new Date()} />;
   }
   if (replicaName.toLowerCase() === 'new jobs') {
-    return <></>
+    return <></>;
   }
-  return <Duration start={new Date(replicaCreated)} end={new Date()} />
-}
+  return <Duration start={new Date(replicaCreated)} end={new Date()} />;
+};
 
 export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
-  appName: string
-  envName: string
-  componentName: string
-  title: string
-  scrimTitle?: string
-  secret: Pick<Secret, 'resource' | 'id'>
+  appName: string;
+  envName: string;
+  componentName: string;
+  title: string;
+  scrimTitle?: string;
+  secret: Pick<Secret, 'resource' | 'id'>;
 }> = ({ appName, envName, componentName, title, scrimTitle, secret }) => {
-  const [visibleScrim, setVisibleScrim] = useState(false)
-  const [pollingInterval, setPollingInterval] = useState(0)
+  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [pollingInterval, setPollingInterval] = useState(0);
 
   const { data, refetch } = useGetAzureKeyVaultSecretVersionsQuery(
     {
@@ -84,7 +84,7 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
         !secret.id,
       pollingInterval,
     }
-  )
+  );
 
   const filteredData = (data || []).filter(
     ({ batchName, version }, i, arr) =>
@@ -93,7 +93,7 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
       arr.findIndex(
         (y) => y.batchName === batchName && y.version === version
       ) === i
-  )
+  );
 
   return (
     <>
@@ -102,9 +102,9 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
         as="span"
         token={{ textDecoration: 'none' }}
         onClick={() => {
-          setVisibleScrim(true)
-          setPollingInterval(8000)
-          refetch()
+          setVisibleScrim(true);
+          setPollingInterval(8000);
+          refetch();
         }}
       >
         {title}
@@ -114,8 +114,8 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
         title={scrimTitle ?? `${secret.resource}: ${secret.id}`}
         open={visibleScrim}
         onClose={() => {
-          setVisibleScrim(false)
-          setPollingInterval(0)
+          setVisibleScrim(false);
+          setPollingInterval(0);
         }}
         isDismissable
       >
@@ -158,8 +158,8 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
         </div>
       </ScrimPopup>
     </>
-  )
-}
+  );
+};
 
 SecretListItemTitleAzureKeyVaultItem.propTypes = {
   appName: PropTypes.string.isRequired,
@@ -168,4 +168,4 @@ SecretListItemTitleAzureKeyVaultItem.propTypes = {
   title: PropTypes.string.isRequired,
   scrimTitle: PropTypes.string,
   secret: PropTypes.object.isRequired as PropTypes.Validator<Secret>,
-}
+};

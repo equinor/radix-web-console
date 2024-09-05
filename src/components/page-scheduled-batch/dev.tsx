@@ -1,12 +1,12 @@
-import { Response, Server } from 'miragejs'
+import { Response, Server } from 'miragejs';
 
-import { PageScheduledBatch } from './index'
+import { PageScheduledBatch } from './index';
 
-import type { ScheduledBatchSummary } from '../../store/radix-api'
+import type { ScheduledBatchSummary } from '../../store/radix-api';
 
 const testData: Array<
   Parameters<typeof PageScheduledBatch>[0] & {
-    batchData?: ScheduledBatchSummary
+    batchData?: ScheduledBatchSummary;
   }
 > = [
   {
@@ -131,7 +131,7 @@ const testData: Array<
     jobComponentName: 'empty-component',
     scheduledBatchName: 'no-btch',
   },
-]
+];
 
 // Mock API response
 new Server({
@@ -141,8 +141,8 @@ new Server({
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/batches/${scheduledBatchName}`,
         () => batchData
-      )
-    })
+      );
+    });
 
     // Mock response for logs
     this.get(
@@ -151,9 +151,9 @@ new Server({
         scheduledBatchName !== 'no-job'
           ? `fake log data for batch ${scheduledBatchName}`
           : new Response(404)
-    )
+    );
   },
-})
+});
 
 export default (
   <>
@@ -175,4 +175,4 @@ export default (
       )
     )}
   </>
-)
+);

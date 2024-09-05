@@ -1,23 +1,23 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react'
-import { notifications, notifications_off } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
-import { useState } from 'react'
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { notifications, notifications_off } from '@equinor/eds-icons';
+import * as PropTypes from 'prop-types';
+import { useState } from 'react';
 
-import { Alerting } from '../alerting'
-import AsyncResource from '../async-resource/async-resource'
-import { ScrimPopup } from '../scrim-popup'
+import { Alerting } from '../alerting';
+import AsyncResource from '../async-resource/async-resource';
+import { ScrimPopup } from '../scrim-popup';
 
-import './style.css'
-import { pollingInterval } from '../../store/defaults'
-import { type UpdateAlertingConfig, radixApi } from '../../store/radix-api'
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import './style.css';
+import { pollingInterval } from '../../store/defaults';
+import { type UpdateAlertingConfig, radixApi } from '../../store/radix-api';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 interface Props {
-  appName: string
+  appName: string;
 }
 
 const ApplicationAlerting = ({ appName }: Props) => {
-  const [visibleScrim, setVisibleScrim] = useState(false)
+  const [visibleScrim, setVisibleScrim] = useState(false);
   const {
     data: config,
     refetch,
@@ -25,31 +25,31 @@ const ApplicationAlerting = ({ appName }: Props) => {
   } = radixApi.useGetApplicationAlertingConfigQuery(
     { appName },
     { pollingInterval }
-  )
+  );
 
   const [enableAlertMutation, { isLoading: savingEnable }] =
-    radixApi.useEnableApplicationAlertingMutation()
+    radixApi.useEnableApplicationAlertingMutation();
   const [disableAlertMutation, { isLoading: savingDisable }] =
-    radixApi.useDisableApplicationAlertingMutation()
+    radixApi.useDisableApplicationAlertingMutation();
   const [updateAlertMutation, { isLoading: savingUpdate }] =
-    radixApi.useUpdateApplicationAlertingConfigMutation()
+    radixApi.useUpdateApplicationAlertingConfigMutation();
 
   const enableAlert = handlePromiseWithToast(async () => {
-    await enableAlertMutation({ appName }).unwrap()
-    await refetch()
-  })
+    await enableAlertMutation({ appName }).unwrap();
+    await refetch();
+  });
   const disableAlert = handlePromiseWithToast(async () => {
-    await disableAlertMutation({ appName }).unwrap()
-    await refetch()
-    setVisibleScrim(false)
-  })
+    await disableAlertMutation({ appName }).unwrap();
+    await refetch();
+    setVisibleScrim(false);
+  });
   const updateAlert = handlePromiseWithToast(
     async (updateAlertingConfig: UpdateAlertingConfig) => {
-      await updateAlertMutation({ appName, updateAlertingConfig }).unwrap()
-      await refetch()
-      setVisibleScrim(false)
+      await updateAlertMutation({ appName, updateAlertingConfig }).unwrap();
+      await refetch();
+      setVisibleScrim(false);
     }
-  )
+  );
 
   return (
     <AsyncResource asyncState={state}>
@@ -83,11 +83,11 @@ const ApplicationAlerting = ({ appName }: Props) => {
         </>
       )}
     </AsyncResource>
-  )
-}
+  );
+};
 
 ApplicationAlerting.propTypes = {
   appName: PropTypes.string.isRequired,
-}
+};
 
-export default ApplicationAlerting
+export default ApplicationAlerting;

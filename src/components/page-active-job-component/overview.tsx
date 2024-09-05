@@ -1,18 +1,18 @@
-import { Typography } from '@equinor/eds-core-react'
-import * as PropTypes from 'prop-types'
-import type { FunctionComponent } from 'react'
+import { Typography } from '@equinor/eds-core-react';
+import * as PropTypes from 'prop-types';
+import type { FunctionComponent } from 'react';
 
-import type { Component, Deployment } from '../../store/radix-api'
-import { ComponentIdentity } from '../component/component-identity'
-import { ComponentPorts } from '../component/component-ports'
-import { JobSchedulerDetails } from '../component/scheduled-job/job-scheduler-details'
-import { DockerImage } from '../docker-image'
-import { ResourceRequirements } from '../resource-requirements'
-import { Runtime } from '../runtime'
+import type { Component, Deployment } from '../../store/radix-api';
+import { ComponentIdentity } from '../component/component-identity';
+import { ComponentPorts } from '../component/component-ports';
+import { JobSchedulerDetails } from '../component/scheduled-job/job-scheduler-details';
+import { DockerImage } from '../docker-image';
+import { ResourceRequirements } from '../resource-requirements';
+import { Runtime } from '../runtime';
 
 export const Overview: FunctionComponent<{
-  component: Component
-  deployment: Deployment
+  component: Component;
+  deployment: Deployment;
 }> = ({ component, deployment }) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
@@ -43,9 +43,9 @@ export const Overview: FunctionComponent<{
       </section>
     </div>
   </div>
-)
+);
 
 Overview.propTypes = {
   component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
   deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
-}
+};

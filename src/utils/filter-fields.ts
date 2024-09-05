@@ -8,7 +8,7 @@ export function filterFields<T extends object, K extends keyof T>(
   obj: T,
   keys: Readonly<Array<K>>
 ): Pick<T, K> {
-  return splitFields(obj, keys).filtered
+  return splitFields(obj, keys).filtered;
 }
 
 /**
@@ -23,9 +23,9 @@ function splitFields<T extends object, K extends keyof T>(
 ): { filtered: Pick<T, K>; unfiltered: Omit<T, K> } {
   return Object.keys(obj ?? {}).reduce(
     (o, key) => {
-      o[keys?.includes(key as K) ? 'filtered' : 'unfiltered'][key] = obj?.[key]
-      return o
+      o[keys?.includes(key as K) ? 'filtered' : 'unfiltered'][key] = obj?.[key];
+      return o;
     },
     { filtered: {} as Pick<T, K>, unfiltered: {} as Omit<T, K> }
-  )
+  );
 }

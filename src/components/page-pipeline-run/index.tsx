@@ -1,23 +1,23 @@
-import * as PropTypes from 'prop-types'
+import * as PropTypes from 'prop-types';
 
-import { routes } from '../../routes'
-import { pollingInterval } from '../../store/defaults'
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetTektonPipelineRunQuery,
   useGetTektonPipelineRunTasksQuery,
-} from '../../store/radix-api'
-import { withRouteParams } from '../../utils/router'
-import { routeWithParams, smallJobName } from '../../utils/string'
-import AsyncResource from '../async-resource/async-resource'
-import { Breadcrumb } from '../breadcrumb'
-import { DocumentTitle } from '../document-title'
-import { PipelineRun } from '../pipeline-run'
-import { PipelineRunTasks } from '../pipeline-run-tasks'
+} from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams, smallJobName } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { DocumentTitle } from '../document-title';
+import { PipelineRun } from '../pipeline-run';
+import { PipelineRunTasks } from '../pipeline-run-tasks';
 
 interface Props {
-  appName: string
-  jobName: string
-  pipelineRunName: string
+  appName: string;
+  jobName: string;
+  pipelineRunName: string;
 }
 
 export function PagePipelineRun({ appName, jobName, pipelineRunName }: Props) {
@@ -28,7 +28,7 @@ export function PagePipelineRun({ appName, jobName, pipelineRunName }: Props) {
       appName,
     },
     { pollingInterval }
-  )
+  );
   const { data: tasks, ...taskState } = useGetTektonPipelineRunTasksQuery(
     {
       pipelineRunName,
@@ -36,7 +36,7 @@ export function PagePipelineRun({ appName, jobName, pipelineRunName }: Props) {
       appName,
     },
     { pollingInterval }
-  )
+  );
 
   return (
     <>
@@ -79,11 +79,11 @@ export function PagePipelineRun({ appName, jobName, pipelineRunName }: Props) {
         )}
       </AsyncResource>
     </>
-  )
+  );
 }
 PagePipelineRun.propTypes = {
   appName: PropTypes.string.isRequired,
   jobName: PropTypes.string.isRequired,
   pipelineRunName: PropTypes.string.isRequired,
-}
-export default withRouteParams(PagePipelineRun)
+};
+export default withRouteParams(PagePipelineRun);

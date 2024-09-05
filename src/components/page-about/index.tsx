@@ -1,8 +1,8 @@
-import { Typography } from '@equinor/eds-core-react'
+import { Typography } from '@equinor/eds-core-react';
 
-import { ConfigList } from '../config-list'
-import { AvailabilityCharts } from '../data-chart'
-import { DocumentTitle } from '../document-title'
+import { ConfigList } from '../config-list';
+import { AvailabilityCharts } from '../data-chart';
+import { DocumentTitle } from '../document-title';
 
 export default function PageAbout() {
   return (
@@ -23,5 +23,5 @@ export default function PageAbout() {
         </div>
       </div>
     </div>
-  )
+  );
 }
