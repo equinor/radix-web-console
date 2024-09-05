@@ -14,7 +14,7 @@ const buildReceiverSecrets = (receviers: ReceiverConfigMap) => {
   for (const [receiverName, receiver] of Object.entries(receviers)) {
     secretsConfig[receiverName] = {}
     if (receiver.slackConfig) {
-      secretsConfig[receiverName]['slackConfig'] = { webhookUrl: undefined }
+      secretsConfig[receiverName].slackConfig = { webhookUrl: undefined }
     }
   }
 

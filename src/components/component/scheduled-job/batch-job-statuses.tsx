@@ -41,22 +41,22 @@ const JobConditionBadge: FunctionComponent<{
 }> = ({ status }) => (
   <div className="job-status-container">
     {status.running > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Running']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Running}>
         {status.running}
       </StatusBadgeTemplate>
     )}
     {status.succeeded > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Succeeded']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Succeeded}>
         {status.succeeded}
       </StatusBadgeTemplate>
     )}
     {status.failed > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Failed']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Failed}>
         {status.failed}
       </StatusBadgeTemplate>
     )}
     {status.other > 0 && (
-      <StatusBadgeTemplate {...JobStatusBadgeTemplates['Other']}>
+      <StatusBadgeTemplate {...JobStatusBadgeTemplates.Other}>
         {status.other}
       </StatusBadgeTemplate>
     )}
