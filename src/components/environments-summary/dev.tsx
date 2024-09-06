@@ -1,7 +1,7 @@
 import { Divider } from '@equinor/eds-core-react';
 import { EnvironmentsSummary } from '.';
 
-import { EnvironmentSummary } from '../../store/radix-api';
+import type { EnvironmentSummary } from '../../store/radix-api';
 
 const testData: Array<Array<EnvironmentSummary>> = [
   [

@@ -1,28 +1,28 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { routeWithParams, smallJobName } from '../../utils/string';
 import {
-  getPipelineStepTitle,
   getPipelineStepDescription,
+  getPipelineStepTitle,
 } from '../../utils/pipeline';
+import { routeWithParams, smallJobName } from '../../utils/string';
 
 import { JobStepLogs } from './job-step-logs';
 
+import { routes } from '../../routes';
 import AsyncResource from '../async-resource/async-resource';
-import { getJobExecutionState } from '../component/execution-state';
 import { Breadcrumb } from '../breadcrumb';
+import { getJobExecutionState } from '../component/execution-state';
 import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
 
 import './style.css';
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetApplicationJobQuery,
   useGetTektonPipelineRunsQuery,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
 import { withRouteParams } from '../../utils/router';
 import { DurationToNow } from '../time/duration-to-now';
 
@@ -74,7 +74,9 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
             <div className="grid grid--gap-medium grid--overview-columns">
               <div className="grid grid--gap-medium">
                 <Typography>
-                  Pipeline Step <strong>{step.status.toLowerCase()}</strong>{' '}
+                  Pipeline Step <strong>
+                    {step.status.toLowerCase()}
+                  </strong>{' '}
                 </Typography>
                 <Typography>
                   {getJobExecutionState(step.status)} Step{' '}

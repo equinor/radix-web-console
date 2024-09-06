@@ -1,6 +1,6 @@
 import { Button, Icon, Menu } from '@equinor/eds-core-react';
 import { more_vertical } from '@equinor/eds-icons';
-import { Fragment, FunctionComponent, useState } from 'react';
+import { Fragment, type FunctionComponent, useState } from 'react';
 
 import './style.css';
 
@@ -26,7 +26,9 @@ export const JobContextMenu: FunctionComponent<{
         anchorEl={anchorEl}
         placement="right-start"
       >
-        {menuItems?.map((item, i) => <Fragment key={i}>{item}</Fragment>)}
+        {menuItems?.map((item, i) => (
+          <Fragment key={i}>{item}</Fragment>
+        ))}
       </Menu>
     </>
   );

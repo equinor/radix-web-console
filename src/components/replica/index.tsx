@@ -1,7 +1,12 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import type React from 'react';
+import { type FunctionComponent, useEffect, useState } from 'react';
 
+import { useInterval } from '../../effects/use-interval';
+import type { ReplicaSummary } from '../../store/radix-api';
+import type { FetchQueryResult } from '../../store/types';
+import { smallReplicaName } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
 import { ReplicaImage } from '../replica-image';
@@ -9,10 +14,6 @@ import { ResourceRequirements } from '../resource-requirements';
 import { ReplicaStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { useInterval } from '../../effects/use-interval';
-import { ReplicaSummary } from '../../store/radix-api';
-import { FetchQueryResult } from '../../store/types';
-import { smallReplicaName } from '../../utils/string';
 
 interface ReplicaElements {
   title?: React.JSX.Element;
@@ -222,20 +223,20 @@ export const Replica: FunctionComponent<
   const [log, setLog] = useState('');
   const [historyLog, setHistoryLog] = useState('');
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data) {
       return;
     }
     getLog?.().then(setLog);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replica, logState?.data]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data || log) {
       return;
     }
     getHistoryLog?.().then(setHistoryLog);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [replica, logState?.data]);
 
   return (

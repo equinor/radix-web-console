@@ -1,9 +1,9 @@
-import {
+import { cloneDeep } from 'lodash';
+import type {
   AlertingConfig,
   ReceiverConfigMap,
   UpdateAlertingConfig,
 } from '../../store/radix-api';
-import { cloneDeep } from 'lodash';
 
 const buildReceiverSecrets = (receviers: ReceiverConfigMap) => {
   const secretsConfig = {};
@@ -14,7 +14,7 @@ const buildReceiverSecrets = (receviers: ReceiverConfigMap) => {
   for (const [receiverName, receiver] of Object.entries(receviers)) {
     secretsConfig[receiverName] = {};
     if (receiver.slackConfig) {
-      secretsConfig[receiverName]['slackConfig'] = { webhookUrl: undefined };
+      secretsConfig[receiverName].slackConfig = { webhookUrl: undefined };
     }
   }
 

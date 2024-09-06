@@ -4,17 +4,17 @@ import {
   NativeSelect,
   Typography,
 } from '@equinor/eds-core-react';
-import { FormEvent, useState } from 'react';
+import { type FormEvent, useState } from 'react';
+import { pollingInterval } from '../../store/defaults';
 import {
   useGetEnvironmentSummaryQuery,
   useTriggerPipelineDeployMutation,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
 
-import { Alert } from '../alert';
 import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { FormProp } from './index';
+import type { FormProp } from './index';
 
 export function PipelineFormDeploy({ children, appName, onSuccess }: FormProp) {
   const [trigger, state] = useTriggerPipelineDeployMutation();

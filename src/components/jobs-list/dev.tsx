@@ -1,6 +1,6 @@
 import { JobsList } from '.';
 
-import { JobSummary } from '../../store/radix-api';
+import type { JobSummary } from '../../store/radix-api';
 
 const jobs: Array<JobSummary> = [
   {

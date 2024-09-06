@@ -1,13 +1,13 @@
-import { Icon, IconProps } from '@equinor/eds-core-react';
+import { Icon, type IconProps } from '@equinor/eds-core-react';
 import {
-  IconData,
+  type IconData,
   chevron_down,
   chevron_up,
   unfold_more,
 } from '@equinor/eds-icons';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import { sortDirection } from './sort-utils';
+import type { sortDirection } from './sort-utils';
 
 function getTableSortIcon(dir: sortDirection): IconData {
   switch (dir) {

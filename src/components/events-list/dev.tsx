@@ -1,4 +1,4 @@
-import { EventsList, EventsListProps } from '.';
+import { EventsList, type EventsListProps } from '.';
 
 const testData: Array<EventsListProps> = [
   {

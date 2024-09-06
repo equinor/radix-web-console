@@ -1,7 +1,7 @@
 import { InteractionType } from '@azure/msal-browser';
 import { useMsal, useMsalAuthentication } from '@azure/msal-react';
-import { FunctionComponent } from 'react';
-import { RouterProvider, RouterProviderProps } from 'react-router-dom';
+import type { FunctionComponent } from 'react';
+import { RouterProvider, type RouterProviderProps } from 'react-router-dom';
 
 import { LazyLoadFallback } from '../lazy-load-fallback';
 

@@ -8,24 +8,29 @@ import {
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import { isNil, isString } from 'lodash';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, useCallback, useEffect, useState } from 'react';
+import {
+  type FunctionComponent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 
 import {
   EnvironmentVariableTable,
-  FormattedEnvVar,
+  type FormattedEnvVar,
 } from './environment-variable-table';
 
-import AsyncResource from '../async-resource/async-resource';
-import { errorToast } from '../global-top-nav/styled-toaster';
-import { HomeIcon } from '../home-icon';
 import {
-  Component,
-  EnvVar,
-  EnvVarParameter,
+  type Component,
+  type EnvVar,
+  type EnvVarParameter,
   radixApi,
   useEnvVarsQuery,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
+import AsyncResource from '../async-resource/async-resource';
+import { errorToast } from '../global-top-nav/styled-toaster';
+import { HomeIcon } from '../home-icon';
 
 import './style.css';
 

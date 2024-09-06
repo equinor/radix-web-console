@@ -1,10 +1,10 @@
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
+import { logApi } from '../../store/log-api';
+import { type ReplicaSummary, radixApi } from '../../store/radix-api';
+import type { FetchQueryResult } from '../../store/types';
 import { downloadLazyLogCb, downloadLazyLogPromise } from '../code/log-helper';
 import { Replica } from '../replica';
-import { radixApi, ReplicaSummary } from '../../store/radix-api';
-import { logApi } from '../../store/log-api';
-import { FetchQueryResult } from '../../store/types';
 
 import './style.css';
 import { Accordion, Typography } from '@equinor/eds-core-react';

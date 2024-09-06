@@ -3,8 +3,8 @@ import { Provider } from 'react-redux';
 
 import { PageRouter } from '.';
 
-import store from '../../store/store';
 import { router } from '../../router';
+import store from '../../store/store';
 
 it('renders without crashing', () => {
   render(

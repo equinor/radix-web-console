@@ -2,10 +2,10 @@ import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 import { getTaskRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 
 interface Props {
   task: PipelineRunTaskModel;

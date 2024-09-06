@@ -1,6 +1,6 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { error_outlined } from '@equinor/eds-icons';
-import { ComponentType } from 'react';
+import type { ComponentType } from 'react';
 
 import { Alert } from '.';
 

@@ -1,9 +1,9 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { IconData, link, memory } from '@equinor/eds-icons';
+import { type IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import { Component } from '../../store/radix-api';
+import type { Component } from '../../store/radix-api';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,

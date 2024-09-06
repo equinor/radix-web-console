@@ -1,7 +1,7 @@
 import { msGraphStoreApi as api } from './configs/index';
-import { RootState } from '../store/store';
+import type { RootState } from '../store/store';
 import { Client, GraphError } from '@microsoft/microsoft-graph-client';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
 let graphClient: Client | undefined = undefined;
 function ensureClient(state: RootState) {

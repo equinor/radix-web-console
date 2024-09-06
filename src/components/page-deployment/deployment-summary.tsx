@@ -3,16 +3,16 @@ import { github } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
 import { routes } from '../../routes';
-import { Deployment } from '../../store/radix-api';
+import type { Deployment } from '../../store/radix-api';
 import {
   linkToGitHubCommit,
   routeWithParams,
   smallGithubCommitHash,
   smallJobName,
 } from '../../utils/string';
+import { GitTagLinks } from '../git-tags/git-tag-links';
+import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
 

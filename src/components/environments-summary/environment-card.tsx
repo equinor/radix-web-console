@@ -1,12 +1,13 @@
 import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { github, link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import React, { FunctionComponent, useEffect } from 'react';
+import type React from 'react';
+import { type FunctionComponent, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
   EnvironmentCardStatus,
-  EnvironmentCardStatusMap,
+  type EnvironmentCardStatusMap,
   EnvironmentVulnerabilityIndicator,
 } from './environment-card-status';
 import { EnvironmentIngress } from './environment-ingress';
@@ -16,20 +17,20 @@ import {
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils';
 
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import {
+  type DeploymentSummary,
+  type EnvironmentSummary,
+  type ReplicaSummary,
+  useComponentsQuery,
+} from '../../store/radix-api';
+import { type Vulnerability, scanApi } from '../../store/scan-api';
+import { filterFields } from '../../utils/filter-fields';
+import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
-import { filterFields } from '../../utils/filter-fields';
-import { routes } from '../../routes';
-import {
-  DeploymentSummary,
-  EnvironmentSummary,
-  ReplicaSummary,
-  useComponentsQuery,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { Vulnerability, scanApi } from '../../store/scan-api';
-import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 

@@ -1,5 +1,5 @@
 import { CircularProgress } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import './style.css';
 

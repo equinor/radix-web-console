@@ -1,8 +1,8 @@
 import { Table, TextField, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, ReactNode } from 'react';
+import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
 
-import { EnvVar } from '../../store/radix-api';
+import type { EnvVar } from '../../store/radix-api';
 
 import './style.css';
 

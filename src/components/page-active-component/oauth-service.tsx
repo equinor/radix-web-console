@@ -1,13 +1,13 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { OAuthToolbar } from './oauth-toolbar';
 
+import type { OAuth2AuxiliaryResource } from '../../store/radix-api';
+import { getOAuthReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 import { ComponentStatusBadge } from '../status-badges';
-import { OAuth2AuxiliaryResource } from '../../store/radix-api';
-import { getOAuthReplicaUrl } from '../../utils/routing';
 
 export const OAuthService: FunctionComponent<{
   appName: string;

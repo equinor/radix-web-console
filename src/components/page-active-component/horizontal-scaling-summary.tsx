@@ -2,7 +2,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
 
-import {
+import type {
   HorizontalScalingSummary as HorizontalScalingSummaryModel,
   HorizontalScalingSummaryTriggerStatus,
 } from '../../store/radix-api';

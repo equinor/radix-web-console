@@ -5,14 +5,14 @@ import { withRouteParams } from '../../utils/router';
 
 import ApplicationAlerting from './application-alerting';
 
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import { useGetApplicationJobsQuery } from '../../store/radix-api';
+import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';
-import { routes } from '../../routes';
-import { useGetApplicationJobsQuery } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { routeWithParams } from '../../utils/string';
 
 import './style.css';
 

@@ -1,6 +1,6 @@
-import { ActiveComponentOverview } from './active-component-overview';
-import { DocumentTitle } from '../document-title';
 import { withRouteParams } from '../../utils/router';
+import { DocumentTitle } from '../document-title';
+import { ActiveComponentOverview } from './active-component-overview';
 
 type Props = {
   appName: string;

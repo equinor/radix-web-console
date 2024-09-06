@@ -1,19 +1,19 @@
 {
-    "name": "Radix",
-    "short_name": "Radix",
-    "icons": [
-        {
-            "src": "/android-chrome-192x192.png?v=1h7zOvlFSE",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "/android-chrome-512x512.png?v=1h7zOvlFSE",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
-    "theme_color": "#d0d0d0",
-    "background_color": "#d0d0d0",
-    "display": "standalone"
+  "name": "Radix",
+  "short_name": "Radix",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png?v=1h7zOvlFSE",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png?v=1h7zOvlFSE",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#d0d0d0",
+  "background_color": "#d0d0d0",
+  "display": "standalone"
 }

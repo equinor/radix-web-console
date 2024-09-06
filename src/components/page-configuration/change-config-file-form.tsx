@@ -6,17 +6,22 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FormEvent, FunctionComponent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FormEvent,
+  type FunctionComponent,
+  useState,
+} from 'react';
 
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
+import { Alert } from '../alert';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 export interface ChangeConfigFileFormProps {
   appName: string;
   radixConfigFullName?: string;
-  refetch?: Function;
+  refetch?: () => unknown;
 }
 
 const defaultConfigName = 'radixconfig.yaml';

@@ -1,24 +1,25 @@
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { coffee } from '@equinor/eds-icons';
-import React, { ComponentType, PropsWithChildren } from 'react';
+import type React from 'react';
+import type { ComponentType, PropsWithChildren } from 'react';
 
 import {
-  JobConditionBadgeTemplates,
+  BadgeTemplates,
   BuildSecretStatusBadge,
   ComponentSecretStatusBadge,
   ComponentStatusBadge,
   GenericStatusBadge,
-  GenericStatusBadgeProps,
+  type GenericStatusBadgeProps,
   ImageHubSecretStatusBadge,
+  JobConditionBadgeTemplates,
   PipelineRunStatusBadge,
   ProgressStatusBadge,
   RadixJobConditionBadge,
   ReplicaStatusBadge,
-  BadgeTemplates,
 } from '.';
 import {
   StatusBadgeTemplate,
-  StatusBadgeTemplateProps,
+  type StatusBadgeTemplateProps,
 } from './status-badge-template';
 
 interface TestDataTemplate {

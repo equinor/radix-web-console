@@ -1,5 +1,5 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { DNSAlias } from './dns-alias';
 
 export interface DefaultAppAliasProps {

@@ -137,20 +137,11 @@ Note that the biggest section of ITCSS, "components", is not defined here. Compo
 
 ## Coding standards
 
-Coding standards are enforced by [Prettier](https://prettier.io/) and [ESLint](https://eslint.org/). Please use appropriate plugins for your editor:
-
-- [ESLint for VS Code](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [ESLint for Sublime Text](https://github.com/SublimeLinter/SublimeLinter-eslint)
-- [ESLint for Atom](https://atom.io/packages/linter-eslint)
-- [Prettier for VS Code](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Prettier for Sublime Text](https://github.com/danreeves/sublime-prettier)
-- [Prettier for Atom](https://atom.io/packages/prettier-atom)
+Coding standards are enforced by [Biomejs](https://Biomejs.dev/) . Please use appropriate plugins for your editor:
 
 To get ESLint to run properly from your editor you will need to have it set up in your local environment (not the dev Docker container). You can do that by running:
 
-    npm install --only=dev && npm install --no-save eslint@5
-
-Note the "no save" `eslint` installation — this is to avoid a conflict with the version bundled with CRA, which sometimes does not work from within a code editor, without attempting to install another `eslint` version in the build.
+    npm install
 
 You can also run linting within the Docker container:
 

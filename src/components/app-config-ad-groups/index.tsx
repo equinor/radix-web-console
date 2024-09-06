@@ -1,9 +1,9 @@
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
-import { ADGroups, HandleAdGroupsChangeCB } from '../graph/adGroups';
+import { ADGroups, type HandleAdGroupsChangeCB } from '../graph/adGroups';
 
 import './style.css';
 

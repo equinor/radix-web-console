@@ -2,21 +2,22 @@ import {
   Accordion,
   Button,
   Icon,
-  Typography,
   TextField,
+  Typography,
 } from '@equinor/eds-core-react';
 import { warning_outlined } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, useState } from 'react';
+import { type ChangeEvent, useState } from 'react';
 
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
-import { useDeleteApplicationMutation } from '../../store/radix-api';
 import { useNavigate } from 'react-router';
+import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
+import { useDeleteApplicationMutation } from '../../store/radix-api';
 
 interface Props {
   appName: string;
@@ -28,12 +29,26 @@ export default function DeleteApplicationForm({ appName }: Props) {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const navigate = useNavigate();
 
+  const [, setFavourites] = useLocalStorage<Array<string>>(
+    'favouriteApplications',
+    []
+  );
+  const [, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    []
+  );
+
+  const deleteAppNameFromLocalStorage = (appName: string) => {
+    setKnownAppNames((old) => old.filter((name) => name != appName));
+    setFavourites((old) => old.filter((name) => name != appName));
+  };
+
   const doDelete = handlePromiseWithToast(async () => {
-    mutate({ appName });
     setVisibleScrim(false);
+    mutate({ appName });
+    deleteAppNameFromLocalStorage(appName);
     navigate(routes.apps);
   }, 'Deleted');
-
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>

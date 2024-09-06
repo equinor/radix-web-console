@@ -1,15 +1,15 @@
 import { Table, Tooltip } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
+import { routes } from '../../routes';
+import type { JobSummary } from '../../store/radix-api';
+import { routeWithParams } from '../../utils/string';
 import { CommitHash } from '../commit-hash';
 import { RadixJobConditionBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
-import { JobSummary } from '../../store/radix-api';
-import { routeWithParams } from '../../utils/string';
 
 export const JobSummaryTableRow: FunctionComponent<{
   appName: string;

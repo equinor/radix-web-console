@@ -2,15 +2,15 @@ import { Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useDispatch } from 'react-redux';
+import { routes } from '../../routes';
+import { radixApi } from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams } from '../../utils/string';
 import { Alert } from '../alert';
 import { Breadcrumb } from '../breadcrumb';
 import CreateJobForm from '../create-job-form';
 import { DocumentTitle } from '../document-title';
-import { routes } from '../../routes';
-import { routeWithParams } from '../../utils/string';
-import { withRouteParams } from '../../utils/router';
-import { radixApi } from '../../store/radix-api';
-import { useDispatch } from 'react-redux';
 
 function JobLink(props: { appName: string; jobName: string }) {
   return (

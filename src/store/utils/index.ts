@@ -1,8 +1,8 @@
-import { SerializedError } from '@reduxjs/toolkit';
-import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { SerializedError } from '@reduxjs/toolkit';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { getReasonPhrase } from 'http-status-codes';
 
-import { FetchQueryError } from '../types';
+import type { FetchQueryError } from '../types';
 
 export function getFetchErrorData(error: FetchQueryError): {
   code?: string | number;

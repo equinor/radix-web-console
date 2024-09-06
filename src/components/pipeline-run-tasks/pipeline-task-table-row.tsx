@@ -2,12 +2,12 @@ import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
+import { routes } from '../../routes';
+import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
+import { routeWithParams } from '../../utils/string';
 import { PipelineRunStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
-import { routes } from '../../routes';
-import { routeWithParams } from '../../utils/string';
-import { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 
 import './style.css';
 

@@ -1,7 +1,7 @@
 import {
-  ComponentClass,
-  FunctionComponent,
-  ReactElement,
+  type ComponentClass,
+  type FunctionComponent,
+  type ReactElement,
   createElement,
 } from 'react';
 import { useParams } from 'react-router-dom';

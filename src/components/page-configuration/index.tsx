@@ -9,18 +9,18 @@ import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsAccordion } from './image-hubs-accordion';
 import { Overview } from './overview';
 
+import { routes } from '../../routes';
+import { configVariables } from '../../utils/config';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
-import { routes } from '../../routes';
-import { configVariables } from '../../utils/config';
-import { routeWithParams } from '../../utils/string';
-import { withRouteParams } from '../../utils/router';
 
 import './style.css';
-import { radixApi, ApplicationRegistration } from '../../store/radix-api';
 import { pollingInterval } from '../../store/defaults';
+import { type ApplicationRegistration, radixApi } from '../../store/radix-api';
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
 }

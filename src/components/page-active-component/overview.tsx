@@ -1,7 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
 
@@ -11,7 +11,7 @@ import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 
-import {
+import type {
   ApplicationAlias,
   Component,
   Deployment,
@@ -19,10 +19,10 @@ import {
   ExternalDns,
 } from '../../store/radix-api';
 import './style.css';
-import { DNSAliases } from './dns-aliases';
-import { ResourceRequirements } from '../resource-requirements';
 import { externalUrls } from '../../externalUrls';
+import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
+import { DNSAliases } from './dns-aliases';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 

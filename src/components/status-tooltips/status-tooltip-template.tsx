@@ -1,7 +1,8 @@
-import { Icon, Tooltip, TooltipProps } from '@equinor/eds-core-react';
+import { Icon, Tooltip, type TooltipProps } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import React, { FunctionComponent, PropsWithChildren } from 'react';
+import type React from 'react';
+import type { FunctionComponent, PropsWithChildren } from 'react';
 
 import './style.css';
 

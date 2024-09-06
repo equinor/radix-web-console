@@ -8,27 +8,29 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { type ChangeEvent, type FormEvent, useState } from 'react';
 
+import useLocalStorage from '../../effects/use-local-storage';
+import { externalUrls } from '../../externalUrls';
+import {
+  type ApplicationRegistration,
+  type ApplicationRegistrationUpsertResponse,
+  radixApi,
+  useRegisterApplicationMutation,
+} from '../../store/radix-api';
+import { getFetchErrorMessage } from '../../store/utils';
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import {
   AppConfigConfigurationItem,
-  OnConfigurationItemChangeCallback,
+  type OnConfigurationItemChangeCallback,
 } from '../app-config-ci';
-import { HandleAdGroupsChangeCB } from '../graph/adGroups';
-import { externalUrls } from '../../externalUrls';
-import {
-  ApplicationRegistration,
-  ApplicationRegistrationUpsertResponse,
-  useRegisterApplicationMutation,
-} from '../../store/radix-api';
 import {
   errorToast,
   successToast,
   warningToast,
 } from '../global-top-nav/styled-toaster';
-import { getFetchErrorMessage } from '../../store/utils';
+import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces
@@ -56,6 +58,13 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       readerAdGroups: [],
     });
 
+  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
+
+  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    []
+  );
+
   const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
     setAppRegistration((current) => ({
       ...current,
@@ -81,6 +90,13 @@ export default function CreateApplicationForm({ onCreated }: Props) {
     setAppRegistration((current) => ({ ...current, [key]: value }));
   };
 
+  const addAppNameToLocalStorage = (appName: string) => {
+    if (knownAppNames.some((knownAppName) => knownAppName === appName)) {
+      return;
+    }
+    setKnownAppNames([...knownAppNames, appName].sort());
+  };
+
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     try {
       ev.preventDefault();
@@ -94,6 +110,8 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       //Only call onCreated when created without warnings, or created with ack warnings
       if (!response.warnings?.length || acknowledgeWarnings) {
         onCreated(response.applicationRegistration);
+        addAppNameToLocalStorage(response.applicationRegistration.name);
+        refreshApps({});
         successToast('Saved');
       } else {
         warningToast('Registration had warnings');

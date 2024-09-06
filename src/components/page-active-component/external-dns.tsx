@@ -6,20 +6,25 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { ChangeEvent, FunctionComponent, useMemo, useState } from 'react';
-
 import {
-  ExternalDns,
+  type ChangeEvent,
+  type FunctionComponent,
+  useMemo,
+  useState,
+} from 'react';
+
+import { pollingInterval } from '../../store/defaults';
+import {
+  type ExternalDns,
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
-import { ExternalDNSList } from '../external-dns-list';
-import { ScrimPopup } from '../scrim-popup';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { getFetchErrorData } from '../../store/utils';
 import { Alert } from '../alert';
+import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
+import { ExternalDNSList } from '../external-dns-list';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ScrimPopup } from '../scrim-popup';
 
 type TlsData = {
   certificate?: string;
@@ -96,7 +101,7 @@ const TlsEditForm: FunctionComponent<{
           label="Skip validation"
           disabled={isSaving}
           onChange={(ev) => setSkipValidation(ev.target.checked)}
-        ></Checkbox>
+        />
         {saveError && (
           <Alert type="danger">
             {saveError.error && <Typography>{saveError.error}</Typography>}

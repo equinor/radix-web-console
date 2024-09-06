@@ -1,9 +1,14 @@
-import { Chip, Icon, Popover, PopoverProps } from '@equinor/eds-core-react';
+import {
+  Chip,
+  Icon,
+  Popover,
+  type PopoverProps,
+} from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import {
-  FunctionComponent,
-  PropsWithChildren,
-  ReactNode,
+  type FunctionComponent,
+  type PropsWithChildren,
+  type ReactNode,
   useRef,
   useState,
 } from 'react';

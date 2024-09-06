@@ -1,5 +1,5 @@
 import { Breadcrumbs } from '@equinor/eds-core-react';
-import { FunctionComponent } from 'react';
+import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 export interface BreadcrumbProps {

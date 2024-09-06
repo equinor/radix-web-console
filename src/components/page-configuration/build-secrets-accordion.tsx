@@ -1,19 +1,19 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { FunctionComponent, ReactNode, useState } from 'react';
+import { type FunctionComponent, type ReactNode, useState } from 'react';
 
+import { pollingInterval } from '../../store/defaults';
+import {
+  type BuildSecret,
+  useGetBuildSecretsQuery,
+  useUpdateBuildSecretsSecretValueMutation,
+} from '../../store/radix-api';
+import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 import AsyncResource from '../async-resource/async-resource';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 import { SecretForm } from '../secret-form';
 import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-badge';
-import {
-  BuildSecret,
-  useGetBuildSecretsQuery,
-  useUpdateBuildSecretsSecretValueMutation,
-} from '../../store/radix-api';
-import { pollingInterval } from '../../store/defaults';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 
 import './style.css';
 

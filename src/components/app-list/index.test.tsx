@@ -5,9 +5,9 @@ import { MemoryRouter } from 'react-router-dom';
 
 import AppList from '.';
 
-import store from '../../store/store';
 import * as radixApi from '../../store/radix-api';
-import { FetchQueryHookResult } from '../../store/types';
+import store from '../../store/store';
+import type { FetchQueryHookResult } from '../../store/types';
 
 const noop = () => void 0;
 

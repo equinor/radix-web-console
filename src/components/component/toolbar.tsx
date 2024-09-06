@@ -1,14 +1,14 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { errorToast } from '../global-top-nav/styled-toaster';
 import {
-  Component,
+  type Component,
   useRestartComponentMutation,
   useStartComponentMutation,
   useStopComponentMutation,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
+import { errorToast } from '../global-top-nav/styled-toaster';
 
 type Props = {
   appName: string;
@@ -16,7 +16,7 @@ type Props = {
   component?: Component;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-  refetch?: Function;
+  refetch?: () => unknown;
 };
 export function Toolbar({
   appName,

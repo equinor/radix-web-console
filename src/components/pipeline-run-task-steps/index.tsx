@@ -2,14 +2,14 @@ import { Table, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
 
-import { PipelineTaskStepsTableRow } from './pipeline-task-table-row';
-import { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
+import type { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
 import {
   dataSorter,
   sortCompareDate,
-  sortDirection,
+  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { PipelineTaskStepsTableRow } from './pipeline-task-table-row';
 
 import './style.css';
 

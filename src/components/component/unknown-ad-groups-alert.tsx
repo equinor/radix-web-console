@@ -1,5 +1,5 @@
-import { Alert } from '../alert';
 import { List } from '@equinor/eds-core-react';
+import { Alert } from '../alert';
 
 interface Props {
   unknownADGroups?: Array<string>;
