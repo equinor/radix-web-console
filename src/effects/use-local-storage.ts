@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { useInterval } from './use-interval';
 
 export default function useLocalStorage<T>(key: string, defaultValue: T) {
-  let item: T;
-  try {
-    const storedItem = localStorage.getItem(key);
-    if (storedItem) {
-      item = JSON.parse(storedItem) as T;
-    } else {
-      item = defaultValue; // Fallback to the default value if no data in localStorage
+  function getLocalStorageItem(itemKey: string) {
+    try {
+      const storedItem = localStorage.getItem(itemKey);
+      if (storedItem) {
+        return JSON.parse(storedItem) as T;
+      }
+      return defaultValue; // Fallback to the default value if no data in localStorage
+    } catch (error) {
+      return defaultValue; // Fallback to the default value if JSON.parse fails
     }
-  } catch (error) {
-    item = defaultValue; // Fallback to the default value if JSON.parse fails
   }
 
-  const [state, setState] = useState<T>(() => item);
+  const [state, setState] = useState<T>(() => getLocalStorageItem(key));
 
   const storeValue = (value: T | ((old: T) => T)) => {
     try {
@@ -29,9 +29,9 @@ export default function useLocalStorage<T>(key: string, defaultValue: T) {
   };
 
   useInterval(() => {
-    const current = window.localStorage.getItem(key);
-    if (current != JSON.stringify(state)) {
-      setState(JSON.parse(current));
+    const current = getLocalStorageItem(key);
+    if (current != state) {
+      setState(current);
     }
   }, 250);
 
