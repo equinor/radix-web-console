@@ -70,7 +70,7 @@ export default function AppList() {
     [
       ...(favsData ?? [])
         .filter(({ name }) => favourites.includes(name))
-        .map((favApp) => ({ name: favApp.name, isFavourite: true }) as const),
+        .map((favApp) => ({ isFavourite: true, ...favApp }) as const),
       ...knownApps,
     ].filter(
       (app, i, arr) =>
