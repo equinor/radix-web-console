@@ -48,28 +48,35 @@ export default function AppList() {
       includeEnvironmentActiveComponents: 'true',
       includeLatestJobSummary: 'true',
     },
-    { skip: favourites.length === 0, pollingInterval }
+    { skip: favourites?.length === 0, pollingInterval }
   );
 
-  const changeFavouriteApplication = (app: string, isFavourite: boolean) => {
-    if (isFavourite) {
-      setFavourites((old) => uniq([...old, app]));
-    } else {
-      setFavourites((old) => old.filter((a) => a !== app));
+  const changeFavouriteApplication = (
+    appName: string,
+    isFavourite: boolean
+  ) => {
+    if (!favourites) {
+      setFavourites([appName]);
+      return;
     }
+    if (isFavourite) {
+      setFavourites((old) => uniq([...old, appName]));
+      return;
+    }
+    setFavourites((old) => old.filter((a) => a !== appName));
   };
 
   const knownApps = dataSorter(knownAppNames ?? [], [
     (x, y) => sortCompareString(x, y),
   ]).map((appName) => ({
     name: appName,
-    isFavourite: favourites.includes(appName),
+    isFavourite: favourites?.includes(appName),
   }));
 
   const favouriteApps = dataSorter(
     [
       ...(favsData ?? [])
-        .filter(({ name }) => favourites.includes(name))
+        .filter(({ name }) => favourites?.includes(name))
         .map((favApp) => ({ isFavourite: true, ...favApp }) as const),
       ...knownApps,
     ].filter(
@@ -81,20 +88,19 @@ export default function AppList() {
 
   // remove from know app names previously favorite knownApps, which do not currently exist
   useEffect(() => {
-    if (!favsData || !knownApps) {
+    if (!favourites || !knownApps) {
       return;
     }
     const knownAppNames = knownApps
       .filter(
         (knownApp) =>
           !knownApp.isFavourite ||
-          favsData.some((favApp) => favApp.name === knownApp.name)
+          favourites.some((favAppName) => favAppName === knownApp.name)
       )
       .map((app) => app.name);
-    const favAppNames = favsData.map((app) => app.name);
     const mergedKnownAndFavoriteAppNames = uniq([
       ...knownAppNames,
-      ...favAppNames,
+      ...favourites,
     ]).sort();
     if (
       !isEqual(
@@ -104,7 +110,7 @@ export default function AppList() {
     ) {
       setKnownAppNames(mergedKnownAndFavoriteAppNames);
     }
-  }, [knownApps, favsData, setKnownAppNames]);
+  }, [knownApps, favourites, setKnownAppNames]);
 
   return (
     <article className="grid grid--gap-medium">
@@ -119,7 +125,7 @@ export default function AppList() {
           <div>
             <CircularProgress size={16} /> Loading favorites…
           </div>
-        ) : favouriteApps.length > 0 ? (
+        ) : favouriteApps?.length > 0 ? (
           <>
             <div className="grid grid--gap-medium app-list--section">
               <AsyncResource
@@ -127,7 +133,9 @@ export default function AppList() {
                   ...favsState,
                   isLoading: favsState.isLoading && !(favouriteApps.length > 0),
                 }}
-                loadingContent={<LoadingCards amount={favourites.length} />}
+                loadingContent={
+                  <LoadingCards amount={favourites?.length ?? 0} />
+                }
               >
                 <div className="app-list__list">
                   {favouriteApps.map((app, i) => (
@@ -180,7 +188,7 @@ export default function AppList() {
             </div>
           )}
           <div className="grid grid--gap-medium app-list--section">
-            {(knownAppNames && knownAppNames.length > 0) ||
+            {knownAppNames?.length > 0 ||
             appsState.isLoading ||
             appsState.isFetching ? (
               <AsyncResource
