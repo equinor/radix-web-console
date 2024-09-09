@@ -83,7 +83,8 @@ export function successToast<T>(
 
 export function handlePromiseWithToast<TArgs extends Array<unknown>, TReturn>(
   fn: (...args: TArgs) => TReturn,
-  successContent = 'Saved'
+  successContent = 'Saved',
+  errorContent = 'Error while saving'
 ) {
   return async (...args: TArgs): Promise<Awaited<TReturn> | undefined> => {
     try {
@@ -91,7 +92,7 @@ export function handlePromiseWithToast<TArgs extends Array<unknown>, TReturn>(
       successToast(successContent);
       return ret;
     } catch (e) {
-      errorToast(`Error while saving. ${getFetchErrorMessage(e)}`);
+      errorToast(`${errorContent}. ${getFetchErrorMessage(e)}`);
       return undefined;
     }
   };
