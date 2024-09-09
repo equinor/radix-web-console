@@ -1007,6 +1007,15 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    resources: build.query<ResourcesApiResponse, ResourcesApiArg>({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/resources`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     restartApplication: build.mutation<
       RestartApplicationApiResponse,
       RestartApplicationApiArg
@@ -2132,6 +2141,16 @@ export type RegenerateDeployKeyApiArg = {
   'Impersonate-Group'?: string;
   /** Regenerate deploy key and secret data */
   regenerateDeployKeyAndSecretData: RegenerateDeployKeyAndSecretData;
+};
+export type ResourcesApiResponse =
+  /** status 200 Successful trigger pipeline */ UsedResources;
+export type ResourcesApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
 };
 export type RestartApplicationApiResponse = unknown;
 export type RestartApplicationApiArg = {
@@ -3272,6 +3291,22 @@ export type RegenerateDeployKeyAndSecretData = {
   /** SharedSecret of the shared secret */
   sharedSecret?: string;
 };
+export type UsedResource = {
+  /** Average resource used */
+  average?: string;
+  /** Max resource used */
+  max?: string;
+  /** Min resource used */
+  min?: string;
+};
+export type UsedResources = {
+  cpu?: UsedResource;
+  /** From timestamp */
+  from: string;
+  memory?: UsedResource;
+  /** To timestamp */
+  to: string;
+};
 export const {
   useShowApplicationsQuery,
   useRegisterApplicationMutation,
@@ -3354,6 +3389,7 @@ export const {
   useGetPrivateImageHubsQuery,
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
+  useResourcesQuery,
   useRestartApplicationMutation,
   useStartApplicationMutation,
   useStopApplicationMutation,
