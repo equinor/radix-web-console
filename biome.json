@@ -9,7 +9,8 @@
       "src/style/hex-to-hsl.js",
       "build/",
       "dist/",
-      "src/store/*.ts"
+      "src/store/*.ts",
+      ".idea"
     ]
   },
   "formatter": {
