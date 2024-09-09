@@ -2,9 +2,10 @@ import {
   Button,
   CircularProgress,
   Icon,
+  Tooltip,
   Typography,
 } from '@equinor/eds-core-react';
-import { star_filled, star_outlined } from '@equinor/eds-icons';
+import { error_outlined, star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
 import * as PropTypes from 'prop-types';
@@ -143,7 +144,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
               )}
             </AsyncResource>
 
-            {(environmentActiveComponents || latestJob) && (
+            {environmentActiveComponents || latestJob ? (
               <EnvironmentCardStatus
                 title="Application status"
                 statusElements={{
@@ -165,6 +166,10 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
                   }),
                 }}
               />
+            ) : (
+              <Tooltip title="This application does not exist or it is not yet deployed">
+                <Icon data={error_outlined} />
+              </Tooltip>
             )}
           </div>
         </div>
