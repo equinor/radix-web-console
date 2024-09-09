@@ -13,6 +13,8 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     description: 'App',
     app: { name: 'test-app' },
     handler: noop,
+    isLoaded: true,
+    name: 'some-app',
   },
   {
     description: 'App, marked Favourite, with Job',
@@ -29,6 +31,8 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     handler: noop,
     isFavourite: true,
     showStatus: true,
+    isLoaded: true,
+    name: 'some-app',
   },
   {
     description: 'App, marked Favourite, without Job',
@@ -36,12 +40,16 @@ const testData: Array<{ description: string } & AppListItemProps> = [
     handler: noop,
     isFavourite: true,
     showStatus: true,
+    isLoaded: true,
+    name: 'some-app',
   },
   {
     description: 'App, marked Placeholder',
     app: { name: 'app-placeholder' },
     handler: noop,
     isPlaceholder: true,
+    isLoaded: true,
+    name: 'some-app',
   },
 ];
 

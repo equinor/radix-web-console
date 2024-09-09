@@ -52,11 +52,13 @@ export type FavouriteClickedHandler = (
 ) => void;
 
 export interface AppListItemProps {
-  app: Readonly<ApplicationSummary>;
+  app?: Readonly<ApplicationSummary>;
   handler: FavouriteClickedHandler;
   isPlaceholder?: boolean;
   isFavourite?: boolean;
   showStatus?: boolean;
+  name: string;
+  isLoaded: boolean;
 }
 
 const latestJobStatus: Partial<
@@ -144,7 +146,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
               )}
             </AsyncResource>
 
-            {environmentActiveComponents || latestJob ? (
+            {(environmentActiveComponents || latestJob) && (
               <EnvironmentCardStatus
                 title="Application status"
                 statusElements={{
@@ -166,10 +168,6 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
                   }),
                 }}
               />
-            ) : (
-              <Tooltip title="This application does not exist or it is not yet deployed">
-                <Icon data={error_outlined} />
-              </Tooltip>
             )}
           </div>
         </div>
@@ -198,39 +196,51 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
   isPlaceholder,
   isFavourite,
   showStatus,
+  name,
+  isLoaded,
 }) => (
   <WElement
     className={clsx('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
     })}
-    appName={app.name}
+    appName={name}
     isPlaceholder={isPlaceholder}
   >
     <div className="app-list-item--area">
       <div className="app-list-item--area-icon">
-        <AppBadge appName={app.name} size={40} />
+        <AppBadge appName={name} size={40} />
       </div>
       <div className="grid app-list-item--area-details">
         <div className="app-list-item--details">
           <Typography className="app-list-item--details-title" variant="h6">
-            {app.name}
+            {name}
           </Typography>
           <div className="app-list-item--details-favourite">
-            <Button variant="ghost_icon" onClick={(e) => handler(e, app.name)}>
+            <Button variant="ghost_icon" onClick={(e) => handler(e, name)}>
               <Icon data={isFavourite ? star_filled : star_outlined} />
             </Button>
           </div>
         </div>
-        {showStatus && <AppItemStatus {...app} />}
+        {isLoaded &&
+          showStatus &&
+          (app ? (
+            <AppItemStatus {...app} />
+          ) : (
+            <Tooltip title="This application does not exist">
+              <Icon data={error_outlined} />
+            </Tooltip>
+          ))}
       </div>
     </div>
   </WElement>
 );
 
 AppListItem.propTypes = {
-  app: PropTypes.object.isRequired as PropTypes.Validator<ApplicationSummary>,
+  app: PropTypes.object as PropTypes.Validator<ApplicationSummary>,
   handler: PropTypes.func.isRequired,
   isPlaceholder: PropTypes.bool,
   isFavourite: PropTypes.bool,
   showStatus: PropTypes.bool,
+  isLoaded: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
 };
