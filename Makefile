@@ -31,6 +31,9 @@ lint:
 	npm run "lint"
 	npm run "lint-ts"
 
+.PHONY: lint-fix
+lint-fix:
+	npm run "lint-fix"
 
 .PHONY: lint-strict
 lint-strict:
