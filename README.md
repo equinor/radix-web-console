@@ -1,3 +1,4 @@
+**PROD** ![prod](https://api.radix.equinor.com/api/v1/applications/radix-web-console/environments/prod/buildstatus)  **QA** ![qa](https://api.radix.equinor.com/api/v1/applications/radix-web-console/environments/qa/buildstatus)     [![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/radix-web-console/badge)](https://developer.equinor.com/governance/scm-policy/)
 # Radix Web Console
 
 This is the web frontend for interacting with [Radix](https://www.radix.equinor.com). This document is for developers of the Web Console, or anyone interested in poking around.
