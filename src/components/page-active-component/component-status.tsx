@@ -59,8 +59,8 @@ export function ComponentStatus({
 
       {isManuallyScaled && !isManuallyStopped && (
         <Alert type={'warning'}>
-          Component has been manually scaled; Click reset to resume regular
-          scaling.
+          Component has been manually scaled to {component.replicasOverride}{' '}
+          replicas; Click reset to resume regular scaling.
           <br />
           <Button
             variant="outlined"

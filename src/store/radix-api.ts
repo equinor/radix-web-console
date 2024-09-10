@@ -2443,7 +2443,7 @@ export type Component = {
   replicaList?: ReplicaSummary[];
   /** Deprecated: Array of pod names. Use ReplicaList instead */
   replicas?: string[];
-  /** Set if manuall control of replicas is in place. null means automatic controll, 0 means stopped and >= 1 is manually scaled. */
+  /** Set if manual control of replicas is in place. Not set means automatic control, 0 means stopped and >= 1 is manually scaled. */
   replicasOverride?: number | null;
   resources?: ResourceRequirements;
   runtime?: Runtime;
@@ -2975,6 +2975,8 @@ export type ScheduledJobSummary = {
   timeLimitSeconds?: number;
 };
 export type ScheduledBatchSummary = {
+  /** Defines a user defined ID of the batch. */
+  batchId?: string;
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the batch */

@@ -1,11 +1,11 @@
 import {
   Button,
   CircularProgress,
+  Dialog,
   Slider,
-  TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import { type ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import {
   type Component,
   useRestartComponentMutation,
@@ -13,7 +13,7 @@ import {
   useStopComponentMutation,
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
+import './style.css';
 
 type Props = {
   component: Component;
@@ -35,14 +35,18 @@ export function ActiveComponentToolbar({ component, appName, envName }: Props) {
     <>
       <div className="grid grid--gap-small">
         <div className="grid grid--gap-small grid--auto-columns">
-          <ScaleButtonPopover
+          <ScaleButtonPopup
             disabled={false}
             appName={appName}
             envName={envName}
             componentName={component.name}
+            currentReplicas={
+              component.replicasOverride ?? component.replicaList.length
+            }
           />
           <Button
             disabled={isStopped || stopState.isLoading}
+            variant="outlined"
             onClick={() =>
               handlePromiseWithToast(
                 stopTrigger({
@@ -59,6 +63,8 @@ export function ActiveComponentToolbar({ component, appName, envName }: Props) {
           </Button>
 
           <Button
+            disabled={isStopped || restartState.isLoading}
+            variant="outlined"
             onClick={() =>
               handlePromiseWithToast(
                 restartTrigger({
@@ -70,8 +76,6 @@ export function ActiveComponentToolbar({ component, appName, envName }: Props) {
                 'Failed to restart component'
               )
             }
-            disabled={isStopped || restartState.isLoading}
-            variant="outlined"
           >
             Restart
           </Button>
@@ -87,17 +91,20 @@ type ScaleProps = {
   appName: string;
   envName: string;
   componentName: string;
+  currentReplicas: number;
 };
 
-function ScaleButtonPopover({
+function ScaleButtonPopup({
   disabled,
   appName,
   envName,
   componentName,
+  currentReplicas,
 }: ScaleProps) {
-  const [replicas, setReplicas] = useState(0);
+  const [replicas, setReplicas] = useState<number | null>(null);
   const [visibleScrim, setVisibleScrim] = useState<boolean>(false);
   const [scaleTrigger, scaleState] = useScaleComponentMutation();
+  const current = replicas ?? currentReplicas;
 
   const onScale = handlePromiseWithToast(
     async () => {
@@ -105,9 +112,10 @@ function ScaleButtonPopover({
         appName,
         envName,
         componentName,
-        replicas: replicas.toFixed(),
+        replicas: current.toFixed(),
       }).unwrap();
       setVisibleScrim(false);
+      setReplicas(null);
     },
     'Scaling component',
     'Failed to scale component'
@@ -119,48 +127,41 @@ function ScaleButtonPopover({
         Scale
       </Button>
 
-      <ScrimPopup
+      <Dialog
         title={'Scale Component'}
         open={!!visibleScrim}
         onClose={() => setVisibleScrim(false)}
         isDismissable
+        style={{ width: '400px' }}
       >
-        <Slider
-          value={4}
-          min={0}
-          max={20}
-          aria-labelledby="simple-slider"
-          labelAlwaysOn
-        />
-        <TextField
-          id="deleteConfirmField"
-          type={'number'}
-          min={0}
-          max={20}
-          unit={'replicas'}
-          value={replicas}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setReplicas(Number(e.target.value))
-          }
-        />
-        <div className="grid grid--gap-medium grid--auto-columns rerun-job-content">
-          <div className="rerun-job-options">
-            <Typography>
-              Manually scale component. This will disable any automatic scaling{' '}
-              <br />
-              untill manuall scaling is reset.
-            </Typography>
-          </div>
-          <Button.Group>
+        <Dialog.Header>
+          <Dialog.Title>Scale Component</Dialog.Title>
+        </Dialog.Header>
+        <Dialog.Content>
+          <Typography>
+            This will disable any automatic scaling untill manuall scaling is
+            reset.
+          </Typography>
+          <Slider
+            value={current}
+            min={0}
+            max={20}
+            onChange={(_, values) => setReplicas(values[0])}
+            aria-labelledby="simple-slider"
+          />
+        </Dialog.Content>
+
+        <Dialog.Actions>
+          <div className={'scale-component-popup-actions-wrapper'}>
             <Button disabled={scaleState.isLoading} onClick={onScale}>
-              Scale
+              {current === 0 ? 'Stop component' : `Scale to ${current}`}
             </Button>
             <Button variant="outlined" onClick={() => setVisibleScrim(false)}>
               Cancel
             </Button>
-          </Button.Group>
-        </div>
-      </ScrimPopup>
+          </div>
+        </Dialog.Actions>
+      </Dialog>
     </div>
   );
 }
