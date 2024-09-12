@@ -1,9 +1,9 @@
 import { Button } from '@equinor/eds-core-react';
+import { useDurationInterval } from '../../effects/use-interval';
 import {
   type Component,
   useResetScaledComponentMutation,
 } from '../../store/radix-api';
-import { sleep } from '../../utils/sleep';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
@@ -23,14 +23,14 @@ export function ComponentStatus({
   component,
 }: Props) {
   const [resetTrigger, resetState] = useResetScaledComponentMutation();
+  const startRefetch = useDurationInterval(2_000, 30_000, refetch);
   const onReset = handlePromiseWithToast(async () => {
     await resetTrigger({
       appName,
       envName,
       componentName,
     }).unwrap();
-    await sleep(1000);
-    await refetch();
+    startRefetch();
   });
 
   const isStopped = component?.status === 'Stopped';

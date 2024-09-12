@@ -14,32 +14,80 @@ import {
 } from '../../store/radix-api';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import './style.css';
+import { useDurationInterval } from '../../effects/use-interval';
 
 type Props = {
   component: Component;
   appName: string;
   envName: string;
+  refetch: () => unknown;
 };
 
-export function ActiveComponentToolbar({ component, appName, envName }: Props) {
-  const [restartTrigger, restartState] = useRestartComponentMutation();
+export function ActiveComponentToolbar({
+  component,
+  appName,
+  envName,
+  refetch,
+}: Props) {
+  const [scaleTrigger, scaleState] = useScaleComponentMutation();
   const [stopTrigger, stopState] = useStopComponentMutation();
+  const [restartTrigger, restartState] = useRestartComponentMutation();
+  const startRefetch = useDurationInterval(2_000, 30_000, refetch);
 
   const isStopped = component?.status === 'Stopped';
-  const restartInProgress =
+  const isWorking =
     restartState.isLoading ||
+    scaleState.isLoading ||
+    stopState.isLoading ||
     component?.status === 'Reconciling' ||
     component?.status === 'Restarting';
 
+  const onStop = handlePromiseWithToast(
+    async () => {
+      await stopTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      startRefetch();
+    },
+    'Stopping component',
+    'Failed to stop component'
+  );
+
+  const onRestart = handlePromiseWithToast(
+    async () => {
+      await restartTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+      }).unwrap();
+      startRefetch();
+    },
+    'Restarting component',
+    'Failed to restart component'
+  );
+
+  const onScale = handlePromiseWithToast(
+    async (replicas: number) => {
+      await scaleTrigger({
+        appName,
+        envName,
+        componentName: component.name,
+        replicas: replicas.toFixed(),
+      }).unwrap();
+      startRefetch();
+    },
+    'Scaling component',
+    'Failed to scale component'
+  );
   return (
     <>
       <div className="grid grid--gap-small">
         <div className="grid grid--gap-small grid--auto-columns">
           <ScaleButtonPopup
-            disabled={false}
-            appName={appName}
-            envName={envName}
-            componentName={component.name}
+            onScale={onScale}
+            disabled={scaleState.isLoading}
             currentReplicas={
               component.replicasOverride ?? component.replicaList.length
             }
@@ -47,17 +95,7 @@ export function ActiveComponentToolbar({ component, appName, envName }: Props) {
           <Button
             disabled={isStopped || stopState.isLoading}
             variant="outlined"
-            onClick={() =>
-              handlePromiseWithToast(
-                stopTrigger({
-                  appName,
-                  envName,
-                  componentName: component.name,
-                }).unwrap,
-                'Stopping component',
-                'Failed to stop component'
-              )
-            }
+            onClick={onStop}
           >
             Stop
           </Button>
@@ -65,21 +103,11 @@ export function ActiveComponentToolbar({ component, appName, envName }: Props) {
           <Button
             disabled={isStopped || restartState.isLoading}
             variant="outlined"
-            onClick={() =>
-              handlePromiseWithToast(
-                restartTrigger({
-                  appName,
-                  envName,
-                  componentName: component.name,
-                }).unwrap,
-                'Restarting component',
-                'Failed to restart component'
-              )
-            }
+            onClick={onRestart}
           >
             Restart
           </Button>
-          {restartInProgress && <CircularProgress size={32} />}
+          {isWorking && <CircularProgress size={32} />}
         </div>
       </div>
     </>
@@ -88,44 +116,24 @@ export function ActiveComponentToolbar({ component, appName, envName }: Props) {
 
 type ScaleProps = {
   disabled: boolean;
-  appName: string;
-  envName: string;
-  componentName: string;
   currentReplicas: number;
+  onScale: (replicas: number) => unknown;
 };
 
-function ScaleButtonPopup({
-  disabled,
-  appName,
-  envName,
-  componentName,
-  currentReplicas,
-}: ScaleProps) {
+function ScaleButtonPopup({ disabled, currentReplicas, onScale }: ScaleProps) {
   const [replicas, setReplicas] = useState<number | null>(null);
   const [visibleScrim, setVisibleScrim] = useState<boolean>(false);
-  const [scaleTrigger, scaleState] = useScaleComponentMutation();
   const current = replicas ?? currentReplicas;
 
-  const onScale = handlePromiseWithToast(
-    async () => {
-      await scaleTrigger({
-        appName,
-        envName,
-        componentName,
-        replicas: current.toFixed(),
-      }).unwrap();
-      setVisibleScrim(false);
-      setReplicas(null);
-    },
-    'Scaling component',
-    'Failed to scale component'
-  );
+  const onLocalScale = async () => {
+    await onScale(current);
+    setVisibleScrim(false);
+    setReplicas(null);
+  };
 
   return (
     <div>
-      <Button onClick={() => setVisibleScrim(true)} disabled={disabled}>
-        Scale
-      </Button>
+      <Button onClick={() => setVisibleScrim(true)}>Scale</Button>
 
       <Dialog
         title={'Scale Component'}
@@ -153,7 +161,7 @@ function ScaleButtonPopup({
 
         <Dialog.Actions>
           <div className={'scale-component-popup-actions-wrapper'}>
-            <Button disabled={scaleState.isLoading} onClick={onScale}>
+            <Button disabled={disabled} onClick={onLocalScale}>
               {current === 0 ? 'Stop component' : `Scale to ${current}`}
             </Button>
             <Button variant="outlined" onClick={() => setVisibleScrim(false)}>

@@ -77,6 +77,7 @@ export const ActiveComponentOverview: FunctionComponent<{
               component={component}
               appName={appName}
               envName={envName}
+              refetch={refetch}
             />
 
             <ComponentStatus
