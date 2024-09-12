@@ -27,3 +27,10 @@
   text-align: left;
   float: right;
 }
+
+.scale-component-popup-actions-wrapper {
+  display: grid;
+  column-gap: 16px;
+  grid-template-columns: repeat(2, auto);
+  justify-content: end;
+}

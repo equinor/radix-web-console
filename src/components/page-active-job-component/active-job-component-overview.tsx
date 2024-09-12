@@ -4,12 +4,14 @@ import type { FunctionComponent } from 'react';
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 import { Overview } from './overview';
 
+import { Button, CircularProgress } from '@equinor/eds-core-react';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
   useGetBatchesQuery,
   useGetEnvironmentQuery,
   useGetJobsQuery,
+  useRestartComponentMutation,
 } from '../../store/radix-api';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams } from '../../utils/string';
@@ -18,8 +20,8 @@ import { Breadcrumb } from '../breadcrumb';
 import { ScheduledBatchList } from '../component/scheduled-job/scheduled-batch-list';
 import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
 import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
-import { Toolbar } from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ComponentReplicaList } from '../page-active-component/component-replica-list';
 
 export const ActiveJobComponentOverview: FunctionComponent<{
@@ -52,6 +54,12 @@ export const ActiveJobComponentOverview: FunctionComponent<{
   const component = deployment?.components?.find(
     ({ name }) => name === jobComponentName
   );
+  const [restartTrigger, restartState] = useRestartComponentMutation();
+  const isStopped = component?.status === 'Stopped';
+  const restartInProgress =
+    restartState.isLoading ||
+    component?.status === 'Reconciling' ||
+    component?.status === 'Restarting';
 
   return (
     <>
@@ -66,16 +74,31 @@ export const ActiveJobComponentOverview: FunctionComponent<{
           { label: jobComponentName },
         ]}
       />
-
       <AsyncResource asyncState={envState}>
         {component && (
           <>
-            <Toolbar
-              appName={appName}
-              envName={envName}
-              component={component}
-              refetch={refetch}
-            />
+            <div className="grid grid--gap-small">
+              <div className="grid grid--gap-small grid--auto-columns">
+                <Button
+                  onClick={() =>
+                    handlePromiseWithToast(
+                      restartTrigger({
+                        appName,
+                        envName,
+                        componentName: jobComponentName,
+                      }).unwrap,
+                      'Restarting component',
+                      'Failed to restart component'
+                    )
+                  }
+                  disabled={restartState.isLoading || isStopped}
+                  variant="outlined"
+                >
+                  Restart
+                </Button>
+                {restartInProgress && <CircularProgress size={32} />}
+              </div>
+            </div>
             <Overview component={component} deployment={deployment} />
 
             <div className="grid grid--gap-large">

@@ -23,7 +23,6 @@ export type StatusPopoverType =
   | 'default';
 
 export type StatusPopoverProps = {
-  className?: string;
   title?: ReactNode;
   icon?: ReactNode;
   type?: StatusPopoverType;
@@ -33,7 +32,6 @@ export const StatusPopover: FunctionComponent<
   PropsWithChildren<StatusPopoverProps>
 > = ({
   children,
-  className,
   title,
   icon = <Icon data={info_circle} />,
   type,
@@ -54,7 +52,7 @@ export const StatusPopover: FunctionComponent<
             <Popover.Title>{title}</Popover.Title>
           </Popover.Header>
         )}
-        <Popover.Content className={className}>{children}</Popover.Content>
+        <Popover.Content>{children}</Popover.Content>
       </Popover>
       <Chip
         className={`status-popover-chip status-popover-chip-type__${

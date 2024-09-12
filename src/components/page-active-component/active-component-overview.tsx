@@ -19,22 +19,27 @@ import { getEnvsUrl } from '../../utils/routing';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
-import { Toolbar } from '../component/toolbar';
 import { EnvironmentVariables } from '../environment-variables';
 
 import { routeWithParams } from '../../utils/string';
 import './style.css';
+import { ActiveComponentToolbar } from './active-component-toolbar';
+import { ComponentStatus } from './component-status';
 
 export const ActiveComponentOverview: FunctionComponent<{
   appName: string;
   envName: string;
   componentName: string;
 }> = ({ appName, envName, componentName }) => {
-  const { data: application, refetch } = useGetApplicationQuery(
+  const { data: application } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
   );
-  const { data: environment, ...envState } = useGetEnvironmentQuery(
+  const {
+    data: environment,
+    refetch,
+    ...envState
+  } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
   );
@@ -68,14 +73,21 @@ export const ActiveComponentOverview: FunctionComponent<{
       <AsyncResource asyncState={envState}>
         {component && (
           <>
-            <Toolbar
+            <ActiveComponentToolbar
+              component={component}
               appName={appName}
               envName={envName}
-              component={component}
-              startEnabled
-              stopEnabled
               refetch={refetch}
             />
+
+            <ComponentStatus
+              appName={appName}
+              envName={envName}
+              componentName={componentName}
+              refetch={refetch}
+              component={component}
+            />
+
             <Overview
               appAlias={appAlias}
               dnsAliases={componentDNSAliases}

@@ -1,11 +1,9 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { external_link } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 
 import { DefaultAlias } from './default-alias';
 
-import { Alert } from '../alert';
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
 import { DockerImage } from '../docker-image';
@@ -19,56 +17,36 @@ import type {
   ExternalDns,
 } from '../../store/radix-api';
 import './style.css';
-import { externalUrls } from '../../externalUrls';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 import { DNSAliases } from './dns-aliases';
 
 const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 
-export const Overview: FunctionComponent<{
+type Props = {
   appAlias?: ApplicationAlias;
   dnsAliases?: DnsAliasModel[];
   dnsExternalAliases?: ExternalDns[];
   envName: string;
   component: Component;
   deployment: Deployment;
-}> = ({
+};
+export const Overview = ({
   appAlias,
   dnsAliases,
   dnsExternalAliases,
   envName,
   component,
   deployment,
-}) => {
+}: Props) => {
   const dnsAliasUrls = dnsAliases ? dnsAliases.map((alias) => alias.url) : [];
   const dnsExternalAliasUrls = dnsExternalAliases
     ? dnsExternalAliases.map((alias) => alias.fqdn)
     : [];
 
-  const isStopped = component.status == 'Stopped';
-  const isScaledDown =
-    component.horizontalScalingSummary?.desiredReplicas === 0 && isStopped;
-
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
-
-      {isStopped && !isScaledDown && (
-        <Alert>
-          Component has been manually stopped; please note that a new deployment
-          will cause it to be restarted unless you set <code>replicas</code> of
-          the component to <code>0</code> in{' '}
-          <Typography
-            link
-            href={new URL('#replicas', externalUrls.referenceRadixConfig)}
-          >
-            radixconfig.yaml
-          </Typography>
-        </Alert>
-      )}
-      {isScaledDown && <Alert>Component has been stopped by autoscaler.</Alert>}
-
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
           <Typography>
