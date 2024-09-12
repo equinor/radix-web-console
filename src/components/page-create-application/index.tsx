@@ -35,7 +35,7 @@ export default function PageCreateApplication() {
   return (
     <>
       <Button
-        className="o-heading-page-button"
+        className="action--justify-end"
         variant="ghost"
         color="primary"
         onClick={() => setVisibleScrim(true)}

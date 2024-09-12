@@ -1,4 +1,9 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  CircularProgress,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
 import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api';
@@ -8,6 +13,7 @@ import AsyncResource from '../async-resource/async-resource';
 import PageCreateApplication from '../page-create-application';
 
 import './style.css';
+import { refresh } from '@equinor/eds-icons';
 import { isEqual, uniq } from 'lodash';
 import useLocalStorage from '../../effects/use-local-storage';
 import { pollingInterval } from '../../store/defaults';
@@ -23,22 +29,34 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
         app={{ name: 'dummy' }}
         handler={(e) => e.preventDefault()}
         isPlaceholder
+        name={''}
+        isLoaded={false}
       />
     ))}
   </div>
 );
 
+const isArrayOfStrings = (variable: unknown): variable is string[] => {
+  return (
+    Array.isArray(variable) &&
+    variable.every((item) => typeof item === 'string')
+  );
+};
+
 export default function AppList() {
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3);
+
   const [favourites, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
-    []
-  );
-  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
-    'knownApplications',
-    []
+    [],
+    isArrayOfStrings
   );
 
+  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    [],
+    isArrayOfStrings
+  );
   const [refreshApps, appsState] =
     radixApi.endpoints.showApplications.useLazyQuery({});
 
@@ -48,53 +66,50 @@ export default function AppList() {
       includeEnvironmentActiveComponents: 'true',
       includeLatestJobSummary: 'true',
     },
-    { skip: favourites.length === 0, pollingInterval }
+    { skip: favourites?.length === 0, pollingInterval }
   );
 
-  const changeFavouriteApplication = (app: string, isFavourite: boolean) => {
-    if (isFavourite) {
-      setFavourites((old) => uniq([...old, app]));
-    } else {
-      setFavourites((old) => old.filter((a) => a !== app));
+  const changeFavouriteApplication = (
+    appName: string,
+    isFavourite: boolean
+  ) => {
+    if (!favourites) {
+      setFavourites([appName]);
+      return;
     }
+    if (isFavourite) {
+      setFavourites((old) => uniq([...old, appName]));
+      return;
+    }
+    setFavourites((old) => old.filter((a) => a !== appName));
   };
 
   const knownApps = dataSorter(knownAppNames ?? [], [
     (x, y) => sortCompareString(x, y),
   ]).map((appName) => ({
     name: appName,
-    isFavourite: favourites.includes(appName),
+    isFavourite: favourites?.includes(appName),
   }));
 
-  const favouriteApps = dataSorter(
-    [
-      ...(favsData ?? [])
-        .filter(({ name }) => favourites.includes(name))
-        .map((favApp) => ({ name: favApp.name, isFavourite: true }) as const),
-      ...knownApps,
-    ].filter(
-      (app, i, arr) =>
-        app.isFavourite && arr.findIndex((x) => x.name === app.name) === i // remove non-favourites and duplicates
-    ),
-    [(x, y) => sortCompareString(x.name, y.name)]
-  );
+  const favouriteNames = dataSorter(favourites ?? [], [
+    (x, y) => sortCompareString(x, y),
+  ]);
 
   // remove from know app names previously favorite knownApps, which do not currently exist
   useEffect(() => {
-    if (!favsData || !knownApps) {
+    if (!favourites || !knownApps) {
       return;
     }
     const knownAppNames = knownApps
       .filter(
         (knownApp) =>
           !knownApp.isFavourite ||
-          favsData.some((favApp) => favApp.name === knownApp.name)
+          favourites.some((favAppName) => favAppName === knownApp.name)
       )
       .map((app) => app.name);
-    const favAppNames = favsData.map((app) => app.name);
     const mergedKnownAndFavoriteAppNames = uniq([
       ...knownAppNames,
-      ...favAppNames,
+      ...favourites,
     ]).sort();
     if (
       !isEqual(
@@ -104,46 +119,34 @@ export default function AppList() {
     ) {
       setKnownAppNames(mergedKnownAndFavoriteAppNames);
     }
-  }, [knownApps, favsData, setKnownAppNames]);
+  }, [knownApps, favourites, setKnownAppNames]);
 
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
         <Typography variant="body_short_bold">Favourites</Typography>
-        <div className="create-app">
-          <PageCreateApplication />
-        </div>
+        <PageCreateApplication />
       </div>
       <div className="app-list">
-        {favsState.isLoading ? (
-          <div>
-            <CircularProgress size={16} /> Loading favorites…
-          </div>
-        ) : favouriteApps.length > 0 ? (
+        {favouriteNames?.length > 0 ? (
           <>
             <div className="grid grid--gap-medium app-list--section">
-              <AsyncResource
-                asyncState={{
-                  ...favsState,
-                  isLoading: favsState.isLoading && !(favouriteApps.length > 0),
-                }}
-                loadingContent={<LoadingCards amount={favourites.length} />}
-              >
-                <div className="app-list__list">
-                  {favouriteApps.map((app, i) => (
-                    <AppListItem
-                      key={i}
-                      app={app}
-                      handler={(e) => {
-                        changeFavouriteApplication(app.name, false);
-                        e.preventDefault();
-                      }}
-                      isFavourite
-                      showStatus
-                    />
-                  ))}
-                </div>
-              </AsyncResource>
+              <div className="app-list__list">
+                {favouriteNames.map((appName) => (
+                  <AppListItem
+                    key={appName}
+                    app={favsData?.find((a) => a.name === appName)}
+                    handler={(e) => {
+                      changeFavouriteApplication(appName, false);
+                      e.preventDefault();
+                    }}
+                    isFavourite
+                    showStatus
+                    isLoaded={favsState.isSuccess}
+                    name={appName}
+                  />
+                ))}
+              </div>
             </div>
           </>
         ) : (
@@ -159,6 +162,8 @@ export default function AppList() {
             )}
             <Button
               className={'action--justify-end'}
+              variant="ghost"
+              color="primary"
               disabled={appsState.isLoading || appsState.isFetching}
               onClick={() =>
                 promiseHandler(
@@ -168,6 +173,7 @@ export default function AppList() {
                 )
               }
             >
+              <Icon data={refresh} />
               Refresh list
             </Button>
           </div>
@@ -180,7 +186,7 @@ export default function AppList() {
             </div>
           )}
           <div className="grid grid--gap-medium app-list--section">
-            {(knownAppNames && knownAppNames.length > 0) ||
+            {knownAppNames?.length > 0 ||
             appsState.isLoading ||
             appsState.isFetching ? (
               <AsyncResource
@@ -190,15 +196,17 @@ export default function AppList() {
                 }
               >
                 <div className="app-list__list">
-                  {knownApps.map((app, i) => (
+                  {knownApps.map((app) => (
                     <AppListItem
-                      key={i}
+                      key={app.name}
                       app={app}
                       handler={(e) => {
                         changeFavouriteApplication(app.name, !app.isFavourite);
                         e.preventDefault();
                       }}
                       isFavourite={app.isFavourite}
+                      name={app.name}
+                      isLoaded={true}
                     />
                   ))}
                 </div>
