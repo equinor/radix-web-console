@@ -23,7 +23,7 @@ export function ComponentStatus({
   component,
 }: Props) {
   const [resetTrigger, resetState] = useResetScaledComponentMutation();
-  const startRefetch = useDurationInterval(2_000, 30_000, refetch);
+  const startRefetch = useDurationInterval(2_000, 10_000, refetch);
   const onReset = handlePromiseWithToast(async () => {
     await resetTrigger({
       appName,
