@@ -147,7 +147,7 @@ function ScaleButtonPopup({ disabled, currentReplicas, onScale }: ScaleProps) {
         </Dialog.Header>
         <Dialog.Content>
           <Typography>
-            This will disable any automatic scaling untill manuall scaling is
+            This will disable any automatic scaling until manual scaling is
             reset.
           </Typography>
           <Slider
