@@ -1,12 +1,15 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Icon, Table, Tooltip, Typography } from '@equinor/eds-core-react';
+import { info_circle, library_books } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
+import { type FunctionComponent, useState } from 'react';
+import { externalUrls } from '../../externalUrls';
 import {
   type ResourcesApiResponse,
   useResourcesQuery,
 } from '../../store/radix-api';
 import { formatDateTimeYear } from '../../utils/datetime';
 import AsyncResource from '../async-resource/async-resource';
+import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
 
@@ -27,10 +30,21 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
     { appName },
     { skip: !appName }
   );
-
+  const [visibleScrim, setVisibleScrim] = useState(false);
   return (
     <div className="grid grid--gap-medium">
-      <Typography variant="h6">Used resources</Typography>
+      <div className="grid grid--gap-medium grid--auto-columns">
+        <Typography variant="h6"> Used resources</Typography>
+        <Typography
+          link
+          href={externalUrls.resourcesDocs}
+          rel="noopener noreferrer"
+        >
+          <Tooltip title="Read more in the documentation">
+            <Icon data={library_books} />
+          </Tooltip>
+        </Typography>
+      </div>
       <AsyncResource asyncState={state}>
         {resources ? (
           <div className="resources-section grid grid--gap-medium">
@@ -41,8 +55,8 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
               </Typography>
             </div>
 
-            <div className="grid grid--gap-small">
-              <>
+            <div className="grid grid--gap-small grid--auto-columns">
+              <div>
                 <Typography>
                   CPU{' '}
                   <strong>
@@ -59,7 +73,75 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                     {resources?.memory?.average ?? '-'}
                   </strong>
                 </Typography>
-              </>
+              </div>
+              <Icon
+                style={{ cursor: 'pointer' }}
+                data={info_circle}
+                className={'icon-justify-end'}
+                onClick={(event) => setVisibleScrim(true)}
+              />
+              <ScrimPopup
+                className={'resources__scrim'}
+                title={'Used resources'}
+                open={visibleScrim}
+                isDismissable
+                onClose={() => setVisibleScrim(false)}
+              >
+                <div className={'resources__scrim-content'}>
+                  <Table className={'resources-content'}>
+                    <Table.Head>
+                      <Table.Row>
+                        <Table.Cell />
+                        <Table.Cell>Min</Table.Cell>
+                        <Table.Cell>Max</Table.Cell>
+                        <Table.Cell>Average</Table.Cell>
+                      </Table.Row>
+                    </Table.Head>
+                    <Table.Body>
+                      <Table.Row>
+                        <Table.Cell>CPU (rounded, millicores)</Table.Cell>
+                        <Table.Cell>{resources?.cpu?.min ?? '-'}</Table.Cell>
+                        <Table.Cell>{resources?.cpu?.max ?? '-'}</Table.Cell>
+                        <Table.Cell>
+                          {resources?.cpu?.average ?? '-'}
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell>CPU (actual, millicores)</Table.Cell>
+                        <Table.Cell>
+                          {resources?.cpu?.minActual ?? '-'}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {resources?.cpu?.maxActual ?? '-'}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {resources?.cpu?.avgActual ?? '-'}
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell>Memory (rounded, MB)</Table.Cell>
+                        <Table.Cell>{resources?.memory?.min ?? '-'}</Table.Cell>
+                        <Table.Cell>{resources?.memory?.max ?? '-'}</Table.Cell>
+                        <Table.Cell>
+                          {resources?.memory?.average ?? '-'}
+                        </Table.Cell>
+                      </Table.Row>
+                      <Table.Row>
+                        <Table.Cell>Memory (actual, MB)</Table.Cell>
+                        <Table.Cell>
+                          {resources?.memory?.minActual ?? '-'}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {resources?.memory?.maxActual ?? '-'}
+                        </Table.Cell>
+                        <Table.Cell>
+                          {resources?.memory?.avgActual ?? '-'}
+                        </Table.Cell>
+                      </Table.Row>
+                    </Table.Body>
+                  </Table>
+                </div>
+              </ScrimPopup>
             </div>
           </div>
         ) : (

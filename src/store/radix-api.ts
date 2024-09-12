@@ -3294,10 +3294,16 @@ export type RegenerateDeployKeyAndSecretData = {
 export type UsedResource = {
   /** Average resource used */
   average?: string;
+  /** AvgActual actual precise resource used */
+  avgActual?: number;
   /** Max resource used */
   max?: string;
+  /** MaxActual actual precise resource used */
+  maxActual?: number;
   /** Min resource used */
   min?: string;
+  /** MinActual actual precise resource used */
+  minActual?: number;
 };
 export type UsedResources = {
   cpu?: UsedResource;

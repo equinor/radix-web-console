@@ -15,6 +15,7 @@ export const externalUrls = {
   externalDNSGuide: 'https://www.radix.equinor.com/guides/external-alias/',
   workloadIdentityGuide: 'https://www.radix.equinor.com/guides/workload-identity/',
   uptimeDocs: 'https://radix.equinor.com/docs/topic-uptime/',
+  resourcesDocs: 'https://radix.equinor.com/guides/resource-request/',
   radixPlatformWebConsole: `https://console.${clusterBases.radixPlatformWebConsole}/`,
   radixPlatform2WebConsole: `https://console.${clusterBases.radixPlatform2WebConsole}/`,
   playgroundWebConsole: `https://console.${clusterBases.playgroundWebConsole}/`,

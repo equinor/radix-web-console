@@ -7,3 +7,20 @@
     grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
   }
 }
+
+.icon-justify-end {
+  justify-self: end;
+}
+
+.resources__scrim .resources__scrim-content {
+  margin: var(--eds_spacing_medium);
+  margin-top: initial;
+  align-content: center;
+  min-width: 500px;
+}
+
+.resources-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
+}
