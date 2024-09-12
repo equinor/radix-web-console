@@ -24,7 +24,6 @@ export function useDurationInterval(
   callback: () => unknown
 ) {
   const [startAt, setStartAt] = useState<number>(0);
-  const interval = useRef<ReturnType<typeof setInterval>>();
 
   const start = () => {
     setStartAt(Date.now());
@@ -35,17 +34,17 @@ export function useDurationInterval(
       return () => void 0;
     }
 
-    interval.current = setInterval(() => {
+    const id = setInterval(() => {
       if (Date.now() > startAt + durationMs) {
         setStartAt(0);
-        clearInterval(interval.current);
+        clearInterval(id);
         return;
       }
 
       callback();
     }, intervalMs);
 
-    return () => clearInterval(interval.current);
+    return () => clearInterval(id);
   }, [startAt, durationMs, intervalMs, callback]);
 
   return start;
