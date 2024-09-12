@@ -16,10 +16,7 @@ export const DeploymentComponentOverview: FunctionComponent<{
   deploymentName: string;
   componentName: string;
 }> = ({ appName, deploymentName, componentName }) => {
-  const {
-    data: deployment,
-    ...deploymentState
-  } = useGetDeploymentQuery(
+  const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
   );
