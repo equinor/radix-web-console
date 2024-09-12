@@ -4,8 +4,8 @@ import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useState } from 'react';
 import { externalUrls } from '../../externalUrls';
 import {
-  type ResourcesApiResponse,
-  useResourcesQuery,
+  type GetResourcesApiResponse,
+  useGetResourcesQuery,
 } from '../../store/radix-api';
 import { formatDateTimeYear } from '../../utils/datetime';
 import AsyncResource from '../async-resource/async-resource';
@@ -13,7 +13,7 @@ import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
 
-function getPeriod({ from, to }: ResourcesApiResponse): string {
+function getPeriod({ from, to }: GetResourcesApiResponse): string {
   return `${formatDateTimeYear(new Date(from))} - ${formatDateTimeYear(
     new Date(to)
   )}`;
@@ -26,7 +26,7 @@ export interface UsedResourcesProps {
 export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
   appName,
 }) => {
-  const { data: resources, ...state } = useResourcesQuery(
+  const { data: resources, ...state } = useGetResourcesQuery(
     { appName },
     { skip: !appName }
   );
@@ -78,7 +78,7 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                 style={{ cursor: 'pointer' }}
                 data={info_circle}
                 className={'icon-justify-end'}
-                onClick={(event) => setVisibleScrim(true)}
+                onClick={() => setVisibleScrim(true)}
               />
               <ScrimPopup
                 className={'resources__scrim'}

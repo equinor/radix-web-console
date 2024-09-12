@@ -1007,12 +1007,19 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    resources: build.query<ResourcesApiResponse, ResourcesApiArg>({
+    getResources: build.query<GetResourcesApiResponse, GetResourcesApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/resources`,
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+        params: {
+          environment: queryArg.environment,
+          component: queryArg.component,
+          duration: queryArg.duration,
+          since: queryArg.since,
+          ignorezero: queryArg.ignorezero,
         },
       }),
     }),
@@ -2142,11 +2149,21 @@ export type RegenerateDeployKeyApiArg = {
   /** Regenerate deploy key and secret data */
   regenerateDeployKeyAndSecretData: RegenerateDeployKeyAndSecretData;
 };
-export type ResourcesApiResponse =
+export type GetResourcesApiResponse =
   /** status 200 Successful trigger pipeline */ UsedResources;
-export type ResourcesApiArg = {
-  /** Name of application */
+export type GetResourcesApiArg = {
+  /** Name of the application */
   appName: string;
+  /** Name of the application environment */
+  environment?: string;
+  /** Name of the application component in an environment */
+  component?: string;
+  /** Duration of the period, default is 30d (30 days). Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
+  duration?: string;
+  /** End time-point of the period in the past, default is now. Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
+  since?: string;
+  /** Ignore metrics with zero value if true, default is false */
+  ignorezero?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -3395,7 +3412,7 @@ export const {
   useGetPrivateImageHubsQuery,
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
-  useResourcesQuery,
+  useGetResourcesQuery,
   useRestartApplicationMutation,
   useStartApplicationMutation,
   useStopApplicationMutation,
