@@ -18,7 +18,6 @@ export const DeploymentComponentOverview: FunctionComponent<{
 }> = ({ appName, deploymentName, componentName }) => {
   const {
     data: deployment,
-    refetch,
     ...deploymentState
   } = useGetDeploymentQuery(
     { appName, deploymentName },
