@@ -99,7 +99,18 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                     </Table.Head>
                     <Table.Body>
                       <Table.Row>
-                        <Table.Cell>CPU (rounded, millicores)</Table.Cell>
+                        <Table.Cell>
+                          CPU (
+                          <Typography
+                            link
+                            href={externalUrls.kubernetesResourcesCpuUnits}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            millicores
+                          </Typography>
+                          , rounded)
+                        </Table.Cell>
                         <Table.Cell>{resources?.cpu?.min ?? '-'}</Table.Cell>
                         <Table.Cell>{resources?.cpu?.max ?? '-'}</Table.Cell>
                         <Table.Cell>
@@ -107,7 +118,18 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>
-                        <Table.Cell>CPU (actual, millicores)</Table.Cell>
+                        <Table.Cell>
+                          CPU (
+                          <Typography
+                            link
+                            href={externalUrls.kubernetesResourcesCpuUnits}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            millicores
+                          </Typography>
+                          , actual)
+                        </Table.Cell>
                         <Table.Cell>
                           {resources?.cpu?.minActual ?? '-'}
                         </Table.Cell>
@@ -119,7 +141,18 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>
-                        <Table.Cell>Memory (rounded, MB)</Table.Cell>
+                        <Table.Cell>
+                          Memory (
+                          <Typography
+                            link
+                            href={externalUrls.kubernetesResourcesMemoryUnits}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            MB
+                          </Typography>
+                          , rounded)
+                        </Table.Cell>
                         <Table.Cell>{resources?.memory?.min ?? '-'}</Table.Cell>
                         <Table.Cell>{resources?.memory?.max ?? '-'}</Table.Cell>
                         <Table.Cell>
@@ -127,7 +160,18 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>
-                        <Table.Cell>Memory (actual, MB)</Table.Cell>
+                        <Table.Cell>
+                          Memory (
+                          <Typography
+                            link
+                            href={externalUrls.kubernetesResourcesMemoryUnits}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                          >
+                            MB
+                          </Typography>
+                          , actual)
+                        </Table.Cell>
                         <Table.Cell>
                           {resources?.memory?.minActual ?? '-'}
                         </Table.Cell>
