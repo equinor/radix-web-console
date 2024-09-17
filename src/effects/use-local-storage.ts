@@ -35,7 +35,8 @@ export default function useLocalStorage<T>(
 
   useInterval(() => {
     const current = getLocalStorageItem(key);
-    if (current != state) {
+    if (JSON.stringify(current) != JSON.stringify(state)) {
+      console.log('updating state', { current, state });
       setState(current);
     }
   }, 250);
