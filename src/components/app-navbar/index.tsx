@@ -121,8 +121,8 @@ const NavbarExpanded = ({ appName, links }: NavbarProps) => {
         </Tooltip>
       </span>
 
-      {links.map((link, i) => (
-        <NavbarLink key={i} {...link} />
+      {links.map((link) => (
+        <NavbarLink key={link.to} {...link} />
       ))}
 
       <Typography
