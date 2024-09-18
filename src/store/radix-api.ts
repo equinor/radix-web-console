@@ -451,6 +451,19 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    resetScaledComponent: build.mutation<
+      ResetScaledComponentApiResponse,
+      ResetScaledComponentApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/reset-scale`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     restartComponent: build.mutation<
       RestartComponentApiResponse,
       RestartComponentApiArg
@@ -706,6 +719,19 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+        },
+      }),
+    }),
+    resetManuallyScaledComponentsInEnvironment: build.mutation<
+      ResetManuallyScaledComponentsInEnvironmentApiResponse,
+      ResetManuallyScaledComponentsInEnvironmentApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/reset-scale`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
         },
       }),
     }),
@@ -1001,6 +1027,19 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/applications/${queryArg.appName}/regenerate-deploy-key`,
         method: 'POST',
         body: queryArg.regenerateDeployKeyAndSecretData,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
+    resetManuallyScaledComponentsInApplication: build.mutation<
+      ResetManuallyScaledComponentsInApplicationApiResponse,
+      ResetManuallyScaledComponentsInApplicationApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/reset-scale`,
+        method: 'POST',
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -2149,6 +2188,15 @@ export type RegenerateDeployKeyApiArg = {
   /** Regenerate deploy key and secret data */
   regenerateDeployKeyAndSecretData: RegenerateDeployKeyAndSecretData;
 };
+export type ResetManuallyScaledComponentsInApplicationApiResponse = unknown;
+export type ResetManuallyScaledComponentsInApplicationApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type GetResourcesApiResponse =
   /** status 200 Successful trigger pipeline */ UsedResources;
 export type GetResourcesApiArg = {
@@ -2691,7 +2739,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-    
+
     required: */
   webhookUrl?: string | null;
 };
@@ -3018,7 +3066,7 @@ export type Job = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Components (array of ComponentSummary) created by the job
-    
+
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
@@ -3412,6 +3460,7 @@ export const {
   useGetPrivateImageHubsQuery,
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
+  useResetManuallyScaledComponentsInApplicationMutation,
   useGetResourcesQuery,
   useRestartApplicationMutation,
   useStartApplicationMutation,
