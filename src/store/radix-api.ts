@@ -1542,6 +1542,19 @@ export type ReplicaLogApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type ResetScaledComponentApiResponse = unknown;
+export type ResetScaledComponentApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Name of component */
+  componentName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type RestartComponentApiResponse = unknown;
 export type RestartComponentApiArg = {
   /** Name of application */
@@ -1890,6 +1903,17 @@ export type JobLogApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type ResetManuallyScaledComponentsInEnvironmentApiResponse = unknown;
+export type ResetManuallyScaledComponentsInEnvironmentApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -2455,6 +2479,8 @@ export type Component = {
   replicaList?: ReplicaSummary[];
   /** Deprecated: Array of pod names. Use ReplicaList instead */
   replicas?: string[];
+  /** Set if manual control of replicas is in place. Not set means automatic control, 0 means stopped and >= 1 is manually scaled. */
+  replicasOverride?: number | null;
   resources?: ResourceRequirements;
   runtime?: Runtime;
   /** ScheduledJobPayloadPath defines the payload path, where payload for Job Scheduler will be mapped as a file. From radixconfig.yaml */
@@ -2739,7 +2765,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-
+    
     required: */
   webhookUrl?: string | null;
 };
@@ -3066,7 +3092,7 @@ export type Job = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Components (array of ComponentSummary) created by the job
-
+    
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
@@ -3377,6 +3403,8 @@ export type UsedResources = {
   memory?: UsedResource;
   /** To timestamp */
   to: string;
+  /** Warning messages */
+  warnings?: string[];
 };
 export const {
   useShowApplicationsQuery,
@@ -3414,6 +3442,7 @@ export const {
   useChangeEnvVarMutation,
   useUpdateComponentExternalDnsTlsMutation,
   useReplicaLogQuery,
+  useResetScaledComponentMutation,
   useRestartComponentMutation,
   useScaleComponentMutation,
   useGetAzureKeyVaultSecretVersionsQuery,
@@ -3437,6 +3466,7 @@ export const {
   useRestartJobMutation,
   useStopJobMutation,
   useJobLogQuery,
+  useResetManuallyScaledComponentsInEnvironmentMutation,
   useRestartEnvironmentMutation,
   useStartEnvironmentMutation,
   useStopEnvironmentMutation,
