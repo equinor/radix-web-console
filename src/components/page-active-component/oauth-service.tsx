@@ -1,6 +1,5 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 
 import { OAuthToolbar } from './oauth-toolbar';
 
@@ -9,12 +8,20 @@ import { getOAuthReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 import { ComponentStatusBadge } from '../status-badges';
 
-export const OAuthService: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   componentName: string;
   oauth2: OAuth2AuxiliaryResource;
-}> = ({ appName, envName, componentName, oauth2 }) => (
+  refetch: () => unknown;
+};
+export const OAuthService = ({
+  appName,
+  envName,
+  componentName,
+  oauth2,
+  refetch,
+}: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
@@ -37,6 +44,7 @@ export const OAuthService: FunctionComponent<{
                 envName={envName}
                 componentName={componentName}
                 oauth2={oauth2}
+                refetch={refetch}
               />
             </span>
           </div>
