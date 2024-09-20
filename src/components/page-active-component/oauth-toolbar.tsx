@@ -24,11 +24,9 @@ export function OAuthToolbar({
 }: Props) {
   const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation();
   const startRefetch = useDurationInterval(refetch);
-
+  console.log({ oauth2, isLoading });
   const isRestartEnabled =
-    oauth2?.deployment?.status === 'Consistent' &&
-    oauth2?.deployment?.replicaList?.length > 0 &&
-    !isLoading;
+    oauth2?.deployment?.status !== 'Stopped' || isLoading;
 
   const restartInProgress =
     isLoading || oauth2?.deployment?.status === 'Reconciling';
