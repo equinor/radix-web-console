@@ -143,7 +143,7 @@ export const EnvironmentOverview: FunctionComponent<{
                 environment={environment}
                 startEnabled
                 stopEnabled
-                fethcEnvironment={refetchEnv}
+                refetch={refetchEnv}
               />
               <Typography variant="h4">Overview</Typography>
               <div className="grid grid--gap-medium grid--overview-columns">

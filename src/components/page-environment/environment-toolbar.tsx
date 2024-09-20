@@ -2,6 +2,7 @@ import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
+import { useDurationInterval } from '../../effects/use-interval';
 import { type Environment, radixApi } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { errorToast } from '../global-top-nav/styled-toaster';
@@ -11,14 +12,15 @@ export const EnvironmentToolbar: FunctionComponent<{
   environment: Readonly<Environment>;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-  fethcEnvironment?: () => Promise<unknown>;
+  refetch?: () => unknown;
 }> = ({
   appName,
   environment: { activeDeployment, name },
   startEnabled,
   stopEnabled,
-  fethcEnvironment,
+  refetch,
 }) => {
+  const refetchEnv = useDurationInterval(refetch);
   const [start, startState] = radixApi.endpoints.startEnvironment.useMutation();
   const [stop, stopState] = radixApi.endpoints.stopEnvironment.useMutation();
   const [restart, restartState] =
@@ -63,7 +65,7 @@ export const EnvironmentToolbar: FunctionComponent<{
             onClick={async () => {
               try {
                 await start({ appName, envName: name }).unwrap();
-                fethcEnvironment?.();
+                refetchEnv();
               } catch (error) {
                 errorToast(
                   `Failed to start environment. ${getFetchErrorMessage(error)}`
@@ -80,7 +82,7 @@ export const EnvironmentToolbar: FunctionComponent<{
             onClick={async () => {
               try {
                 await stop({ appName, envName: name }).unwrap();
-                fethcEnvironment?.();
+                refetchEnv();
               } catch (error) {
                 errorToast(
                   `Failed to stop environment. ${getFetchErrorMessage(error)}`
@@ -96,7 +98,7 @@ export const EnvironmentToolbar: FunctionComponent<{
           onClick={async () => {
             try {
               await restart({ appName, envName: name }).unwrap();
-              fethcEnvironment?.();
+              refetchEnv();
             } catch (error) {
               errorToast(
                 `Failed to restart environment. ${getFetchErrorMessage(error)}`

@@ -19,9 +19,9 @@ export function useInterval(callback: () => void, delay?: number): void {
 }
 
 export function useDurationInterval(
-  intervalMs: number,
-  durationMs: number,
-  callback: () => unknown
+  callback: () => unknown,
+  intervalMs = 2_000,
+  durationMs = 15_000
 ) {
   const [startAt, setStartAt] = useState<number>(0);
 

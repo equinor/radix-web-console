@@ -1,50 +1,51 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
+import { useDurationInterval } from '../../effects/use-interval';
 import {
   type OAuth2AuxiliaryResource,
   useRestartOAuthAuxiliaryResourceMutation,
 } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
-import { errorToast } from '../global-top-nav/styled-toaster';
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 type Props = {
   appName: string;
   envName: string;
   componentName: string;
   oauth2?: OAuth2AuxiliaryResource;
+  refetch: () => unknown;
 };
 export function OAuthToolbar({
   appName,
   envName,
   componentName,
   oauth2,
+  refetch,
 }: Props) {
   const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation();
-
+  const startRefetch = useDurationInterval(refetch);
+  console.log({ oauth2, isLoading });
   const isRestartEnabled =
-    oauth2?.deployment?.status === 'Consistent' &&
-    oauth2?.deployment?.replicaList?.length > 0 &&
-    !isLoading;
+    oauth2?.deployment?.status !== 'Stopped' || isLoading;
 
   const restartInProgress =
     isLoading || oauth2?.deployment?.status === 'Reconciling';
 
+  const onRestart = handlePromiseWithToast(
+    async () => {
+      await trigger({ appName, envName, componentName }).unwrap();
+      startRefetch();
+    },
+    'Restaring OAuth2 Service',
+    'Failed to restart Oauth2 Service'
+  );
   return (
     <div className="grid grid--gap-small">
       <div className="grid grid--gap-small grid--auto-columns">
         {restartInProgress && <CircularProgress size={32} />}
 
         <Button
-          onClick={async () => {
-            try {
-              await trigger({ appName, envName, componentName }).unwrap();
-            } catch (error) {
-              errorToast(
-                `Failed to restart OAUTH. ${getFetchErrorMessage(error)}`
-              );
-            }
-          }}
+          onClick={onRestart}
           disabled={!isRestartEnabled}
           variant="outlined"
         >

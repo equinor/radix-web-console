@@ -120,6 +120,7 @@ export const ActiveComponentOverview: FunctionComponent<{
                   envName={envName}
                   componentName={componentName}
                   oauth2={component.oauth2}
+                  refetch={refetch}
                 />
               )}
 
