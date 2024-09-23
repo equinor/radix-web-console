@@ -1,0 +1,11 @@
+.multiple-tags-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow: auto;
+}
+
+.tags {
+  font-size: 0.850rem;
+  line-height: 1.333em;
+  font-weight: 500;
+}
