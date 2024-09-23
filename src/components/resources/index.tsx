@@ -147,7 +147,7 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                         </Table.Cell>
                       </Table.Row>
                       <Table.Row>
-                        <Table.Cell>Memory ( MB , actual)</Table.Cell>
+                        <Table.Cell>Memory (MB , actual)</Table.Cell>
                         <Table.Cell>
                           {resources?.memory?.minActual ?? '-'}
                         </Table.Cell>
