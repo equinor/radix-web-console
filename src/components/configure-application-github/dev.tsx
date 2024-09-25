@@ -5,6 +5,9 @@ export default (
     <ConfigureApplicationGithub
       app={{
         adGroups: ['Group 1', 'Group 2'],
+        adUsers: ['User 1', 'user 2'],
+        readerAdGroups: ['Reader 1', 'Reader 2'],
+        readerAdUsers: ['Reader User 1', 'Reader User 2'],
         name: 'a-name-thing',
         repository: 'https://some/path/to/a/repo',
         sharedSecret: 'a long shared secret',

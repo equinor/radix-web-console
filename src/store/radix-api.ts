@@ -2520,6 +2520,8 @@ export type ApplicationSummary = {
 export type ApplicationRegistration = {
   /** AdGroups the groups that should be able to access the application */
   adGroups: string[];
+  /** AdUsers the users/service-principals that should be able to access the application */
+  adUsers: string[];
   /** ConfigBranch information */
   configBranch: string;
   /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
@@ -2535,7 +2537,9 @@ export type ApplicationRegistration = {
   /** radixconfig.yaml file name and path, starting from the GitHub repository root (without leading slash) */
   radixConfigFullName?: string;
   /** ReaderAdGroups the groups that should be able to read the application */
-  readerAdGroups?: string[];
+  readerAdGroups: string[];
+  /** ReaderAdUsers the users/service-principals that should be able to read the application */
+  readerAdUsers: string[];
   /** Repository the github repository */
   repository: string;
   /** SharedSecret the shared secret of the webhook */
@@ -2664,6 +2668,8 @@ export type Application = {
 export type ApplicationRegistrationPatch = {
   /** AdGroups the groups that should be able to access the application */
   adGroups?: string[];
+  /** AdUsers the users/service-principals that should be able to access the application */
+  adUsers?: string[];
   /** ConfigBranch information */
   configBranch?: string;
   /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
@@ -2676,6 +2682,8 @@ export type ApplicationRegistrationPatch = {
   radixConfigFullName?: string;
   /** ReaderAdGroups the groups that should be able to read the application */
   readerAdGroups?: string[];
+  /** ReaderAdUsers the users/service-principals that should be able to read the application */
+  readerAdUsers?: string[];
   /** Repository the github repository */
   repository?: string;
   /** WBS information */

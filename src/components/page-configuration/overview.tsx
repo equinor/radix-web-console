@@ -1,25 +1,38 @@
 import {
   CircularProgress,
+  Icon,
   List,
-  Tooltip,
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
-import { useGetAdGroupsQuery } from '../../store/ms-graph-api';
+import { computer, group } from '@equinor/eds-icons';
+import {
+  useGetAdGroupsQuery,
+  useGetAdServicePrincipalQuery,
+} from '../../store/ms-graph-api';
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 
 interface Props {
-  adGroups?: Array<string>;
+  adGroups: Array<string>;
+  adUsers: Array<string>;
   appName: string;
 }
 
-export function Overview({ adGroups, appName }: Props) {
-  const { data, ...state } = useGetAdGroupsQuery({ ids: adGroups });
-  const unknownADGroups = adGroups?.filter(
-    (adGroupId) => !data?.some((adGroup) => adGroup.id === adGroupId)
+export function Overview({ adGroups, adUsers, appName }: Props) {
+  const { data: groups, ...groupState } = useGetAdGroupsQuery({
+    ids: adGroups,
+  });
+  const { data: SPs, ...spState } = useGetAdServicePrincipalQuery({
+    ids: adUsers,
+  });
+  const unknownADGroups = adGroups.filter(
+    (adGroupId) => !groups?.some((x) => x.id === adGroupId)
+  );
+  const unknownADUsers = adUsers.filter(
+    (adUserId) => !SPs?.some((x) => x.id === adUserId)
   );
 
   return (
@@ -34,36 +47,54 @@ export function Overview({ adGroups, appName }: Props) {
         <div className="grid grid--gap-small">
           {adGroups?.length > 0 ? (
             <>
-              <Typography>
-                Radix administrators (
-                <Tooltip title="Active Directory" placement="top">
-                  <span>AD</span>
-                </Tooltip>{' '}
-                groups):
-              </Typography>
-              {state.isLoading ? (
+              <Typography>Radix administrators:</Typography>
+              {groupState.isLoading || spState.isLoading ? (
                 <>
                   <CircularProgress size={24} /> Updating…
                 </>
               ) : (
-                <AsyncResource asyncState={state} nonFailureErrorCodes={[404]}>
-                  <List className="grid grid--gap-small">
-                    {data?.map(({ id, displayName }) => (
-                      <List.Item key={id}>
-                        <Typography
-                          link
-                          href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          {displayName}
-                        </Typography>
-                      </List.Item>
+                <AsyncResource
+                  asyncState={groupState}
+                  nonFailureErrorCodes={[404]}
+                >
+                  <AsyncResource
+                    asyncState={spState}
+                    nonFailureErrorCodes={[404]}
+                  >
+                    <List className="grid grid--gap-small">
+                      {groups?.map(({ id, displayName }) => (
+                        <List.Item key={id}>
+                          <Typography
+                            link
+                            href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Icon data={group} size={16} /> {displayName}
+                          </Typography>
+                        </List.Item>
+                      ))}
+                      {SPs?.map(({ id, displayName }) => (
+                        <List.Item key={id}>
+                          <Typography
+                            link
+                            href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <Icon data={computer} size={16} /> {displayName}
+                          </Typography>
+                        </List.Item>
+                      ))}
+                    </List>
+                  </AsyncResource>
+                  {(!groupState.isFetching && unknownADGroups.length > 0) ||
+                    (!spState.isFetching && unknownADUsers.length > 0 && (
+                      <UnknownADGroupsAlert
+                        unknownADGroups={unknownADGroups}
+                        unknownADUsers={unknownADUsers}
+                      />
                     ))}
-                  </List>
-                  {!state.isFetching && unknownADGroups?.length > 0 && (
-                    <UnknownADGroupsAlert unknownADGroups={unknownADGroups} />
-                  )}
                 </AsyncResource>
               )}
             </>
