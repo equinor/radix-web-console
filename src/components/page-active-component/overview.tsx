@@ -44,7 +44,7 @@ export const Overview = ({
   const dnsExternalAliasUrls = dnsExternalAliases
     ? dnsExternalAliases.map((alias) => alias.fqdn)
     : [];
-  console.log(component.network?.ingress?.public?.allow);
+
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>

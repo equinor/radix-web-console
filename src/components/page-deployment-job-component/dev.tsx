@@ -29,7 +29,7 @@ const testData: Array<
           name: 'api',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 5005 }],
+          ports: [{ name: 'http', port: 5005, isPublic: true }],
           replicaList: [
             {
               name: 'api-587b8877c-9xr4x',
@@ -63,7 +63,7 @@ const testData: Array<
           name: 'auth-proxy',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 8000 }],
+          ports: [{ name: 'http', port: 8000, isPublic: true }],
           replicaList: [
             {
               name: 'auth-proxy-86bb8c47c-wwhx8',
@@ -117,7 +117,7 @@ const testData: Array<
           name: 'auth-state',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'redis', port: 6379 }],
+          ports: [{ name: 'redis', port: 6379, isPublic: true }],
           replicaList: [
             {
               name: 'auth-state-74f5b9488b-pwm2c',
@@ -147,7 +147,7 @@ const testData: Array<
           name: 'compute',
           type: 'job',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 8080 }],
+          ports: [{ name: 'http', port: 8080, isPublic: true }],
           schedulerPort: 8080,
           scheduledJobPayloadPath: '/compute/payload',
           replicaList: [
@@ -184,7 +184,7 @@ const testData: Array<
           name: 'compute2',
           type: 'job',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 8080 }],
+          ports: [{ name: 'http', port: 8080, isPublic: true }],
           schedulerPort: 8080,
           scheduledJobPayloadPath: '/compute/payload',
           replicaList: [
@@ -232,7 +232,7 @@ const testData: Array<
           name: 'api',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 5005 }],
+          ports: [{ name: 'http', port: 5005, isPublic: true }],
           replicaList: [
             {
               name: 'api-587b8877c-9xr4x',
@@ -266,7 +266,7 @@ const testData: Array<
           name: 'auth-proxy',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 8000 }],
+          ports: [{ name: 'http', port: 8000, isPublic: true }],
           replicaList: [
             {
               name: 'auth-proxy-86bb8c47c-wwhx8',
@@ -320,7 +320,7 @@ const testData: Array<
           name: 'auth-state',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'redis', port: 6379 }],
+          ports: [{ name: 'redis', port: 6379, isPublic: true }],
           replicaList: [
             {
               name: 'auth-state-74f5b9488b-pwm2c',
@@ -350,7 +350,7 @@ const testData: Array<
           name: 'compute',
           type: 'job',
           status: 'Stopped',
-          ports: [{ name: 'http', port: 8080 }],
+          ports: [{ name: 'http', port: 8080, isPublic: true }],
           schedulerPort: 8080,
           scheduledJobPayloadPath: '/compute/payload',
           replicaList: [
@@ -385,7 +385,7 @@ const testData: Array<
           name: 'compute2',
           type: 'job',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 8080 }],
+          ports: [{ name: 'http', port: 8080, isPublic: true }],
           schedulerPort: 8080,
           scheduledJobPayloadPath: '/compute/payload',
           replicaList: [
