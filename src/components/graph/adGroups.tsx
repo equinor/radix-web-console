@@ -146,7 +146,10 @@ export function ADGroups({ onChange, adGroups, adUsers, isDisabled }: Props) {
         </Typography>
         {(!state.isFetching && unknownADGroups?.length > 0) ||
           (!spState.isFetching && unknownADUsers?.length > 0 && (
-            <UnknownADGroupsAlert unknownADGroups={unknownADGroups} />
+            <UnknownADGroupsAlert
+              unknownADGroups={unknownADGroups}
+              unknownADUsers={unknownADUsers}
+            />
           ))}
       </AsyncResource>
     </AsyncResource>
@@ -175,7 +178,16 @@ function MultiValueLabel(props: MultiValueGenericProps<AdGroupItem>) {
   if (props.data.type === 'User') icon = person;
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', paddingLeft: 4 }}>
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        paddingLeft: 4,
+        backgroundColor: props.data.deleted
+          ? 'var(--eds_interactive_danger__highlight)'
+          : undefined,
+      }}
+    >
       <Icon data={icon} size={16} />
       <components.MultiValueLabel {...props} />
     </div>

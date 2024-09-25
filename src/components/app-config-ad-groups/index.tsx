@@ -24,7 +24,7 @@ export const AppConfigAdGroups = ({
     <Typography className="label">{labeling}</Typography>
     <Typography className="label meta">
       User authentication is your application's responsibility; it is not
-      related to these groups
+      related to these Entra objects
     </Typography>
     <AuthenticatedTemplate>
       <ADGroups
