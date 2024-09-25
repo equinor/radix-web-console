@@ -1,7 +1,7 @@
-import { Icon, Table, Tooltip, Typography } from '@equinor/eds-core-react';
-import { info_circle, library_books } from '@equinor/eds-icons';
+import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
+import { library_books } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
-import { type FunctionComponent, useState } from 'react';
+import type { FunctionComponent } from 'react';
 import { externalUrls } from '../../externalUrls';
 import {
   type GetResourcesApiResponse,
@@ -9,7 +9,6 @@ import {
 } from '../../store/radix-api';
 import { formatDateTimeYear } from '../../utils/datetime';
 import AsyncResource from '../async-resource/async-resource';
-import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
 
@@ -30,7 +29,59 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
     { appName },
     { skip: !appName }
   );
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const formatCpuUsage = (value?: number): string => {
+    if (!value) {
+      return '-';
+    }
+    if (value >= 1) {
+      return parseFloat(value.toPrecision(3)).toString();
+    }
+
+    let millicores = value * 1000;
+    let formattedValue: string;
+    if (millicores > 0.009) {
+      formattedValue = parseFloat(millicores.toPrecision(3)).toString();
+      return `${formattedValue}m`;
+    }
+
+    const significantDigits = 1;
+
+    const exponent = Math.floor(Math.log10(value));
+    const factor = 10 ** (-exponent + (significantDigits - 1));
+    const roundedValue = Math.round(value * factor) / factor;
+    millicores = roundedValue * 1000;
+    formattedValue = millicores.toFixed(-Math.floor(Math.log10(millicores)));
+
+    formattedValue = parseFloat(formattedValue).toString();
+    return `${formattedValue}m`;
+  };
+
+  const formatMemoryUsage = (value?: number): string => {
+    if (!value) {
+      return '-';
+    }
+    const units = [
+      { unit: 'P', size: 1e15 },
+      { unit: 'T', size: 1e12 },
+      { unit: 'G', size: 1e9 },
+      { unit: 'M', size: 1e6 },
+      { unit: 'k', size: 1e3 },
+    ];
+
+    let unit = ''; // Default to bytes
+
+    // Determine the appropriate unit
+    for (const u of units) {
+      if (value >= u.size) {
+        value = value / u.size;
+        unit = u.unit;
+        break;
+      }
+    }
+    const formattedValue = parseFloat(value.toPrecision(3)).toString();
+    return formattedValue + unit;
+  };
+
   return (
     <div className="grid grid--gap-medium">
       <div className="grid grid--gap-medium grid--auto-columns">
@@ -60,108 +111,20 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
                 <Typography>
                   CPU{' '}
                   <strong>
-                    min {resources?.cpu?.min ?? '-'}, max{' '}
-                    {resources?.cpu?.max ?? '-'}, avg{' '}
-                    {resources?.cpu?.average ?? '-'}
+                    min {formatCpuUsage(resources?.cpu?.min)}, avg{' '}
+                    {formatCpuUsage(resources?.cpu?.avg)}, max{' '}
+                    {formatCpuUsage(resources?.cpu?.max)}
                   </strong>
                 </Typography>
                 <Typography>
                   Memory{' '}
                   <strong>
-                    min {resources?.memory?.min ?? '-'}, max{' '}
-                    {resources?.memory?.max ?? '-'}, avg{' '}
-                    {resources?.memory?.average ?? '-'}
+                    min {formatMemoryUsage(resources?.memory?.min)}, avg{' '}
+                    {formatMemoryUsage(resources?.memory?.avg)}, max{' '}
+                    {formatMemoryUsage(resources?.memory?.max)}
                   </strong>
                 </Typography>
               </div>
-              <Icon
-                style={{ cursor: 'pointer' }}
-                data={info_circle}
-                className={'icon-justify-end'}
-                onClick={() => setVisibleScrim(true)}
-              />
-              <ScrimPopup
-                className={'resources__scrim'}
-                title={'Used resources'}
-                open={visibleScrim}
-                isDismissable
-                onClose={() => setVisibleScrim(false)}
-              >
-                <div className={'resources__scrim-content'}>
-                  <Table className={'resources-content'}>
-                    <Table.Head>
-                      <Table.Row>
-                        <Table.Cell />
-                        <Table.Cell>Min</Table.Cell>
-                        <Table.Cell>Max</Table.Cell>
-                        <Table.Cell>Average</Table.Cell>
-                      </Table.Row>
-                    </Table.Head>
-                    <Table.Body>
-                      <Table.Row>
-                        <Table.Cell>
-                          CPU (millicores , rounded){' '}
-                          <Typography
-                            link
-                            href={externalUrls.kubernetesResourcesCpuUnits}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            <Icon data={library_books} />
-                          </Typography>
-                        </Table.Cell>
-                        <Table.Cell>{resources?.cpu?.min ?? '-'}</Table.Cell>
-                        <Table.Cell>{resources?.cpu?.max ?? '-'}</Table.Cell>
-                        <Table.Cell>
-                          {resources?.cpu?.average ?? '-'}
-                        </Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell>CPU (millicores, actual)</Table.Cell>
-                        <Table.Cell>
-                          {resources?.cpu?.minActual ?? '-'}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {resources?.cpu?.maxActual ?? '-'}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {resources?.cpu?.avgActual ?? '-'}
-                        </Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell>
-                          Memory (MB, rounded){' '}
-                          <Typography
-                            link
-                            href={externalUrls.kubernetesResourcesMemoryUnits}
-                            rel="noopener noreferrer"
-                            target="_blank"
-                          >
-                            <Icon data={library_books} />
-                          </Typography>
-                        </Table.Cell>
-                        <Table.Cell>{resources?.memory?.min ?? '-'}</Table.Cell>
-                        <Table.Cell>{resources?.memory?.max ?? '-'}</Table.Cell>
-                        <Table.Cell>
-                          {resources?.memory?.average ?? '-'}
-                        </Table.Cell>
-                      </Table.Row>
-                      <Table.Row>
-                        <Table.Cell>Memory (MB , actual)</Table.Cell>
-                        <Table.Cell>
-                          {resources?.memory?.minActual ?? '-'}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {resources?.memory?.maxActual ?? '-'}
-                        </Table.Cell>
-                        <Table.Cell>
-                          {resources?.memory?.avgActual ?? '-'}
-                        </Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  </Table>
-                </div>
-              </ScrimPopup>
             </div>
           </div>
         ) : (

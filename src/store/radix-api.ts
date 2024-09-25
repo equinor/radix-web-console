@@ -1058,7 +1058,6 @@ const injectedRtkApi = api.injectEndpoints({
           component: queryArg.component,
           duration: queryArg.duration,
           since: queryArg.since,
-          ignorezero: queryArg.ignorezero,
         },
       }),
     }),
@@ -2234,8 +2233,6 @@ export type GetResourcesApiArg = {
   duration?: string;
   /** End time-point of the period in the past, default is now. Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
   since?: string;
-  /** Ignore metrics with zero value if true, default is false */
-  ignorezero?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -3383,18 +3380,12 @@ export type RegenerateDeployKeyAndSecretData = {
   sharedSecret?: string;
 };
 export type UsedResource = {
-  /** Average resource used */
-  average?: string;
-  /** AvgActual actual precise resource used */
-  avgActual?: number;
-  /** Max resource used */
-  max?: string;
-  /** MaxActual actual precise resource used */
-  maxActual?: number;
-  /** Min resource used */
-  min?: string;
-  /** MinActual actual precise resource used */
-  minActual?: number;
+  /** Avg actual precise resource used */
+  avg?: number;
+  /** Max actual precise resource used */
+  max?: number;
+  /** Min actual precise resource used */
+  min?: number;
 };
 export type UsedResources = {
   cpu?: UsedResource;
