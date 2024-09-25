@@ -21,20 +21,20 @@ import {
 import AsyncResource from '../async-resource/async-resource';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
 
+export type HandleAdGroupsChangeCB = (value: MultiValue<AdGroupItem>) => void;
 export type AdGroupItem = EntraItem & {
   deleted?: boolean;
   type: 'Group' | 'User' | 'ServicePrincipal' | 'Application';
 };
 
-export interface GroupedOption {
+type GroupedOption = {
   readonly label: string;
   readonly options: readonly AdGroupItem[];
-}
+};
 
 type CallbackType = (
   options: OptionsOrGroups<AdGroupItem, GroupBase<AdGroupItem>>
 ) => void;
-export type HandleAdGroupsChangeCB = (value: MultiValue<AdGroupItem>) => void;
 
 interface Props {
   onChange: HandleAdGroupsChangeCB;
