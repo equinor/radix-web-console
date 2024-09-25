@@ -2537,9 +2537,9 @@ export type ApplicationRegistration = {
   /** radixconfig.yaml file name and path, starting from the GitHub repository root (without leading slash) */
   radixConfigFullName?: string;
   /** ReaderAdGroups the groups that should be able to read the application */
-  readerAdGroups?: string[];
+  readerAdGroups: string[];
   /** ReaderAdUsers the users/service-principals that should be able to read the application */
-  readerAdUsers?: string[];
+  readerAdUsers: string[];
   /** Repository the github repository */
   repository: string;
   /** SharedSecret the shared secret of the webhook */
