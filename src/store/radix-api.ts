@@ -2321,6 +2321,16 @@ export type AzureIdentity = {
 export type Identity = {
   azure?: AzureIdentity;
 };
+export type IngressPublic = {
+  /** List of allowed IP addresses or CIDRs. All traffic is allowed if list is empty. */
+  allow: string[];
+};
+export type Ingress = {
+  public?: IngressPublic;
+};
+export type Network = {
+  ingress?: Ingress;
+};
 export type Notifications = {
   /** Webhook is a URL for notification about internal events or changes. The URL should be of a Radix component or job-component, with not public port. */
   webhook?: string;
@@ -2413,10 +2423,12 @@ export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
 };
 export type Port = {
+  /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */
+  isPublic: boolean;
   /** Component port name. From radixconfig.yaml */
   name: string;
   /** Component port number. From radixconfig.yaml */
-  port?: number;
+  port: number;
 };
 export type Runtime = {
   /** CPU architecture */
@@ -2435,6 +2447,7 @@ export type Component = {
   image: string;
   /** Name the component */
   name: string;
+  network?: Network;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
   /** Ports defines the port number and protocol that a component is exposed for internally in environment */
