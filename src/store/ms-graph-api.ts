@@ -27,11 +27,11 @@ function parseGraphError(e): FetchBaseQueryError {
 
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
-    getAdGroup: build.query<GetAdGroupResponse, GetAdGroupArg>({
+    getAdGroup: build.query<EntraItem, GetAdGroupArg>({
       queryFn: async ({ id }, { getState }) => {
         try {
           ensureClient(getState() as RootState);
-          const group: AdGroup = await graphClient
+          const group: EntraItem = await graphClient
             .api(`/groups/${id}`)
             .select('displayName,id')
             .get();
@@ -42,7 +42,7 @@ const injectedRtkApi = api.injectEndpoints({
         }
       },
     }),
-    getAdGroups: build.query<GetAdGroupsResponse, GetAdGroupsArg>({
+    getAdGroups: build.query<GetEntraResponse, GetEntraArg>({
       queryFn: async ({ ids }, { getState }) => {
         try {
           if (ids.length > 15) {
@@ -61,7 +61,7 @@ const injectedRtkApi = api.injectEndpoints({
 
           ensureClient(getState() as RootState);
           const idFilter = ids.map((s) => `'${s}'`).join(',');
-          const response: SearchAdGroupsResponse = await graphClient
+          const response: SearchResponse = await graphClient
             .api(`/groups`)
             .select('displayName,id')
             .filter(`id in (${idFilter})`)
@@ -74,15 +74,116 @@ const injectedRtkApi = api.injectEndpoints({
       },
     }),
 
-    searchAdGroups: build.query<SearchAdGroupsResponse, SearchAdGroupsArgs>({
-      queryFn: async ({ groupName, limit }, { getState }) => {
+    getAdServicePrincipal: build.query<GetEntraResponse, GetEntraArg>({
+      queryFn: async ({ ids }, { getState }) => {
+        try {
+          if (ids.length > 15) {
+            // ref. https://learn.microsoft.com/en-us/graph/filter-query-parameter?tabs=javascript#operators-and-functions-supported-in-filter-expressions
+            return {
+              error: {
+                error: 'We can fetch maximum 15 items at a time',
+                status: 'CUSTOM_ERROR',
+              },
+            };
+          }
+
+          if (ids.length === 0) {
+            return { data: [] };
+          }
+
+          ensureClient(getState() as RootState);
+          const idFilter = ids.map((s) => `'${s}'`).join(',');
+          const response: SearchResponse = await graphClient
+            .api(`/servicePrincipals`)
+            .select('displayName,id')
+            .filter(`id in (${idFilter})`)
+            .get();
+
+          return { data: response.value };
+        } catch (e) {
+          return { error: parseGraphError(e) };
+        }
+      },
+    }),
+    getAdApplication: build.query<GetEntraResponse, GetEntraArg>({
+      queryFn: async ({ ids }, { getState }) => {
+        try {
+          if (ids.length > 15) {
+            // ref. https://learn.microsoft.com/en-us/graph/filter-query-parameter?tabs=javascript#operators-and-functions-supported-in-filter-expressions
+            return {
+              error: {
+                error: 'We can fetch maximum 15 items at a time',
+                status: 'CUSTOM_ERROR',
+              },
+            };
+          }
+
+          if (ids.length === 0) {
+            return { data: [] };
+          }
+
+          ensureClient(getState() as RootState);
+          const idFilter = ids.map((s) => `'${s}'`).join(',');
+          const response: SearchResponse = await graphClient
+            .api(`/applications`)
+            .select('displayName,id')
+            .filter(`id in (${idFilter})`)
+            .get();
+
+          return { data: response.value };
+        } catch (e) {
+          return { error: parseGraphError(e) };
+        }
+      },
+    }),
+
+    searchAdGroups: build.query<SearchResponse, SearchEntraArgs>({
+      queryFn: async ({ displayName, limit }, { getState }) => {
         try {
           ensureClient(getState() as RootState);
 
-          const groups: SearchAdGroupsResponse = await graphClient
+          const groups: SearchResponse = await graphClient
             .api('/groups')
             .select('displayName,id')
-            .filter(groupName ? `startswith(displayName,'${groupName}')` : '')
+            .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
+            .top(limit)
+            .get();
+
+          return { data: groups };
+        } catch (e) {
+          return { error: parseGraphError(e) };
+        }
+      },
+    }),
+
+    searchAdServicePrincipals: build.query<SearchResponse, SearchEntraArgs>({
+      queryFn: async ({ displayName, limit }, { getState }) => {
+        try {
+          ensureClient(getState() as RootState);
+
+          const groups: SearchResponse = await graphClient
+            .api('/servicePrincipals')
+            .select('displayName,id')
+            .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
+            .top(limit)
+            .get();
+
+          return { data: groups };
+        } catch (e) {
+          return { error: parseGraphError(e) };
+        }
+      },
+    }),
+
+    searchAdApplications: build.query<SearchResponse, SearchEntraArgs>({
+      queryFn: async ({ displayName, limit }, { getState }) => {
+        try {
+          ensureClient(getState() as RootState);
+
+          const groups: SearchResponse = await graphClient
+            .api('/applications')
+            .select('displayName,id')
+            .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
             .top(limit)
             .get();
 
@@ -99,28 +200,34 @@ export { injectedRtkApi as msGraphApi };
 export const {
   useGetAdGroupQuery,
   useGetAdGroupsQuery,
+  useGetAdApplicationQuery,
+  useGetAdServicePrincipalQuery,
   useSearchAdGroupsQuery,
+  useSearchAdServicePrincipalsQuery,
+  useSearchAdApplicationsQuery,
+  useLazySearchAdGroupsQuery,
+  useLazySearchAdServicePrincipalsQuery,
 } = injectedRtkApi;
 
 type GetAdGroupArg = {
   id: string;
 };
-type GetAdGroupResponse = AdGroup;
-export type AdGroup = {
+
+export type EntraItem = {
   displayName: string;
   id: string;
 };
-type GetAdGroupsArg = {
+type GetEntraArg = {
   ids: string[];
 };
-type GetAdGroupsResponse = AdGroup[];
+type GetEntraResponse = EntraItem[];
 
-type SearchAdGroupsArgs = {
-  groupName: string;
+type SearchEntraArgs = {
+  displayName: string;
   limit: number;
 };
-export type SearchAdGroupsResponse = {
+export type SearchResponse = {
   '@odata.context'?: string;
   '@odata.nextLink'?: string;
-  value: AdGroup[];
+  value: Array<EntraItem>;
 };
