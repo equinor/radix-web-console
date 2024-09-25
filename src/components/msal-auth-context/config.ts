@@ -2,7 +2,7 @@ import type { Configuration } from '@azure/msal-browser';
 import { configVariables } from '../../utils/config';
 
 export const msGraphConfig = {
-  scopes: ['User.Read', 'GroupMember.Read.All'],
+  scopes: ['User.Read', 'GroupMember.Read.All', 'Application.Read.All'],
 };
 
 export const serviceNowApiConfig = {
