@@ -68,8 +68,8 @@ export function PageConfiguration({ appName }: { appName: string }) {
         {registration?.name && (
           <>
             <Overview
-              adGroups={registration.adGroups}
-              adUsers={registration.adUsers}
+              adGroups={registration.adGroups ?? []}
+              adUsers={registration.adUsers ?? []}
               appName={appName}
             />
             <section className="grid grid--gap-medium">
