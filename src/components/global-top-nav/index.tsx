@@ -87,7 +87,10 @@ export const GlobalTopNav: FunctionComponent = () => {
             >
               Radix Platform (North Europe)
             </TabItemTemplate>
-            <TabItemTemplate href={externalUrls.radixPlatform2WebConsole} mark>
+            <TabItemTemplate
+              href={externalUrls.radixPlatform2WebConsole}
+              mark={radixClusterBase === clusterBases.radixPlatform2WebConsole}
+            >
               Radix Platform 2 (West Europe)
             </TabItemTemplate>
             <TabItemTemplate
