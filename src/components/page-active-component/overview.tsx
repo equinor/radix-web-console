@@ -17,6 +17,7 @@ import type {
   ExternalDns,
 } from '../../store/radix-api';
 import './style.css';
+import { IngressAllowList } from '../component/ingress-allow-list';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 import { DNSAliases } from './dns-aliases';
@@ -95,6 +96,11 @@ export const Overview = ({
             <DNSAliases
               urls={dnsExternalAliasUrls}
               title={'DNS external aliases'}
+            />
+          )}
+          {component.ports?.some(({ isPublic }) => isPublic) && (
+            <IngressAllowList
+              allowedIpRanges={component.network?.ingress?.public?.allow}
             />
           )}
           <ComponentPorts ports={component.ports} />

@@ -11,9 +11,9 @@ export const ComponentPorts: FunctionComponent<{ ports: Array<Port> }> = ({
     <div>
       <Typography>Open ports:</Typography>
       <List className="o-indent-list">
-        {ports.map(({ name, port }) => (
+        {ports.map(({ name, port, isPublic }) => (
           <List.Item key={port}>
-            {port} ({name})
+            {port} ({name}) {isPublic && '- public'}
           </List.Item>
         ))}
       </List>
