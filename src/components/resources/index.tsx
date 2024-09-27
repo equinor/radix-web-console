@@ -72,7 +72,7 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
     numStr = numStr.replace('0.', '').replace(/0+$/, '');
     // Replace the part of mcStr starting from firstNonZeroIndex - 1
     let zerosCount = firstNonZeroIndex - decimalIndex - 1;
-    // Adjust zerosCount in case of carry-over (when num becomes 1)
+    // Adjust zerosCount, when num is 1
     if (num === 1) {
       zerosCount -= 1;
     }
