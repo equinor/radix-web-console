@@ -25,7 +25,7 @@ const testData: Array<
           name: 'server',
           type: 'component',
           status: 'Reconciling',
-          ports: [{ name: 'http', port: 5005 }],
+          ports: [{ name: 'http', port: 5005, isPublic: true }],
           replicaList: [
             {
               name: 'server-68f6cc7984-sw9zv',
@@ -63,7 +63,7 @@ const testData: Array<
           name: 'auth-proxy',
           type: 'component',
           status: 'Reconciling',
-          ports: [{ name: 'http', port: 8000 }],
+          ports: [{ name: 'http', port: 8000, isPublic: true }],
           replicaList: [
             {
               name: 'auth-proxy-79db7d5668-nsz8c',
@@ -120,7 +120,7 @@ const testData: Array<
           name: 'auth-state',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'redis', port: 6379 }],
+          ports: [{ name: 'redis', port: 6379, isPublic: true }],
           replicaList: [
             {
               name: 'auth-state-6dbd7cfb4c-g7qsn',
@@ -148,7 +148,7 @@ const testData: Array<
           name: 'compute',
           type: 'job',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 8000 }],
+          ports: [{ name: 'http', port: 8000, isPublic: true }],
           schedulerPort: 8080,
           scheduledJobPayloadPath: '/compute/payload',
           replicaList: [
@@ -196,7 +196,7 @@ const testData: Array<
           name: 'server',
           type: 'component',
           status: 'Reconciling',
-          ports: [{ name: 'http', port: 5005 }],
+          ports: [{ name: 'http', port: 5005, isPublic: true }],
           replicaList: [
             {
               name: 'server-68f6cc7984-sw9zv',
@@ -234,7 +234,7 @@ const testData: Array<
           name: 'auth-proxy',
           type: 'component',
           status: 'Reconciling',
-          ports: [{ name: 'http', port: 8000 }],
+          ports: [{ name: 'http', port: 8000, isPublic: true }],
           replicaList: [
             {
               name: 'auth-proxy-79db7d5668-nsz8c',
@@ -291,7 +291,7 @@ const testData: Array<
           name: 'auth-state',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'redis', port: 6379 }],
+          ports: [{ name: 'redis', port: 6379, isPublic: true }],
           replicaList: [
             {
               name: 'auth-state-6dbd7cfb4c-g7qsn',

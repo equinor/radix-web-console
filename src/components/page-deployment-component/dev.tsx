@@ -15,7 +15,7 @@ const testData: Array<
   }
 > = [
   {
-    appName: 'Consistent',
+    appName: 'myapp',
     deploymentName: 'prod-gyslp-0raq4x2c',
     componentName: 'www',
     deployment: {
@@ -31,7 +31,10 @@ const testData: Array<
           name: 'www',
           type: 'component',
           status: 'Consistent',
-          ports: [{ name: 'http', port: 3003 }],
+          ports: [
+            { name: 'http', port: 3003, isPublic: true },
+            { name: 'metrics', port: 9000, isPublic: false },
+          ],
           replicaList: [
             {
               name: 'server-6ff44564cb-f45q9',
@@ -73,8 +76,8 @@ const testData: Array<
     },
   },
   {
-    appName: 'Stopped',
-    deploymentName: 'prod-gyslp-0raq4x2c',
+    appName: 'myapp',
+    deploymentName: 'prod-gyslp-0raq4x2d',
     componentName: 'www',
     deployment: {
       name: 'prod-gyslp-0raq4x2c',
@@ -89,7 +92,14 @@ const testData: Array<
           name: 'www',
           type: 'component',
           status: 'Stopped',
-          ports: [{ name: 'http', port: 3003 }],
+          ports: [{ name: 'http', port: 3003, isPublic: true }],
+          network: {
+            ingress: {
+              public: {
+                allow: ['100.1.1.1', '200.1.1.1/32'],
+              },
+            },
+          },
           replicaList: [
             {
               name: 'server-6ff44564cb-f45q9',
