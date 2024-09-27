@@ -67,7 +67,11 @@ export function PageConfiguration({ appName }: { appName: string }) {
       <AsyncResource asyncState={reqState}>
         {registration?.name && (
           <>
-            <Overview adGroups={registration.adGroups} appName={appName} />
+            <Overview
+              adGroups={registration.adGroups ?? []}
+              adUsers={registration.adUsers ?? []}
+              appName={appName}
+            />
             <section className="grid grid--gap-medium">
               <Typography variant="h4">GitHub</Typography>
               <Typography>

@@ -56,6 +56,8 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       radixConfigFullName: 'radixconfig.yaml',
       configurationItem: '',
       readerAdGroups: [],
+      adUsers: [],
+      readerAdUsers: [],
     });
 
   const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
@@ -68,7 +70,8 @@ export default function CreateApplicationForm({ onCreated }: Props) {
   const handleAdGroupsChange: HandleAdGroupsChangeCB = (value) => {
     setAppRegistration((current) => ({
       ...current,
-      adGroups: value.map((x) => x.id),
+      adGroups: value.filter((x) => x.type === 'Group').map((x) => x.id),
+      adUsers: value.filter((x) => x.type !== 'Group').map((x) => x.id),
     }));
   };
 
@@ -205,7 +208,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
         />
         <AppConfigAdGroups
           adGroups={applicationRegistration.adGroups}
-          handleAdGroupsChange={handleAdGroupsChange}
+          onChange={handleAdGroupsChange}
           labeling="Administrators"
         />
         {creationState.isError && (
