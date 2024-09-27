@@ -2354,6 +2354,16 @@ export type AzureIdentity = {
 export type Identity = {
   azure?: AzureIdentity;
 };
+export type IngressPublic = {
+  /** List of allowed IP addresses or CIDRs. All traffic is allowed if list is empty. */
+  allow: string[];
+};
+export type Ingress = {
+  public?: IngressPublic;
+};
+export type Network = {
+  ingress?: Ingress;
+};
 export type Notifications = {
   /** Webhook is a URL for notification about internal events or changes. The URL should be of a Radix component or job-component, with not public port. */
   webhook?: string;
@@ -2446,10 +2456,12 @@ export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
 };
 export type Port = {
+  /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */
+  isPublic: boolean;
   /** Component port name. From radixconfig.yaml */
   name: string;
   /** Component port number. From radixconfig.yaml */
-  port?: number;
+  port: number;
 };
 export type Runtime = {
   /** CPU architecture */
@@ -2468,6 +2480,7 @@ export type Component = {
   image: string;
   /** Name the component */
   name: string;
+  network?: Network;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
   /** Ports defines the port number and protocol that a component is exposed for internally in environment */
@@ -2553,6 +2566,8 @@ export type ApplicationSummary = {
 export type ApplicationRegistration = {
   /** AdGroups the groups that should be able to access the application */
   adGroups: string[];
+  /** AdUsers the users/service-principals that should be able to access the application */
+  adUsers: string[];
   /** ConfigBranch information */
   configBranch: string;
   /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
@@ -2568,7 +2583,9 @@ export type ApplicationRegistration = {
   /** radixconfig.yaml file name and path, starting from the GitHub repository root (without leading slash) */
   radixConfigFullName?: string;
   /** ReaderAdGroups the groups that should be able to read the application */
-  readerAdGroups?: string[];
+  readerAdGroups: string[];
+  /** ReaderAdUsers the users/service-principals that should be able to read the application */
+  readerAdUsers: string[];
   /** Repository the github repository */
   repository: string;
   /** SharedSecret the shared secret of the webhook */
@@ -2697,6 +2714,8 @@ export type Application = {
 export type ApplicationRegistrationPatch = {
   /** AdGroups the groups that should be able to access the application */
   adGroups?: string[];
+  /** AdUsers the users/service-principals that should be able to access the application */
+  adUsers?: string[];
   /** ConfigBranch information */
   configBranch?: string;
   /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
@@ -2709,6 +2728,8 @@ export type ApplicationRegistrationPatch = {
   radixConfigFullName?: string;
   /** ReaderAdGroups the groups that should be able to read the application */
   readerAdGroups?: string[];
+  /** ReaderAdUsers the users/service-principals that should be able to read the application */
+  readerAdUsers?: string[];
   /** Repository the github repository */
   repository?: string;
   /** WBS information */
@@ -3380,11 +3401,11 @@ export type RegenerateDeployKeyAndSecretData = {
   sharedSecret?: string;
 };
 export type UsedResource = {
-  /** Avg actual precise resource used */
+  /** Avg Average resource used */
   avg?: number;
-  /** Max actual precise resource used */
+  /** Max resource used */
   max?: number;
-  /** Min actual precise resource used */
+  /** Min resource used */
   min?: number;
 };
 export type UsedResources = {

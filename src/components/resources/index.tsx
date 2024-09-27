@@ -37,23 +37,48 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
       return parseFloat(value.toPrecision(3)).toString();
     }
 
-    let millicores = value * 1000;
+    const millicores = value * 1000.0;
     let formattedValue: string;
-    if (millicores > 0.009) {
+    if (millicores >= 1.0) {
       formattedValue = parseFloat(millicores.toPrecision(3)).toString();
       return `${formattedValue}m`;
     }
-
-    const significantDigits = 1;
-
-    const exponent = Math.floor(Math.log10(value));
-    const factor = 10 ** (-exponent + (significantDigits - 1));
-    const roundedValue = Math.round(value * factor) / factor;
-    millicores = roundedValue * 1000;
-    formattedValue = millicores.toFixed(-Math.floor(Math.log10(millicores)));
-
-    formattedValue = parseFloat(formattedValue).toString();
-    return `${formattedValue}m`;
+    let mcStr = millicores.toFixed(20); // Use 20 decimal places to ensure precision
+    mcStr = mcStr.replace(/0+$/, '');
+    // Find the position of the decimal point
+    const decimalIndex = mcStr.indexOf('.');
+    // Find the index of the first non-zero digit after the decimal point
+    let firstNonZeroIndex = -1;
+    for (let i = decimalIndex + 1; i < mcStr.length; i++) {
+      if (mcStr[i] !== '0') {
+        firstNonZeroIndex = i;
+        break;
+      }
+    }
+    if (firstNonZeroIndex === -1) {
+      return '0m';
+    }
+    // Create a new number where the digit at firstNonZeroIndex becomes the first decimal digit
+    const digits = `0.${mcStr.substring(firstNonZeroIndex)}`;
+    let num = parseFloat(digits);
+    // Round the number to one digit
+    num = Math.round(num * 10) / 10;
+    // Handle rounding that results in num >= 1
+    if (num >= 1) {
+      num = 1;
+    }
+    let numStr = num.toString();
+    // Remove the decimal point and any following zeros
+    numStr = numStr.replace('0.', '').replace(/0+$/, '');
+    // Replace the part of mcStr starting from firstNonZeroIndex - 1
+    let zerosCount = firstNonZeroIndex - decimalIndex - 1;
+    // Adjust zerosCount in case of carry-over (when num becomes 1)
+    if (num === 1) {
+      zerosCount -= 1;
+    }
+    const leadingDigitalZeros = '0'.repeat(Math.max(zerosCount, 0));
+    const output = `0.${leadingDigitalZeros}${numStr}`;
+    return `${output}m`;
   };
 
   const formatMemoryUsage = (value?: number): string => {
