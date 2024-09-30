@@ -78,7 +78,7 @@
     "miragejs": "^0.1.48",
     "mock-socket": "^9.3.1",
     "ts-node": "^10.9.2",
-    "typescript": "~5.4.5",
+    "typescript": "~5.5.4",
     "vite-plugin-eslint": "^1.8.1",
     "vitest": "^1.6.0"
   },
