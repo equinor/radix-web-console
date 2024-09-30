@@ -68,7 +68,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@vitejs/plugin-react-swc": "^3.6.0",
     "depcheck": "^1.4.7",
-    "fetch-mock": "^9.11.0",
+    "fetch-mock": "^10.1.0",
     "jsdom": "^24.1.0",
     "license-checker": "^25.0.1",
     "miragejs": "^0.1.48",
