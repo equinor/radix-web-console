@@ -84,7 +84,8 @@
 }
 
 @media (min-width: 50rem) {
-  .global-top-nav .mobile-menu, .mobile-icon-links {
+  .global-top-nav .mobile-menu,
+  .mobile-icon-links {
     display: none;
   }
   .global-top-nav {

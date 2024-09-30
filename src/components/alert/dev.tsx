@@ -56,10 +56,7 @@ const testData: Array<ComponentType> = [
   () => (
     <Alert type="danger">
       <Typography variant="h4">
-        That didn't work{' '}
-        <span role="img" aria-label="Sad">
-          😞
-        </span>
+        That didn't work <image aria-label="Sad">😞</image>
       </Typography>
       <div>
         The error message was <samp>error_msg</samp>
@@ -76,10 +73,7 @@ const testData: Array<ComponentType> = [
   () => (
     <Alert type="danger">
       <Typography variant="h4">
-        That didn't work{' '}
-        <span role="img" aria-label="Sad">
-          😞
-        </span>
+        That didn't work <image aria-label="Sad">😞</image>
       </Typography>
       <div>
         Error subscribing to resource <code>some resource</code> with parameter{' '}
@@ -125,10 +119,7 @@ const testData: Array<ComponentType> = [
   () => (
     <Alert type="danger">
       <Typography variant="h4">
-        That didn't work{' '}
-        <span role="img" aria-label="Sad">
-          😞
-        </span>
+        That didn't work <image aria-label="Sad">😞</image>
       </Typography>
       <div>
         Error subscribing to resource <code>some_resource</code> with parameters{' '}

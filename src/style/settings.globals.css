@@ -1,5 +1,5 @@
-@import url('https://cdn.eds.equinor.com/font/equinor-uprights-vf.css');
-@import url('https://cdn.eds.equinor.com/font/equinor-mono.css');
+@import url("https://cdn.eds.equinor.com/font/equinor-uprights-vf.css");
+@import url("https://cdn.eds.equinor.com/font/equinor-mono.css");
 
 :root {
   --base-font-family: Equinor, Arial, sans-serif;
@@ -28,14 +28,13 @@
   --shadow-level-1: 0 var(--space-2) var(--space-3) rgba(0, 0, 0, 0.05);
   --shadow-level-2: 0 var(--space-3) var(--space-4) rgba(0, 0, 0, 0.2);
 
-  --icon-opacity: .75;
+  --icon-opacity: 0.75;
 
   --layout-header-height: 2.5rem;
   --layout-max-width: 64rem;
-  --layout-max-width-single-col: calc(var(--layout-max-width) * 2/3);
+  --layout-max-width-single-col: calc(var(--layout-max-width) * 2 / 3);
   --layout-top-nav-height: 64px;
   --layout-app-navbar-width: 58px;
-
 }
 
 .cluster-type--playground:root {
