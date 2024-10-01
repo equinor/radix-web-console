@@ -68,7 +68,7 @@ export const ReplicaName: FunctionComponent<{
           displayName={'Job Manager'}
           replicaName={replica.name}
           description={
-            'Job Manager creates, gets, deletes singe jobs and batch jobs with Job API'
+            'Job Manager creates, gets, deletes single jobs and batch jobs with Job API'
           }
           replicaUrlFunc={replicaUrlFunc}
         />
