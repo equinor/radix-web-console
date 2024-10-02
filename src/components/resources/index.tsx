@@ -1,4 +1,10 @@
-import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  CircularProgress,
+  Icon,
+  Tooltip,
+  Typography,
+} from '@equinor/eds-core-react';
 import { library_books } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
@@ -25,10 +31,11 @@ export interface UsedResourcesProps {
 export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
   appName,
 }) => {
-  const { data: resources, ...state } = useGetResourcesQuery(
-    { appName },
-    { skip: !appName }
-  );
+  const {
+    data: resources,
+    refetch: reloadResources,
+    ...state
+  } = useGetResourcesQuery({ appName }, { skip: !appName });
   const formatCpuUsage = (value?: number): string => {
     if (!value) {
       return '-';
@@ -121,7 +128,11 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
           </Tooltip>
         </Typography>
       </div>
-      <AsyncResource asyncState={state}>
+      <AsyncResource
+        asyncState={state}
+        loadingContent={false}
+        errorContent={false}
+      >
         {resources ? (
           <div className="resources-section grid grid--gap-medium">
             <div className="grid grid--gap-small">
@@ -156,6 +167,14 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
           <Typography variant="caption">No data</Typography>
         )}
       </AsyncResource>
+      {state?.isLoading && (
+        <div>
+          <CircularProgress size={24} /> Loading used resources…
+        </div>
+      )}
+      {state?.isError && (
+        <Button onClick={() => reloadResources()}>Reload</Button>
+      )}
     </div>
   );
 };
