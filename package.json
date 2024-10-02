@@ -8,16 +8,17 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "start": "EXTEND_ESLINT=true vite",
-    "dev": "EXTEND_ESLINT=true vite",
-    "build": "EXTEND_ESLINT=true tsc --allowSyntheticDefaultImports --skipLibCheck & vite build",
-    "test": "EXTEND_ESLINT=true vitest watch",
-    "test:no-watch": "EXTEND_ESLINT=true vitest run",
-    "test:coverage": "EXTEND_ESLINT=true vitest --coverage",
+    "start": "vite",
+    "dev": "vite",
+    "build": "tsc --allowSyntheticDefaultImports --skipLibCheck & vite build",
+    "test": "vitest watch",
+    "test:no-watch": "vitest run",
+    "test:coverage": "vitest --coverage",
     "lint": "biome check",
     "lint-fix": "biome check --write",
     "lint-ts": "tsc --noEmit  --skipLibCheck",
-    "lint:watch": "eslint -w src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:watch": "watch --color -n 1 biome lint --colors=force",
+    "lint-ts:watch": "tsc --noEmit  --skipLibCheck --watch",
     "lint-strict": "tsc --noEmit  --skipLibCheck --strictNullChecks",
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
@@ -58,7 +59,7 @@
     "vite-plugin-checker": "^0.8.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
+    "@biomejs/biome": "^1.9.3",
     "@remix-run/web-fetch": "^4.4.2",
     "@rtk-query/codegen-openapi": "^1.2.0",
     "@testing-library/react": "^15.0.7",
