@@ -1046,6 +1046,21 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getResources: build.query<GetResourcesApiResponse, GetResourcesApiArg>({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/resources`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+        params: {
+          environment: queryArg.environment,
+          component: queryArg.component,
+          duration: queryArg.duration,
+          since: queryArg.since,
+        },
+      }),
+    }),
     restartApplication: build.mutation<
       RestartApplicationApiResponse,
       RestartApplicationApiArg
@@ -2200,6 +2215,24 @@ export type ResetManuallyScaledComponentsInApplicationApiResponse = unknown;
 export type ResetManuallyScaledComponentsInApplicationApiArg = {
   /** Name of application */
   appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type GetResourcesApiResponse =
+  /** status 200 Successful trigger pipeline */ UsedResources;
+export type GetResourcesApiArg = {
+  /** Name of the application */
+  appName: string;
+  /** Name of the application environment */
+  environment?: string;
+  /** Name of the application component in an environment */
+  component?: string;
+  /** Duration of the period, default is 30d (30 days). Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
+  duration?: string;
+  /** End time-point of the period in the past, default is now. Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
+  since?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -3367,6 +3400,24 @@ export type RegenerateDeployKeyAndSecretData = {
   /** SharedSecret of the shared secret */
   sharedSecret?: string;
 };
+export type UsedResource = {
+  /** Avg Average resource used */
+  avg?: number;
+  /** Max resource used */
+  max?: number;
+  /** Min resource used */
+  min?: number;
+};
+export type UsedResources = {
+  cpu?: UsedResource;
+  /** From timestamp */
+  from: string;
+  memory?: UsedResource;
+  /** To timestamp */
+  to: string;
+  /** Warning messages */
+  warnings?: string[];
+};
 export const {
   useShowApplicationsQuery,
   useRegisterApplicationMutation,
@@ -3452,6 +3503,7 @@ export const {
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
   useResetManuallyScaledComponentsInApplicationMutation,
+  useGetResourcesQuery,
   useRestartApplicationMutation,
   useStartApplicationMutation,
   useStopApplicationMutation,
