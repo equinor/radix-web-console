@@ -1,10 +1,10 @@
-import type { ResponseHandler } from '@reduxjs/toolkit/dist/query/fetchBaseQuery';
+
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store';
 import { configVariables } from '../../utils/config';
 
 /** Override for text/plain response handler */
-const responseHandler: ResponseHandler = (response) => {
+const responseHandler = (response: Response) => {
   const contentType = response.headers.get('content-type');
   return !contentType || contentType.includes('text/plain')
     ? response.text()
