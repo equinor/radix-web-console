@@ -2,5 +2,5 @@
   display: grid;
   grid-template-columns: auto 1fr;
   gap: var(--eds_spacing_medium) var(--eds_spacing_small);
-  align-self: end
+  align-self: end;
 }

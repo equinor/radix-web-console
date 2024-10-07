@@ -12,7 +12,7 @@
 }
 
 /* Children: role=region */
-.accordion > div > div[role=region] {
+.accordion > div > div[role="region"] {
   min-height: unset;
 }
 

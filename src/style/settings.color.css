@@ -1,5 +1,4 @@
 :root {
-
   /* The magic numbers */
 
   --h-primary-1: calc(206 + var(--h-palette-rotation));
@@ -100,7 +99,7 @@
 
   --color-text: var(--color-foreground);
 
-  --color-outline: hsla(var(--hsl-dark), .125);
+  --color-outline: hsla(var(--hsl-dark), 0.125);
 
   /* --- Basic notifications ------------------------------------------------ */
 
@@ -136,33 +135,32 @@
   --color-interactive-text-focus: var(--color-primary-4);
 
   --color-interactive-disabled: var(--color-mood);
-  --color-interactive-disabled-text: hsla(var(--hsl-dark), .5);
+  --color-interactive-disabled-text: hsla(var(--hsl-dark), 0.5);
 
-  --color-severity-critical: #B30D2F;
-  --color-severity-critical-light: #FFC1C1;
-  --color-severity-high: #DA0538;
-  --color-severity-high-light: #FFEFEF;
-  --color-severity-medium: #894E00;
-  --color-severity-medium-light: #FFF1E7;
-  --color-severity-low: #076DA7;
-  --color-severity-low-light: #D5EAF4;
+  --color-severity-critical: #b30d2f;
+  --color-severity-critical-light: #ffc1c1;
+  --color-severity-high: #da0538;
+  --color-severity-high-light: #ffefef;
+  --color-severity-medium: #894e00;
+  --color-severity-medium-light: #fff1e7;
+  --color-severity-low: #076da7;
+  --color-severity-low-light: #d5eaf4;
   --color-severity-unknown: #d68100;
   --color-severity-unknown-light: #ffe7cc;
   --color-severity-none: #565656;
-  --color-severity-none-light: #DCDCDC;
+  --color-severity-none-light: #dcdcdc;
 }
 
 .cluster-type--playground:root {
-  --h-palette-rotation: -30;  /* Rotate palette hue by -30 deg */
+  --h-palette-rotation: -30; /* Rotate palette hue by -30 deg */
 }
 
 .cluster-type--development:root {
-  --h-palette-rotation: 270;  /* Rotate palette hue by 270 deg */
+  --h-palette-rotation: 270; /* Rotate palette hue by 270 deg */
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-
     /* Reduce saturation, but non-linearly to avoid too much contrast */
 
     /* --s-1: calc(0% - 0%); */
@@ -185,4 +183,3 @@
     --l-9: calc(100% - 89%);
   }
 }
-

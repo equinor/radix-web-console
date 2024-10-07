@@ -1,14 +1,14 @@
-.code>.code__toolbar {
+.code > .code__toolbar {
   display: flex;
   justify-content: flex-end;
   margin-bottom: var(--eds_spacing_x_small);
 }
-.code>.code__toolbar button:active {
+.code > .code__toolbar button:active {
   transform: scale(95%);
   filter: invert(5%);
 }
 
-.code>.code__card {
+.code > .code__card {
   font-family: var(--monospace-font-family);
   font-size: 14px;
   color: #ddd;
@@ -21,11 +21,11 @@
   padding: var(--eds_spacing_small) var(--eds_spacing_medium_small);
   overflow-wrap: anywhere;
 }
-.code>.code__card.resizable {
+.code > .code__card.resizable {
   resize: both;
 }
-.code>.code__card.resizable[style*="height"],
-.code>.code__card.resizable[style*="width"] {
+.code > .code__card.resizable[style*="height"],
+.code > .code__card.resizable[style*="width"] {
   max-height: unset;
   min-width: unset;
 }

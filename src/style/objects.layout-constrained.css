@@ -5,6 +5,6 @@
   grid-gap: var(--eds_spacing_x_large);
   grid-template-columns: repeat(2, 1fr);
 }
-.o-layout-constrained>*{
+.o-layout-constrained > * {
   grid-column: span 2;
 }

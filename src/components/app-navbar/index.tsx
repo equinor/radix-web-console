@@ -92,7 +92,7 @@ const NavbarExpanded = ({ appName, links }: NavbarProps) => {
   };
 
   return (
-    <nav className="app-navbar" role="navigation" aria-label="Main navigation">
+    <nav className="app-navbar" aria-label="Main navigation">
       <span className="grid app-navbar__splash">
         <NavLink to={getAppUrl(appName)} className="app-navbar__splash--icon">
           <AppBadge appName={appName} size={96} />
@@ -143,11 +143,7 @@ const NavbarExpanded = ({ appName, links }: NavbarProps) => {
 };
 
 const NavbarMinimized = ({ appName, links }: NavbarProps) => (
-  <nav
-    className="app-navbar collapsed"
-    role="navigation"
-    aria-label="Main navigation"
-  >
+  <nav className="app-navbar collapsed" aria-label="Main navigation">
     <Tooltip title={appName} placement="right" enterDelay={0}>
       <NavLink to={getAppUrl(appName)}>
         <Button variant="ghost_icon" color="secondary">

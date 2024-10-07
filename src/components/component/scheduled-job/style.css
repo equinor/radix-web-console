@@ -40,10 +40,9 @@
   justify-self: right;
 }
 
-.job__context-menu > div[role=menu] {
+.job__context-menu > div[role="menu"] {
   padding: 0px;
 }
-
 
 .status-badge {
   min-height: 22px;

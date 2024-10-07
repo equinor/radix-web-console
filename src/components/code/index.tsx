@@ -18,7 +18,7 @@ export type CodeProps = {
   autoscroll?: boolean;
   copy?: boolean;
   download?: boolean;
-  downloadCb?: () => void;
+  downloadCb?: () => unknown;
   filename?: string;
   resizable?: boolean;
 };

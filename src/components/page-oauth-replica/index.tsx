@@ -13,7 +13,7 @@ import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { downloadLazyLogCb } from '../code/log-helper';
+import { downloadLog } from '../code/log-helper';
 import { Replica } from '../replica';
 
 interface Props {
@@ -75,18 +75,20 @@ export function PageOAuthAuxiliaryReplica({
           <Replica
             logState={pollLogsState}
             replica={replica}
-            downloadCb={downloadLazyLogCb(
-              `${replica.name}.txt`,
-              getLog,
-              {
-                appName,
-                envName,
-                componentName,
-                podName: replicaName,
-                file: 'true',
-              },
-              false
-            )}
+            downloadCb={() =>
+              downloadLog(`${replica.name}.txt`, () =>
+                getLog(
+                  {
+                    appName,
+                    envName,
+                    componentName,
+                    podName: replicaName,
+                    file: 'true',
+                  },
+                  false
+                ).unwrap()
+              )
+            }
             title={
               <>
                 <Typography>OAuth2 Service</Typography>
