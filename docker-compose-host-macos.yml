@@ -68,7 +68,7 @@ services:
       - "8080:8080"
 
   auth:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.6.0
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.1
     container_name: radix-auth_container
     read_only: true
     environment:
