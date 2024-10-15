@@ -28,7 +28,7 @@
 .app-list-item--details-favourite {
   height: 24px;
 }
-.app-list-item--details-favourite>button {
+.app-list-item--details-favourite > button {
   overflow: hidden;
   height: unset;
   width: unset;
@@ -47,9 +47,9 @@
 .app-list-item--placeholder:hover {
   box-shadow: none;
 }
-.app-list-item--placeholder .app-list-item--area-icon>*,
-.app-list-item--placeholder .app-list-item--area-details>*,
-.app-list-item--placeholder .app-list-item--details-favourite>* {
+.app-list-item--placeholder .app-list-item--area-icon > *,
+.app-list-item--placeholder .app-list-item--area-details > *,
+.app-list-item--placeholder .app-list-item--details-favourite > * {
   display: none;
 }
 .app-list-item--placeholder .app-list-item--area-icon {

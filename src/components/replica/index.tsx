@@ -164,7 +164,7 @@ const Overview: FunctionComponent<
 const ReplicaLog: FunctionComponent<{
   isCollapsibleLog: boolean;
   isLogExpanded: boolean;
-  downloadCb: () => void;
+  downloadCb: () => unknown;
   log?: string;
   logState?: FetchQueryResult<string>;
 }> = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState }) => (
@@ -202,8 +202,8 @@ export const Replica: FunctionComponent<
     getLog?: () => Promise<string>;
     isCollapsibleOverview?: boolean;
     isCollapsibleLog?: boolean;
-    downloadCb?: () => void;
-    downloadHistoryCb?: () => void;
+    downloadCb?: () => unknown;
+    downloadHistoryCb?: () => unknown;
     isLogExpanded?: boolean;
     getHistoryLog?: () => Promise<unknown>;
   } & ReplicaElements

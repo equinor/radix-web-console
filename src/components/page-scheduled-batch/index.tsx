@@ -15,7 +15,7 @@ import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { Code } from '../code';
-import { downloadLazyLogCb } from '../code/log-helper';
+import { downloadLog } from '../code/log-helper';
 import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
 import { Replica } from '../replica';
 import { ProgressStatusBadge } from '../status-badges';
@@ -145,18 +145,20 @@ export function PageScheduledBatch({
           <Replica
             logState={pollLogsState}
             replica={replica}
-            downloadCb={downloadLazyLogCb(
-              `${replica.name}.txt`,
-              getLog,
-              {
-                appName,
-                envName,
-                jobComponentName,
-                scheduledJobName: scheduledBatchName,
-                file: 'true',
-              },
-              false
-            )}
+            downloadCb={() =>
+              downloadLog(`${replica.name}.txt`, () =>
+                getLog(
+                  {
+                    appName,
+                    envName,
+                    jobComponentName,
+                    scheduledJobName: scheduledBatchName,
+                    file: 'true',
+                  },
+                  false
+                ).unwrap()
+              )
+            }
             title={
               <Typography>
                 Batch{' '}

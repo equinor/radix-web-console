@@ -15,7 +15,7 @@
 }
 
 .o-table > tbody > tr:nth-child(2n) > td {
-  background-color: hsla(var(--hsl-dark), .025);
+  background-color: hsla(var(--hsl-dark), 0.025);
 }
 
 .o-table > tbody > tr > td > * {

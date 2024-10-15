@@ -17,7 +17,7 @@ import {
 import { getFetchErrorCode } from '../../store/utils';
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
-import { downloadLazyLogCb } from '../code/log-helper';
+import { downloadLog } from '../code/log-helper';
 
 import './style.css';
 
@@ -170,12 +170,14 @@ export function JobStepLogs({
                   autoscroll
                   resizable
                   download
-                  downloadCb={downloadLazyLogCb(
-                    `${jobName}_${stepName}.txt`,
-                    getLog,
-                    { appName, jobName, stepName, file: 'true' },
-                    false
-                  )}
+                  downloadCb={() =>
+                    downloadLog(`${jobName}_${stepName}.txt`, () =>
+                      getLog(
+                        { appName, jobName, stepName, file: 'true' },
+                        false
+                      ).unwrap()
+                    )
+                  }
                 >
                   {liveLog}
                 </Code>

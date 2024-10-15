@@ -1,6 +1,6 @@
 .o-heading-page {
   font-family: var(--heading-font-family);
-  font-feature-settings: 'ss01';
+  font-feature-settings: "ss01";
   font-size: 1.5rem;
   font-weight: bold;
   display: inline-block;
@@ -19,4 +19,3 @@
 .action--justify-end {
   justify-self: end;
 }
-

@@ -4,7 +4,7 @@
   grid-auto-flow: column;
   align-items: center;
 }
-.o-indent-list.secrets{
+.o-indent-list.secrets {
   width: fit-content;
 }
 .o-indent-list.secrets li {

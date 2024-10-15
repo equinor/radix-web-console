@@ -27,10 +27,7 @@ import {
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 import AsyncResource from '../async-resource/async-resource';
-import {
-  type LazyQueryTriggerPlain,
-  downloadLazyLogCb,
-} from '../code/log-helper';
+import { downloadLog } from '../code/log-helper';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
@@ -48,7 +45,7 @@ interface ComponentReplicaLogAccordionProps extends ComponentNameProps {
 function LogDownloadButton(props: {
   title?: string;
   disabled?: boolean;
-  onClick: () => void;
+  onClick: () => unknown;
 }) {
   return (
     <Button variant="ghost_icon" {...props}>
@@ -208,18 +205,20 @@ function ReplicaLogTableRow({
       <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
           title="Download Replica log"
-          onClick={downloadLazyLogCb(
-            `${appName}_${envName}_${componentName}_${name}.txt`,
-            getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
-            {
-              appName,
-              envName,
-              componentName,
-              replicaName: name,
-              start: created.toISOString(),
-              end: addMinutes(ended, 10).toISOString(),
-            }
-          )}
+          onClick={() =>
+            downloadLog(
+              `${appName}_${envName}_${componentName}_${name}.txt`,
+              () =>
+                getLog({
+                  appName,
+                  envName,
+                  componentName,
+                  replicaName: name,
+                  start: created.toISOString(),
+                  end: addMinutes(ended, 10).toISOString(),
+                }).unwrap() as Promise<string>
+            )
+          }
           disabled={isFetching}
         />
       </Table.Cell>
@@ -270,19 +269,21 @@ function ReplicaContainerTableRow({
       <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
           title="Download Container log"
-          onClick={downloadLazyLogCb(
-            `${appName}_${envName}_${componentName}_${replicaName}_${id}.txt`,
-            getLog as LazyQueryTriggerPlain<Parameters<typeof getLog>[0]>,
-            {
-              appName,
-              envName,
-              componentName,
-              replicaName,
-              containerId: id,
-              start: created.toISOString(),
-              end: addMinutes(ended, 10).toISOString(),
-            }
-          )}
+          onClick={() =>
+            downloadLog(
+              `${appName}_${envName}_${componentName}_${replicaName}_${id}.txt`,
+              () =>
+                getLog({
+                  appName,
+                  envName,
+                  componentName,
+                  replicaName,
+                  containerId: id,
+                  start: created.toISOString(),
+                  end: addMinutes(ended, 10).toISOString(),
+                }).unwrap() as Promise<string>
+            )
+          }
           disabled={isFetching}
         />
       </Table.Cell>

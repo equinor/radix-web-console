@@ -29,7 +29,7 @@
 
 @media (prefers-color-scheme: dark) {
   .o-body-text img {
-    filter: invert(.1);
+    filter: invert(0.1);
     transition: filter var(--duration-quick);
   }
 

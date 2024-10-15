@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'react';
 import { logApi } from '../../store/log-api';
 import { type ReplicaSummary, radixApi } from '../../store/radix-api';
 import type { FetchQueryResult } from '../../store/types';
-import { downloadLazyLogCb, downloadLazyLogPromise } from '../code/log-helper';
+import { downloadLog } from '../code/log-helper';
 import { Replica } from '../replica';
 
 import './style.css';
@@ -43,19 +43,21 @@ export const JobReplica: FunctionComponent<{
             <Replica
               replica={replica}
               logState={logState}
-              downloadCb={downloadLazyLogCb(
-                `${replica.name}.txt`,
-                getLog,
-                {
-                  appName,
-                  envName,
-                  jobComponentName,
-                  scheduledJobName,
-                  replicaName: replica.name,
-                  file: 'true',
-                },
-                false
-              )}
+              downloadCb={() =>
+                downloadLog(`${replica.name}.txt`, () =>
+                  getLog(
+                    {
+                      appName,
+                      envName,
+                      jobComponentName,
+                      scheduledJobName,
+                      replicaName: replica.name,
+                      file: 'true',
+                    },
+                    false
+                  ).unwrap()
+                )
+              }
               getHistoryLog={async () => {
                 return await getHistoryLog({
                   appName: appName,
@@ -67,7 +69,7 @@ export const JobReplica: FunctionComponent<{
                 }).unwrap();
               }}
               downloadHistoryCb={() =>
-                downloadLazyLogPromise(
+                downloadLog(
                   `${replica.name}.txt`,
                   () =>
                     getHistoryLog({
@@ -77,7 +79,7 @@ export const JobReplica: FunctionComponent<{
                       jobName: scheduledJobName,
                       replicaName: replica.name,
                       file: true,
-                    }).unwrap() as unknown as Promise<string>
+                    }).unwrap() as Promise<string>
                 )
               }
             />

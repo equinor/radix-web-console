@@ -8,13 +8,15 @@
 }
 
 @keyframes home-icon-animation {
-  0%, 87% {
+  0%,
+  87% {
     transform: rotate(0deg);
   }
   92% {
     transform: rotate(-15deg);
   }
-  97%, 100% {
+  97%,
+  100% {
     transform: rotate(360deg);
   }
 }

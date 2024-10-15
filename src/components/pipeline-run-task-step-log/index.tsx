@@ -6,7 +6,7 @@ import {
 } from '../../store/radix-api';
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
-import { downloadLazyLogCb } from '../code/log-helper';
+import { downloadLog } from '../code/log-helper';
 
 interface Props {
   appName: string;
@@ -50,19 +50,21 @@ export function PipelineRunTaskStepLog({
                 resizable
                 autoscroll
                 download
-                downloadCb={downloadLazyLogCb(
-                  `${stepName}.txt`,
-                  getLog,
-                  {
-                    appName,
-                    jobName,
-                    pipelineRunName,
-                    taskName,
-                    stepName,
-                    file: 'true',
-                  },
-                  false
-                )}
+                downloadCb={() =>
+                  downloadLog(`${stepName}.txt`, () =>
+                    getLog(
+                      {
+                        appName,
+                        jobName,
+                        pipelineRunName,
+                        taskName,
+                        stepName,
+                        file: 'true',
+                      },
+                      false
+                    ).unwrap()
+                  )
+                }
               >
                 {log}
               </Code>
