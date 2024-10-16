@@ -12,12 +12,6 @@ export const AvailabilityCharts = () => {
   const { data: uptime, isLoading, isError } = useGetUptimeQuery();
   const [visibleScrim, setVisibleScrim] = useState(false);
 
-  const chartData =
-    uptime?.map(([timestamp, available]) => [
-      new Date(timestamp * 1000),
-      Number(available),
-    ]) ?? [];
-
   if (isError) {
     return <span>Failed to load chart</span>;
   }
@@ -38,7 +32,11 @@ export const AvailabilityCharts = () => {
     );
   }
 
-  // calculate availability percentage
+  const data = uptime.map(([timestamp, available]) => [
+    new Date(timestamp * 1000),
+    Number(available),
+  ]);
+
   const availability =
     (uptime.filter(([_, x]) => x === '1').length / uptime.length) * 100;
 
@@ -79,7 +77,7 @@ export const AvailabilityCharts = () => {
               <Chart
                 chartType="AreaChart"
                 className="chart-area"
-                data={[['Date', 'Available'], ...chartData]}
+                data={[['Date', 'Available'], ...data]}
                 options={DataChartItemOptions}
               />
             </>
