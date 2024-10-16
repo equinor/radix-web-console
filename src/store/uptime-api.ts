@@ -3,7 +3,7 @@ import { configVariables } from '../utils/config';
 
 const injectedRtkApi = uptimeApi.injectEndpoints({
   endpoints: (build) => ({
-    getUptime: build.query<Result, void >(
+    getUptime: build.query<Result, unknown | void >(
       {
         query: () => "/query/" + configVariables.RADIX_CLUSTER_BASE,
       }
