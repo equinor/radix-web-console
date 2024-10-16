@@ -9,6 +9,7 @@ import {
   radixStoreApi,
   scanStoreApi,
   serviceNowStoreApi,
+  uptimeApi,
 } from '../store/configs';
 import authReducer from '../store/msal/reducer';
 
@@ -21,6 +22,7 @@ const store = configureStore({
     [serviceNowStoreApi.reducerPath]: serviceNowStoreApi.reducer,
     [msGraphStoreApi.reducerPath]: msGraphStoreApi.reducer,
     [dynatraceStoreApi.reducerPath]: dynatraceStoreApi.reducer,
+    [uptimeApi.reducerPath]: uptimeApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -32,7 +34,8 @@ const store = configureStore({
       scanStoreApi.middleware,
       serviceNowStoreApi.middleware,
       msGraphStoreApi.middleware,
-      dynatraceStoreApi.middleware
+      dynatraceStoreApi.middleware,
+      uptimeApi.middleware,
     ),
   devTools: true,
 });

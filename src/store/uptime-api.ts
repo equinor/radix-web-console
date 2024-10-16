@@ -1,14 +1,11 @@
-import { dynatraceStoreApi as api } from './configs/index';
+import {  uptimeApi } from './configs/index';
 import { configVariables } from '../utils/config';
 
-
-const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
-
-const injectedRtkApi = api.injectEndpoints({
+const injectedRtkApi = uptimeApi.injectEndpoints({
   endpoints: (build) => ({
-    getUptime: build.query<Result, undefined>(
+    getUptime: build.query<Result, void >(
       {
-        query: () => "/uptime/query/" + radixZoneDNS,
+        query: () => "/query/" + configVariables.RADIX_CLUSTER_BASE,
       }
     ),
   }),

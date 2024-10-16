@@ -65,3 +65,9 @@ export const dynatraceStoreApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: '/uptime-api' }),
   endpoints: () => ({}),
 });
+
+export const uptimeApi = createApi({
+  reducerPath: 'uptimeAPi',
+  baseQuery: fetchBaseQuery({ baseUrl: '/uptime' }),
+  endpoints: () => ({}),
+});
