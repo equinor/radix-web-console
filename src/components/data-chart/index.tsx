@@ -9,12 +9,7 @@ import { externalUrls } from '../../externalUrls';
 import { useGetUptimeQuery } from '../../store/uptime-api';
 
 export const AvailabilityCharts = () => {
-  const {
-    data: uptime,
-    isLoading,
-    isError,
-  } = useGetUptimeQuery(null, { pollingInterval: 0 });
-
+  const { data: uptime, isLoading, isError } = useGetUptimeQuery();
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   const chartData =
