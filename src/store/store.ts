@@ -3,12 +3,12 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 
 import {
   costStoreApi,
-  dynatraceStoreApi,
   logStoreApi,
   msGraphStoreApi,
   radixStoreApi,
   scanStoreApi,
   serviceNowStoreApi,
+  uptimeApi,
 } from '../store/configs';
 import authReducer from '../store/msal/reducer';
 
@@ -20,7 +20,7 @@ const store = configureStore({
     [scanStoreApi.reducerPath]: scanStoreApi.reducer,
     [serviceNowStoreApi.reducerPath]: serviceNowStoreApi.reducer,
     [msGraphStoreApi.reducerPath]: msGraphStoreApi.reducer,
-    [dynatraceStoreApi.reducerPath]: dynatraceStoreApi.reducer,
+    [uptimeApi.reducerPath]: uptimeApi.reducer,
     auth: authReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -32,7 +32,7 @@ const store = configureStore({
       scanStoreApi.middleware,
       serviceNowStoreApi.middleware,
       msGraphStoreApi.middleware,
-      dynatraceStoreApi.middleware
+      uptimeApi.middleware,
     ),
   devTools: true,
 });

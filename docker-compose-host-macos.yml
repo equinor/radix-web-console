@@ -40,7 +40,6 @@ services:
       web:
         condition: service_healthy
     environment:
-      - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}
       - NO_PROXY=localhost,0.0.0.0
       - no_proxy=localhost,0.0.0.0
       - HTTP_PROXY=

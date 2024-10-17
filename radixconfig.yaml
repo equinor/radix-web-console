@@ -42,7 +42,6 @@ spec:
         CLUSTER_OIDC_ISSUER_URL: ""
         CMDB_CI_URL: "https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_spkg&sys_id={CIID}"
       secrets:
-        - DYNATRACE_API_TOKEN # Token to use for display of availability metrics
         - OAUTH2_CLIENT_ID # Azure Application ID
       environmentConfig:
         - environment: qa
