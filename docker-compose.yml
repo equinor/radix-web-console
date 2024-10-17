@@ -29,8 +29,6 @@ services:
     image: nginxinc/nginx-unprivileged:1.26-alpine
     container_name: radix-proxy_container
     read_only: true
-    environment:
-      - DYNATRACE_API_TOKEN=${DYNATRACE_API_TOKEN}
     volumes:
       - type: bind
         source: ./proxy/server.dev.conf
