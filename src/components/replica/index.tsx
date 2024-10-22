@@ -59,8 +59,8 @@ const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
   started,
   ended,
 }) => {
-  const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
+  const [now, setNow] = useState(new Date());
 
   return (
     <>
@@ -131,17 +131,13 @@ const Overview: FunctionComponent<
             <>
               <ReplicaDuration
                 created={new Date(replica.created)}
-                ended={
-                  replica.endTime
-                    ? new Date(replica.endTime)
-                    : new Date(Date.now())
-                }
+                ended={replica.endTime ? new Date(replica.endTime) : undefined}
               />
               {replica.containerStarted && (
                 <ContainerDuration
                   started={new Date(replica.containerStarted)}
                   ended={
-                    replica.endTime ? new Date(replica.endTime) : new Date()
+                    replica.endTime ? new Date(replica.endTime) : undefined
                   }
                 />
               )}
