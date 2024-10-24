@@ -11,11 +11,15 @@ import './style.css';
 
 export interface EventsListProps {
   events: Readonly<Array<Event>>;
+  isExpanded: boolean;
 }
 
-export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
+export const EventsList: FunctionComponent<EventsListProps> = ({
+  events,
+  isExpanded,
+}) => (
   <Accordion className="accordion elevated" chevronPosition="right">
-    <Accordion.Item isExpanded>
+    <Accordion.Item isExpanded={isExpanded}>
       <Accordion.Header>
         <Accordion.HeaderTitle>
           <Typography variant="h4">Events</Typography>
@@ -56,4 +60,5 @@ export const EventsList: FunctionComponent<EventsListProps> = ({ events }) => (
 EventsList.propTypes = {
   events: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Event>)
     .isRequired,
+  isExpanded: PropTypes.bool.isRequired,
 };

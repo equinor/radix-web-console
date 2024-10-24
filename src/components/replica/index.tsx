@@ -22,7 +22,7 @@ interface ReplicaElements {
   state?: React.JSX.Element;
 }
 
-const ReplicaDuration: FunctionComponent<{ created: Date; ended?: Date }> = ({
+const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
   created,
   ended,
 }) => {
@@ -55,7 +55,7 @@ const ReplicaDuration: FunctionComponent<{ created: Date; ended?: Date }> = ({
   );
 };
 
-const ContainerDuration: FunctionComponent<{ started: Date; ended?: Date }> = ({
+const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
   started,
   ended,
 }) => {
