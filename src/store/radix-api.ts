@@ -2998,6 +2998,16 @@ export type AzureKeyVaultSecretVersion = {
   /** Version of the secret */
   version: string;
 };
+export type IngressRule = {
+  /** The host name of the ingress */
+  host?: string;
+  /** The path of the ingress */
+  path?: string;
+  /** The port of the ingress */
+  port?: number;
+  /** The service name of the ingress */
+  service?: string;
+};
 export type PodState = {
   /** Specifies whether the first container has passed its readiness probe. */
   ready?: boolean;
@@ -3007,6 +3017,8 @@ export type PodState = {
   started?: boolean | null;
 };
 export type ObjectState = {
+  /** Details about the ingress rules for an ingress related event */
+  ingressRules?: IngressRule[];
   pod?: PodState;
 };
 export type Event = {
