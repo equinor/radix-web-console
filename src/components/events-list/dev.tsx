@@ -82,8 +82,10 @@ const testData: Array<EventsListProps> = [
         message: "'Created container web'",
       },
     ],
+    isExpanded: false,
   },
   {
+    isExpanded: false,
     events: [],
   },
 ];
