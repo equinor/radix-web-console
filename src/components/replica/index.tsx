@@ -55,7 +55,7 @@ const ReplicaDuration: FunctionComponent<{ created: Date; ended: Date }> = ({
   );
 };
 
-const ContainerDuration: FunctionComponent<{ started: Date; ended: Date }> = ({
+const ContainerDuration: FunctionComponent<{ started: Date; ended?: Date }> = ({
   started,
   ended,
 }) => {
