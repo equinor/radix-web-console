@@ -60,8 +60,18 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
           <List>
             {event.involvedObjectState?.ingressRules.map((ingressRule) => (
               <List.Item key={`${ingressRule.host}-${ingressRule.service}`}>
-                {ingressRule.host},<br /> Component: {ingressRule.service},
-                Port: {ingressRule.port}
+                {ingressRule.host}
+                {ingressRule.service && (
+                  <>
+                    ,<br /> Component: {ingressRule.service}
+                  </>
+                )}
+                {ingressRule.port && (
+                  <>
+                    ,<br />
+                    Port: {ingressRule.port}
+                  </>
+                )}
               </List.Item>
             ))}
           </List>
