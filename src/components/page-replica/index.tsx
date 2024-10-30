@@ -6,14 +6,17 @@ import { pollingInterval } from '../../store/defaults';
 import {
   radixApi,
   useGetEnvironmentQuery,
+  useGetReplicaEventsQuery,
   useReplicaLogQuery,
 } from '../../store/radix-api';
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { downloadLog } from '../code/log-helper';
+import { EventsList } from '../events-list';
 import { Replica } from '../replica';
 
 interface Props {
@@ -40,6 +43,14 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
     ?.replicaList?.find((x) => x.name === replicaName);
+
+  const { data: events } = useGetReplicaEventsQuery(
+    { appName, envName, componentName, podName: replicaName },
+    {
+      skip: !appName || !envName || !componentName || !replicaName,
+      pollingInterval,
+    }
+  );
 
   return (
     <>
@@ -99,6 +110,15 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           />
         )}
       </AsyncResource>
+      {events && (
+        <EventsList
+          isExpanded={true}
+          events={dataSorter(events, [
+            ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+              sortCompareDate(x, y, 'descending'),
+          ])}
+        />
+      )}
     </>
   );
 }

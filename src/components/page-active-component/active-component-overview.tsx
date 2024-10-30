@@ -13,6 +13,7 @@ import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
   useGetApplicationQuery,
+  useGetComponentEventsQuery,
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
 import { getEnvsUrl } from '../../utils/routing';
@@ -23,6 +24,8 @@ import { EnvironmentVariables } from '../environment-variables';
 
 import { routeWithParams } from '../../utils/string';
 import './style.css';
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
+import { EventsList } from '../events-list';
 import { ActiveComponentToolbar } from './active-component-toolbar';
 import { ComponentStatus } from './component-status';
 
@@ -54,6 +57,11 @@ export const ActiveComponentOverview: FunctionComponent<{
     (dnsAlias) =>
       dnsAlias.componentName === componentName &&
       dnsAlias.environmentName == envName
+  );
+
+  const { data: events } = useGetComponentEventsQuery(
+    { appName, envName, componentName },
+    { skip: !appName || !envName || !componentName, pollingInterval }
   );
 
   return (
@@ -145,6 +153,16 @@ export const ActiveComponentOverview: FunctionComponent<{
                 envName={envName}
                 secretNames={component.secrets}
               />
+
+              {events && (
+                <EventsList
+                  isExpanded={false}
+                  events={dataSorter(events, [
+                    ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+                      sortCompareDate(x, y, 'descending'),
+                  ])}
+                />
+              )}
 
               <EnvironmentVariables
                 appName={appName}

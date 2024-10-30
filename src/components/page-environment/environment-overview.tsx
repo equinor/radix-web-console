@@ -289,6 +289,7 @@ export const EnvironmentOverview: FunctionComponent<{
 
             {events && (
               <EventsList
+                isExpanded={true}
                 events={dataSorter(events, [
                   ({ lastTimestamp: x }, { lastTimestamp: y }) =>
                     sortCompareDate(x, y, 'descending'),
