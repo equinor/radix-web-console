@@ -568,6 +568,30 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getComponentEvents: build.query<
+      GetComponentEventsApiResponse,
+      GetComponentEventsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events/components/${queryArg.componentName}`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
+    getReplicaEvents: build.query<
+      GetReplicaEventsApiResponse,
+      GetReplicaEventsApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events/components/${queryArg.componentName}/replicas/${queryArg.podName}`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     getBatches: build.query<GetBatchesApiResponse, GetBatchesApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches`,
@@ -1664,6 +1688,36 @@ export type GetEnvironmentEventsApiArg = {
   appName: string;
   /** name of environment */
   envName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type GetComponentEventsApiResponse =
+  /** status 200 Successful get environment events */ Event[];
+export type GetComponentEventsApiArg = {
+  /** name of Radix application */
+  appName: string;
+  /** name of environment */
+  envName: string;
+  /** Name of component */
+  componentName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type GetReplicaEventsApiResponse =
+  /** status 200 Successful get environment events */ Event[];
+export type GetReplicaEventsApiArg = {
+  /** name of Radix application */
+  appName: string;
+  /** name of environment */
+  envName: string;
+  /** Name of component */
+  componentName: string;
+  /** Name of pod */
+  podName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -2944,6 +2998,16 @@ export type AzureKeyVaultSecretVersion = {
   /** Version of the secret */
   version: string;
 };
+export type IngressRule = {
+  /** The host name of the ingress */
+  host?: string;
+  /** The path of the ingress */
+  path?: string;
+  /** The port of the ingress */
+  port?: number;
+  /** The service name of the ingress */
+  service?: string;
+};
 export type PodState = {
   /** Specifies whether the first container has passed its readiness probe. */
   ready?: boolean;
@@ -2953,6 +3017,8 @@ export type PodState = {
   started?: boolean | null;
 };
 export type ObjectState = {
+  /** Details about the ingress rules for an ingress related event */
+  ingressRules?: IngressRule[];
   pod?: PodState;
 };
 export type Event = {
@@ -3463,6 +3529,8 @@ export const {
   useStopComponentMutation,
   useGetApplicationEnvironmentDeploymentsQuery,
   useGetEnvironmentEventsQuery,
+  useGetComponentEventsQuery,
+  useGetReplicaEventsQuery,
   useGetBatchesQuery,
   useGetBatchQuery,
   useDeleteBatchMutation,

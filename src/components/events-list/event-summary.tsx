@@ -1,4 +1,4 @@
-import { Table } from '@equinor/eds-core-react';
+import { List, Table } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
@@ -51,8 +51,31 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
     </Table.Cell>
     <Table.Cell className="wrap">
       {event.reason} - {event.message}
-      {event.involvedObjectState?.pod?.restartCount > 0 && (
-        <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
+      {event.involvedObjectState?.pod &&
+        event.involvedObjectState?.pod.restartCount > 0 && (
+          <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
+        )}
+      {event.involvedObjectState?.ingressRules && (
+        <>
+          <List>
+            {event.involvedObjectState?.ingressRules.map((ingressRule) => (
+              <List.Item key={`${ingressRule.host}-${ingressRule.service}`}>
+                {ingressRule.host}
+                {ingressRule.service && (
+                  <>
+                    ,<br /> Component: {ingressRule.service}
+                  </>
+                )}
+                {ingressRule.port && (
+                  <>
+                    ,<br />
+                    Port: {ingressRule.port}
+                  </>
+                )}
+              </List.Item>
+            ))}
+          </List>
+        </>
       )}
     </Table.Cell>
   </Table.Row>
