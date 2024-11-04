@@ -1,6 +1,11 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
-import type { FormEvent } from 'react';
-
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  List,
+  Typography,
+} from '@equinor/eds-core-react';
+import { type FormEvent, useState } from 'react';
 import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { Alert } from '../alert';
@@ -13,13 +18,16 @@ export function PipelineFormApplyConfig({
   onSuccess,
 }: FormProp) {
   const [trigger, state] = useTriggerPipelineApplyConfigMutation();
+  const [deployExternalDNS, setDeployExternalDNS] = useState(false);
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const response = await trigger({
         appName,
-        pipelineParametersApplyConfig: {},
+        pipelineParametersApplyConfig: {
+          deployExternalDNS: deployExternalDNS,
+        },
       }).unwrap();
       onSuccess(response.name);
     }
@@ -39,6 +47,20 @@ export function PipelineFormApplyConfig({
           >
             Apply Radix config
           </Typography>
+          <List className="grid grid--gap-x-small">
+            <List.Item>
+              Apply changes in DNS alias, build secrets, environments (create
+              new or soft-delete existing)
+            </List.Item>
+            <List.Item>
+              <Checkbox
+                label="Deploy External DNS-es"
+                name="deployExternalDNS"
+                checked={deployExternalDNS}
+                onChange={() => setDeployExternalDNS(!deployExternalDNS)}
+              />
+            </List.Item>
+          </List>
         </div>
         <div className="o-action-bar">
           {state.isLoading && (
