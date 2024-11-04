@@ -245,12 +245,13 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         </Typography>
                       </Typography>
                     )}
-                    {job.pipeline === 'build-deploy' &&
-                      job.overrideUseBuildCache === true && (
+                    {(job.pipeline === 'build-deploy' ||
+                      job.pipeline === 'build') &&
+                      job.overrideUseBuildCache !== undefined && (
                         <Checkbox
                           label="Override use build cache"
                           name="overrideUseBuildCache"
-                          checked={true}
+                          checked={job.overrideUseBuildCache}
                           disabled={true}
                         />
                       )}
