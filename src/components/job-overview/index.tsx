@@ -245,6 +245,15 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         </Typography>
                       </Typography>
                     )}
+                    {job.pipeline === 'build-deploy' &&
+                      job.overrideUseBuildCache === true && (
+                        <Checkbox
+                          label="Override use build cache"
+                          name="overrideUseBuildCache"
+                          checked={true}
+                          disabled={true}
+                        />
+                      )}
                     {job.pipeline === 'apply-config' && (
                       <Checkbox
                         label="Deploy external DNS-es"
