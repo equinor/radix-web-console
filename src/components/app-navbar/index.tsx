@@ -78,16 +78,16 @@ const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
 };
 
 const NavbarExpanded = ({ appName, links }: NavbarProps) => {
-  const [favourites, setFacourites] = useLocalStorage<Array<string>>(
+  const [favourites, setFavourites] = useLocalStorage<Array<string>>(
     'favouriteApplications',
     []
   );
   const isFavourite = favourites.includes(appName);
   const toggleFavouriteApp = (app: string) => {
     if (isFavourite) {
-      setFacourites((old) => old.filter((a) => a !== app));
+      setFavourites((old) => old.filter((a) => a !== app));
     } else {
-      setFacourites((old) => uniq([...old, app]));
+      setFavourites((old) => uniq([...old, app]));
     }
   };
 

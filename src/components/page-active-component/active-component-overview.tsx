@@ -24,6 +24,7 @@ import { EnvironmentVariables } from '../environment-variables';
 
 import { routeWithParams } from '../../utils/string';
 import './style.css';
+import useLocalStorage from '../../effects/use-local-storage';
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import { EventsList } from '../events-list';
 import { ActiveComponentToolbar } from './active-component-toolbar';
@@ -63,6 +64,8 @@ export const ActiveComponentOverview: FunctionComponent<{
     { appName, envName, componentName },
     { skip: !appName || !envName || !componentName, pollingInterval }
   );
+  const [isEventListExpanded, setIsEventListExpanded] =
+    useLocalStorage<boolean>('componentEventListExpanded', false);
 
   return (
     <>
@@ -114,14 +117,12 @@ export const ActiveComponentOverview: FunctionComponent<{
                 replicaList={component.replicaList}
                 isExpanded
               />
-
               <ComponentReplicaLogAccordion
                 title={'Replica Logs'}
                 appName={appName}
                 envName={envName}
                 componentName={componentName}
               />
-
               {component.oauth2 && (
                 <OAuthService
                   appName={appName}
@@ -131,13 +132,11 @@ export const ActiveComponentOverview: FunctionComponent<{
                   refetch={refetch}
                 />
               )}
-
               <ComponentVulnerabilityDetails
                 appName={appName}
                 envName={envName}
                 componentName={componentName}
               />
-
               {component.externalDNS?.length > 0 && (
                 <ExternalDNSAccordion
                   appName={appName}
@@ -146,31 +145,26 @@ export const ActiveComponentOverview: FunctionComponent<{
                   externalDNSList={component.externalDNS}
                 />
               )}
-
               <ActiveComponentSecrets
                 appName={appName}
                 componentName={componentName}
                 envName={envName}
                 secretNames={component.secrets}
               />
-
-              {events && (
-                <EventsList
-                  isExpanded={false}
-                  events={dataSorter(events, [
-                    ({ lastTimestamp: x }, { lastTimestamp: y }) =>
-                      sortCompareDate(x, y, 'descending'),
-                  ])}
-                />
-              )}
-
+              <EventsList
+                isExpanded={isEventListExpanded}
+                onExpanded={setIsEventListExpanded}
+                events={dataSorter(events ?? [], [
+                  ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+                    sortCompareDate(x, y, 'descending'),
+                ])}
+              />
               <EnvironmentVariables
                 appName={appName}
                 envName={envName}
                 componentName={componentName}
                 componentType={component.type}
               />
-
               {component.horizontalScalingSummary && (
                 <HorizontalScalingSummary
                   summary={component.horizontalScalingSummary}

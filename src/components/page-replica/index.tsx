@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
+import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -51,6 +52,8 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
       pollingInterval,
     }
   );
+  const [isEventListExpanded, setIsEventListExpanded] =
+    useLocalStorage<boolean>('replicaEventListExpanded', false);
 
   return (
     <>
@@ -81,7 +84,6 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           { label: smallReplicaName(replicaName) },
         ]}
       />
-
       <AsyncResource asyncState={environmentState}>
         {replica && (
           <Replica
@@ -110,15 +112,14 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           />
         )}
       </AsyncResource>
-      {events && (
-        <EventsList
-          isExpanded={true}
-          events={dataSorter(events, [
-            ({ lastTimestamp: x }, { lastTimestamp: y }) =>
-              sortCompareDate(x, y, 'descending'),
-          ])}
-        />
-      )}
+      <EventsList
+        isExpanded={isEventListExpanded}
+        onExpanded={setIsEventListExpanded}
+        events={dataSorter(events ?? [], [
+          ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+            sortCompareDate(x, y, 'descending'),
+        ])}
+      />
     </>
   );
 }

@@ -40,6 +40,7 @@ import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import useLocalStorage from '../../effects/use-local-storage';
 import { DefaultAppAlias } from '../component/default-app-alias';
 import { DNSAliases } from '../component/dns-aliases';
 import { GitCommitTags } from '../component/git-commit-tags';
@@ -73,6 +74,8 @@ export const EnvironmentOverview: FunctionComponent<{
   const envDNSExternalAliases = dnsExternalAliases
     ? dnsExternalAliases.filter((alias) => alias.environmentName == envName)
     : [];
+  const [isEventListExpanded, setIsEventListExpanded] =
+    useLocalStorage<boolean>('environmentEventListExpanded', true);
 
   const isLoaded = application && environment;
   const isOrphan = environment?.status === 'Orphan';
@@ -261,7 +264,6 @@ export const EnvironmentOverview: FunctionComponent<{
                 </div>
               </div>
             </section>
-
             {appAlias?.environmentName == envName && (
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
@@ -286,17 +288,14 @@ export const EnvironmentOverview: FunctionComponent<{
                 components={deployment.components ?? []}
               />
             )}
-
-            {events && (
-              <EventsList
-                isExpanded={true}
-                events={dataSorter(events, [
-                  ({ lastTimestamp: x }, { lastTimestamp: y }) =>
-                    sortCompareDate(x, y, 'descending'),
-                ])}
-              />
-            )}
-
+            <EventsList
+              isExpanded={isEventListExpanded}
+              onExpanded={setIsEventListExpanded}
+              events={dataSorter(events ?? [], [
+                ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+                  sortCompareDate(x, y, 'descending'),
+              ])}
+            />
             {environment.deployments && (
               <div className="grid grid--gap-medium">
                 <Typography variant="h4">Previous deployments</Typography>
