@@ -69,6 +69,8 @@ export const ActiveComponentOverview: FunctionComponent<{
       pollingInterval,
     }
   );
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
+    useLocalStorage<boolean>('activeComponentEnvVarsListExpanded', true);
 
   return (
     <>
@@ -167,6 +169,8 @@ export const ActiveComponentOverview: FunctionComponent<{
                 envName={envName}
                 componentName={componentName}
                 componentType={component.type}
+                isExpanded={isEnvVarsListExpanded}
+                onExpanded={setIsEnvVarsListExpanded}
               />
               {component.horizontalScalingSummary && (
                 <HorizontalScalingSummary
