@@ -36,7 +36,10 @@ import {
   useStopJobMutation,
 } from '../../../store/radix-api';
 import { promiseHandler } from '../../../utils/promise-handler';
-import { getScheduledJobUrl } from '../../../utils/routing';
+import {
+  getScheduledBatchJobUrl,
+  getScheduledJobUrl,
+} from '../../../utils/routing';
 import {
   dataSorter,
   sortCompareDate,
@@ -73,6 +76,7 @@ export const ScheduledJobList: FunctionComponent<{
   appName: string;
   envName: string;
   jobComponentName: string;
+  batchName?: string;
   totalJobCount: number;
   scheduledJobList?: Array<ScheduledJobSummary>;
   isDeletable?: boolean; // set if jobs can be deleted
@@ -85,6 +89,7 @@ export const ScheduledJobList: FunctionComponent<{
   jobComponentName,
   scheduledJobList,
   totalJobCount,
+  batchName,
   isDeletable,
   fetchJobs: refreshJobs,
   isExpanded,
@@ -209,12 +214,22 @@ export const ScheduledJobList: FunctionComponent<{
                             <Typography
                               className="scheduled-job__link"
                               as={Link}
-                              to={getScheduledJobUrl(
-                                appName,
-                                envName,
-                                jobComponentName,
-                                job.name
-                              )}
+                              to={
+                                batchName
+                                  ? getScheduledBatchJobUrl(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      batchName,
+                                      job.name
+                                    )
+                                  : getScheduledJobUrl(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      job.name
+                                    )
+                              }
                               link
                               token={{ textDecoration: 'none' }}
                             >
@@ -382,6 +397,7 @@ ScheduledJobList.propTypes = {
   scheduledJobList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ScheduledJobSummary>
   ),
+  batchName: PropTypes.string,
   isDeletable: PropTypes.bool,
   fetchJobs: PropTypes.func,
   isExpanded: PropTypes.bool,

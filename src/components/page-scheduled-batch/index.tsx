@@ -23,6 +23,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { ScheduledBatchOverview } from './scheduled-batch-overview';
 
 function ScheduleBatchDuration({ batch }: { batch: ScheduledBatchSummary }) {
   return (
@@ -136,11 +137,17 @@ export function PageScheduledBatch({
               jobComponentName,
             }),
           },
-          { label: smallScheduledBatchName(scheduledBatchName) },
+          { label: `batch ${smallScheduledBatchName(scheduledBatchName)}` },
         ]}
       />
 
       <AsyncResource asyncState={scheduledBatchState}>
+        {batch && (
+          <ScheduledBatchOverview
+            batch={batch}
+            jobComponentName={jobComponentName}
+          />
+        )}
         {batch && replica && (
           <Replica
             logState={pollLogsState}
@@ -184,6 +191,7 @@ export function PageScheduledBatch({
             scheduledJobList={batch.jobList}
             totalJobCount={batch.totalJobCount}
             isExpanded={true}
+            batchName={batch.name}
           />
         </div>
       )}

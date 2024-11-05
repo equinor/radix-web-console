@@ -76,7 +76,7 @@ export const ScheduledJobOverview: FunctionComponent<{
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
           <Typography>
-            Name <strong>{smallScheduledJobName(job.name)}</strong>
+            Job name <strong>{smallScheduledJobName(job.name)}</strong>
           </Typography>
           {job.jobId && (
             <Typography>
@@ -84,7 +84,7 @@ export const ScheduledJobOverview: FunctionComponent<{
             </Typography>
           )}
           <Typography>
-            Job <strong>{jobComponentName}</strong>
+            Job component <strong>{jobComponentName}</strong>
           </Typography>
         </div>
         <div className="grid grid--gap-medium">

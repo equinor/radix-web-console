@@ -8,10 +8,14 @@ export interface BreadcrumbProps {
 
 export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
   <Breadcrumbs>
-    {links.map(({ to, label }, i) => (
-      <Breadcrumbs.Breadcrumb key={i} as={Link} to={to}>
-        {label}
-      </Breadcrumbs.Breadcrumb>
-    ))}
+    {links.map(({ to, label }, i) => {
+      return (
+        label !== '' && (
+          <Breadcrumbs.Breadcrumb key={i} as={Link} to={to}>
+            {label}
+          </Breadcrumbs.Breadcrumb>
+        )
+      );
+    })}
   </Breadcrumbs>
 );
