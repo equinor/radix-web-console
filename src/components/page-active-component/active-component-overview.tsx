@@ -60,12 +60,15 @@ export const ActiveComponentOverview: FunctionComponent<{
       dnsAlias.environmentName == envName
   );
 
-  const { data: events } = useGetComponentEventsQuery(
-    { appName, envName, componentName },
-    { skip: !appName || !envName || !componentName, pollingInterval }
-  );
   const [isEventListExpanded, setIsEventListExpanded] =
     useLocalStorage<boolean>('componentEventListExpanded', false);
+  const { data: events } = useGetComponentEventsQuery(
+    { appName, envName, componentName },
+    {
+      skip: !appName || !envName || !componentName || !isEventListExpanded,
+      pollingInterval,
+    }
+  );
 
   return (
     <>

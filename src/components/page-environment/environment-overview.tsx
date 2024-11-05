@@ -61,9 +61,11 @@ export const EnvironmentOverview: FunctionComponent<{
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
   );
+  const [isEventListExpanded, setIsEventListExpanded] =
+    useLocalStorage<boolean>('environmentEventListExpanded', true);
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval }
+    { skip: !appName || !envName || !isEventListExpanded, pollingInterval }
   );
   const [deleteEnvTrigger, deleteEnvState] =
     radixApi.endpoints.deleteEnvironment.useMutation();
@@ -74,8 +76,6 @@ export const EnvironmentOverview: FunctionComponent<{
   const envDNSExternalAliases = dnsExternalAliases
     ? dnsExternalAliases.filter((alias) => alias.environmentName == envName)
     : [];
-  const [isEventListExpanded, setIsEventListExpanded] =
-    useLocalStorage<boolean>('environmentEventListExpanded', true);
 
   const isLoaded = application && environment;
   const isOrphan = environment?.status === 'Orphan';

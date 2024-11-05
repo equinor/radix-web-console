@@ -45,15 +45,20 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
     ?.find((x) => x.name === componentName)
     ?.replicaList?.find((x) => x.name === replicaName);
 
+  const [isEventListExpanded, setIsEventListExpanded] =
+    useLocalStorage<boolean>('replicaEventListExpanded', false);
   const { data: events } = useGetReplicaEventsQuery(
     { appName, envName, componentName, podName: replicaName },
     {
-      skip: !appName || !envName || !componentName || !replicaName,
+      skip:
+        !appName ||
+        !envName ||
+        !componentName ||
+        !replicaName ||
+        !isEventListExpanded,
       pollingInterval,
     }
   );
-  const [isEventListExpanded, setIsEventListExpanded] =
-    useLocalStorage<boolean>('replicaEventListExpanded', false);
 
   return (
     <>
