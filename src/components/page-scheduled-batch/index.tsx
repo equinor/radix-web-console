@@ -183,6 +183,7 @@ export function PageScheduledBatch({
             jobComponentName={jobComponentName}
             scheduledJobList={batch.jobList}
             totalJobCount={batch.totalJobCount}
+            isExpanded={true}
           />
         </div>
       )}

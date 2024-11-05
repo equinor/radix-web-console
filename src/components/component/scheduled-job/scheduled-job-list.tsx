@@ -52,7 +52,6 @@ import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 
 import '../style.css';
-import useLocalStorage from '../../../effects/use-local-storage';
 
 function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running';
@@ -78,6 +77,8 @@ export const ScheduledJobList: FunctionComponent<{
   scheduledJobList?: Array<ScheduledJobSummary>;
   isDeletable?: boolean; // set if jobs can be deleted
   fetchJobs?: () => void;
+  isExpanded?: boolean;
+  onExpanded?: (isExpanded: boolean) => void;
 }> = ({
   appName,
   envName,
@@ -86,6 +87,8 @@ export const ScheduledJobList: FunctionComponent<{
   totalJobCount,
   isDeletable,
   fetchJobs: refreshJobs,
+  isExpanded,
+  onExpanded,
 }) => {
   const [deleteJob] = useDeleteJobMutation();
   const [stopJob] = useStopJobMutation();
@@ -115,10 +118,6 @@ export const ScheduledJobList: FunctionComponent<{
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
   );
-  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>(
-    'singleJobListExpanded',
-    false
-  );
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledJobList, [
@@ -137,10 +136,7 @@ export const ScheduledJobList: FunctionComponent<{
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item
-        isExpanded={isExpanded}
-        onExpandedChange={(expanded) => setIsExpanded(expanded)}
-      >
+      <Accordion.Item isExpanded={isExpanded} onExpandedChange={onExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4" as="span">
@@ -388,4 +384,6 @@ ScheduledJobList.propTypes = {
   ),
   isDeletable: PropTypes.bool,
   fetchJobs: PropTypes.func,
+  isExpanded: PropTypes.bool,
+  onExpanded: PropTypes.func,
 };

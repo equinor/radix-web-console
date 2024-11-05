@@ -63,6 +63,8 @@ export const ActiveJobComponentOverview: FunctionComponent<{
     component?.status === 'Restarting';
   const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
     useLocalStorage<boolean>('activeJobComponentEnvVarsListExpanded', true);
+  const [isSingleJobListExpanded, setIsSingleJobListExpanded] =
+    useLocalStorage<boolean>('singleJobListExpanded', false);
 
   return (
     <>
@@ -114,6 +116,8 @@ export const ActiveJobComponentOverview: FunctionComponent<{
                   totalJobCount={0}
                   isDeletable
                   fetchJobs={refetchJobs}
+                  isExpanded={isSingleJobListExpanded}
+                  onExpanded={setIsSingleJobListExpanded}
                 />
               )}
 
