@@ -322,6 +322,14 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           </Typography>
                         </div>
                       )}
+                      {job.deployedToEnvironment && (
+                        <div>
+                          <Typography>
+                            Environment{' '}
+                            <strong>{job.deployedToEnvironment}</strong>
+                          </Typography>
+                        </div>
+                      )}
                       {job.components && (
                         <ComponentList
                           appName={appName}

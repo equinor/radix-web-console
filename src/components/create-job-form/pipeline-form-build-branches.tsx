@@ -6,7 +6,9 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
+import { pollingInterval } from '../../store/defaults';
 import {
+  useGetEnvironmentSummaryQuery,
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineBuildMutation,
 } from '../../store/radix-api';
@@ -26,12 +28,17 @@ export function PipelineFormBuildBranches({
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
     useTriggerPipelineBuildDeployMutation();
+  const { data: environments } = useGetEnvironmentSummaryQuery(
+    { appName },
+    { pollingInterval }
+  );
 
   const state = pipelineName === 'build-deploy' ? buildDeployState : buildState;
 
   const [branch, setBranch] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
   const [branchFullName, setBranchFullName] = useState('');
+  const [toEnvironment, setToEnvironment] = useState('');
   const branches = useGetApplicationBranches(appName);
 
   const handleOnTextChange = ({
@@ -54,7 +61,7 @@ export function PipelineFormBuildBranches({
 
       const body = {
         appName,
-        pipelineParametersBuild: { branch },
+        pipelineParametersBuild: { branch, toEnvironment },
       };
       let jobName = '';
       if (pipelineName === 'build-deploy') {
@@ -101,6 +108,29 @@ export function PipelineFormBuildBranches({
               </option>
             ))}
           </NativeSelect>
+          <div className="grid grid--gap-small input">
+            <Typography
+              group="input"
+              variant="text"
+              token={{ color: 'currentColor' }}
+            >
+              Environment (optional)
+            </Typography>
+            <NativeSelect
+              id="ToEnvironmentSelect"
+              label=""
+              name="toEnvironment"
+              onChange={(e) => setToEnvironment(e.target.value)}
+              value={toEnvironment}
+            >
+              <option value="">— Please select —</option>
+              {environments?.map(({ name }, i) => (
+                <option key={i} value={name}>
+                  {name}
+                </option>
+              ))}
+            </NativeSelect>
+          </div>
           {isAnyValidRegex(selectedBranch) && (
             <fieldset>
               <TextField
