@@ -6,9 +6,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
-import { pollingInterval } from '../../store/defaults';
 import {
-  useGetEnvironmentSummaryQuery,
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineBuildMutation,
 } from '../../store/radix-api';
@@ -28,10 +26,6 @@ export function PipelineFormBuildBranches({
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
     useTriggerPipelineBuildDeployMutation();
-  const { data: environments } = useGetEnvironmentSummaryQuery(
-    { appName },
-    { pollingInterval }
-  );
 
   const state = pipelineName === 'build-deploy' ? buildDeployState : buildState;
 
@@ -108,46 +102,60 @@ export function PipelineFormBuildBranches({
               </option>
             ))}
           </NativeSelect>
-          <div className="grid grid--gap-small input">
-            <Typography
-              group="input"
-              variant="text"
-              token={{ color: 'currentColor' }}
-            >
-              Environment (optional)
-            </Typography>
-            <NativeSelect
-              id="ToEnvironmentSelect"
-              label=""
-              name="toEnvironment"
-              onChange={(e) => setToEnvironment(e.target.value)}
-              value={toEnvironment}
-            >
-              <option value="">— Please select —</option>
-              {environments?.map(({ name }, i) => (
-                <option key={i} value={name}>
-                  {name}
-                </option>
-              ))}
-            </NativeSelect>
-          </div>
           {isAnyValidRegex(selectedBranch) && (
-            <fieldset>
-              <TextField
-                id="branch_full_name_field"
-                label="Branch full name"
-                helperText={`Pattern: ${selectedBranch}`}
-                name="branchFullName"
-                value={branchFullName}
-                onChange={handleOnTextChange}
-              />
-            </fieldset>
+            <>
+              <Typography
+                group="input"
+                variant="text"
+                token={{ color: 'currentColor' }}
+              >
+                Git branch full name
+              </Typography>
+              <fieldset>
+                <TextField
+                  id="branch_full_name_field"
+                  helperText={`Pattern: ${selectedBranch}`}
+                  name="branchFullName"
+                  value={branchFullName}
+                  onChange={handleOnTextChange}
+                />
+              </fieldset>
+            </>
           )}
-          {pipelineName === 'build-deploy' && (
+          {selectedBranch && branches[selectedBranch]?.length > 1 && (
+            <div className="grid grid--gap-small input">
+              <Typography
+                group="input"
+                variant="text"
+                token={{ color: 'currentColor' }}
+              >
+                Environment (optional)
+              </Typography>
+              <NativeSelect
+                id="ToEnvironmentSelect"
+                label=""
+                name="toEnvironment"
+                onChange={(e) => setToEnvironment(e.target.value)}
+                value={toEnvironment}
+              >
+                <option value="">
+                  All environments build from the branch{' '}
+                  {branch ?? selectedBranch}
+                </option>
+                {branches[selectedBranch]?.map((envName) => (
+                  <option key={envName} value={envName}>
+                    {envName}
+                  </option>
+                ))}
+              </NativeSelect>
+            </div>
+          )}
+          {pipelineName === 'build-deploy' && branches && selectedBranch && (
             <TargetEnvs
-              branches={branches}
+              targetEnvs={
+                toEnvironment ? [toEnvironment] : branches[selectedBranch]
+              }
               branch={branch}
-              selectedBranch={selectedBranch}
             />
           )}
         </div>

@@ -2,12 +2,10 @@ import { Typography } from '@equinor/eds-core-react';
 import { Fragment } from 'react';
 
 type Props = {
-  selectedBranch?: string;
-  branches: Record<string, Array<string>>;
+  targetEnvs: Array<string>;
   branch?: string;
 };
-export function TargetEnvs({ selectedBranch, branches, branch }: Props) {
-  const targetEnvs = branches[selectedBranch] || [];
+export function TargetEnvs({ targetEnvs, branch }: Props) {
   const penultimateId = targetEnvs.length - 2;
 
   return targetEnvs.length > 0 ? (

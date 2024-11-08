@@ -2717,6 +2717,8 @@ export type DeploymentSummary = {
   activeFrom: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Array of component summaries */
