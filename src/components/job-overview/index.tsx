@@ -263,6 +263,30 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         disabled={true}
                       />
                     )}
+                    {job.branch && (
+                      <div>
+                        <Typography>
+                          Branch <strong>{job.branch}</strong>
+                        </Typography>
+                      </div>
+                    )}
+                    {job.deployedToEnvironment && (
+                      <div>
+                        <Typography>
+                          Environment{' '}
+                          <Typography
+                            as={Link}
+                            to={routeWithParams(routes.appEnvironment, {
+                              appName,
+                              envName: job.deployedToEnvironment,
+                            })}
+                            link
+                          >
+                            {job.deployedToEnvironment}
+                          </Typography>
+                        </Typography>
+                      </div>
+                    )}
                     <Typography>
                       Triggered by <strong>{job.triggeredBy || 'N/A'}</strong>
                       {job.commitID && (
@@ -338,13 +362,6 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           </Typography>
                         </Typography>
                       ))}
-                      {job.branch && (
-                        <div>
-                          <Typography>
-                            Branch <strong>{job.branch}</strong>
-                          </Typography>
-                        </div>
-                      )}
                       {job.components && (
                         <ComponentList
                           appName={appName}

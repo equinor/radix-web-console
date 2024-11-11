@@ -2719,6 +2719,8 @@ export type DeploymentSummary = {
   activeFrom: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Array of component summaries */
@@ -2844,7 +2846,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-    
+
     required: */
   webhookUrl?: string | null;
 };
@@ -3183,11 +3185,13 @@ export type Job = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Components (array of ComponentSummary) created by the job
-    
+
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
   created?: string;
+  /** DeployedToEnvironment the name of the environment that was deployed to */
+  deployedToEnvironment?: string;
   /** DeployExternalDNS deploy external DNS */
   deployExternalDNS?: boolean | null;
   /** Array of deployments */
@@ -3430,6 +3434,8 @@ export type PipelineParametersBuild = {
   overrideUseBuildCache?: boolean | null;
   /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
+  /** Name of environment to build for */
+  toEnvironment?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
