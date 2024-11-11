@@ -36,7 +36,10 @@ import {
   useStopJobMutation,
 } from '../../../store/radix-api';
 import { promiseHandler } from '../../../utils/promise-handler';
-import { getScheduledJobUrl } from '../../../utils/routing';
+import {
+  getScheduledBatchJobUrl,
+  getScheduledJobUrl,
+} from '../../../utils/routing';
 import {
   dataSorter,
   sortCompareDate,
@@ -73,20 +76,24 @@ export const ScheduledJobList: FunctionComponent<{
   appName: string;
   envName: string;
   jobComponentName: string;
+  batchName?: string;
   totalJobCount: number;
   scheduledJobList?: Array<ScheduledJobSummary>;
-  isExpanded?: boolean;
   isDeletable?: boolean; // set if jobs can be deleted
   fetchJobs?: () => void;
+  isExpanded?: boolean;
+  onExpanded?: (isExpanded: boolean) => void;
 }> = ({
   appName,
   envName,
   jobComponentName,
   scheduledJobList,
   totalJobCount,
-  isExpanded,
+  batchName,
   isDeletable,
   fetchJobs: refreshJobs,
+  isExpanded,
+  onExpanded,
 }) => {
   const [deleteJob] = useDeleteJobMutation();
   const [stopJob] = useStopJobMutation();
@@ -134,7 +141,7 @@ export const ScheduledJobList: FunctionComponent<{
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded={isExpanded}>
+      <Accordion.Item isExpanded={isExpanded} onExpandedChange={onExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography variant="h4" as="span">
@@ -207,12 +214,22 @@ export const ScheduledJobList: FunctionComponent<{
                             <Typography
                               className="scheduled-job__link"
                               as={Link}
-                              to={getScheduledJobUrl(
-                                appName,
-                                envName,
-                                jobComponentName,
-                                job.name
-                              )}
+                              to={
+                                batchName
+                                  ? getScheduledBatchJobUrl(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      batchName,
+                                      job.name
+                                    )
+                                  : getScheduledJobUrl(
+                                      appName,
+                                      envName,
+                                      jobComponentName,
+                                      job.name
+                                    )
+                              }
                               link
                               token={{ textDecoration: 'none' }}
                             >
@@ -380,7 +397,9 @@ ScheduledJobList.propTypes = {
   scheduledJobList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ScheduledJobSummary>
   ),
-  isExpanded: PropTypes.bool,
+  batchName: PropTypes.string,
   isDeletable: PropTypes.bool,
   fetchJobs: PropTypes.func,
+  isExpanded: PropTypes.bool,
+  onExpanded: PropTypes.func,
 };

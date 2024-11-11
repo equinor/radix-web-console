@@ -2573,6 +2573,8 @@ export type JobSummary = {
   commitID?: string;
   /** Created timestamp */
   created?: string;
+  /** DeployExternalDNS deploy external DNS */
+  deployExternalDNS?: boolean | null;
   /** Ended timestamp */
   ended?: string;
   /** Environments the job deployed to */
@@ -2586,7 +2588,7 @@ export type JobSummary = {
   /** OverrideUseBuildCache override default or configured build cache option */
   overrideUseBuildCache?: boolean | null;
   /** Name of the pipeline */
-  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
+  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy' | 'apply-config';
   /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
   /** Environment name, from which the Radix deployment is promoted */
@@ -2717,6 +2719,8 @@ export type DeploymentSummary = {
   activeFrom: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Array of component summaries */
@@ -2732,7 +2736,12 @@ export type DeploymentSummary = {
   /** Name the unique name of the Radix application deployment */
   name: string;
   /** Type of pipeline job */
-  pipelineJobType?: 'build' | 'build-deploy' | 'promote' | 'deploy';
+  pipelineJobType?:
+    | 'build'
+    | 'build-deploy'
+    | 'promote'
+    | 'deploy'
+    | 'apply-config';
   /** Name of the environment the deployment was promoted from
     Applies only for pipeline jobs of type 'promote' */
   promotedFromEnvironment?: string;
@@ -2891,6 +2900,8 @@ export type Deployment = {
   activeFrom?: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
   /** Array of components */
   components?: Component[];
   /** Name of job creating deployment */
@@ -3181,6 +3192,10 @@ export type Job = {
   components?: ComponentSummary[];
   /** Created timestamp */
   created?: string;
+  /** DeployExternalDNS deploy external DNS */
+  deployExternalDNS?: boolean | null;
+  /** DeployedToEnvironment the name of the environment that was deployed to */
+  deployedToEnvironment?: string;
   /** Array of deployments */
   deployments?: DeploymentSummary[];
   /** Ended timestamp */
@@ -3191,8 +3206,10 @@ export type Job = {
   };
   /** Name of the job */
   name?: string;
+  /** OverrideUseBuildCache override default or configured build cache option */
+  overrideUseBuildCache?: boolean | null;
   /** Name of the pipeline */
-  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy';
+  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy' | 'apply-config';
   /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
   /** PromotedFromEnvironment the name of the environment that was promoted from */
@@ -3395,6 +3412,8 @@ export type PipelineRunTaskStep = {
   statusMessage?: string;
 };
 export type PipelineParametersApplyConfig = {
+  /** DeployExternalDNS deploy external DNS */
+  deployExternalDNS?: boolean | null;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
@@ -3405,6 +3424,8 @@ export type PipelineParametersBuild = {
   /** CommitID the commit ID of the branch to build
     REQUIRED for "build" and "build-deploy" pipelines */
   commitID?: string;
+  /** DeployExternalDNS deploy external DNS */
+  deployExternalDNS?: boolean | null;
   /** ImageName of the component, without repository name and image-tag */
   imageName?: string;
   /** ImageRepository of the component, without image name and image-tag */
@@ -3415,6 +3436,8 @@ export type PipelineParametersBuild = {
   overrideUseBuildCache?: boolean | null;
   /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
+  /** Name of environment to build for */
+  toEnvironment?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };

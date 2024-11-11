@@ -40,6 +40,7 @@ export const routes = {
   appActiveJobComponent: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName',
   appScheduledJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledjob/:scheduledJobName',
   appScheduledBatch: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledbatch/:scheduledBatchName',
+  appScheduledBatchJob: '/applications/:appName/envs/:envName/jobcomponent/:jobComponentName/scheduledbatch/:scheduledBatchName/scheduledjob/:scheduledJobName',
   appJobs: '/applications/:appName/jobs',
   appJob: '/applications/:appName/jobs/view/:jobName',
   appJobStep: '/applications/:appName/jobs/view/:jobName/steps/:stepName',

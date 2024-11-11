@@ -11,7 +11,11 @@ import {
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
-import { routeWithParams, smallScheduledJobName } from '../../utils/string';
+import {
+  routeWithParams,
+  smallScheduledBatchName,
+  smallScheduledJobName,
+} from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { JobReplica } from './job-replica';
@@ -33,8 +37,15 @@ export const PageScheduledJob: FunctionComponent<{
   appName: string;
   jobComponentName: string;
   envName: string;
+  scheduledBatchName?: string;
   scheduledJobName: string;
-}> = ({ appName, envName, jobComponentName, scheduledJobName }) => {
+}> = ({
+  appName,
+  envName,
+  jobComponentName,
+  scheduledBatchName,
+  scheduledJobName,
+}) => {
   const { data: job, ...scheduledJobState } = useGetJobQuery(
     { appName, envName, jobComponentName, jobName: scheduledJobName },
     {
@@ -78,7 +89,20 @@ export const PageScheduledJob: FunctionComponent<{
               jobComponentName,
             }),
           },
-          { label: smallScheduledJobName(scheduledJobName) },
+          {
+            label: scheduledBatchName
+              ? `batch ${smallScheduledBatchName(scheduledBatchName)}`
+              : '',
+            to: scheduledBatchName
+              ? routeWithParams(routes.appScheduledBatch, {
+                  appName,
+                  envName,
+                  jobComponentName,
+                  scheduledBatchName,
+                })
+              : '',
+          },
+          { label: `job ${smallScheduledJobName(scheduledJobName)}` },
         ]}
       />
 
@@ -165,6 +189,7 @@ PageScheduledJob.propTypes = {
   appName: PropTypes.string.isRequired,
   jobComponentName: PropTypes.string.isRequired,
   envName: PropTypes.string.isRequired,
+  scheduledBatchName: PropTypes.string,
   scheduledJobName: PropTypes.string.isRequired,
 };
 

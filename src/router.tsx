@@ -171,6 +171,10 @@ export const router = createBrowserRouter([
                             path: routes.appScheduledJob,
                             Component: PageScheduledJob.default,
                           },
+                          {
+                            path: routes.appScheduledBatchJob,
+                            Component: PageScheduledJob.default,
+                          },
                         ],
                       },
                     ],

@@ -1,4 +1,9 @@
-import { Button, CircularProgress, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Checkbox,
+  CircularProgress,
+  Typography,
+} from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -240,6 +245,48 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         </Typography>
                       </Typography>
                     )}
+                    {(job.pipeline === 'build-deploy' ||
+                      job.pipeline === 'build') &&
+                      job.overrideUseBuildCache !== undefined && (
+                        <Checkbox
+                          label="Override use build cache"
+                          name="overrideUseBuildCache"
+                          checked={job.overrideUseBuildCache}
+                          disabled={true}
+                        />
+                      )}
+                    {job.pipeline === 'apply-config' && (
+                      <Checkbox
+                        label="Deploy external DNS-es"
+                        name="deployExternalDNS"
+                        checked={job.deployExternalDNS === true}
+                        disabled={true}
+                      />
+                    )}
+                    {job.branch && (
+                      <div>
+                        <Typography>
+                          Branch <strong>{job.branch}</strong>
+                        </Typography>
+                      </div>
+                    )}
+                    {job.deployedToEnvironment && (
+                      <div>
+                        <Typography>
+                          Environment{' '}
+                          <Typography
+                            as={Link}
+                            to={routeWithParams(routes.appEnvironment, {
+                              appName,
+                              envName: job.deployedToEnvironment,
+                            })}
+                            link
+                          >
+                            {job.deployedToEnvironment}
+                          </Typography>
+                        </Typography>
+                      </div>
+                    )}
                     <Typography>
                       Triggered by <strong>{job.triggeredBy || 'N/A'}</strong>
                       {job.commitID && (
@@ -315,13 +362,6 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           </Typography>
                         </Typography>
                       ))}
-                      {job.branch && (
-                        <div>
-                          <Typography>
-                            Branch <strong>{job.branch}</strong>
-                          </Typography>
-                        </div>
-                      )}
                       {job.components && (
                         <ComponentList
                           appName={appName}

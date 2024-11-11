@@ -4,3 +4,13 @@
   gap: var(--eds_spacing_medium);
   margin-bottom: var(--eds_spacing_medium);
 }
+
+.status-title {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  align-items: center;
+}
+
+.status--justify-end {
+  justify-self: end;
+}

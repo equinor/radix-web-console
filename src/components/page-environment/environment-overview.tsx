@@ -40,6 +40,7 @@ import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import useLocalStorage from '../../effects/use-local-storage';
 import { DefaultAppAlias } from '../component/default-app-alias';
 import { DNSAliases } from '../component/dns-aliases';
 import { GitCommitTags } from '../component/git-commit-tags';
@@ -60,9 +61,11 @@ export const EnvironmentOverview: FunctionComponent<{
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
   );
+  const [isEventListExpanded, setIsEventListExpanded] =
+    useLocalStorage<boolean>('environmentEventListExpanded', true);
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
-    { skip: !appName || !envName, pollingInterval }
+    { skip: !appName || !envName || !isEventListExpanded, pollingInterval }
   );
   const [deleteEnvTrigger, deleteEnvState] =
     radixApi.endpoints.deleteEnvironment.useMutation();
@@ -151,7 +154,7 @@ export const EnvironmentOverview: FunctionComponent<{
                   <Typography>
                     Environment <strong>{envName}</strong>
                   </Typography>
-                  {environment.branchMapping ? (
+                  {environment.branchMapping && environment.activeDeployment ? (
                     <Typography>
                       Built and deployed from{' '}
                       <Typography
@@ -261,7 +264,6 @@ export const EnvironmentOverview: FunctionComponent<{
                 </div>
               </div>
             </section>
-
             {appAlias?.environmentName == envName && (
               <DefaultAppAlias appName={appName} appAlias={appAlias} />
             )}
@@ -286,17 +288,14 @@ export const EnvironmentOverview: FunctionComponent<{
                 components={deployment.components ?? []}
               />
             )}
-
-            {events && (
-              <EventsList
-                isExpanded={true}
-                events={dataSorter(events, [
-                  ({ lastTimestamp: x }, { lastTimestamp: y }) =>
-                    sortCompareDate(x, y, 'descending'),
-                ])}
-              />
-            )}
-
+            <EventsList
+              isExpanded={isEventListExpanded}
+              onExpanded={setIsEventListExpanded}
+              events={dataSorter(events ?? [], [
+                ({ lastTimestamp: x }, { lastTimestamp: y }) =>
+                  sortCompareDate(x, y, 'descending'),
+              ])}
+            />
             {environment.deployments && (
               <div className="grid grid--gap-medium">
                 <Typography variant="h4">Previous deployments</Typography>
