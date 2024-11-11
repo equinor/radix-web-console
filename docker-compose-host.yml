@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   web:
     image: node:20.9-alpine
