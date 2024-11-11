@@ -57,6 +57,8 @@ export const EnvironmentVariables: FunctionComponent<{
   componentType: Component['type'];
   hideRadixVars?: boolean;
   readonly?: boolean;
+  isExpanded?: boolean;
+  onExpanded?: (isExpanded: boolean) => void;
 }> = ({
   appName,
   envName,
@@ -64,6 +66,8 @@ export const EnvironmentVariables: FunctionComponent<{
   componentType,
   hideRadixVars,
   readonly,
+  isExpanded,
+  onExpanded,
 }) => {
   const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
@@ -77,7 +81,7 @@ export const EnvironmentVariables: FunctionComponent<{
   } = useEnvVarsQuery(
     { appName, envName, componentName },
     {
-      skip: !appName || !envName || !componentName,
+      skip: !appName || !envName || !componentName || !isExpanded,
       pollingInterval: pollVarsInterval,
     }
   );
@@ -131,7 +135,7 @@ export const EnvironmentVariables: FunctionComponent<{
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded>
+      <Accordion.Item isExpanded={isExpanded} onExpandedChange={onExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -158,11 +162,13 @@ export const EnvironmentVariables: FunctionComponent<{
                         </Button>
                       </div>
                     ) : (
-                      <div>
-                        <Button onClick={handleSetEditMode}>
-                          <Icon data={edit} /> Edit
-                        </Button>
-                      </div>
+                      !readonly && (
+                        <div>
+                          <Button onClick={handleSetEditMode}>
+                            <Icon data={edit} /> Edit
+                          </Button>
+                        </div>
+                      )
                     )}
                   </div>
 
@@ -240,4 +246,6 @@ EnvironmentVariables.propTypes = {
   >,
   hideRadixVars: PropTypes.bool,
   readonly: PropTypes.bool,
+  isExpanded: PropTypes.bool,
+  onExpanded: PropTypes.func,
 };

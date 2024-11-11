@@ -43,6 +43,7 @@ import { RelativeToNow } from '../../time/relative-to-now';
 import { BatchJobStatuses } from './batch-job-statuses';
 
 import './style.css';
+import useLocalStorage from '../../../effects/use-local-storage';
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running';
@@ -53,7 +54,6 @@ type Props = {
   envName: string;
   jobComponentName: string;
   scheduledBatchList?: Array<ScheduledBatchSummary>;
-  isExpanded?: boolean;
   fetchBatches?: () => void;
 };
 
@@ -62,7 +62,6 @@ export function ScheduledBatchList({
   envName,
   jobComponentName,
   scheduledBatchList,
-  isExpanded,
   fetchBatches: refreshBatches,
 }: Props) {
   const [deleteBatch] = useDeleteBatchMutation();
@@ -84,6 +83,10 @@ export function ScheduledBatchList({
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
   );
+  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>(
+    'batchJobListExpanded',
+    false
+  );
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledBatchList, [
@@ -102,7 +105,10 @@ export function ScheduledBatchList({
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item isExpanded={isExpanded}>
+      <Accordion.Item
+        isExpanded={isExpanded}
+        onExpandedChange={(expanded) => setIsExpanded(expanded)}
+      >
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -320,6 +326,5 @@ ScheduledBatchList.propTypes = {
   scheduledBatchList: PropTypes.arrayOf(
     PropTypes.object as PropTypes.Validator<ScheduledBatchSummary>
   ),
-  isExpanded: PropTypes.bool,
   fetchBatches: PropTypes.func,
 };

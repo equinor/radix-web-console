@@ -5,6 +5,7 @@ import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-
 import { Overview } from './overview';
 
 import { Button, CircularProgress } from '@equinor/eds-core-react';
+import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -60,6 +61,10 @@ export const ActiveJobComponentOverview: FunctionComponent<{
     restartState.isLoading ||
     component?.status === 'Reconciling' ||
     component?.status === 'Restarting';
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
+    useLocalStorage<boolean>('activeJobComponentEnvVarsListExpanded', true);
+  const [isSingleJobListExpanded, setIsSingleJobListExpanded] =
+    useLocalStorage<boolean>('singleJobListExpanded', false);
 
   return (
     <>
@@ -111,6 +116,8 @@ export const ActiveJobComponentOverview: FunctionComponent<{
                   totalJobCount={0}
                   isDeletable
                   fetchJobs={refetchJobs}
+                  isExpanded={isSingleJobListExpanded}
+                  onExpanded={setIsSingleJobListExpanded}
                 />
               )}
 
@@ -151,6 +158,8 @@ export const ActiveJobComponentOverview: FunctionComponent<{
                 componentName={jobComponentName}
                 componentType={component.type}
                 hideRadixVars
+                isExpanded={isEnvVarsListExpanded}
+                onExpanded={setIsEnvVarsListExpanded}
               />
             </div>
           </>
