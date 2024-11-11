@@ -2900,6 +2900,8 @@ export type Deployment = {
   activeFrom?: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
   /** Array of components */
   components?: Component[];
   /** Name of job creating deployment */
