@@ -151,7 +151,7 @@ export const EnvironmentOverview: FunctionComponent<{
                   <Typography>
                     Environment <strong>{envName}</strong>
                   </Typography>
-                  {environment.branchMapping ? (
+                  {environment.branchMapping && environment.activeDeployment ? (
                     <Typography>
                       Built and deployed from{' '}
                       <Typography

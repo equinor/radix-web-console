@@ -2717,6 +2717,8 @@ export type DeploymentSummary = {
   activeFrom: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Array of component summaries */
@@ -3181,6 +3183,8 @@ export type Job = {
   components?: ComponentSummary[];
   /** Created timestamp */
   created?: string;
+  /** DeployedToEnvironment the name of the environment that was deployed to */
+  deployedToEnvironment?: string;
   /** Array of deployments */
   deployments?: DeploymentSummary[];
   /** Ended timestamp */
@@ -3415,6 +3419,8 @@ export type PipelineParametersBuild = {
   overrideUseBuildCache?: boolean | null;
   /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
+  /** Name of environment to build for */
+  toEnvironment?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
   triggeredBy?: string;
 };
