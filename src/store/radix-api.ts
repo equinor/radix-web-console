@@ -3190,6 +3190,8 @@ export type Job = {
   components?: ComponentSummary[];
   /** Created timestamp */
   created?: string;
+  /** DeployExternalDNS deploy external DNS */
+  deployExternalDNS?: boolean | null;
   /** DeployedToEnvironment the name of the environment that was deployed to */
   deployedToEnvironment?: string;
   /** DeployExternalDNS deploy external DNS */

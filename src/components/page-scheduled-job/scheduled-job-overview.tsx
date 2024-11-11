@@ -3,7 +3,10 @@ import { isNil } from 'lodash';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import type { ScheduledJobSummary } from '../../store/radix-api';
-import { smallScheduledJobName } from '../../utils/string';
+import {
+  smallScheduledBatchName,
+  smallScheduledJobName,
+} from '../../utils/string';
 import { Code } from '../code';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
@@ -76,15 +79,21 @@ export const ScheduledJobOverview: FunctionComponent<{
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
           <Typography>
-            Name <strong>{smallScheduledJobName(job.name)}</strong>
+            Job name <strong>{smallScheduledJobName(job.name)}</strong>
           </Typography>
           {job.jobId && (
             <Typography>
               Job ID <strong>{job.jobId}</strong>
             </Typography>
           )}
+          {job.batchName && (
+            <Typography>
+              Batch name{' '}
+              <strong>{smallScheduledBatchName(job.batchName)}</strong>
+            </Typography>
+          )}
           <Typography>
-            Job <strong>{jobComponentName}</strong>
+            Job component <strong>{jobComponentName}</strong>
           </Typography>
         </div>
         <div className="grid grid--gap-medium">

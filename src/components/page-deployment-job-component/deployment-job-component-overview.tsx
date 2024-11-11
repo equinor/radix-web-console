@@ -1,6 +1,7 @@
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
+import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import { useGetDeploymentQuery } from '../../store/radix-api';
@@ -23,6 +24,8 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
   const component = deployment?.components?.find(
     ({ name }) => name === jobComponentName
   );
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
+    useLocalStorage<boolean>('deploymentJobComponentEnvVarsListExpanded', true);
 
   return (
     <>
@@ -59,6 +62,8 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
                 componentType={component.type}
                 hideRadixVars
                 readonly
+                isExpanded={isEnvVarsListExpanded}
+                onExpanded={setIsEnvVarsListExpanded}
               />
             </div>
           </>

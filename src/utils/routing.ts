@@ -173,6 +173,22 @@ export function getScheduledJobUrl(
   });
 }
 
+export function getScheduledBatchJobUrl(
+  appName: string,
+  envName: string,
+  jobComponentName: string,
+  scheduledBatchName: string,
+  scheduledJobName: string
+): string {
+  return routeWithParams(routes.appScheduledBatchJob, {
+    appName,
+    envName,
+    jobComponentName,
+    scheduledBatchName,
+    scheduledJobName,
+  });
+}
+
 export function getScheduledBatchUrl(
   appName: string,
   envName: string,
