@@ -58,7 +58,6 @@ export function PipelineFormBuildBranches({
           .flatMap(([, commits]) => commits)
       )
     );
-    console.log(values);
     setFilteredBranches(values);
   };
   const handleChange = ({
