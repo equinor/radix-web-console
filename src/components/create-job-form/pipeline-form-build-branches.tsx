@@ -192,10 +192,7 @@ export function PipelineFormBuildBranches({
             </Alert>
           )}
           <div>
-            <Button
-              disabled={!isValidBranchName(branch) || isAnyValidRegex(branch)}
-              type="submit"
-            >
+            <Button disabled={!isValidBranchName(branch)} type="submit">
               Create job
             </Button>
           </div>
