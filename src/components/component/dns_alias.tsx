@@ -1,5 +1,4 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { link } from '@equinor/eds-icons';
+import { Typography } from '@equinor/eds-core-react';
 import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 

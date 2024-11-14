@@ -1,5 +1,5 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { external_link, send } from '@equinor/eds-icons';
+import { send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
