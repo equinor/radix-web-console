@@ -34,12 +34,31 @@ export function PipelineFormBuildBranches({
   const [branchFullName, setBranchFullName] = useState('');
   const [toEnvironment, setToEnvironment] = useState('');
   const branches = useGetApplicationBranches(appName);
+  const [filteredBranches, setFilteredBranches] = useState([]);
 
   const handleOnTextChange = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
     setBranch(value);
     setBranchFullName(value);
+    setToEnvironment('');
+    const cleanRegex = (val: string): string => {
+      switch (val) {
+        case '*':
+          return '.+';
+        case '':
+          return '^$';
+      }
+      return val;
+    };
+    const values = Array.from(
+      new Set(
+        Object.entries(branches)
+          .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
+          .flatMap(([, commits]) => commits)
+      )
+    );
+    setFilteredBranches(values);
   };
   const handleChange = ({
     target: { value },
@@ -57,7 +76,7 @@ export function PipelineFormBuildBranches({
         appName,
         pipelineParametersBuild: { branch, toEnvironment },
       };
-      let jobName = '';
+      let jobName: string;
       if (pipelineName === 'build-deploy') {
         jobName = (await triggerBuildDeploy(body).unwrap()).name;
       } else {
@@ -122,42 +141,43 @@ export function PipelineFormBuildBranches({
               </fieldset>
             </>
           )}
-          {selectedBranch && branches[selectedBranch]?.length > 1 && (
-            <div className="grid grid--gap-small input">
-              <Typography
-                group="input"
-                variant="text"
-                token={{ color: 'currentColor' }}
-              >
-                Environment (optional)
-              </Typography>
-              <NativeSelect
-                id="ToEnvironmentSelect"
-                label=""
-                name="toEnvironment"
-                onChange={(e) => setToEnvironment(e.target.value)}
-                value={toEnvironment}
-              >
-                <option value="">
-                  All environments build from the branch{' '}
-                  {branch ?? selectedBranch}
-                </option>
-                {branches[selectedBranch]?.map((envName) => (
-                  <option key={envName} value={envName}>
-                    {envName}
+          {!isAnyValidRegex(branch) &&
+            branch &&
+            filteredBranches?.length > 0 && (
+              <div className="grid grid--gap-small input">
+                <Typography
+                  group="input"
+                  variant="text"
+                  token={{ color: 'currentColor' }}
+                >
+                  Environment (optional)
+                </Typography>
+                <NativeSelect
+                  id="ToEnvironmentSelect"
+                  label=""
+                  name="toEnvironment"
+                  onChange={(e) => setToEnvironment(e.target.value)}
+                  value={toEnvironment}
+                >
+                  <option value="">
+                    All environments build from the branch {branch}
                   </option>
-                ))}
-              </NativeSelect>
-            </div>
-          )}
-          {pipelineName === 'build-deploy' && branches && selectedBranch && (
-            <TargetEnvs
-              targetEnvs={
-                toEnvironment ? [toEnvironment] : branches[selectedBranch]
-              }
-              branch={branch}
-            />
-          )}
+                  {filteredBranches?.map((envName) => (
+                    <option key={envName} value={envName}>
+                      {envName}
+                    </option>
+                  ))}
+                </NativeSelect>
+              </div>
+            )}
+          {pipelineName === 'build-deploy' &&
+            branch &&
+            !isAnyValidRegex(branch) && (
+              <TargetEnvs
+                targetEnvs={toEnvironment ? [toEnvironment] : filteredBranches}
+                branch={branch}
+              />
+            )}
         </div>
 
         <div className="o-action-bar">
@@ -172,7 +192,10 @@ export function PipelineFormBuildBranches({
             </Alert>
           )}
           <div>
-            <Button disabled={!isValidBranchName(branch)} type="submit">
+            <Button
+              disabled={!isValidBranchName(branch) || isAnyValidRegex(branch)}
+              type="submit"
+            >
               Create job
             </Button>
           </div>
