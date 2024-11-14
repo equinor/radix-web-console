@@ -4,6 +4,7 @@ import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing';
+import { ExternalLink } from '../link/external-link';
 export interface EnvironmentComponentProps {
   appName: string;
   url: string;
@@ -18,11 +19,8 @@ export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({
   environmentName,
 }) => (
   <>
-    <Icon data={link} />
-    <Typography link href={`https://${url}`}>
-      {url}
-    </Typography>{' '}
-    is mapped to component{' '}
+    <ExternalLink href={`https://${url}`}>{url}</ExternalLink> is mapped to
+    component{' '}
     <Typography
       as={Link}
       to={getActiveComponentUrl(appName, environmentName, componentName)}

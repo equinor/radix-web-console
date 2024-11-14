@@ -101,9 +101,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
                   Type of job
                   <TableSortIcon direction={pipelineSort} />
                 </Table.Cell>
-                <Table.Cell>
-                  Github commit <Icon data={external_link} />
-                </Table.Cell>
+                <Table.Cell>Github commit</Table.Cell>
                 <Table.Cell>Promoted from</Table.Cell>
               </Table.Row>
             </Table.Head>

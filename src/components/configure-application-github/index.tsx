@@ -28,6 +28,7 @@ import {
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ExternalLink } from '../link/external-link';
 import { ScrimPopup } from '../scrim-popup';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
@@ -91,14 +92,9 @@ export const ConfigureApplicationGithub = ({
               <div className="grid grid--gap-medium">
                 <Typography>
                   This allows Radix to clone the repository. Open the{' '}
-                  <Typography
-                    link
-                    href={`${app.repository}/settings/keys/new`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
+                  <ExternalLink href={`${app.repository}/settings/keys/new`}>
                     Add New Deploy Key page
-                  </Typography>{' '}
+                  </ExternalLink>{' '}
                   and follow the steps below
                 </Typography>
                 <div className="grid grid--gap-medium o-body-text">

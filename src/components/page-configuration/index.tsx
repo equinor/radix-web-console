@@ -76,7 +76,12 @@ export function PageConfiguration({ appName }: { appName: string }) {
               <Typography variant="h4">GitHub</Typography>
               <Typography>
                 Cloned from{' '}
-                <Typography link href={registration.repository}>
+                <Typography
+                  link
+                  href={registration.repository}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
                   {registration.repository}
                 </Typography>
               </Typography>
