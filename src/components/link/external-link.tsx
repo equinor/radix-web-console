@@ -1,6 +1,17 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { type IconData, external_link } from '@equinor/eds-icons';
 import type { FunctionComponent, PropsWithChildren } from 'react';
+
+const ToolTipWrapper: FunctionComponent<
+  PropsWithChildren<{ toolTip?: string }>
+> = ({ toolTip, children }) =>
+  toolTip ? (
+    <Tooltip title={toolTip}>
+      <span>{children}</span>
+    </Tooltip>
+  ) : (
+    <>{children}</>
+  );
 
 export const ExternalLink: FunctionComponent<
   PropsWithChildren<{
@@ -8,6 +19,8 @@ export const ExternalLink: FunctionComponent<
     icon?: IconData;
     color?: string;
     className?: string;
+    toolTip?: string;
+    title?: string;
   }>
 > = ({
   href,
@@ -15,15 +28,20 @@ export const ExternalLink: FunctionComponent<
   icon = external_link,
   className = 'whitespace-nowrap',
   color,
+  toolTip,
+  title,
 }) => (
-  <Typography
-    link
-    href={href}
-    rel="noopener noreferrer"
-    target="_blank"
-    color={color}
-    className={className}
-  >
-    {children} {icon && <Icon data={icon} size={16} />}
-  </Typography>
+  <ToolTipWrapper toolTip={toolTip}>
+    <Typography
+      link
+      href={href}
+      rel="noopener noreferrer"
+      target="_blank"
+      color={color}
+      className={className}
+      title={title}
+    >
+      {children} {icon && <Icon data={icon} size={16} />}
+    </Typography>
+  </ToolTipWrapper>
 );

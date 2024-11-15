@@ -1,6 +1,5 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';
+import { ExternalLink } from '../link/external-link';
 
 export interface EnvironmentComponentProps {
   url: string;
@@ -10,8 +9,6 @@ export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({
   url,
 }) => (
   <>
-    <Typography link href={`https://${url}`}>
-      {url} <Icon data={external_link} size={16} />
-    </Typography>
+    <ExternalLink href={`https://${url}`}>{url}</ExternalLink>
   </>
 );

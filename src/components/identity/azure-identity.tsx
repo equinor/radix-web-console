@@ -6,6 +6,7 @@ import type { FunctionComponent } from 'react';
 import { externalUrls } from '../../externalUrls';
 import { Alert } from '../alert';
 import { CompactCopyButton } from '../compact-copy-button';
+import { ExternalLink } from '../link/external-link';
 
 export interface AzureIdentityProps {
   oidcIssuerUrl: string;
@@ -20,14 +21,9 @@ const WorkloadIdentityHelp: FunctionComponent = () => (
     <div>
       <Typography as="span">
         Please refer to guide{' '}
-        <Typography
-          link
-          href={externalUrls.workloadIdentityGuide}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <ExternalLink href={externalUrls.workloadIdentityGuide}>
           Configure Workload Identity
-        </Typography>{' '}
+        </ExternalLink>{' '}
         for information about configuration and troubleshooting
       </Typography>
     </div>

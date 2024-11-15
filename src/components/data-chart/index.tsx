@@ -7,6 +7,7 @@ import './style.css';
 import type { ChartWrapperOptions } from 'react-google-charts/dist/types';
 import { externalUrls } from '../../externalUrls';
 import { useGetUptimeQuery } from '../../store/uptime-api';
+import { ExternalLink } from '../link/external-link';
 
 export const AvailabilityCharts = () => {
   const { data: uptime, isLoading, isError } = useGetUptimeQuery();
@@ -62,14 +63,10 @@ export const AvailabilityCharts = () => {
         <div className="chart-container grid grid--gap-medium">
           <Typography>
             For more information on availability, please check the{' '}
-            <Typography
-              link
-              href={externalUrls.uptimeDocs}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              documentation.
-            </Typography>
+            <ExternalLink href={externalUrls.uptimeDocs}>
+              documentation
+            </ExternalLink>
+            .
           </Typography>
 
           {visibleScrim && uptime.length > 0 ? (

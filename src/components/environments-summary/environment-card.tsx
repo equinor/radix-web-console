@@ -33,6 +33,7 @@ import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { getAppDeploymentUrl } from '../../utils/routing';
 
 type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
 
@@ -59,22 +60,24 @@ const DeploymentDetails: FunctionComponent<{
       </Typography>
     </Button>
   ) : (
-    <Button
-      className="button_link"
-      variant="ghost"
-      href={routeWithParams(routes.appDeployment, {
-        appName: appName,
-        deploymentName: deployment.name,
-      })}
+    <Typography
+      as={Link}
+      to={getAppDeploymentUrl(appName, deployment.name)}
+      link
+      token={{ textDecoration: 'none' }}
     >
-      <Icon data={send} />
-      <Typography group="navigation" variant="button" color="primary">
-        deployment{' '}
-        <Typography group="navigation" variant="button" as="span" color="gray">
-          (<RelativeToNow time={new Date(deployment.activeFrom)} />)
-        </Typography>
-      </Typography>
-    </Button>
+      <span className="o-key-values">
+        <Icon data={send} />
+        <span>
+          <Typography as="span" color="primary">
+            deployment{' '}
+          </Typography>
+          <Typography as="span" color="gray">
+            (<RelativeToNow time={new Date(deployment.activeFrom)} />)
+          </Typography>
+        </span>
+      </span>
+    </Typography>
   );
 
 function CardContentBuilder(

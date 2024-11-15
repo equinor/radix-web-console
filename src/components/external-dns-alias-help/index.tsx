@@ -4,6 +4,7 @@ import type { FunctionComponent } from 'react';
 
 import { externalUrls } from '../../externalUrls';
 import { Alert } from '../alert';
+import { ExternalLink } from '../link/external-link';
 
 export const ExternalDnsAliasHelp: FunctionComponent = () => (
   <Alert className="icon">
@@ -11,14 +12,9 @@ export const ExternalDnsAliasHelp: FunctionComponent = () => (
     <div>
       <Typography>
         Please refer to guide{' '}
-        <Typography
-          link
-          href={externalUrls.externalDNSGuide}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
+        <ExternalLink href={externalUrls.externalDNSGuide}>
           Configure External DNS Alias
-        </Typography>{' '}
+        </ExternalLink>{' '}
         for information about configuration and troubleshooting
       </Typography>
     </div>

@@ -4,23 +4,16 @@ import { linkToGitHubTag } from '../../utils/string';
 import { ScrimPopup } from '../scrim-popup';
 
 import './style.css';
+import { ExternalLink } from '../link/external-link';
 
 const Tag: FunctionComponent<{
   repository: string;
   tag: string;
   tagTitle: string;
 }> = ({ repository, tag, tagTitle }) => (
-  <Typography
-    token={{ textDecoration: 'none' }}
-    {...(repository && {
-      link: true,
-      href: linkToGitHubTag(repository, tag),
-      rel: 'noopener noreferrer',
-      target: '_blank',
-    })}
-  >
+  <ExternalLink href={linkToGitHubTag(repository, tag)} icon={null}>
     <div className="tags">{tagTitle}</div>
-  </Typography>
+  </ExternalLink>
 );
 
 const ShortenedTag: FunctionComponent<{ repository: string; tag: string }> = ({
