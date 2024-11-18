@@ -31,29 +31,6 @@
   padding: 0 var(--eds_spacing_medium);
   margin-bottom: var(--eds_spacing_medium);
 }
-.env_card_content > .button_link {
-  padding: initial;
-}
-.env_card_content > .button_link > span {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  grid-gap: var(--eds_spacing_small);
-  align-items: center;
-  text-align: left;
-}
-.env_card_content > .button_link .error {
-  fill: var(--eds_interactive_danger__resting);
-  z-index: 1;
-}
-.env_card_content > .button_link .component_details {
-  display: block;
-  white-space: nowrap;
-}
-.env_card_content .env_actions {
-  display: grid;
-  grid-auto-flow: column;
-  grid-gap: var(--eds_spacing_small);
-}
 
 .env_card_tags {
   align-items: center;

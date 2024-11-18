@@ -1,4 +1,4 @@
-import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { github, link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import type React from 'react';
@@ -53,12 +53,13 @@ const DeploymentDetails: FunctionComponent<{
   deployment: Readonly<DeploymentSummary>;
 }> = ({ appName, deployment }) =>
   !deployment ? (
-    <Button className="button_link" variant="ghost" disabled>
-      <Icon data={send} />{' '}
-      <Typography group="navigation" variant="button" color="inherit">
-        No active deployment
-      </Typography>
-    </Button>
+    <Typography
+      color="disabled"
+      className="grid grid--auto-columns grid--gap-small grid--align-center"
+    >
+      <Icon data={link} />
+      No active deployment
+    </Typography>
   ) : (
     <Typography
       as={Link}
@@ -66,16 +67,14 @@ const DeploymentDetails: FunctionComponent<{
       link
       token={{ textDecoration: 'none' }}
     >
-      <span className="o-key-values">
+      <span className="grid grid--auto-columns grid--gap-small grid--align-center">
         <Icon data={send} />
-        <span>
-          <Typography as="span" color="primary">
-            deployment{' '}
-          </Typography>
+        <Typography as="span" color="primary">
+          deployment{' '}
           <Typography as="span" color="gray">
             (<RelativeToNow time={new Date(deployment.activeFrom)} />)
           </Typography>
-        </span>
+        </Typography>
       </span>
     </Typography>
   );
@@ -162,12 +161,13 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
     ? {
         header: <></>,
         body: (
-          <Button className="button_link" variant="ghost" disabled>
-            <Icon data={link} />{' '}
-            <Typography group="navigation" variant="button" color="inherit">
-              No link available
-            </Typography>
-          </Button>
+          <Typography
+            color="disabled"
+            className="grid grid--auto-columns grid--gap-small grid--align-center"
+          >
+            <Icon data={link} />
+            No link available
+          </Typography>
         ),
       }
     : CardContentBuilder(appName, env.name, deployment.name);

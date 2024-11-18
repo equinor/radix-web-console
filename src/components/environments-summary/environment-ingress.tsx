@@ -1,4 +1,4 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { type IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
@@ -34,7 +34,7 @@ const ComponentDetails: FunctionComponent<{
   icon: IconData;
   component: Readonly<Component>;
 }> = ({ icon, component }) => (
-  <span className="o-key-values">
+  <span className="grid grid--auto-columns grid--gap-small grid--align-center">
     <Icon data={icon} />
     <Typography
       as="span"
@@ -82,17 +82,21 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
           <ExternalLink
             key={component.name}
             href={`https://${component.variables[URL_VAR_NAME]}`}
-            icon={null}
+            className="grid grid--auto-columns grid--gap-x-small grid--align-center"
           >
             <ComponentDetails icon={link} component={component} />
           </ExternalLink>
         ))
       ) : (
-        <Button variant="ghost" className="button_link" disabled>
-          <span>
-            <Icon data={link} /> No link available
-          </span>
-        </Button>
+        <span>
+          <Typography
+            color="disabled"
+            className="grid grid--auto-columns grid--gap-small grid--align-center"
+          >
+            <Icon data={link} />
+            No link available
+          </Typography>
+        </span>
       )}
       {comps.passive
         .filter(({ status }) => status === 'Outdated')
