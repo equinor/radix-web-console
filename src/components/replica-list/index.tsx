@@ -1,7 +1,6 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import {
   Fragment,
   type FunctionComponent,
@@ -121,13 +120,10 @@ export const ReplicaList: FunctionComponent<{
                   <ReplicaStatusBadge status={replica.replicaStatus?.status} />
                 </Table.Cell>
                 <Table.Cell>
-                  <RelativeToNow time={new Date(replica.created)} />
+                  <RelativeToNow time={replica.created} />
                 </Table.Cell>
                 <Table.Cell>
-                  <Duration
-                    start={new Date(replica.created)}
-                    end={lastUpdate}
-                  />
+                  <Duration start={replica.created} end={lastUpdate} />
                 </Table.Cell>
               </Table.Row>
               {expanded && (
@@ -145,11 +141,4 @@ export const ReplicaList: FunctionComponent<{
       </Table.Body>
     </Table>
   );
-};
-
-ReplicaList.propTypes = {
-  replicaList: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ReplicaSummary>
-  ).isRequired,
-  replicaUrlFunc: PropTypes.func.isRequired,
 };

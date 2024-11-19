@@ -6,9 +6,9 @@ import type { Application } from '../../store/service-now-api';
 import { configVariables } from '../../utils/config';
 
 export interface ConfigurationItemPopoverProps {
-  open?: boolean;
+  open: boolean;
   onClose: () => unknown;
-  anchorEl: HTMLElement;
+  anchorEl?: HTMLElement;
   configurationItem: Application;
 }
 

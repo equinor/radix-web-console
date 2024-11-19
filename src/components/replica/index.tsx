@@ -1,5 +1,4 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -196,14 +195,14 @@ const ReplicaLog = ({
           </Accordion.Header>
           <Accordion.Panel>
             <Code copy autoscroll resizable download downloadCb={downloadCb}>
-              {log || logState?.data}
+              {(log || logState?.data) ?? ''}
             </Code>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
       <Code copy autoscroll resizable download downloadCb={downloadCb}>
-        {log || logState?.data}
+        {(log || logState?.data) ?? ''}
       </Code>
     )}
   </>

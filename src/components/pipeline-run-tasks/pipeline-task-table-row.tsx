@@ -27,7 +27,7 @@ export function PipelineTaskTableRow({
   return (
     <Table.Row>
       <Table.Cell>
-        {pipelineRunName?.length > 0 && (
+        {pipelineRunName && pipelineRunName.length > 0 && (
           <Typography
             link
             as={Link}

@@ -31,10 +31,14 @@ export interface StepLogsProps {
   end?: string;
 }
 
-function findContainer(data: ModelsInventoryResponse, stepName: string) {
+function findContainer(
+  data: ModelsInventoryResponse,
+  stepName: string
+): BrandedContainerModel | null {
   for (const replica of data?.replicas ?? []) {
-    for (const container of replica.containers) {
+    for (const container of replica.containers ?? []) {
       if (container.name === stepName) {
+        // @ts-expect-error replica.name is optional, but will always be set
         return { ...container, parentId: replica.name };
       }
     }
@@ -49,7 +53,7 @@ function HistoricalLog({
   start,
   end,
 }: StepLogsProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const { container, ...state } = useGetPipelineJobInventoryQuery(
     { appName, pipelineJobName: jobName, start, end },
     {
@@ -93,12 +97,13 @@ function ContainerLog({
   start,
   end,
 }: ContainerLogProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const { data, ...state } = useGetPipelineJobContainerLogQuery(
     {
       appName,
       pipelineJobName: jobName,
       replicaName: parentId,
+      //@ts-expect-error id is probably always set
       containerId: id,
       start,
       end,

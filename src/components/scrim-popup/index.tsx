@@ -24,7 +24,12 @@ export const ScrimPopup: FunctionComponent<
   PropsWithChildren<ScrimPopupProps>
 > = ({ className, title, children, open, onClose, isDismissable }) => (
   <Scrim open={open} {...(isDismissable && { isDismissable, onClose })}>
-    <div className={clsx('scrim-dialog', { [className]: !!className })}>
+    <div
+      className={clsx(
+        'scrim-dialog',
+        className ? { [className]: !!className } : undefined
+      )}
+    >
       <div className="dialog-header">
         {typeof title === 'string' || typeof title === 'number' ? (
           <Typography variant="h5">{title}</Typography>

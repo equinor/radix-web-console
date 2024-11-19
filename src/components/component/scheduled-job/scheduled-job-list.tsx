@@ -135,7 +135,7 @@ export const ScheduledJobList: FunctionComponent<{
           false,
           () => !!statusSort
         ),
-    ]).filter(IsActuallJob);
+    ]);
   }, [dateSort, scheduledJobList, statusSort]);
 
   return (
@@ -384,17 +384,3 @@ export const ScheduledJobList: FunctionComponent<{
     </Accordion>
   );
 };
-
-type ActuallJob = ScheduledJobSummary & {
-  created: string;
-  name: string;
-  deploymentName: string;
-};
-
-function IsActuallJob(x: ScheduledJobSummary): x is ActuallJob {
-  return (
-    typeof x.name === 'string' &&
-    typeof x.deploymentName === 'string' &&
-    typeof x.created === 'string'
-  );
-}
