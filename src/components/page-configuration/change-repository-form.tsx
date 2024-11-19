@@ -25,6 +25,7 @@ import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ExternalLink } from '../link/external-link';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
@@ -152,26 +153,16 @@ export function ChangeRepositoryForm({
                   <List variant="numbered">
                     <List.Item>
                       Open the{' '}
-                      <Typography
-                        link
-                        href={`${repository}/settings/keys`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
+                      <ExternalLink href={`${repository}/settings/keys`}>
                         Deploy Key page
-                      </Typography>{' '}
+                      </ExternalLink>{' '}
                       to delete the Deploy Key from the previous repository
                     </List.Item>
                     <List.Item>
                       Open the{' '}
-                      <Typography
-                        link
-                        href={`${repository}/settings/keys/new`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
+                      <ExternalLink href={`${repository}/settings/keys/new`}>
                         Add New Deploy Key
-                      </Typography>{' '}
+                      </ExternalLink>{' '}
                       and follow the steps below
                     </List.Item>
                   </List>
@@ -198,26 +189,16 @@ export function ChangeRepositoryForm({
                   <List variant="numbered" start="6">
                     <List.Item>
                       Open the{' '}
-                      <Typography
-                        link
-                        href={`${repository}/settings/hooks`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
+                      <ExternalLink href={`${repository}/settings/hooks`}>
                         Webhook page
-                      </Typography>{' '}
+                      </ExternalLink>{' '}
                       of the previous repository and delete the existing Webhook
                     </List.Item>
                     <List.Item>
                       Open the{' '}
-                      <Typography
-                        link
-                        href={`${repository}/settings/hooks/new`}
-                        rel="noopener noreferrer"
-                        target="_blank"
-                      >
+                      <ExternalLink href={`${repository}/settings/hooks/new`}>
                         Add Webhook page
-                      </Typography>{' '}
+                      </ExternalLink>{' '}
                       and follow the steps below
                     </List.Item>
                   </List>

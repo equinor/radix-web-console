@@ -7,7 +7,12 @@ import { EnvironmentCard } from './environment-card';
 import { externalUrls } from '../../externalUrls';
 import type { EnvironmentSummary } from '../../store/radix-api';
 
+import { Link } from 'react-router-dom';
+import { routes } from '../../routes';
+import { routeWithParams } from '../../utils/string';
+
 import './style.css';
+import { ExternalLink } from '../link/external-link';
 
 export interface EnvironmentsSummaryProps {
   appName: string;
@@ -24,18 +29,29 @@ export const EnvironmentsSummary: FunctionComponent<
         <EnvironmentCard key={i} {...{ appName, env, repository }} />
       ))
     ) : (
-      <Typography>
-        <strong>No environments.</strong> Please run a pipeline job to deploy
-        one or define at least one environment in{' '}
-        <Typography
-          link
-          href={externalUrls.referenceRadixConfig}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          radixconfig.yaml
+      <span>
+        <Typography bold>No enironments.</Typography>
+        <Typography>
+          Please run the{' '}
+          <Typography
+            as={Link}
+            to={routeWithParams(
+              routes.appJobNew,
+              {
+                appName: appName,
+              },
+              { pipeline: 'apply-config' }
+            )}
+            link
+          >
+            apply-config
+          </Typography>{' '}
+          pipeline job to apply{' '}
+          <ExternalLink href={externalUrls.referenceRadixConfig}>
+            radixconfig.yaml
+          </ExternalLink>
         </Typography>
-      </Typography>
+      </span>
     )}
   </div>
 );

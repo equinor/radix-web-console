@@ -1,5 +1,5 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { external_link, send } from '@equinor/eds-icons';
+import { send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
@@ -101,9 +101,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
                   Type of job
                   <TableSortIcon direction={pipelineSort} />
                 </Table.Cell>
-                <Table.Cell>
-                  Github commit <Icon data={external_link} />
-                </Table.Cell>
+                <Table.Cell>Github commit</Table.Cell>
                 <Table.Cell>Promoted from</Table.Cell>
               </Table.Row>
             </Table.Head>

@@ -1,4 +1,4 @@
-import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { github, link, send } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import type React from 'react';
@@ -33,6 +33,7 @@ import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { getAppDeploymentUrl } from '../../utils/routing';
 
 type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
 
@@ -52,29 +53,30 @@ const DeploymentDetails: FunctionComponent<{
   deployment: Readonly<DeploymentSummary>;
 }> = ({ appName, deployment }) =>
   !deployment ? (
-    <Button className="button_link" variant="ghost" disabled>
-      <Icon data={send} />{' '}
-      <Typography group="navigation" variant="button" color="inherit">
-        No active deployment
-      </Typography>
-    </Button>
-  ) : (
-    <Button
-      className="button_link"
-      variant="ghost"
-      href={routeWithParams(routes.appDeployment, {
-        appName: appName,
-        deploymentName: deployment.name,
-      })}
+    <Typography
+      color="disabled"
+      className="grid grid--auto-columns grid--gap-small grid--align-center"
     >
-      <Icon data={send} />
-      <Typography group="navigation" variant="button" color="primary">
-        deployment{' '}
-        <Typography group="navigation" variant="button" as="span" color="gray">
-          (<RelativeToNow time={new Date(deployment.activeFrom)} />)
+      <Icon data={link} />
+      No active deployment
+    </Typography>
+  ) : (
+    <Typography
+      as={Link}
+      to={getAppDeploymentUrl(appName, deployment.name)}
+      link
+      token={{ textDecoration: 'none' }}
+    >
+      <span className="grid grid--auto-columns grid--gap-small grid--align-center">
+        <Icon data={send} />
+        <Typography as="span" color="primary">
+          deployment{' '}
+          <Typography as="span" color="gray">
+            (<RelativeToNow time={new Date(deployment.activeFrom)} />)
+          </Typography>
         </Typography>
-      </Typography>
-    </Button>
+      </span>
+    </Typography>
   );
 
 function CardContentBuilder(
@@ -159,12 +161,13 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
     ? {
         header: <></>,
         body: (
-          <Button className="button_link" variant="ghost" disabled>
-            <Icon data={link} />{' '}
-            <Typography group="navigation" variant="button" color="inherit">
-              No link available
-            </Typography>
-          </Button>
+          <Typography
+            color="disabled"
+            className="grid grid--auto-columns grid--gap-small grid--align-center"
+          >
+            <Icon data={link} />
+            No link available
+          </Typography>
         ),
       }
     : CardContentBuilder(appName, env.name, deployment.name);

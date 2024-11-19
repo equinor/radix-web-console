@@ -5,11 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
 import type { DeploymentSummary } from '../../store/radix-api';
-import {
-  linkToGitHubCommit,
-  routeWithParams,
-  smallDeploymentName,
-} from '../../utils/string';
+import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import { CommitHash } from '../commit-hash';
 import { StatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -75,16 +71,7 @@ export const DeploymentSummaryTableRow: FunctionComponent<
       )}
       <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
-        <Typography
-          {...(repo && {
-            link: true,
-            href: `${linkToGitHubCommit(repo, commitHash)}`,
-            rel: 'noopener noreferrer',
-            target: '_blank',
-          })}
-        >
-          <CommitHash commit={commitHash} />
-        </Typography>
+        <CommitHash commit={commitHash} repo={repo} />
       </Table.Cell>
       <Table.Cell>
         <Typography as={Link} to={promotedFromLink} link>

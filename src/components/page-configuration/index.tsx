@@ -21,6 +21,7 @@ import { DocumentTitle } from '../document-title';
 import './style.css';
 import { pollingInterval } from '../../store/defaults';
 import { type ApplicationRegistration, radixApi } from '../../store/radix-api';
+import { ExternalLink } from '../link/external-link';
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
 }
@@ -76,21 +77,21 @@ export function PageConfiguration({ appName }: { appName: string }) {
               <Typography variant="h4">GitHub</Typography>
               <Typography>
                 Cloned from{' '}
-                <Typography link href={registration.repository}>
+                <ExternalLink href={registration.repository}>
                   {registration.repository}
-                </Typography>
+                </ExternalLink>
               </Typography>
               <Typography>
                 Config branch{' '}
-                <Typography link href={getConfigBranchUrl(registration)}>
+                <ExternalLink href={getConfigBranchUrl(registration)}>
                   {getConfigBranch(registration.configBranch)}
-                </Typography>
+                </ExternalLink>
               </Typography>
               <Typography>
                 Config file{' '}
-                <Typography link href={getConfigFileUrl(registration)}>
+                <ExternalLink href={getConfigFileUrl(registration)}>
                   {getRadixConfigFullName(registration.radixConfigFullName)}
-                </Typography>
+                </ExternalLink>
               </Typography>
               <ConfigureApplicationGithub
                 refetch={refetch}

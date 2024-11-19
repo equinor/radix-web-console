@@ -28,6 +28,7 @@ import {
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { ExternalLink } from '../link/external-link';
 import { ScrimPopup } from '../scrim-popup';
 
 const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
@@ -91,14 +92,9 @@ export const ConfigureApplicationGithub = ({
               <div className="grid grid--gap-medium">
                 <Typography>
                   This allows Radix to clone the repository. Open the{' '}
-                  <Typography
-                    link
-                    href={`${app.repository}/settings/keys/new`}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
+                  <ExternalLink href={`${app.repository}/settings/keys/new`}>
                     Add New Deploy Key page
-                  </Typography>{' '}
+                  </ExternalLink>{' '}
                   and follow the steps below
                 </Typography>
                 <div className="grid grid--gap-medium o-body-text">
@@ -197,7 +193,7 @@ export const ConfigureApplicationGithub = ({
               checked={useOtherCiTool}
               onChange={() => setUseOtherCiTool(!useOtherCiTool)}
             />{' '}
-            <span>
+            <span className="grid grid--gap-small">
               <Typography
                 className="label"
                 group="input"
@@ -206,26 +202,14 @@ export const ConfigureApplicationGithub = ({
               >
                 Use other CI tool than Radix
               </Typography>
-              <Typography
-                group="navigation"
-                variant="label"
-                token={{ color: 'currentColor' }}
-              >
+              <Typography token={{ color: 'currentColor' }}>
                 Select this option if your project is hosted on multiple
                 repositories and/or requires external control of building. Radix
                 will no longer need a webhook and will instead deploy your app
-                through the API/CLI.
-                <br />
-                See{' '}
-                <Typography
-                  link
-                  href={externalUrls.deployOnlyGuide}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  token={{ fontSize: 'inherit' }}
-                >
+                through the API/CLI. Read the{' '}
+                <ExternalLink href={externalUrls.deployOnlyGuide}>
                   Deployment Guide
-                </Typography>{' '}
+                </ExternalLink>{' '}
                 for details.
               </Typography>
             </span>
@@ -245,14 +229,9 @@ export const ConfigureApplicationGithub = ({
                   <Typography>
                     GitHub notifies Radix using a webhook whenever a code push
                     is made. Open the{' '}
-                    <Typography
-                      link
-                      href={`${app.repository}/settings/hooks/new`}
-                      rel="noopener noreferrer"
-                      target="_blank"
-                    >
+                    <ExternalLink href={`${app.repository}/settings/hooks/new`}>
                       Add Webhook page
-                    </Typography>{' '}
+                    </ExternalLink>{' '}
                     and follow the steps below
                   </Typography>
                   <div className="grid grid--gap-medium o-body-text">
