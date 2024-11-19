@@ -1,10 +1,13 @@
 import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { type IconData, external_link } from '@equinor/eds-icons';
-import type { FunctionComponent, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
-const ToolTipWrapper: FunctionComponent<
-  PropsWithChildren<{ toolTip?: string }>
-> = ({ toolTip, children }) =>
+type ToolTipWrapperProps = { toolTip?: string };
+
+const ToolTipWrapper = ({
+  toolTip,
+  children,
+}: PropsWithChildren<ToolTipWrapperProps>) =>
   toolTip ? (
     <Tooltip title={toolTip}>
       <span>{children}</span>
@@ -13,16 +16,16 @@ const ToolTipWrapper: FunctionComponent<
     <>{children}</>
   );
 
-export const ExternalLink: FunctionComponent<
-  PropsWithChildren<{
-    href: string;
-    icon?: IconData;
-    color?: string;
-    className?: string;
-    toolTip?: string;
-    title?: string;
-  }>
-> = ({
+type ExternalLinkProps = {
+  href: string;
+  icon?: IconData;
+  color?: string;
+  className?: string;
+  toolTip?: string;
+  title?: string;
+};
+
+export const ExternalLink = ({
   href,
   children,
   icon = external_link,
@@ -30,7 +33,7 @@ export const ExternalLink: FunctionComponent<
   color,
   toolTip,
   title,
-}) => (
+}: PropsWithChildren<ExternalLinkProps>) => (
   <ToolTipWrapper toolTip={toolTip}>
     <Typography
       link

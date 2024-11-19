@@ -1,18 +1,20 @@
 import { Icon } from '@equinor/eds-core-react';
 import { github } from '@equinor/eds-icons';
-import type { FunctionComponent, PropsWithChildren } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { smallGithubCommitHash } from '../../utils/string';
 import { ExternalLink } from '../link/external-link';
 
-export interface CommitHashProps {
+type CommitHashProps = {
   commit: string;
   repo?: string;
-}
+};
 
-const ExternalLinkWrapper: FunctionComponent<
-  PropsWithChildren<CommitHashProps>
-> = ({ repo, commit, children }) =>
+const ExternalLinkWrapper = ({
+  repo,
+  commit,
+  children,
+}: PropsWithChildren<CommitHashProps>) =>
   repo ? (
     <ExternalLink
       href={`${repo}/commit/${commit}`}
@@ -24,10 +26,7 @@ const ExternalLinkWrapper: FunctionComponent<
     <>{children}</>
   );
 
-export const CommitHash: FunctionComponent<CommitHashProps> = ({
-  repo,
-  commit,
-}) =>
+export const CommitHash = ({ repo, commit }: CommitHashProps) =>
   commit?.length > 0 ? (
     <ExternalLinkWrapper {...{ repo, commit }}>
       {repo && <Icon data={github} size={18} />} {smallGithubCommitHash(commit)}
