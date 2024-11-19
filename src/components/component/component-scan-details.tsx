@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { isNil } from 'lodash';
+import { isNil } from 'lodash-es';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 

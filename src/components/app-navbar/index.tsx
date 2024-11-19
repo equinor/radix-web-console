@@ -28,7 +28,7 @@ import {
 import { AppBadge } from '../app-badge';
 
 import './style.css';
-import { uniq } from 'lodash';
+import { uniq } from 'lodash-es';
 import useLocalStorage from '../../effects/use-local-storage';
 
 type NavbarLinkItem = {

@@ -13,7 +13,6 @@ import {
   stop,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -29,10 +28,10 @@ import {
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledBatchName } from '../../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
@@ -54,7 +53,7 @@ type Props = {
   envName: string;
   jobComponentName: string;
   scheduledBatchList?: Array<ScheduledBatchSummary>;
-  fetchBatches?: () => void;
+  fetchBatches?: () => unknown;
 };
 
 export function ScheduledBatchList({
@@ -66,8 +65,8 @@ export function ScheduledBatchList({
 }: Props) {
   const [deleteBatch] = useDeleteBatchMutation();
   const [stopBatch] = useStopBatchMutation();
-  const [dateSort, setDateSort] = useState<sortDirection>();
-  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>();
+  const [statusSort, setStatusSort] = useState<SortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [visibleRestartScrims, setVisibleRestartScrims] = useState<
     Record<string, boolean>
@@ -203,14 +202,11 @@ export function ScheduledBatchList({
                             <BatchJobStatuses jobs={batch.jobList} />
                           </Table.Cell>
                           <Table.Cell>
-                            <RelativeToNow
-                              time={new Date(batch.created)}
-                              capitalize
-                            />
+                            <RelativeToNow time={batch.created} capitalize />
                           </Table.Cell>
                           <Table.Cell>
                             <Duration
-                              start={new Date(batch.created)}
+                              start={batch.created}
                               end={
                                 batch.ended ? new Date(batch.ended) : new Date()
                               }
@@ -318,13 +314,3 @@ export function ScheduledBatchList({
     </Accordion>
   );
 }
-
-ScheduledBatchList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  scheduledBatchList: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ScheduledBatchSummary>
-  ),
-  fetchBatches: PropTypes.func,
-};

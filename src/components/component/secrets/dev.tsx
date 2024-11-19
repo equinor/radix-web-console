@@ -5,7 +5,6 @@ import { Fragment } from 'react';
 import { SecretOverview } from './secret-overview';
 
 import type {
-  ChangeComponentSecretApiResponse,
   GetEnvironmentApiArg,
   GetEnvironmentApiResponse,
 } from '../../../store/radix-api';
@@ -39,13 +38,14 @@ new Server({
         testData.find(
           ({ name }) =>
             name === (request.params as GetEnvironmentApiArg).envName
-        )
+        )!
     );
 
     // Mock response for ChangeComponentSecret
     this.put(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/secrets/:secretName',
-      (): ChangeComponentSecretApiResponse => void 0
+      // @ts-expect-error we dont care
+      () => undefined
     );
   },
 });
@@ -61,12 +61,12 @@ export default (
       <Fragment key={i}>
         <Typography variant="h1_bold">TestData "{name}"</Typography>
         <div className="o-layout-constrained" style={{ margin: 'auto' }}>
-          {secrets.map(({ name: secretName, component }, j) => (
+          {secrets!.map(({ name: secretName, component }, j) => (
             <SecretOverview
               key={j}
               appName={`testData_${i}`}
-              envName={name}
-              componentName={component}
+              envName={name!}
+              componentName={component!}
               secretName={secretName}
             />
           ))}

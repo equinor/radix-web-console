@@ -11,10 +11,10 @@ import {
   useGetApplicationQuery,
 } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
@@ -37,9 +37,9 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   const repo = data?.registration.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  const [envSort, setEnvSort] = useState<sortDirection>();
-  const [pipelineSort, setPipelineSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
+  const [envSort, setEnvSort] = useState<SortDirection>();
+  const [pipelineSort, setPipelineSort] = useState<SortDirection>();
 
   useEffect(() => {
     setSortedData(

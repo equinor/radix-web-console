@@ -1,5 +1,5 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { upperFirst } from 'lodash';
+import { upperFirst } from 'lodash-es';
 import * as PropTypes from 'prop-types';
 import {
   Fragment,

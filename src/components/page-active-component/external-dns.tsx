@@ -5,13 +5,7 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import {
-  type ChangeEvent,
-  type FunctionComponent,
-  useMemo,
-  useState,
-} from 'react';
+import { type ChangeEvent, type FunctionComponent, useState } from 'react';
 
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -40,10 +34,7 @@ const TlsEditForm: FunctionComponent<{
 }> = ({ appName, envName, componentName, fqdn, onSaveSuccess }) => {
   const [{ certificate, privateKey }, setTlsData] = useState<TlsData>({});
   const [skipValidation, setSkipValidation] = useState(false);
-  const tlsDataIsValid = useMemo(
-    () => certificate?.length > 0 && privateKey?.length > 0,
-    [certificate, privateKey]
-  );
+  const tlsDataIsValid = certificate && privateKey;
   const { refetch } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
@@ -59,7 +50,9 @@ const TlsEditForm: FunctionComponent<{
       componentName,
       fqdn: fqdn,
       updateExternalDnsTlsRequest: {
+        // @ts-expect-error save button is disabled if certificate is missing
         certificate,
+        // @ts-expect-error save button is disabled if privateKey is missing
         privateKey,
         skipValidation,
       },
@@ -185,13 +178,4 @@ export const ExternalDNSAccordion: FunctionComponent<{
       )}
     </>
   );
-};
-
-ExternalDNSAccordion.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  externalDNSList: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ExternalDns>
-  ),
 };

@@ -9,9 +9,9 @@ import {
 
 import type { Secret } from '../../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareString,
-  type sortDirection,
 } from '../../../utils/sort-utils';
 import { ScrimPopup } from '../../scrim-popup';
 import { ComponentSecretStatusBadge } from '../../status-badges';
@@ -81,8 +81,8 @@ function getDisplayName({
 
 function useGetSortedSecrets(
   secrets: Array<Secret>,
-  nameSort?: sortDirection | null,
-  resourceSort?: sortDirection | null
+  nameSort?: SortDirection | null,
+  resourceSort?: SortDirection | null
 ): Array<Secret> {
   const [sortedData, setSortedData] = useState(secrets);
 

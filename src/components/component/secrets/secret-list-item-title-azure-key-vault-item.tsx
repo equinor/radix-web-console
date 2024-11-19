@@ -23,11 +23,11 @@ function consumerSecretName(
   batchName?: string,
   jobName?: string
 ): string {
-  if (batchName?.length > 0) {
+  if (batchName && batchName.length > 0) {
     // show only first secret-version entry for pods of this batch
     return `batch: ${smallScheduledBatchName(batchName)}`;
   }
-  if (jobName?.length > 0) {
+  if (jobName && jobName.length > 0) {
     return `job: ${smallScheduledJobName(jobName)}`;
   }
   if (replicaName.toLowerCase() === 'new jobs') {
@@ -44,11 +44,11 @@ const ConsumerSecretCreated: FunctionComponent<AzureKeyVaultSecretVersion> = ({
   jobCreated,
   jobName,
 }) => {
-  if (batchName?.length > 0) {
-    return <Duration start={new Date(batchCreated)} end={new Date()} />;
+  if (batchName && batchName.length > 0) {
+    return <Duration start={batchCreated} end={new Date()} />;
   }
-  if (jobName?.length > 0) {
-    return <Duration start={new Date(jobCreated)} end={new Date()} />;
+  if (jobName && jobName.length > 0) {
+    return <Duration start={jobCreated} end={new Date()} />;
   }
   if (replicaName.toLowerCase() === 'new jobs') {
     return <></>;
@@ -72,7 +72,7 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
       appName,
       envName,
       componentName,
-      azureKeyVaultName: secret.resource,
+      azureKeyVaultName: secret.resource!,
       secretName: secret.id,
     },
     {

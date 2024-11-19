@@ -1,6 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { AlertingActions } from './alerting-actions';
@@ -35,7 +34,7 @@ export const Alerting = ({
     {}
   );
   const onSave = async () => {
-    const config: UpdateAlertingConfig = buildEditConfig(alertingConfig);
+    const config = buildEditConfig(alertingConfig);
     Object.entries(changedReceivers).forEach(([receiver, url]) => {
       config.receiverSecrets[receiver] = { slackConfig: { webhookUrl: url } };
     });
@@ -88,12 +87,4 @@ export const Alerting = ({
       />
     </div>
   );
-};
-
-Alerting.propTypes = {
-  isSaving: PropTypes.bool.isRequired,
-  alertingConfig: PropTypes.object.isRequired,
-  enableAlerting: PropTypes.func.isRequired,
-  updateAlerting: PropTypes.func.isRequired,
-  disableAlerting: PropTypes.func.isRequired,
 };

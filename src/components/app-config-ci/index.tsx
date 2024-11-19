@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { debounce } from 'lodash';
+import { debounce } from 'lodash-es';
 import * as PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
 import type { MultiValue, SingleValue } from 'react-select';

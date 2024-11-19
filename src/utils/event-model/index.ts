@@ -41,8 +41,8 @@ function getWarningStateHandler({
   involvedObjectKind,
   reason,
 }: Readonly<Event>) {
-  return warningStateHandler[involvedObjectKind?.toLowerCase()]?.[
-    reason?.toLowerCase()
+  return warningStateHandler[involvedObjectKind?.toLowerCase() ?? 'unknown']?.[
+    reason?.toLowerCase() ?? 'unknown'
   ];
 }
 

@@ -20,9 +20,9 @@ import {
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
@@ -70,7 +70,7 @@ export function ComponentReplicaLogAccordion({
     { skip: !appName || !envName || !componentName, pollingInterval }
   );
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const expandRow = useCallback<(name: string) => void>(

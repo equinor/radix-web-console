@@ -12,7 +12,7 @@ import {
   stop,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { upperFirst } from 'lodash';
+import { upperFirst } from 'lodash-es';
 import type React from 'react';
 import { type FunctionComponent, useRef, useState } from 'react';
 

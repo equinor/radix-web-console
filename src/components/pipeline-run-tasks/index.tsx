@@ -7,9 +7,9 @@ import type {
   PipelineRunTask as PipelineRunTaskModel,
 } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
@@ -33,7 +33,7 @@ export function PipelineRunTasks({
 }: Props) {
   const [sortedData, setSortedData] = useState(tasks || []);
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
   useEffect(() => {
     setSortedData(
       dataSorter(tasks?.slice(0, limit || tasks?.length), [

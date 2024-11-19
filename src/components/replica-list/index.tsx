@@ -12,10 +12,10 @@ import {
 
 import type { ReplicaSummary } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 import { ReplicaImage } from '../replica-image';
@@ -31,8 +31,8 @@ export const ReplicaList: FunctionComponent<{
   replicaUrlFunc: (name: string) => string;
 }> = ({ replicaList, replicaUrlFunc }) => {
   const [sortedData, setSortedData] = useState(replicaList || []);
-  const [dateSort, setDateSort] = useState<sortDirection>();
-  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>();
+  const [statusSort, setStatusSort] = useState<SortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
 

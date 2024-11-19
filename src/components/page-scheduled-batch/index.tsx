@@ -25,36 +25,47 @@ import { RelativeToNow } from '../time/relative-to-now';
 import './style.css';
 import { ScheduledBatchOverview } from './scheduled-batch-overview';
 
-function ScheduleBatchDuration({ batch }: { batch: ScheduledBatchSummary }) {
+type ScheduleBatchDurationProps = {
+  created?: string;
+  started?: string;
+  ended?: string;
+};
+
+function ScheduleBatchDuration({
+  created,
+  started,
+  ended,
+}: ScheduleBatchDurationProps) {
   return (
     <>
-      <Typography>
-        Created{' '}
-        <strong>
-          <RelativeToNow time={new Date(batch.created)} />
-        </strong>
-      </Typography>
-      <Typography>
-        Started{' '}
-        <strong>
-          <RelativeToNow time={new Date(batch.started)} />
-        </strong>
-      </Typography>
-      {batch.ended && (
+      {created && (
+        <Typography>
+          Created{' '}
+          <strong>
+            <RelativeToNow time={new Date(created)} />
+          </strong>
+        </Typography>
+      )}
+      {started && (
+        <Typography>
+          Started{' '}
+          <strong>
+            <RelativeToNow time={new Date(started)} />
+          </strong>
+        </Typography>
+      )}
+      {ended && started && (
         <>
           <Typography>
             Ended{' '}
             <strong>
-              <RelativeToNow time={new Date(batch.ended)} />
+              <RelativeToNow time={new Date(ended)} />
             </strong>
           </Typography>
           <Typography>
             Duration{' '}
             <strong>
-              <Duration
-                start={new Date(batch.started)}
-                end={new Date(batch.ended)}
-              />
+              <Duration start={new Date(started)} end={new Date(ended)} />
             </strong>
           </Typography>
         </>
@@ -173,7 +184,13 @@ export function PageScheduledBatch({
                 <strong>{jobComponentName}</strong>
               </Typography>
             }
-            duration={<ScheduleBatchDuration batch={batch} />}
+            duration={
+              <ScheduleBatchDuration
+                created={batch.created}
+                started={batch.started}
+                ended={batch.ended}
+              />
+            }
             status={<ProgressStatusBadge status={batch.status} />}
             state={<ScheduledBatchState batch={batch} />}
             isCollapsibleOverview
@@ -198,12 +215,5 @@ export function PageScheduledBatch({
     </main>
   );
 }
-
-PageScheduledBatch.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  scheduledBatchName: PropTypes.string.isRequired,
-};
 
 export default withRouteParams(PageScheduledBatch);

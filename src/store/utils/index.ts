@@ -17,7 +17,7 @@ export function getFetchErrorData(error: FetchQueryError): {
 
   if ((error as SerializedError).message || (error as SerializedError).code) {
     errObj.code = (error as SerializedError).code;
-    errObj.message = (error as SerializedError).message;
+    errObj.message = (error as SerializedError).message ?? "";
   } else if ((error as FetchBaseQueryError).status) {
     const err = error as FetchBaseQueryError;
     if (err.data?.['code'] || err.data?.['message'] || err.data?.['error']) {

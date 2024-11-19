@@ -104,12 +104,4 @@ export function PageOAuthAuxiliaryReplica({
     </>
   );
 }
-
-PageOAuthAuxiliaryReplica.propTypes = {
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  replicaName: PropTypes.string.isRequired,
-};
-
 export default withRouteParams(PageOAuthAuxiliaryReplica);

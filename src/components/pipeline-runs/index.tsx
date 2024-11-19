@@ -6,10 +6,10 @@ import { PipelineRunTableRow } from './pipeline-run-table-row';
 
 import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
@@ -23,8 +23,8 @@ interface Props {
 }
 
 export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  const [envSort, setEnvSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
+  const [envSort, setEnvSort] = useState<SortDirection>();
 
   const sortedData = useMemo(() => {
     return dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [

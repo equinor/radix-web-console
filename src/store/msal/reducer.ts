@@ -9,8 +9,8 @@ type Store = {
 
 // Initial state
 const initialState: Store = {
-  provider: null,
-  account: null,
+  provider: undefined,
+  account: undefined,
 };
 
 const authSlice = createSlice({

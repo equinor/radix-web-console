@@ -1,6 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import type React from 'react';
 import type { MouseEvent, MutableRefObject } from 'react';
 import {
   type GroupBase,

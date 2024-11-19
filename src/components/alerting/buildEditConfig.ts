@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import type {
   AlertingConfig,
   ReceiverConfigMap,
@@ -25,8 +25,10 @@ export const buildEditConfig = (
   config: AlertingConfig
 ): UpdateAlertingConfig => {
   return {
-    alerts: cloneDeep(config.alerts),
-    receivers: cloneDeep(config.receivers),
-    receiverSecrets: buildReceiverSecrets(config.receivers),
+    alerts: config.alerts ? cloneDeep(config.alerts) : [],
+    receivers: config.receivers ? cloneDeep(config.receivers) : {},
+    receiverSecrets: config.receivers
+      ? buildReceiverSecrets(config.receivers)
+      : {},
   };
 };

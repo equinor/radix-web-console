@@ -1,5 +1,4 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { formatDateTime } from '../../../utils/datetime';
@@ -20,8 +19,8 @@ interface Props {
   deploymentName: string;
   batchName: string;
   smallBatchName: string;
-  onSuccess: () => void;
-  onDone: () => void;
+  onSuccess?: () => unknown;
+  onDone?: () => unknown;
 }
 
 export function RestartBatch({
@@ -59,11 +58,11 @@ export function RestartBatch({
       }).unwrap();
 
       infoToast(`Batch '${smallBatchName}' successfully copied.`);
-      onSuccess();
+      onSuccess?.();
     } catch (e) {
       errorToast(`Error copying batch '${smallBatchName}'`);
     } finally {
-      onDone();
+      onDone?.();
     }
   }
 
@@ -76,11 +75,11 @@ export function RestartBatch({
         batchName,
       }).unwrap();
       infoToast(`Batch '${smallBatchName}' successfully restarted.`);
-      onSuccess();
+      onSuccess?.();
     } catch (e) {
       errorToast(`Error restarting batch '${smallBatchName}'`);
     } finally {
-      onDone();
+      onDone?.();
     }
   }
 
@@ -148,11 +147,11 @@ export function RestartBatch({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={isLoading}
+            disabled={isLoading && !activeDeployment}
             onClick={() => {
               shouldRestart
                 ? onRestartBatch()
-                : onCopyBatch(activeDeployment.name);
+                : onCopyBatch(activeDeployment!.name);
             }}
           >
             Restart
@@ -163,14 +162,3 @@ export function RestartBatch({
     </div>
   );
 }
-
-RestartBatch.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
-  batchName: PropTypes.string.isRequired,
-  smallBatchName: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-  onDone: PropTypes.func.isRequired,
-};

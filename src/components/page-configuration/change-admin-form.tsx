@@ -7,7 +7,7 @@ import {
 import * as PropTypes from 'prop-types';
 import { type FormEvent, useState } from 'react';
 
-import { difference } from 'lodash';
+import { difference } from 'lodash-es';
 import {
   type ApplicationRegistration,
   useModifyRegistrationDetailsMutation,

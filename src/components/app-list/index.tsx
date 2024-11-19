@@ -14,7 +14,7 @@ import PageCreateApplication from '../page-create-application';
 
 import './style.css';
 import { refresh } from '@equinor/eds-icons';
-import { isEqual, uniq } from 'lodash';
+import { isEqual, uniq } from 'lodash-es';
 import useLocalStorage from '../../effects/use-local-storage';
 import { pollingInterval } from '../../store/defaults';
 import { getFetchErrorMessage } from '../../store/utils';
@@ -168,6 +168,7 @@ export default function AppList() {
               onClick={() =>
                 promiseHandler(
                   refreshApps({}).unwrap(),
+                  // @ts-expect-error name is optional, but in practice always included
                   (data) => setKnownAppNames(data.map((app) => app.name)),
                   'error'
                 )

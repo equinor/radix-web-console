@@ -6,7 +6,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
-import { isNil, isString } from 'lodash';
+import { isNil, isString } from 'lodash-es';
 import * as PropTypes from 'prop-types';
 import {
   type FunctionComponent,

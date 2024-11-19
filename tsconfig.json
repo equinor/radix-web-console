@@ -10,7 +10,7 @@
     "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "strict": false,
-    "strictNullChecks": false,
+    "strictNullChecks": true,
     "skipLibCheck": false,
     "moduleResolution": "Node",
     "resolveJsonModule": true,

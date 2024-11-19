@@ -30,7 +30,7 @@ type Props = {
   dnsExternalAliases?: ExternalDns[];
   envName: string;
   component: Component;
-  deployment: Deployment;
+  deployment?: Deployment;
 };
 export const Overview = ({
   appAlias,
@@ -56,7 +56,7 @@ export const Overview = ({
           <Typography>
             Image <DockerImage path={component.image} />
           </Typography>
-          {component.identity && (
+          {component.identity && deployment && (
             <ComponentIdentity
               identity={component.identity}
               deployment={deployment}
@@ -103,7 +103,7 @@ export const Overview = ({
               allowedIpRanges={component.network?.ingress?.public?.allow}
             />
           )}
-          <ComponentPorts ports={component.ports} />
+          <ComponentPorts ports={component.ports ?? []} />
           {component.runtime && (
             <div className="grid grid--gap-medium">
               <Runtime runtime={component.runtime!} />

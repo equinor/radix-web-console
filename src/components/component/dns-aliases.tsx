@@ -17,7 +17,8 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
   title,
 }) => (
   <>
-    {dnsAliases?.length > 0 &&
+    {dnsAliases &&
+      dnsAliases.length > 0 &&
       (dnsAliases.length == 1 ? (
         <div className="grid grid--gap-x-small">
           <Typography variant="h4">{title}</Typography>
