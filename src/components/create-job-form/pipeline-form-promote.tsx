@@ -11,7 +11,6 @@ import { pollingInterval } from '../../store/defaults';
 import {
   type DeploymentSummary,
   useGetDeploymentsQuery,
-  useGetEnvironmentSummaryQuery,
   useTriggerPipelinePromoteMutation,
 } from '../../store/radix-api';
 import { formatDateTime } from '../../utils/datetime';
@@ -23,19 +22,11 @@ import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import type { FormProp } from './index';
 
-export function PipelineFormPromote({
-  children,
-  appName,
-  onSuccess,
-}: FormProp) {
+export function PipelineFormPromote({ application, onSuccess }: FormProp) {
   const [searchParams] = useSearchParams();
   const [trigger, state] = useTriggerPipelinePromoteMutation();
   const { data: deployments } = useGetDeploymentsQuery(
-    { appName },
-    { pollingInterval }
-  );
-  const { data: environments } = useGetEnvironmentSummaryQuery(
-    { appName },
+    { appName: application.name },
     { pollingInterval }
   );
   const [toEnvironment, setToEnvironment] = useState('');
@@ -53,7 +44,7 @@ export function PipelineFormPromote({
       e.preventDefault();
 
       const response = await trigger({
-        appName,
+        appName: application.name,
         pipelineParametersPromote: {
           toEnvironment,
           deploymentName,
@@ -81,7 +72,6 @@ export function PipelineFormPromote({
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
         <div className="grid grid--gap-small input">
-          {children}
           <Typography
             className="input-label"
             as="span"
@@ -105,7 +95,9 @@ export function PipelineFormPromote({
             name="deploymentName"
             value={deploymentName}
           >
-            <option value="">— Please select —</option>
+            <option hidden value="">
+              — Please select —
+            </option>
             {Object.keys(groupedDeployments).map((key, i) => (
               <optgroup key={i} label={key}>
                 {groupedDeployments[key].map((x, j) => (
@@ -158,8 +150,10 @@ export function PipelineFormPromote({
             onChange={(e) => setToEnvironment(e.target.value)}
             value={toEnvironment}
           >
-            <option value="">— Please select —</option>
-            {environments?.map(({ name, activeDeployment }, i) => (
+            <option hidden value="">
+              — Please select —
+            </option>
+            {application.environments?.map(({ name, activeDeployment }, i) => (
               <option
                 key={i}
                 value={name}

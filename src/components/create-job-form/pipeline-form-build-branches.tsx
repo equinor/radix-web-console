@@ -18,22 +18,20 @@ import { TargetEnvs } from './target-envs';
 import { useGetApplicationBranches } from './use-get-application-branches';
 
 export function PipelineFormBuildBranches({
-  children,
   onSuccess,
-  appName,
+  application,
   pipelineName,
 }: FormProp) {
+  const isBuildDeployPipeline = pipelineName === 'build-deploy';
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
     useTriggerPipelineBuildDeployMutation();
-
-  const state = pipelineName === 'build-deploy' ? buildDeployState : buildState;
-
+  const createJobState = isBuildDeployPipeline ? buildDeployState : buildState;
   const [branch, setBranch] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
   const [branchFullName, setBranchFullName] = useState('');
   const [toEnvironment, setToEnvironment] = useState('');
-  const branches = useGetApplicationBranches(appName);
+  const branches = useGetApplicationBranches(application);
   const [filteredBranches, setFilteredBranches] = useState([]);
 
   const handleOnTextChange = ({
@@ -73,11 +71,11 @@ export function PipelineFormBuildBranches({
       e.preventDefault();
 
       const body = {
-        appName,
+        appName: application.name,
         pipelineParametersBuild: { branch, toEnvironment },
       };
       let jobName: string;
-      if (pipelineName === 'build-deploy') {
+      if (isBuildDeployPipeline) {
         jobName = (await triggerBuildDeploy(body).unwrap()).name;
       } else {
         jobName = (await triggerBuild(body).unwrap()).name;
@@ -94,9 +92,11 @@ export function PipelineFormBuildBranches({
   };
   return (
     <form onSubmit={handleSubmit}>
-      <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
+      <fieldset
+        disabled={createJobState.isLoading}
+        className="grid grid--gap-medium"
+      >
         <div className="grid grid--gap-small input">
-          {children}
           <Typography
             className="input-label"
             as="span"
@@ -104,7 +104,11 @@ export function PipelineFormBuildBranches({
             variant="label"
             token={{ color: 'currentColor' }}
           >
-            Build (but do not deploy) a git branch
+            {isBuildDeployPipeline ? (
+              <>Build and deploy a git branch</>
+            ) : (
+              <>Build (but do not deploy) a git branch</>
+            )}
           </Typography>
           <Typography
             group="input"
@@ -113,8 +117,15 @@ export function PipelineFormBuildBranches({
           >
             Git branch to build
           </Typography>
-          <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
-            <option value="">— Please select —</option>
+          <NativeSelect
+            value={branch}
+            id="BranchSelect"
+            label=""
+            onChange={handleChange}
+          >
+            <option hidden value="">
+              — Please select —
+            </option>
             {Object.keys(branches ?? {}).map((branch, i) => (
               <option key={i} value={branch}>
                 {branch}
@@ -170,25 +181,23 @@ export function PipelineFormBuildBranches({
                 </NativeSelect>
               </div>
             )}
-          {pipelineName === 'build-deploy' &&
-            branch &&
-            !isAnyValidRegex(branch) && (
-              <TargetEnvs
-                targetEnvs={toEnvironment ? [toEnvironment] : filteredBranches}
-                branch={branch}
-              />
-            )}
+          {isBuildDeployPipeline && branch && !isAnyValidRegex(branch) && (
+            <TargetEnvs
+              targetEnvs={toEnvironment ? [toEnvironment] : filteredBranches}
+              branch={branch}
+            />
+          )}
         </div>
 
         <div className="o-action-bar">
-          {state.isLoading && (
+          {createJobState.isLoading && (
             <div>
               <CircularProgress size={16} /> Creating…
             </div>
           )}
-          {state.isError && (
+          {createJobState.isError && (
             <Alert type="danger">
-              Failed to create job. {getFetchErrorMessage(state.error)}
+              Failed to create job. {getFetchErrorMessage(createJobState.error)}
             </Alert>
           )}
           <div>
