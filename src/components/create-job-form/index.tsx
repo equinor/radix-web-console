@@ -55,16 +55,9 @@ export default function CreateJobForm({
     { appName },
     { pollingInterval }
   );
-
-  const hasEnvironments = useMemo(
-    () => application?.environments?.length > 0,
-    [application]
-  );
+  const hasEnvironments = application?.environments?.length;
   const buildBranches = useGetApplicationBranches(application);
-  const hasBuildBranches = useMemo(
-    () => Object.keys(buildBranches).length > 0,
-    [buildBranches]
-  );
+  const hasBuildBranches = Object.keys(buildBranches).length > 0;
   const [searchParams, setSearchParams] = useSearchParams();
   const setPipelineType = useCallback(
     (pipeline: string) => {

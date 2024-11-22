@@ -21,8 +21,10 @@ import { getFetchErrorMessage } from '../../store/utils';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import type { FormProp } from './index';
+import { MissingRadixConfigAlert } from './missing-radix-config-alert';
 
 export function PipelineFormPromote({ application, onSuccess }: FormProp) {
+  const hasEnvironments = application?.environments?.length > 0;
   const [searchParams] = useSearchParams();
   const [trigger, state] = useTriggerPipelinePromoteMutation();
   const { data: deployments } = useGetDeploymentsQuery(
@@ -71,101 +73,105 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
-        <div className="grid grid--gap-small input">
-          <Typography
-            className="input-label"
-            as="span"
-            group="navigation"
-            variant="label"
-            token={{ color: 'currentColor' }}
-          >
-            Promote an existing deployment to an environment
-          </Typography>
-          <Typography
-            group="input"
-            variant="text"
-            token={{ color: 'currentColor' }}
-          >
-            Deployment to promote
-          </Typography>
-          <NativeSelect
-            id="DeploymentNameSelect"
-            label=""
-            onChange={(e) => setDeploymentName(e.target.value)}
-            name="deploymentName"
-            value={deploymentName}
-          >
-            <option hidden value="">
-              — Please select —
-            </option>
-            {Object.keys(groupedDeployments).map((key, i) => (
-              <optgroup key={i} label={key}>
-                {groupedDeployments[key].map((x, j) => (
-                  <option key={j} value={x.name}>
-                    {smallDeploymentName(x.name)}{' '}
-                    {x.activeTo
-                      ? `(${formatDateTime(x.activeFrom)})`
-                      : '(currently active)'}
-                    {x.gitCommitHash &&
-                      ` ${smallGithubCommitHash(x.gitCommitHash)}`}
-                    {x.gitTags && `, ${x.gitTags}`}
-                  </option>
-                ))}
-              </optgroup>
-            ))}
-          </NativeSelect>
-
-          {selectedDeployment && (
+        {hasEnvironments ? (
+          <div className="grid grid--gap-small input">
             <Typography
-              className="input input-label"
+              className="input-label"
               as="span"
               group="navigation"
               variant="label"
               token={{ color: 'currentColor' }}
             >
-              Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
-              <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
-              {selectedDeployment.activeTo && (
-                <>
-                  to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
-                </>
-              )}
-              on environment {selectedDeployment.environment}
+              Promote an existing deployment to an environment
             </Typography>
-          )}
-        </div>
-
-        <div className="grid grid--gap-small input">
-          <Typography
-            group="input"
-            variant="text"
-            token={{ color: 'currentColor' }}
-          >
-            Target environment
-          </Typography>
-          <NativeSelect
-            id="ToEnvironmentSelect"
-            label=""
-            name="toEnvironment"
-            onChange={(e) => setToEnvironment(e.target.value)}
-            value={toEnvironment}
-          >
-            <option hidden value="">
-              — Please select —
-            </option>
-            {application.environments?.map(({ name, activeDeployment }, i) => (
-              <option
-                key={i}
-                value={name}
-                disabled={
-                  activeDeployment && activeDeployment.name === deploymentName
-                }
-              >
-                {name}
+            <Typography
+              group="input"
+              variant="text"
+              token={{ color: 'currentColor' }}
+            >
+              Deployment to promote
+            </Typography>
+            <NativeSelect
+              id="DeploymentNameSelect"
+              label=""
+              onChange={(e) => setDeploymentName(e.target.value)}
+              name="deploymentName"
+              value={deploymentName}
+            >
+              <option hidden value="">
+                — Please select —
               </option>
-            ))}
-          </NativeSelect>
-        </div>
+              {Object.keys(groupedDeployments).map((key, i) => (
+                <optgroup key={i} label={key}>
+                  {groupedDeployments[key].map((x, j) => (
+                    <option key={j} value={x.name}>
+                      {smallDeploymentName(x.name)}{' '}
+                      {x.activeTo
+                        ? `(${formatDateTime(x.activeFrom)})`
+                        : '(currently active)'}
+                      {x.gitCommitHash &&
+                        ` ${smallGithubCommitHash(x.gitCommitHash)}`}
+                      {x.gitTags && `, ${x.gitTags}`}
+                    </option>
+                  ))}
+                </optgroup>
+              ))}
+            </NativeSelect>
+
+            {selectedDeployment && (
+              <Typography
+                className="input input-label"
+                as="span"
+                group="navigation"
+                variant="label"
+                token={{ color: 'currentColor' }}
+              >
+                Active {selectedDeployment.activeTo ? 'from' : 'since'}{' '}
+                <RelativeToNow time={selectedDeployment.activeFrom} />{' '}
+                {selectedDeployment.activeTo && (
+                  <>
+                    to <RelativeToNow time={selectedDeployment.activeTo} />{' '}
+                  </>
+                )}
+                on environment {selectedDeployment.environment}
+              </Typography>
+            )}
+            <Typography
+              group="input"
+              variant="text"
+              token={{ color: 'currentColor' }}
+            >
+              Target environment
+            </Typography>
+            <NativeSelect
+              id="ToEnvironmentSelect"
+              label=""
+              name="toEnvironment"
+              onChange={(e) => setToEnvironment(e.target.value)}
+              value={toEnvironment}
+            >
+              <option hidden value="">
+                — Please select —
+              </option>
+              {application.environments?.map(
+                ({ name, activeDeployment }, i) => (
+                  <option
+                    key={i}
+                    value={name}
+                    disabled={
+                      activeDeployment &&
+                      activeDeployment.name === deploymentName
+                    }
+                  >
+                    {name}
+                  </option>
+                )
+              )}
+            </NativeSelect>
+          </div>
+        ) : (
+          <MissingRadixConfigAlert application={application} />
+        )}
         <div className="o-action-bar">
           {state.isLoading && (
             <div>
