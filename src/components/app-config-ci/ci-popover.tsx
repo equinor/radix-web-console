@@ -1,9 +1,9 @@
-import { Icon, Popover, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
+import { Popover, Typography } from '@equinor/eds-core-react';
 import { type FunctionComponent, useEffect } from 'react';
 
 import type { Application } from '../../store/service-now-api';
 import { configVariables } from '../../utils/config';
+import { ExternalLink } from '../link/external-link';
 
 export interface ConfigurationItemPopoverProps {
   open: boolean;
@@ -42,14 +42,9 @@ export const ConfigurationItemPopover: FunctionComponent<
               <Typography group="input" variant="label">
                 Name
               </Typography>
-              <Typography
-                rel="noopener noreferrer"
-                target="_blank"
-                {...(!!externalUrl && { link: true, href: externalUrl })}
-              >
-                {configurationItem.name}{' '}
-                {externalUrl && <Icon data={external_link} size={16} />}
-              </Typography>
+              <ExternalLink href={externalUrl}>
+                {configurationItem.name}
+              </ExternalLink>
             </div>
             <div>
               <Typography group="input" variant="label">

@@ -31,6 +31,7 @@ import {
   warningToast,
 } from '../global-top-nav/styled-toaster';
 import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
+import { ExternalLink } from '../link/external-link';
 
 function sanitizeName(name: string): string {
   // force name to lowercase, no spaces
@@ -135,35 +136,20 @@ export default function CreateApplicationForm({ onCreated }: Props) {
           </Typography>
           <Typography>
             You can read about{' '}
-            <Typography
-              link
-              href={externalUrls.referenceRadixConfig}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <ExternalLink href={externalUrls.referenceRadixConfig}>
               radixconfig.yaml
-            </Typography>{' '}
+            </ExternalLink>{' '}
             and{' '}
-            <Typography
-              link
-              href={externalUrls.guideDockerfileComponent}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <ExternalLink href={externalUrls.guideDockerfileComponent}>
               Dockerfile best practices
-            </Typography>
+            </ExternalLink>
             .
           </Typography>
           <Typography>
             Need help? Get in touch on our{' '}
-            <Typography
-              link
-              href={externalUrls.slackRadixSupport}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            <ExternalLink href={externalUrls.slackRadixSupport}>
               Slack support channel
-            </Typography>
+            </ExternalLink>
           </Typography>
         </div>
       </Alert>

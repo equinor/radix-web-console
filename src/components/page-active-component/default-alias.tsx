@@ -1,7 +1,7 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import type { ApplicationAlias } from '../../store/radix-api';
+import { ExternalLink } from '../link/external-link';
 
 export interface Props {
   appAlias?: ApplicationAlias;
@@ -17,14 +17,9 @@ export function DefaultAlias({ appAlias, envName, componentName }: Props) {
         appAlias.environmentName === envName && (
           <Typography>
             This component is the{' '}
-            <Typography
-              link
-              href={`https://${appAlias.url}`}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              default alias <Icon data={external_link} size={16} />
-            </Typography>
+            <ExternalLink href={`https://${appAlias.url}`}>
+              default alias
+            </ExternalLink>
           </Typography>
         )}
     </>

@@ -30,6 +30,7 @@ import { AppBadge } from '../app-badge';
 import './style.css';
 import { uniq } from 'lodash-es';
 import useLocalStorage from '../../effects/use-local-storage';
+import { ExternalLink } from '../link/external-link';
 
 type NavbarLinkItem = {
   label: string;
@@ -124,20 +125,17 @@ const NavbarExpanded = ({ appName, links }: NavbarProps) => {
       {links.map((link) => (
         <NavbarLink key={link.to} {...link} />
       ))}
-
-      <Typography
-        link
-        className="app-navbar__link"
+      <ExternalLink
         href={urlToAppMonitoring(appName)}
+        icon={null}
+        className="app-navbar__link"
         color="currentColor"
-        target="_blank"
-        rel="noopener noreferrer"
       >
         <Typography variant="drawer_inactive" group="navigation">
           <Icon data={desktop_mac} /> Monitoring
         </Typography>
         <Icon data={external_link} style={{ justifySelf: 'right' }} />
-      </Typography>
+      </ExternalLink>
     </nav>
   );
 };
@@ -157,16 +155,11 @@ const NavbarMinimized = ({ appName, links }: NavbarProps) => (
     ))}
 
     <Tooltip title="Monitoring" placement="right" enterDelay={0}>
-      <Typography
-        link
-        href={urlToAppMonitoring(appName)}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
+      <ExternalLink href={urlToAppMonitoring(appName)} icon={null}>
         <Button variant="ghost_icon" color="secondary">
           <Icon data={desktop_mac} />
         </Button>
-      </Typography>
+      </ExternalLink>
     </Tooltip>
   </nav>
 );

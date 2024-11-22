@@ -65,17 +65,21 @@ export default function PageCreateApplication() {
                 initialSecretPollInterval={1500}
               />
               <Typography>
-                Now you can{' '}
+                Now you can run the{' '}
                 <Typography
                   as={Link}
-                  to={routeWithParams(routes.appJobNew, {
-                    appName: registration.name,
-                  })}
+                  to={routeWithParams(
+                    routes.appJobNew,
+                    {
+                      appName: registration.name,
+                    },
+                    { pipeline: 'apply-config' }
+                  )}
                   link
                 >
-                  create the first pipeline job
+                  apply-config pipeline job
                 </Typography>{' '}
-                or go to{' '}
+                to apply radixconfig.yaml, or go to{' '}
                 <Typography
                   as={Link}
                   to={routeWithParams(routes.app, {

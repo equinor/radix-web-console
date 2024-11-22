@@ -102,7 +102,7 @@ const injectedRtkApi = api.injectEndpoints({
           const idFilter = ids.map((s) => `'${s}'`).join(',');
           const response: SearchResponse = await ensureClient(getState())
             .api(`/servicePrincipals`)
-            .select('displayName,id')
+            .select('displayName,id,appId')
             .filter(`id in (${idFilter})`)
             .get();
 
@@ -132,7 +132,7 @@ const injectedRtkApi = api.injectEndpoints({
           const idFilter = ids.map((s) => `'${s}'`).join(',');
           const response: SearchResponse = await ensureClient(getState())
             .api(`/applications`)
-            .select('displayName,id')
+            .select('displayName,id,appId')
             .filter(`id in (${idFilter})`)
             .get();
 
@@ -165,7 +165,7 @@ const injectedRtkApi = api.injectEndpoints({
         try {
           const groups: SearchResponse = await ensureClient(getState())
             .api('/servicePrincipals')
-            .select('displayName,id')
+            .select('displayName,id,appId')
             .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
             .top(limit)
             .get();
@@ -182,7 +182,7 @@ const injectedRtkApi = api.injectEndpoints({
         try {
           const groups: SearchResponse = await ensureClient(getState())
             .api('/applications')
-            .select('displayName,id')
+            .select('displayName,id,appId')
             .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
             .top(limit)
             .get();
@@ -198,7 +198,6 @@ const injectedRtkApi = api.injectEndpoints({
 
 export { injectedRtkApi as msGraphApi };
 export const {
-  useGetAdGroupQuery,
   useGetAdGroupsQuery,
   useGetAdApplicationQuery,
   useGetAdServicePrincipalQuery,
@@ -216,6 +215,7 @@ type GetAdGroupArg = {
 export type EntraItem = {
   displayName: string;
   id: string;
+  appId?: string;
 };
 type GetEntraArg = {
   ids: string[];

@@ -1,13 +1,15 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
+import { Icon, Typography } from '@equinor/eds-core-react';
 import { type IconData, link, memory } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
+import { Link } from 'react-router-dom';
 import type { Component } from '../../store/radix-api';
 import {
   getActiveComponentUrl,
   getActiveJobComponentUrl,
 } from '../../utils/routing';
+import { ExternalLink } from '../link/external-link';
 
 export interface EnvironmentIngressProps {
   appName: string;
@@ -32,10 +34,10 @@ const ComponentDetails: FunctionComponent<{
   icon: IconData;
   component: Readonly<Component>;
 }> = ({ icon, component }) => (
-  <>
+  <span className="grid grid--auto-columns grid--gap-small grid--align-center">
     <Icon data={icon} />
     <Typography
-      className="component_details"
+      as="span"
       token={{
         color: 'inherit',
         fontSize: 'inherit',
@@ -44,16 +46,7 @@ const ComponentDetails: FunctionComponent<{
     >
       {component.name}
     </Typography>
-    {component.status === 'Outdated' && (
-      <Typography
-        color="warning"
-        variant="caption"
-        token={{ textAlign: 'right' }}
-      >
-        outdated image
-      </Typography>
-    )}
-  </>
+  </span>
 );
 
 export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
@@ -86,33 +79,37 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
     <>
       {comps.public.length > 0 ? (
         comps.public.map((component) => (
-          <Button
+          <ExternalLink
             key={component.name}
-            className="button_link"
-            variant="ghost"
             href={`https://${component.variables[URL_VAR_NAME]}`}
+            className="grid grid--auto-columns grid--gap-x-small grid--align-center"
           >
             <ComponentDetails icon={link} component={component} />
-          </Button>
+          </ExternalLink>
         ))
       ) : (
-        <Button variant="ghost" className="button_link" disabled>
-          <span>
-            <Icon data={link} /> No link available
-          </span>
-        </Button>
+        <span>
+          <Typography
+            color="disabled"
+            className="grid grid--auto-columns grid--gap-small grid--align-center"
+          >
+            <Icon data={link} />
+            No link available
+          </Typography>
+        </span>
       )}
       {comps.passive
         .filter(({ status }) => status === 'Outdated')
         .map((component) => (
-          <Button
+          <Typography
             key={component.name}
-            className="button_link"
-            variant="ghost"
-            href={getComponentUrl(appName, envName, component)}
+            as={Link}
+            to={getComponentUrl(appName, envName, component)}
+            link
+            token={{ textDecoration: 'none' }}
           >
             <ComponentDetails icon={memory} component={component} />
-          </Button>
+          </Typography>
         ))}
       {tooManyPublic && tooManyPassive && <div>…</div>}
     </>
