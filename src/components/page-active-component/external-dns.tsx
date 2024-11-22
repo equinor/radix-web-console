@@ -50,9 +50,7 @@ const TlsEditForm: FunctionComponent<{
       componentName,
       fqdn: fqdn,
       updateExternalDnsTlsRequest: {
-        // @ts-expect-error save button is disabled if certificate is missing
         certificate,
-        // @ts-expect-error save button is disabled if privateKey is missing
         privateKey,
         skipValidation,
       },

@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { routes } from '../../routes';

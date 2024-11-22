@@ -38,7 +38,6 @@ function findContainer(
   for (const replica of data?.replicas ?? []) {
     for (const container of replica.containers ?? []) {
       if (container.name === stepName) {
-        // @ts-expect-error replica.name is optional, but will always be set
         return { ...container, parentId: replica.name };
       }
     }
@@ -103,7 +102,6 @@ function ContainerLog({
       appName,
       pipelineJobName: jobName,
       replicaName: parentId,
-      //@ts-expect-error id is probably always set
       containerId: id,
       start,
       end,

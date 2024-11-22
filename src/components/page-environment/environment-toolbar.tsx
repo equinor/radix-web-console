@@ -1,5 +1,4 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import { useDurationInterval } from '../../effects/use-interval';
@@ -114,13 +113,6 @@ export const EnvironmentToolbar: FunctionComponent<{
       </div>
     </div>
   );
-};
-
-EnvironmentToolbar.propTypes = {
-  appName: PropTypes.string.isRequired,
-  environment: PropTypes.object.isRequired,
-  startEnabled: PropTypes.bool,
-  stopEnabled: PropTypes.bool,
 };
 
 export default EnvironmentToolbar;

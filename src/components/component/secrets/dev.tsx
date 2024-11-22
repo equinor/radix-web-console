@@ -12,7 +12,12 @@ import type {
 const testData: Array<GetEnvironmentApiResponse> = [
   {
     name: 'env1',
-    activeDeployment: { namespace: 'any', repository: 'any' },
+    activeDeployment: {
+      name: 'alsdjflasj-asdfkljasdf',
+      namespace: 'any',
+      repository: 'any',
+      activeFrom: new Date('2023-12-01T11:27:17Z').toISOString(),
+    },
     secrets: [
       { name: 'secret_1', status: 'Consistent', component: 'component_1' },
       { name: 'secret_2', status: 'Pending', component: 'component_2' },
@@ -20,7 +25,12 @@ const testData: Array<GetEnvironmentApiResponse> = [
   },
   {
     name: 'env2',
-    activeDeployment: { namespace: 'any', repository: 'any' },
+    activeDeployment: {
+      name: 'alsdjflasj-asdfkljasdf',
+      namespace: 'any',
+      repository: 'any',
+      activeFrom: new Date('2023-12-01T11:27:17Z').toISOString(),
+    },
     secrets: [
       { name: 'pandora', status: 'Pending', component: 'component_1' },
       { name: 'ellipsis', status: 'NotAvailable', component: 'component_2' },
@@ -44,7 +54,6 @@ new Server({
     // Mock response for ChangeComponentSecret
     this.put(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/secrets/:secretName',
-      // @ts-expect-error we dont care
       () => undefined
     );
   },

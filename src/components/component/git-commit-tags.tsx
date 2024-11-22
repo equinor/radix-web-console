@@ -7,7 +7,7 @@ import { GitTagLinks } from '../git-tags/git-tag-links';
 type Props = {
   commitID?: string;
   gitTags?: string;
-  repository: string;
+  repository?: string;
 };
 
 export const GitCommitTags = ({ commitID, gitTags, repository }: Props) => {

@@ -188,7 +188,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
                     <Typography>
-                      Pipeline Job {job.status.toLowerCase()};{' '}
+                      Pipeline Job {job.status?.toLowerCase()};{' '}
                       {getJobExecutionState(job.status)} pipeline{' '}
                       <strong>{job.pipeline}</strong>
                     </Typography>
@@ -215,18 +215,18 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           as={Link}
                           to={routeWithParams(routes.appDeployment, {
                             appName,
-                            deploymentName: job.promotedFromDeployment,
+                            deploymentName: job.promotedFromDeployment!,
                           })}
                           link
                         >
-                          {smallDeploymentName(job?.promotedFromDeployment)}
+                          {smallDeploymentName(job.promotedFromDeployment!)}
                         </Typography>{' '}
                         <strong>promoted</strong> from{' '}
                         <Typography
                           as={Link}
                           to={routeWithParams(routes.appEnvironment, {
                             appName,
-                            envName: job.promotedFromEnvironment,
+                            envName: job.promotedFromEnvironment!,
                           })}
                           link
                         >
@@ -237,7 +237,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           as={Link}
                           to={routeWithParams(routes.appEnvironment, {
                             appName,
-                            envName: job.promotedToEnvironment,
+                            envName: job.promotedToEnvironment!,
                           })}
                           link
                         >
@@ -247,7 +247,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                     )}
                     {(job.pipeline === 'build-deploy' ||
                       job.pipeline === 'build') &&
-                      job.overrideUseBuildCache !== undefined && (
+                      typeof job.overrideUseBuildCache === 'boolean' && (
                         <Checkbox
                           label="Override use build cache"
                           name="overrideUseBuildCache"
@@ -294,7 +294,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           , commit{' '}
                           <CommitHash
                             commit={job.commitID}
-                            repo={application?.registration.repository}
+                            repo={application?.registration?.repository}
                           />
                         </>
                       )}
@@ -365,8 +365,8 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                       {job.components && (
                         <ComponentList
                           appName={appName}
-                          deployments={job.deployments}
-                          repository={application?.registration.repository}
+                          deployments={job.deployments ?? []}
+                          repository={application?.registration?.repository}
                         />
                       )}
                     </div>

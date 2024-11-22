@@ -168,7 +168,6 @@ export default function AppList() {
               onClick={() =>
                 promiseHandler(
                   refreshApps({}).unwrap(),
-                  // @ts-expect-error name is optional, but in practice always included
                   (data) => setKnownAppNames(data.map((app) => app.name)),
                   'error'
                 )

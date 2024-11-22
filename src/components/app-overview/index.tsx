@@ -69,7 +69,7 @@ export function AppOverview({ appName }: { appName: string }) {
             title={'DNS external aliases'}
           />
         )}
-        {environments?.length > 0 && (
+        {environments && environments.length > 0 && (
           <Typography variant="h4">Environments</Typography>
         )}
         <EnvironmentsSummary
@@ -78,7 +78,7 @@ export function AppOverview({ appName }: { appName: string }) {
           repository={registration?.repository}
         />
 
-        {jobs?.length > 0 && (
+        {jobs && jobs.length > 0 && (
           <Typography variant="h4">Latest pipeline jobs</Typography>
         )}
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />

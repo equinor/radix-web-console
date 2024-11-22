@@ -58,7 +58,7 @@ export const TLSCertificateList: FunctionComponent<{
                       <strong>{formatDateTime(new Date(tls.notAfter))}</strong>
                     </Typography>
                   )}
-                  {tls.dnsNames?.length > 0 && (
+                  {tls.dnsNames && tls.dnsNames.length > 0 && (
                     <Typography>
                       Subject alternative name{' '}
                       {tls.dnsNames.map((name, i, { length }) => (

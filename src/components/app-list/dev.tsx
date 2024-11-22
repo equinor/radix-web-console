@@ -22,6 +22,8 @@ const testApps: ShowApplicationsApiResponse = [
       prod: [{ image: 'diem', name: 'web', type: 'component' }],
     },
     latestJob: {
+      name: 'latest job',
+      created: new Date('2023-12-01T11:27:17Z').toISOString(),
       status: 'Failed',
       started: new Date('2023-12-01T11:27:17Z').toISOString(),
       ended: new Date('2023-12-01T12:16:54Z').toISOString(),
@@ -38,6 +40,8 @@ const testApps: ShowApplicationsApiResponse = [
       ],
     },
     latestJob: {
+      name: 'latest job',
+      created: new Date('2023-12-01T11:27:17Z').toISOString(),
       status: 'Running',
       started: new Date('2023-12-01T12:27:17Z').toISOString(),
     },

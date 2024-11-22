@@ -113,11 +113,13 @@ const testData = [
   EnumBadge(
     'BuildSecretStatusBadge',
     ['Consistent', 'Pending'],
+    // @ts-expect-error No idea how to fix this one
     BuildSecretStatusBadge
   ),
   EnumBadge(
     'ComponentSecretStatusBadge',
     ['Pending', 'Consistent', 'NotAvailable', 'Invalid', 'Unsupported'],
+    // @ts-expect-error No idea how to fix this one
     ComponentSecretStatusBadge
   ),
   EnumBadge(
@@ -130,16 +132,19 @@ const testData = [
       'ComponentOutdated',
       'Unsupported',
     ],
+    // @ts-expect-error No idea how to fix this one
     ComponentStatusBadge
   ),
   EnumBadge(
     'ImageHubSecretStatusBadge',
     ['Consistent', 'Pending'],
+    // @ts-expect-error No idea how to fix this one
     ImageHubSecretStatusBadge
   ),
   EnumBadge(
     'PipelineRunBadges',
     Object.keys(BadgeTemplates),
+    // @ts-expect-error No idea how to fix this one
     PipelineRunStatusBadge
   ),
   EnumBadge(
@@ -150,6 +155,7 @@ const testData = [
   EnumBadge(
     'RadixJobConditionBadges',
     Object.keys(JobConditionBadgeTemplates),
+    // @ts-expect-error No idea how to fix this one
     RadixJobConditionBadge
   ),
   EnumBadge(

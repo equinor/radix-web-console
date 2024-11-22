@@ -1,5 +1,4 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { formatDateTime } from '../../../utils/datetime';
@@ -148,9 +147,11 @@ export function RestartJob({
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={isLoading}
+            disabled={isLoading && !shouldRestart && !activeDeployment}
             onClick={() => {
-              shouldRestart ? onRestartJob() : onCopyJob(activeDeployment.name);
+              shouldRestart
+                ? onRestartJob()
+                : onCopyJob(activeDeployment!.name); //Button will be disabled if activeDeployment is undefined
             }}
           >
             Restart
@@ -161,14 +162,3 @@ export function RestartJob({
     </div>
   );
 }
-
-RestartJob.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  smallJobName: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func,
-  onDone: PropTypes.func.isRequired,
-};

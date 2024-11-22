@@ -22,6 +22,10 @@ gen-scan-api:
 gen-log-api:
 	npm run "apigen:log"
 
+.PHONY: gen-local-radix-log-api
+gen-local-radix-log-api:
+	OVERRIDE_RADIX_LOG_API_SWAGGER_URL=http://localhost:8003/swagger/doc.json npm run "apigen:log"
+
 .PHONY: gen-service-now-api
 gen-service-now-api:
 	npm run "apigen:service-now"
