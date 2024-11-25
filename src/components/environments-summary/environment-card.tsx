@@ -53,11 +53,8 @@ const DeploymentDetails: FunctionComponent<{
   deployment: Readonly<DeploymentSummary>;
 }> = ({ appName, deployment }) =>
   !deployment ? (
-    <Typography
-      color="disabled"
-      className="grid grid--auto-columns grid--gap-small grid--align-center"
-    >
-      <Icon data={link} />
+    <Typography color="disabled">
+      <Icon data={link} style={{ marginRight: 'var(--eds_spacing_small)' }} />
       No active deployment
     </Typography>
   ) : (
@@ -67,15 +64,13 @@ const DeploymentDetails: FunctionComponent<{
       link
       token={{ textDecoration: 'none' }}
     >
-      <span className="grid grid--auto-columns grid--gap-small grid--align-center">
-        <Icon data={send} />
-        <Typography as="span" color="primary">
-          deployment{' '}
-          <Typography as="span" color="gray">
-            (<RelativeToNow time={new Date(deployment.activeFrom)} />)
-          </Typography>
+      <Icon data={send} style={{ marginRight: 'var(--eds_spacing_small)' }} />
+      <Typography as="span" color="primary">
+        deployment{' '}
+        <Typography as="span" color="gray">
+          (<RelativeToNow time={new Date(deployment.activeFrom)} />)
         </Typography>
-      </span>
+      </Typography>
     </Typography>
   );
 
@@ -161,11 +156,11 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
     ? {
         header: <></>,
         body: (
-          <Typography
-            color="disabled"
-            className="grid grid--auto-columns grid--gap-small grid--align-center"
-          >
-            <Icon data={link} />
+          <Typography color="disabled">
+            <Icon
+              data={link}
+              style={{ marginRight: 'var(--eds_spacing_small)' }}
+            />
             No link available
           </Typography>
         ),
