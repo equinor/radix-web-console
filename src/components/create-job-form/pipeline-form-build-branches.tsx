@@ -5,6 +5,7 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
+import { uniq } from 'lodash-es';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import {
   useTriggerPipelineBuildDeployMutation,
@@ -51,14 +52,13 @@ export function PipelineFormBuildBranches({
       }
       return val;
     };
-    const values = Array.from(
-      new Set(
-        Object.entries(branches)
-          .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
-          .flatMap(([, commits]) => commits)
-      )
+    const flattenedBranches: string[] = uniq(
+      Object.entries(branches)
+        .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
+        .flatMap(([, commits]) => commits)
     );
-    setFilteredBranches(values);
+
+    setFilteredBranches(flattenedBranches);
   };
   const handleChange = ({
     target: { value },

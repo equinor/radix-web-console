@@ -4,7 +4,9 @@ import {
   useGetEnvironmentSummaryQuery,
 } from '../../store/radix-api';
 
-export function useGetApplicationBranches(appName: string) {
+export function useGetApplicationBranches(
+  appName: string
+): Record<string, string[]> {
   const { data: envSummary } = useGetEnvironmentSummaryQuery(
     { appName },
     { pollingInterval }
@@ -13,13 +15,14 @@ export function useGetApplicationBranches(appName: string) {
     { appName },
     { pollingInterval }
   );
+
   const branches =
     envSummary
-      ?.filter(({ branchMapping }) => !!branchMapping)
-      .reduce<Record<string, Array<string>>>(
+      ?.filter((x) => !x.branchMapping)
+      .reduce(
         (obj, { branchMapping, name }) => ({
           ...obj,
-          [branchMapping]: [...(obj[branchMapping] || []), name],
+          [branchMapping!]: [...(obj[branchMapping!] || []), name],
         }),
         {}
       ) ?? {};
