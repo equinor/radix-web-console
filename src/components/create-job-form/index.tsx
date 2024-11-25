@@ -98,7 +98,7 @@ export default function CreateJobForm({
         value={pipeline}
         onChange={(e) => setPipelineType(e.target.value)}
       >
-        <option disabled value="">
+        <option hidden value="">
           — Please select —
         </option>
         {Object.keys(Pipelines).map((pipeline) => (
