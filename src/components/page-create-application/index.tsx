@@ -12,8 +12,12 @@ import { ScrimPopup } from '../scrim-popup';
 import './style.css';
 import type { ApplicationRegistration } from '../../store/radix-api';
 
-function scrollToPosition(elementRef: Element, x: number, y: number): void {
-  elementRef.scrollTo?.(x, y);
+function scrollToPosition(
+  elementRef: Element | null,
+  x: number,
+  y: number
+): void {
+  elementRef?.scrollTo?.(x, y);
 }
 
 export default function PageCreateApplication() {

@@ -35,7 +35,7 @@ export const ChangeConfigurationItemForm = ({
       appName,
       applicationRegistrationPatchRequest: {
         applicationRegistrationPatch: {
-          configurationItem: newCI.id,
+          configurationItem: newCI!.id, //Button is disabled if newCI is not set
         },
       },
     }).unwrap();

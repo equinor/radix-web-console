@@ -146,6 +146,7 @@ new Server({
     testData.forEach(({ scheduledBatchName, batchData }) => {
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/batches/${scheduledBatchName}`,
+        // @ts-expect-error no idea why batchdata fails
         () => batchData
       );
     });

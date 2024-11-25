@@ -75,7 +75,7 @@ export function PagePipelineRunTask({
               pipelineRunName,
             }),
           },
-          { label: task?.name },
+          { label: task?.name ?? ' ' },
         ]}
       />
 

@@ -11,7 +11,7 @@ export const EnvironmentToolbar: FunctionComponent<{
   environment: Readonly<Environment>;
   startEnabled?: boolean;
   stopEnabled?: boolean;
-  refetch?: () => unknown;
+  refetch: () => unknown;
 }> = ({
   appName,
   environment: { activeDeployment, name },

@@ -1,7 +1,5 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash-es';
-import * as PropTypes from 'prop-types';
-
 import type {
   HorizontalScalingSummary as HorizontalScalingSummaryModel,
   HorizontalScalingSummaryTriggerStatus,
@@ -54,7 +52,7 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
               </>
             )}
 
-            {summary.pollingInterval > 0 && (
+            {summary.pollingInterval && summary.pollingInterval > 0 && (
               <>
                 <Typography as="dt">Polling interval:</Typography>
                 <Typography as="dd" variant="body_short_bold">
@@ -63,7 +61,7 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
               </>
             )}
 
-            {summary.cooldownPeriod > 0 && (
+            {summary.cooldownPeriod && summary.cooldownPeriod > 0 && (
               <>
                 <Typography as="dt">Cooldown period:</Typography>
                 <Typography as="dd" variant="body_short_bold">
@@ -73,7 +71,10 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
             )}
 
             {summary.triggers.map((trigger, i) => (
-              <TriggerStatus key={trigger.name + i} trigger={trigger} />
+              <TriggerStatus
+                key={(trigger.name ?? trigger.type ?? 'unknown') + i}
+                trigger={trigger}
+              />
             ))}
           </dl>
         </div>
@@ -81,15 +82,6 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
     </Accordion.Item>
   </Accordion>
 );
-
-HorizontalScalingSummary.propTypes = {
-  currentCPUUtilizationPercentage: PropTypes.number,
-  currentMemoryUtilizationPercentage: PropTypes.number,
-  maxReplicas: PropTypes.number,
-  minReplicas: PropTypes.number,
-  targetCPUUtilizationPercentage: PropTypes.number,
-  targetMemoryUtilizationPercentage: PropTypes.number,
-};
 
 type TriggerStatusProps = {
   trigger: HorizontalScalingSummaryTriggerStatus;

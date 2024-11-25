@@ -100,7 +100,7 @@ const ReplicaLinks: FunctionComponent<{
           to={urlFunc(x)}
           link
         >
-          <ReplicaStatusTooltip status={x.replicaStatus?.status} />
+          <ReplicaStatusTooltip status={x.replicaStatus?.status ?? 'Pending'} />
           {smallReplicaName(x.name)}
         </Typography>
       ))}
@@ -237,7 +237,9 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                               </Typography>
                             </Table.Cell>
                             <Table.Cell>
-                              <ComponentStatusBadge status={x.status} />
+                              <ComponentStatusBadge
+                                status={x.status ?? 'Reconciling'}
+                              />
                             </Table.Cell>
                             <Table.Cell>
                               <ReplicaLinks

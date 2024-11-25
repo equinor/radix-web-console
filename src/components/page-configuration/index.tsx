@@ -22,11 +22,11 @@ import './style.css';
 import { pollingInterval } from '../../store/defaults';
 import { type ApplicationRegistration, radixApi } from '../../store/radix-api';
 import { ExternalLink } from '../link/external-link';
-function getConfigBranch(configBranch: string): string {
+function getConfigBranch(configBranch?: string): string {
   return configBranch || 'master';
 }
 
-function getRadixConfigFullName(radixConfigFullName: string): string {
+function getRadixConfigFullName(radixConfigFullName?: string): string {
   return radixConfigFullName || 'radixconfig.yaml';
 }
 

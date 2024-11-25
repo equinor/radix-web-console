@@ -16,7 +16,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 
 const ScheduledJobDuration: FunctionComponent<{
   started: string;
-  finished: string;
+  finished?: string;
 }> = ({ started, finished }) => {
   return (
     <>
@@ -104,7 +104,12 @@ export const ScheduledJobOverview: FunctionComponent<{
                 <RelativeToNow time={job.created} />
               </strong>
             </Typography>
-            <ScheduledJobDuration started={job.started} finished={job.ended} />
+            {job.started && (
+              <ScheduledJobDuration
+                started={job.started}
+                finished={job.ended}
+              />
+            )}
           </>
         </div>
         <div className="grid grid--gap-medium">

@@ -39,7 +39,7 @@ function ImageHubForm({ appName, secret, fetchSecret, onSave }: FormProps) {
           await trigger({
             appName,
             serverName: secret.server,
-            secretParameters: { secretValue: value?.toString() || null },
+            secretParameters: { secretValue: value },
           }).unwrap();
 
           fetchSecret();
@@ -115,7 +115,7 @@ export function ImageHubsAccordion({ appName }: Props) {
         </Accordion.Header>
         <Accordion.Panel>
           <AsyncResource asyncState={state}>
-            {data?.length > 0 ? (
+            {data && data.length > 0 ? (
               <List className="o-indent-list">
                 {dataSorter(data, [
                   (x, y) => sortCompareString(x.server, y.server),
@@ -129,7 +129,9 @@ export function ImageHubsAccordion({ appName }: Props) {
                         {...{ appName, secret }}
                       />
 
-                      <ImageHubSecretStatusBadge status={secret.status} />
+                      <ImageHubSecretStatusBadge
+                        status={secret.status ?? 'Pending'}
+                      />
                     </div>
                   </List.Item>
                 ))}

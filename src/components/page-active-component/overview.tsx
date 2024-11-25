@@ -1,13 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
-import { DefaultAlias } from './default-alias';
-
-import { ComponentIdentity } from '../component/component-identity';
-import { ComponentPorts } from '../component/component-ports';
-import { DockerImage } from '../docker-image';
-import { ComponentStatusBadge } from '../status-badges';
-
 import type {
   ApplicationAlias,
   Component,
@@ -15,6 +6,11 @@ import type {
   DnsAlias as DnsAliasModel,
   ExternalDns,
 } from '../../store/radix-api';
+import { ComponentIdentity } from '../component/component-identity';
+import { ComponentPorts } from '../component/component-ports';
+import { DockerImage } from '../docker-image';
+import { ComponentStatusBadge } from '../status-badges';
+import { DefaultAlias } from './default-alias';
 import './style.css';
 import { IngressAllowList } from '../component/ingress-allow-list';
 import { ExternalLink } from '../link/external-link';
@@ -67,7 +63,7 @@ export const Overview = ({
         <div className="grid grid--gap-medium">
           <div className="grid grid--gap-small grid--auto-columns">
             <Typography>Status</Typography>
-            <ComponentStatusBadge status={component.status} />
+            <ComponentStatusBadge status={component.status ?? 'Reconciling'} />
           </div>
           {component.variables?.[URL_VAR_NAME] && (
             <Typography>
@@ -86,10 +82,10 @@ export const Overview = ({
               envName={envName}
             />
           )}
-          {dnsAliasUrls?.length > 0 && (
+          {dnsAliasUrls && dnsAliasUrls.length > 0 && (
             <DNSAliases urls={dnsAliasUrls} title={'DNS aliases'} />
           )}
-          {dnsExternalAliasUrls?.length > 0 && (
+          {dnsExternalAliasUrls && dnsExternalAliasUrls.length > 0 && (
             <DNSAliases
               urls={dnsExternalAliasUrls}
               title={'DNS external aliases'}
@@ -115,14 +111,4 @@ export const Overview = ({
       </div>
     </div>
   );
-};
-
-Overview.propTypes = {
-  appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
-  dnsExternalAliases: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ExternalDns>
-  ),
-  envName: PropTypes.string.isRequired,
-  component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
-  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
 };

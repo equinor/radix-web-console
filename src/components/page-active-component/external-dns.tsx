@@ -50,8 +50,8 @@ const TlsEditForm: FunctionComponent<{
       componentName,
       fqdn: fqdn,
       updateExternalDnsTlsRequest: {
-        certificate,
-        privateKey,
+        certificate: certificate!, // submit button is disabled if not set
+        privateKey: privateKey!, // submit button is disabled if not set
         skipValidation,
       },
     }).unwrap();
