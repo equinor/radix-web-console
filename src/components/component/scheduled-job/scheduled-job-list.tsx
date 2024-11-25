@@ -96,8 +96,8 @@ export const ScheduledJobList: FunctionComponent<{
 }) => {
   const [deleteJob] = useDeleteJobMutation();
   const [stopJob] = useStopJobMutation();
-  const [dateSort, setDateSort] = useState<SortDirection>(null);
-  const [statusSort, setStatusSort] = useState<SortDirection>(null);
+  const [dateSort, setDateSort] = useState<SortDirection>(undefined);
+  const [statusSort, setStatusSort] = useState<SortDirection>(undefined);
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<
     Record<string, boolean>

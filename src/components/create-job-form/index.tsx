@@ -46,7 +46,7 @@ export default function CreateJobForm({
   const [searchParams] = useSearchParams();
   const [pipeline, setPipeline] = useState<SupportedPipelineNames>(() => {
     const urlPipeline = searchParams.get('pipeline');
-    if (Object.keys(Pipelines).includes(urlPipeline)) {
+    if (urlPipeline && Object.keys(Pipelines).includes(urlPipeline)) {
       return urlPipeline as SupportedPipelineNames;
     }
 

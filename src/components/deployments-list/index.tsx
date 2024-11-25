@@ -34,7 +34,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   inEnv,
 }) => {
   const { data } = useGetApplicationQuery({ appName }, { pollingInterval });
-  const repo = data?.registration.repository;
+  const repo = data?.registration?.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
   const [dateSort, setDateSort] = useState<SortDirection>('descending');

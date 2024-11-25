@@ -13,6 +13,7 @@ const testData: Array<GetEnvironmentApiResponse> = [
   {
     name: 'env1',
     activeDeployment: {
+      environment: 'any',
       name: 'alsdjflasj-asdfkljasdf',
       namespace: 'any',
       repository: 'any',
@@ -26,6 +27,7 @@ const testData: Array<GetEnvironmentApiResponse> = [
   {
     name: 'env2',
     activeDeployment: {
+      environment: 'any',
       name: 'alsdjflasj-asdfkljasdf',
       namespace: 'any',
       repository: 'any',
@@ -54,6 +56,7 @@ new Server({
     // Mock response for ChangeComponentSecret
     this.put(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/secrets/:secretName',
+      // @ts-expect-error no idea what it should do
       () => undefined
     );
   },

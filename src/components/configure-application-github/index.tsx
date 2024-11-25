@@ -251,7 +251,9 @@ export const ConfigureApplicationGithub = ({
                       <List.Item>
                         The Shared Secret for this application is{' '}
                         <code>{secrets?.sharedSecret}</code>{' '}
-                        <CompactCopyButton content={secrets?.sharedSecret} />
+                        <CompactCopyButton
+                          content={secrets?.sharedSecret ?? ''}
+                        />
                       </List.Item>
                       <List.Item>Press "Add webhook"</List.Item>
                     </List>

@@ -81,8 +81,8 @@ function getDisplayName({
 
 function useGetSortedSecrets(
   secrets: Array<Secret>,
-  nameSort?: SortDirection | null,
-  resourceSort?: SortDirection | null
+  nameSort?: SortDirection,
+  resourceSort?: SortDirection
 ): Array<Secret> {
   const [sortedData, setSortedData] = useState(secrets);
 
@@ -158,7 +158,7 @@ export const KeyVaultSecrets: SecretComponent = ({
   componentName,
   secrets,
 }) => {
-  const sortedSecrets = useGetSortedSecrets(secrets, null, 'ascending');
+  const sortedSecrets = useGetSortedSecrets(secrets, undefined, 'ascending');
 
   return (
     <Table className="secret-table">

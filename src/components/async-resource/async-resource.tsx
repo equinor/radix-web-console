@@ -36,7 +36,7 @@ export default function AsyncResource({
 
   if (
     asyncState.isError &&
-    !nonErrorCodes?.includes(getFetchErrorCode(asyncState.error))
+    !nonErrorCodes?.includes(getFetchErrorCode(asyncState.error) || '')
   ) {
     const { code, message } = getFetchErrorData(asyncState.error);
 

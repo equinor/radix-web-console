@@ -8,25 +8,14 @@ import {
 import { error_outlined, star_filled, star_outlined } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { formatDistanceToNow } from 'date-fns';
-import * as PropTypes from 'prop-types';
-import {
-  type FunctionComponent,
-  type HTMLAttributes,
-  type MouseEvent,
-  useEffect,
-} from 'react';
+import type { HTMLAttributes, MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
-import type {
-  ApplicationSummary,
-  Component,
-  JobSummary,
-} from '../../store/radix-api';
+import type { ApplicationSummary, Component } from '../../store/radix-api';
 import {
-  type ImageScan,
   type Vulnerability,
-  scanApi,
+  useGetApplicationVulnerabilitySummariesQuery,
 } from '../../store/scan-api';
 import { filterFields } from '../../utils/filter-fields';
 import { routeWithParams } from '../../utils/string';
@@ -38,6 +27,7 @@ import {
 } from '../environments-summary/environment-card-status';
 import {
   EnvironmentStatus,
+  type VulnerabilitySummary,
   aggregateComponentEnvironmentStatus,
   aggregateComponentReplicaEnvironmentStatus,
   aggregateVulnerabilitySummaries,
@@ -61,11 +51,9 @@ export interface AppListItemProps {
   isLoaded: boolean;
 }
 
-const latestJobStatus: Partial<
-  Record<JobSummary['status'], EnvironmentStatus>
-> = {
+const latestJobStatus = {
   Failed: EnvironmentStatus.Danger,
-};
+} as const;
 
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
@@ -73,7 +61,7 @@ const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
 ];
 
 function aggregateEnvironmentStatus(
-  components: Readonly<Array<Component>>
+  components: Component[]
 ): EnvironmentStatus {
   return Math.max(
     aggregateComponentEnvironmentStatus(components),
@@ -81,22 +69,17 @@ function aggregateEnvironmentStatus(
   );
 }
 
-const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
+const AppItemStatus = ({
   environmentActiveComponents,
   latestJob,
   name,
-}) => {
-  const [trigger, state] =
-    scanApi.endpoints.getApplicationVulnerabilitySummaries.useLazyQuery();
+}: ApplicationSummary) => {
+  const state = useGetApplicationVulnerabilitySummariesQuery(
+    { appName: name },
+    { pollingInterval: 0 }
+  );
 
-  useEffect(() => {
-    const request = trigger({ appName: name });
-    return () => request?.abort();
-  }, [name, trigger]);
-
-  const vulnerabilities = (state?.data ?? []).reduce<
-    ImageScan['vulnerabilitySummary']
-  >(
+  const vulnerabilities: VulnerabilitySummary = (state?.data ?? []).reduce(
     (obj, x) =>
       aggregateVulnerabilitySummaries([
         obj,
@@ -152,7 +135,7 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
                 statusElements={{
                   ...(latestJob && {
                     'Latest Job':
-                      latestJobStatus[latestJob.status] ??
+                      latestJobStatus[latestJob.status ?? 'unknown'] ??
                       EnvironmentStatus.Consistent,
                   }),
                   ...(environmentActiveComponents && {
@@ -176,21 +159,23 @@ const AppItemStatus: FunctionComponent<ApplicationSummary> = ({
   );
 };
 
-const WElement: FunctionComponent<
-  { appName: string; isPlaceholder?: boolean } & HTMLAttributes<
-    Pick<
-      HTMLAnchorElement | HTMLDivElement,
-      keyof HTMLAnchorElement & keyof HTMLDivElement
-    >
+type WElementProps = {
+  appName: string;
+  isPlaceholder?: boolean;
+} & HTMLAttributes<
+  Pick<
+    HTMLAnchorElement | HTMLDivElement,
+    keyof HTMLAnchorElement & keyof HTMLDivElement
   >
-> = ({ appName, isPlaceholder, ...rest }) =>
+>;
+const WElement = ({ appName, isPlaceholder, ...rest }: WElementProps) =>
   isPlaceholder ? (
     <div {...rest} />
   ) : (
     <Link to={routeWithParams(routes.app, { appName })} {...rest} />
   );
 
-export const AppListItem: FunctionComponent<AppListItemProps> = ({
+export const AppListItem = ({
   app,
   handler,
   isPlaceholder,
@@ -198,7 +183,7 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
   showStatus,
   name,
   isLoaded,
-}) => (
+}: AppListItemProps) => (
   <WElement
     className={clsx('app-list-item', {
       'app-list-item--placeholder': isPlaceholder,
@@ -234,13 +219,3 @@ export const AppListItem: FunctionComponent<AppListItemProps> = ({
     </div>
   </WElement>
 );
-
-AppListItem.propTypes = {
-  app: PropTypes.object as PropTypes.Validator<ApplicationSummary>,
-  handler: PropTypes.func.isRequired,
-  isPlaceholder: PropTypes.bool,
-  isFavourite: PropTypes.bool,
-  showStatus: PropTypes.bool,
-  isLoaded: PropTypes.bool.isRequired,
-  name: PropTypes.string.isRequired,
-};

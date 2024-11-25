@@ -14,7 +14,7 @@ export const JobSchedulerDetails: FunctionComponent<{
       <List.Item key="status">
         <div className="grid grid--gap-small grid--auto-columns">
           <Typography>status</Typography>
-          <ComponentStatusBadge status={component.status} />
+          <ComponentStatusBadge status={component.status ?? 'Reconciling'} />
         </div>
       </List.Item>
       <List.Item key="port">

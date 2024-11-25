@@ -7,7 +7,7 @@ import type { StatusBadgeTemplateType } from '../status-badges/status-badge-temp
 import type { StatusPopoverType } from '../status-popover/status-popover';
 import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
 
-type VulnerabilitySummary = Required<ImageScan>['vulnerabilitySummary'];
+export type VulnerabilitySummary = Required<ImageScan>['vulnerabilitySummary'];
 export enum EnvironmentStatus {
   Consistent = 0,
   Running = 1,

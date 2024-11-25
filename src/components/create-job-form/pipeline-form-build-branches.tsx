@@ -34,7 +34,7 @@ export function PipelineFormBuildBranches({
   const [branchFullName, setBranchFullName] = useState('');
   const [toEnvironment, setToEnvironment] = useState('');
   const branches = useGetApplicationBranches(appName);
-  const [filteredBranches, setFilteredBranches] = useState([]);
+  const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
 
   const handleOnTextChange = ({
     target: { value },
@@ -87,10 +87,10 @@ export function PipelineFormBuildBranches({
     `Created ${pipelineName} pipeline job`
   );
   const isAnyValidRegex = (pattern: string): boolean => {
-    return pattern && /[\^$.*+?()[\]{}|\\]/.test(pattern);
+    return /[\^$.*+?()[\]{}|\\]/.test(pattern);
   };
   const isValidBranchName = (branch: string): boolean => {
-    return branch && !/[\^$*+?()[\]{}|\\]/.test(branch);
+    return !/[\^$*+?()[\]{}|\\]/.test(branch);
   };
   return (
     <form onSubmit={handleSubmit}>

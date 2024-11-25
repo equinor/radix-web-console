@@ -7,13 +7,7 @@ import {
 } from '@equinor/eds-core-react';
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import { isNil, isString } from 'lodash-es';
-import * as PropTypes from 'prop-types';
-import {
-  type FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   EnvironmentVariableTable,
@@ -23,7 +17,6 @@ import {
 import {
   type Component,
   type EnvVar,
-  type EnvVarParameter,
   radixApi,
   useEnvVarsQuery,
 } from '../../store/radix-api';
@@ -50,7 +43,7 @@ function isRadixVariable({ name }: EnvVar): boolean {
   return isString(name) && !!name.match('(RADIX|RADIXOPERATOR)_*');
 }
 
-export const EnvironmentVariables: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   componentName: string;
@@ -59,7 +52,8 @@ export const EnvironmentVariables: FunctionComponent<{
   readonly?: boolean;
   isExpanded?: boolean;
   onExpanded?: (isExpanded: boolean) => void;
-}> = ({
+};
+export const EnvironmentVariables = ({
   appName,
   envName,
   componentName,
@@ -68,7 +62,7 @@ export const EnvironmentVariables: FunctionComponent<{
   readonly,
   isExpanded,
   onExpanded,
-}) => {
+}: Props) => {
   const [componentVars, setComponentVars] = useState<FormattedEnvVar[]>([]);
   const [radixVars, setRadixVars] = useState<FormattedEnvVar[]>([]);
   const [inEditMode, setInEditMode] = useState(false);
@@ -119,8 +113,8 @@ export const EnvironmentVariables: FunctionComponent<{
     if (readonly) return;
 
     const body = componentVars
-      .filter((x) => x.value !== x.original.value)
-      .map<EnvVarParameter>((x) => ({ name: x.original.name, value: x.value }));
+      .filter((x) => x.value != undefined && x.value !== x.original.value)
+      .map((x) => ({ name: x.original.name, value: x.value! }));
     if (body.length > 0) {
       try {
         await saveFunc({ appName, envName, componentName, body }).unwrap();
@@ -235,17 +229,4 @@ export const EnvironmentVariables: FunctionComponent<{
       </Accordion.Item>
     </Accordion>
   );
-};
-
-EnvironmentVariables.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  componentType: PropTypes.string.isRequired as PropTypes.Validator<
-    Component['type']
-  >,
-  hideRadixVars: PropTypes.bool,
-  readonly: PropTypes.bool,
-  isExpanded: PropTypes.bool,
-  onExpanded: PropTypes.func,
 };

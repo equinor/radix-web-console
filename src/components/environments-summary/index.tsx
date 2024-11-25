@@ -1,16 +1,10 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
-import { EnvironmentCard } from './environment-card';
-
-import { externalUrls } from '../../externalUrls';
-import type { EnvironmentSummary } from '../../store/radix-api';
-
 import { Link } from 'react-router-dom';
+import { externalUrls } from '../../externalUrls';
 import { routes } from '../../routes';
+import type { EnvironmentSummary } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
-
+import { EnvironmentCard } from './environment-card';
 import './style.css';
 import { ExternalLink } from '../link/external-link';
 
@@ -20,11 +14,13 @@ export interface EnvironmentsSummaryProps {
   repository?: string;
 }
 
-export const EnvironmentsSummary: FunctionComponent<
-  EnvironmentsSummaryProps
-> = ({ appName, envs, repository }) => (
+export const EnvironmentsSummary = ({
+  appName,
+  envs,
+  repository,
+}: EnvironmentsSummaryProps) => (
   <div className="environments-summary">
-    {envs?.length > 0 ? (
+    {envs && envs.length > 0 ? (
       envs.map((env, i) => (
         <EnvironmentCard key={i} {...{ appName, env, repository }} />
       ))
@@ -55,11 +51,3 @@ export const EnvironmentsSummary: FunctionComponent<
     )}
   </div>
 );
-
-EnvironmentsSummary.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<EnvironmentSummary>
-  ),
-  repository: PropTypes.string,
-};

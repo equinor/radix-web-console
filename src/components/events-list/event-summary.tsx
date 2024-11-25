@@ -8,7 +8,7 @@ import {
   isEventResolved,
   isWarningEvent,
 } from '../../utils/event-model';
-import { StatusBadge } from '../status-badges';
+import { GenericStatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
 
 export interface EventSummaryProps {
@@ -19,9 +19,9 @@ const WarningState: FunctionComponent<{ event: Readonly<Event> }> = ({
   event,
 }) => {
   if (isEventObsolete(event)) {
-    return <StatusBadge type="success">Obsolete</StatusBadge>;
+    return <GenericStatusBadge type="success">Obsolete</GenericStatusBadge>;
   } else if (isEventResolved(event)) {
-    return <StatusBadge type="success">Resolved</StatusBadge>;
+    return <GenericStatusBadge type="success">Resolved</GenericStatusBadge>;
   }
 
   return null;
@@ -33,16 +33,18 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
   <Table.Row>
     <Table.Cell>
       <RelativeToNow
-        time={new Date(event.lastTimestamp)}
+        time={event.lastTimestamp}
         titlePrefix="Start"
         capitalize
       />
     </Table.Cell>
     <Table.Cell>
       <div className="type">
-        <StatusBadge type={isWarningEvent(event) ? 'warning' : 'success'}>
+        <GenericStatusBadge
+          type={isWarningEvent(event) ? 'warning' : 'success'}
+        >
           {event.type}
-        </StatusBadge>
+        </GenericStatusBadge>
         <WarningState event={event} />
       </div>
     </Table.Cell>
@@ -51,10 +53,9 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
     </Table.Cell>
     <Table.Cell className="wrap">
       {event.reason} - {event.message}
-      {event.involvedObjectState?.pod &&
-        event.involvedObjectState?.pod.restartCount > 0 && (
-          <>. Restarted {event.involvedObjectState.pod.restartCount} times</>
-        )}
+      {(event.involvedObjectState?.pod?.restartCount ?? 0) > 0 && (
+        <>. Restarted {event.involvedObjectState!.pod!.restartCount} times</>
+      )}
       {event.involvedObjectState?.ingressRules && (
         <>
           <List>
