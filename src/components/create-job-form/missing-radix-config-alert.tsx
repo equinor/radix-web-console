@@ -10,19 +10,18 @@ type Props = { application: Application };
 export const MissingRadixConfigAlert = ({ application }: Props) => (
   <Alert className="icon">
     <Icon data={info_circle} color="primary" />
-    <div>
+    <span className="grid grid--gap-small">
       <Typography>
         The <RadixConfigFileLink registration={application?.registration} />{' '}
         file must be read by Radix before using this pipeline job.
       </Typography>
       <Typography>
-        Please run{' '}
+        Run the{' '}
         <NewApplyConfigPipelineLink appName={application.name}>
           apply-config
         </NewApplyConfigPipelineLink>{' '}
-        to read <RadixConfigFileLink registration={application?.registration} />{' '}
-        from the application's GitHub repository.
+        pipeline job to read the file from the application's GitHub repository.
       </Typography>
-    </div>
+    </span>
   </Alert>
 );

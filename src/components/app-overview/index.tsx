@@ -69,18 +69,14 @@ export function AppOverview({ appName }: { appName: string }) {
             title={'DNS external aliases'}
           />
         )}
-        {environments?.length > 0 && (
+        <span className="grid grid--gap-small">
           <Typography variant="h4">Environments</Typography>
-        )}
-        <EnvironmentsSummary
-          appName={appName}
-          envs={environments}
-          repository={registration?.repository}
-        />
-
-        {jobs?.length > 0 && (
-          <Typography variant="h4">Latest pipeline jobs</Typography>
-        )}
+          <EnvironmentsSummary
+            appName={appName}
+            envs={environments}
+            repository={registration?.repository}
+          />
+        </span>
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>
     </main>

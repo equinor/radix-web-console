@@ -1,14 +1,9 @@
 import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
-
-import { EnvironmentCard } from './environment-card';
-
-import { externalUrls } from '../../externalUrls';
 import type { EnvironmentSummary } from '../../store/radix-api';
-
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
-import { ExternalLink } from '../link/external-link';
+import { EnvironmentCard } from './environment-card';
 import './style.css';
 
 export interface EnvironmentsSummaryProps {
@@ -21,27 +16,30 @@ export const EnvironmentsSummary: FunctionComponent<
   EnvironmentsSummaryProps
 > = ({ appName, envs, repository }) => {
   return (
-    <div className="environments-summary">
+    <>
       {envs?.length > 0 ? (
-        envs.map((env, i) => (
-          <EnvironmentCard key={i} {...{ appName, env, repository }} />
-        ))
+        <div className="environments-summary">
+          {envs.map((env, i) => (
+            <EnvironmentCard key={i} {...{ appName, env, repository }} />
+          ))}
+        </div>
       ) : (
-        <span>
-          <Typography bold>No enironments.</Typography>
+        <span className="grid grid--gap-x-small">
           <Typography>
-            Please run the{' '}
+            The radixconfig.yaml file must be read by Radix in order to show
+            information about environments.
+          </Typography>
+          <Typography>
+            Run the{' '}
             <NewApplyConfigPipelineLink appName={appName}>
               apply-config
             </NewApplyConfigPipelineLink>{' '}
-            pipeline job to apply{' '}
-            <ExternalLink href={externalUrls.referenceRadixConfig}>
-              radixconfig.yaml
-            </ExternalLink>
+            pipeline job to read the file from the application's GitHub
+            repository.
           </Typography>
         </span>
       )}
-    </div>
+    </>
   );
 };
 
