@@ -47,12 +47,9 @@ const templateTestData: Array<
   { description: 'type Default', text: 'Default', type: 'default' },
 ];
 
-const genericTestData: Array<
-  TestDataTemplate &
-    Pick<GenericStatusBadgeProps, 'className' | 'customIconData' | 'type'>
-> = [
-  { description: 'no Type, no Text' },
-  { description: 'no Type, Text', text: 'TestLabel' },
+const genericTestData = [
+  { description: 'no Type, no Text', type: 'unknown' },
+  { description: 'no Type, Text', text: 'TestLabel', type: 'unknown' },
   { description: 'Type, no Text', type: 'warning' },
   { description: 'Success', text: 'Success', type: 'success' },
   { description: 'Warning', text: 'Warning', type: 'warning' },
@@ -62,6 +59,7 @@ const genericTestData: Array<
     description: 'no Type, Custom Class',
     text: 'TestLabel',
     className: 'TestClass',
+    type: 'unknown',
   },
   {
     description: 'Custom Icon, Type',
@@ -73,8 +71,9 @@ const genericTestData: Array<
     description: 'Custom Icon, no Type',
     text: 'TestLabel',
     customIconData: coffee,
+    type: 'unknown',
   },
-];
+] satisfies Array<TestDataTemplate & GenericStatusBadgeProps>;
 
 const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
@@ -132,19 +131,16 @@ const testData = [
       'ComponentOutdated',
       'Unsupported',
     ],
-    // @ts-expect-error No idea how to fix this one
     ComponentStatusBadge
   ),
   EnumBadge(
     'ImageHubSecretStatusBadge',
     ['Consistent', 'Pending'],
-    // @ts-expect-error No idea how to fix this one
     ImageHubSecretStatusBadge
   ),
   EnumBadge(
     'PipelineRunBadges',
     Object.keys(BadgeTemplates),
-    // @ts-expect-error No idea how to fix this one
     PipelineRunStatusBadge
   ),
   EnumBadge(
@@ -155,7 +151,6 @@ const testData = [
   EnumBadge(
     'RadixJobConditionBadges',
     Object.keys(JobConditionBadgeTemplates),
-    // @ts-expect-error No idea how to fix this one
     RadixJobConditionBadge
   ),
   EnumBadge(

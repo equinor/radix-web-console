@@ -22,6 +22,7 @@ const testData: Array<
       batchName: 'batchName',
       backoffLimit: 0,
       failedCount: 0,
+      deploymentName: 'unknown-deployment',
     },
   },
   {
@@ -38,6 +39,7 @@ const testData: Array<
       batchName: 'batchName',
       backoffLimit: 10,
       failedCount: 0,
+      deploymentName: 'unknown-deployment',
     },
   },
   {
@@ -56,6 +58,7 @@ const testData: Array<
       message: 'some optional failure message',
       backoffLimit: 0,
       failedCount: 0,
+      deploymentName: 'unknown-deployment',
     },
   },
   {
@@ -73,6 +76,7 @@ new Server({
     testData.forEach(({ scheduledJobName, jobData }) => {
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/jobs/${scheduledJobName}`,
+        // @ts-expect-error no need to fix the type here?
         () => jobData
       );
     });

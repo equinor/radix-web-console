@@ -16,10 +16,7 @@ import type { ReplicaSummary } from '../../store/radix-api';
 
 type Status = Required<ReplicaSummary>['replicaStatus']['status'];
 
-const BadgeTemplates: Record<
-  Status,
-  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
-> = {
+const BadgeTemplates = {
   Pending: { icon: <Icon data={time} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
@@ -28,7 +25,7 @@ const BadgeTemplates: Record<
   Starting: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },
   Terminated: { icon: <Icon data={stop} /> },
-};
+} satisfies Record<Status, StatusBadgeTemplateProps>;
 
 type Props = {
   status: Status;
