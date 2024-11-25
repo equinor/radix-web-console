@@ -117,7 +117,9 @@ export const ReplicaList: FunctionComponent<{
                   />
                 </Table.Cell>
                 <Table.Cell>
-                  <ReplicaStatusBadge status={replica.replicaStatus?.status} />
+                  <ReplicaStatusBadge
+                    status={replica.replicaStatus?.status ?? 'Pending'}
+                  />
                 </Table.Cell>
                 <Table.Cell>
                   <RelativeToNow time={replica.created} />

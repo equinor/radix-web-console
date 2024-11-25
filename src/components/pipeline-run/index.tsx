@@ -21,7 +21,10 @@ export function PipelineRun({ pipelineRun }: Props) {
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
+                Pipeline run{' '}
+                <strong>
+                  {pipelineRun.status?.toLowerCase() ?? 'pending'}
+                </strong>
               </Typography>
               <Typography>
                 {getPipelineRunExecutionState(pipelineRun.status)} pipeline{' '}

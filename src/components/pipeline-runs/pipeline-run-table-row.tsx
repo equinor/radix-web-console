@@ -56,7 +56,9 @@ export function PipelineRunTableRow({ appName, jobName, pipelineRun }: Props) {
         )}
       </Table.Cell>
       <Table.Cell variant="icon">
-        <PipelineRunStatusBadge status={pipelineRun.status} />
+        <PipelineRunStatusBadge
+          status={pipelineRun.status ?? 'PipelineRunPending'}
+        />
       </Table.Cell>
     </Table.Row>
   );

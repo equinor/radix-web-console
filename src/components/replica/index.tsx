@@ -124,7 +124,9 @@ const Overview = ({
           )}
           <ReplicaImage replica={replica} />
           {status || (
-            <ReplicaStatusBadge status={replica.replicaStatus?.status} />
+            <ReplicaStatusBadge
+              status={replica.replicaStatus?.status ?? 'Pending'}
+            />
           )}
         </div>
         <div className="grid grid--gap-medium">

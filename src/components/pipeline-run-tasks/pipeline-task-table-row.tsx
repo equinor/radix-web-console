@@ -57,7 +57,7 @@ export function PipelineTaskTableRow({
         )}
       </Table.Cell>
       <Table.Cell variant="icon">
-        <PipelineRunStatusBadge status={task.status} />
+        <PipelineRunStatusBadge status={task.status ?? 'PipelineRunPending'} />
       </Table.Cell>
     </Table.Row>
   );
