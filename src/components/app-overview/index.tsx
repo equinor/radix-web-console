@@ -26,14 +26,7 @@ export function AppOverview({ appName }: { appName: string }) {
     { skip: !appName, pollingInterval }
   );
 
-  const {
-    appAlias,
-    dnsAliases,
-    dnsExternalAliases,
-    environments,
-    jobs,
-    registration,
-  } = application ?? {};
+  const { appAlias, dnsAliases, dnsExternalAliases, jobs } = application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
@@ -71,11 +64,7 @@ export function AppOverview({ appName }: { appName: string }) {
         )}
         <span className="grid grid--gap-small">
           <Typography variant="h4">Environments</Typography>
-          <EnvironmentsSummary
-            appName={appName}
-            envs={environments}
-            repository={registration?.repository}
-          />
+          {application && <EnvironmentsSummary application={application} />}
         </span>
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>

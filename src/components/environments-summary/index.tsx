@@ -1,28 +1,30 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-import type { EnvironmentSummary } from '../../store/radix-api';
+import type { Application } from '../../store/radix-api';
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import { EnvironmentCard } from './environment-card';
 import './style.css';
 import { info_circle } from '@equinor/eds-icons';
 import { Alert } from '../alert';
+import { RadixConfigFileLink } from '../link/radix-config-file-link';
 
-export interface EnvironmentsSummaryProps {
-  appName: string;
-  envs?: Readonly<Array<EnvironmentSummary>>;
-  repository?: string;
-}
+export type EnvironmentsSummaryProps = {
+  application: Application;
+};
 
-export const EnvironmentsSummary: FunctionComponent<
-  EnvironmentsSummaryProps
-> = ({ appName, envs, repository }) => {
+export const EnvironmentsSummary = ({
+  application,
+}: EnvironmentsSummaryProps) => {
   return (
     <>
-      {envs?.length > 0 ? (
+      {application.environments?.length > 0 ? (
         <div className="environments-summary">
-          {envs.map((env, i) => (
-            <EnvironmentCard key={i} {...{ appName, env, repository }} />
+          {application.environments?.map((env, i) => (
+            <EnvironmentCard
+              key={i}
+              appName={application.name}
+              env={env}
+              repository={application.registration?.repository}
+            />
           ))}
         </div>
       ) : (
@@ -30,12 +32,14 @@ export const EnvironmentsSummary: FunctionComponent<
           <Icon data={info_circle} color="primary" />
           <span className="grid grid--gap-x-small">
             <Typography>
-              The radixconfig.yaml file must be read by Radix in order to show
-              information about environments.
+              The{' '}
+              <RadixConfigFileLink registration={application.registration} />{' '}
+              file must be read by Radix in order to show information about
+              environments.
             </Typography>
             <Typography>
               Run the{' '}
-              <NewApplyConfigPipelineLink appName={appName}>
+              <NewApplyConfigPipelineLink appName={application.name}>
                 apply-config
               </NewApplyConfigPipelineLink>{' '}
               pipeline job to read the file from the application's GitHub
@@ -46,12 +50,4 @@ export const EnvironmentsSummary: FunctionComponent<
       )}
     </>
   );
-};
-
-EnvironmentsSummary.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envs: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<EnvironmentSummary>
-  ),
-  repository: PropTypes.string,
 };
