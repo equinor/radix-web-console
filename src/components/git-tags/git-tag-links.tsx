@@ -1,25 +1,23 @@
 import { List, Tooltip, Typography } from '@equinor/eds-core-react';
-import { type FunctionComponent, useState } from 'react';
+import { useState } from 'react';
 import { linkToGitHubTag } from '../../utils/string';
 import { ScrimPopup } from '../scrim-popup';
-
 import './style.css';
 import { ExternalLink } from '../link/external-link';
 
-const Tag: FunctionComponent<{
+type TagProps = {
   repository: string;
   tag: string;
   tagTitle: string;
-}> = ({ repository, tag, tagTitle }) => (
-  <ExternalLink href={linkToGitHubTag(repository, tag)} icon={null}>
+};
+const Tag = ({ repository, tag, tagTitle }: TagProps) => (
+  <ExternalLink href={linkToGitHubTag(repository, tag)} icon={undefined}>
     <div className="tags">{tagTitle}</div>
   </ExternalLink>
 );
 
-const ShortenedTag: FunctionComponent<{ repository: string; tag: string }> = ({
-  repository,
-  tag,
-}) => {
+type ShortenedTagProps = { repository: string; tag: string };
+const ShortenedTag = ({ repository, tag }: ShortenedTagProps) => {
   const tagTitle =
     tag?.length > 25 ? `${tag.substring(0, 8)}...${tag.slice(-12)}` : tag;
   return tag && tagTitle != tag ? (
@@ -33,10 +31,8 @@ const ShortenedTag: FunctionComponent<{ repository: string; tag: string }> = ({
   );
 };
 
-const TagList: FunctionComponent<{ repository: string; tags: string[] }> = ({
-  repository,
-  tags,
-}) => (
+type TagListProps = { repository: string; tags: string[] };
+const TagList = ({ repository, tags }: TagListProps) => (
   <List>
     {tags.map((tag) => (
       <List.Item key={tag}>
@@ -46,17 +42,19 @@ const TagList: FunctionComponent<{ repository: string; tags: string[] }> = ({
   </List>
 );
 
-export const GitTagLinks: FunctionComponent<{
-  gitTags: string;
+type Props = {
+  gitTags?: string;
   repository?: string;
-}> = ({ gitTags, repository }) => {
+};
+export const GitTagLinks = ({ gitTags, repository }: Props) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const gitTagList = gitTags?.split(/[ ,]+/) || [];
+
+  if (!repository || !gitTags || gitTagList.length === 0) return null;
+
   return (
     <>
-      {!gitTagList.length ? (
-        <></>
-      ) : gitTagList.length == 1 ? (
+      {gitTagList.length == 1 ? (
         <ShortenedTag tag={gitTagList[0]} repository={repository} />
       ) : gitTags.length < 20 ? (
         gitTagList

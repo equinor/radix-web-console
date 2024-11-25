@@ -1,8 +1,6 @@
 import { Divider, Icon, Typography } from '@equinor/eds-core-react';
 import { github, link, send } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type React from 'react';
-import { type FunctionComponent, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import {
@@ -25,7 +23,10 @@ import {
   type ReplicaSummary,
   useComponentsQuery,
 } from '../../store/radix-api';
-import { type Vulnerability, scanApi } from '../../store/scan-api';
+import {
+  type Vulnerability,
+  useGetEnvironmentVulnerabilitySummaryQuery,
+} from '../../store/scan-api';
 import { filterFields } from '../../utils/filter-fields';
 import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
@@ -37,21 +38,16 @@ import { getAppDeploymentUrl } from '../../utils/routing';
 
 type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
 
-export interface EnvironmentCardProps {
-  appName: string;
-  env: Readonly<EnvironmentSummary>;
-  repository?: string;
-}
-
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
   'high',
 ];
 
-const DeploymentDetails: FunctionComponent<{
+type Props = {
   appName: string;
-  deployment: Readonly<DeploymentSummary>;
-}> = ({ appName, deployment }) =>
+  deployment?: Readonly<DeploymentSummary>;
+};
+const DeploymentDetails = ({ appName, deployment }: Props) =>
   !deployment ? (
     <Typography
       color="disabled"
@@ -91,13 +87,11 @@ function CardContentBuilder(
     },
     { pollingInterval }
   );
-  const [envScanTrigger, { data: envScan, ...envScanState }] =
-    scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
-
-  useEffect(() => {
-    const request = envScanTrigger({ appName, envName });
-    return () => request?.abort();
-  }, [appName, envScanTrigger, envName]);
+  const { data: envScan, ...envScanState } =
+    useGetEnvironmentVulnerabilitySummaryQuery(
+      { appName, envName },
+      { pollingInterval: 0 }
+    );
 
   const vulnerabilities = environmentVulnerabilitySummarizer(envScan);
   const replicas = (components ?? []).reduce<Array<ReplicaSummary>>(
@@ -106,15 +100,15 @@ function CardContentBuilder(
   );
 
   const elements: EnvironmentCardStatusMap = {
-    Components: aggregateComponentEnvironmentStatus(components),
+    Components: aggregateComponentEnvironmentStatus(components ?? []),
     ...(replicas.length > 0 && {
-      Replicas: aggregateComponentReplicaEnvironmentStatus(components),
+      Replicas: aggregateComponentReplicaEnvironmentStatus(components ?? []),
     }),
   };
 
   const statusElement = (
     <AsyncResource asyncState={componentsState} errorContent={false}>
-      {components?.length > 0 && (
+      {components && components.length > 0 && (
         <div className="grid grid--gap-x-small grid--auto-columns">
           {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
             <EnvironmentVulnerabilityIndicator
@@ -143,7 +137,7 @@ function CardContentBuilder(
     ),
     body: (
       <AsyncResource asyncState={componentsState} errorContent={false}>
-        {components?.length > 0 && (
+        {components && components.length > 0 && (
           <EnvironmentIngress {...{ appName, envName, components }} />
         )}
       </AsyncResource>
@@ -151,11 +145,16 @@ function CardContentBuilder(
   };
 }
 
-export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
+type EnvironmentCardProps = {
+  appName: string;
+  env: EnvironmentSummary;
+  repository?: string;
+};
+export const EnvironmentCard = ({
   appName,
   env,
   repository,
-}) => {
+}: EnvironmentCardProps) => {
   const deployment = env.activeDeployment;
   const { header, body }: CardContent = !deployment?.name
     ? {
@@ -228,10 +227,4 @@ export const EnvironmentCard: FunctionComponent<EnvironmentCardProps> = ({
       </div>
     </div>
   );
-};
-
-EnvironmentCard.propTypes = {
-  appName: PropTypes.string.isRequired,
-  env: PropTypes.object.isRequired as PropTypes.Validator<EnvironmentSummary>,
-  repository: PropTypes.string,
 };
