@@ -25,7 +25,7 @@ export const ChangeConfigurationItemForm = ({
   configurationItem,
   refetch,
 }: Props) => {
-  const [newCI, setNewCI] = useState<Application>();
+  const [newCI, setNewCI] = useState<Application | null>(null);
   const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {

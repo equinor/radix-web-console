@@ -46,7 +46,7 @@ export default function AsyncResource({
         defaultContent={
           <Alert type="danger">
             <Typography variant="h4">
-              That didn't work <image aria-label="Sad">😞</image>
+              That didn't work <image aria-label="Sad" />
             </Typography>
             <div className="grid grid--gap-small">
               <div>

@@ -1,5 +1,5 @@
 import { Popover, Typography } from '@equinor/eds-core-react';
-import { type FunctionComponent, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import type { Application } from '../../store/service-now-api';
 import { configVariables } from '../../utils/config';
@@ -16,9 +16,12 @@ function urlStringForCI(id: string): string {
   return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id));
 }
 
-export const ConfigurationItemPopover: FunctionComponent<
-  ConfigurationItemPopoverProps
-> = ({ open, onClose, anchorEl, configurationItem }) => {
+export const ConfigurationItemPopover = ({
+  open,
+  onClose,
+  anchorEl,
+  configurationItem,
+}: ConfigurationItemPopoverProps) => {
   const externalUrl = urlStringForCI(configurationItem.id);
 
   useEffect(() => {
