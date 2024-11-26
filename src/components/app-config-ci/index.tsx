@@ -55,7 +55,9 @@ export function AppConfigConfigurationItem({
   configurationItemChangeCallback,
   disabled,
 }: Props) {
-  const [selectedCI, setSelectedCI] = useState<Application | null>(null);
+  const [selectedCI, setSelectedCI] = useState<Application | null | undefined>(
+    undefined
+  );
   const [popoverCI, setPopoverCI] = useState<Application | null>(null);
   const [popoverOpen, setPopoverOpen] = useState(false);
   const [getApplications] =
@@ -92,10 +94,6 @@ export function AppConfigConfigurationItem({
     setPopoverOpen(!popoverOpen);
   };
 
-  console.log({ currentCI, selectedCI });
-
-  // TODO: FIX DEFAULT VALUE!!!
-
   if (currentCIState.isLoading) return <h1>loading...</h1>;
 
   return (
@@ -117,9 +115,10 @@ export function AppConfigConfigurationItem({
         onChange={onChange}
         getOptionLabel={({ name }) => name}
         getOptionValue={({ id }) => id}
-        isClearable
         closeMenuOnSelect={false}
         value={selectedCI}
+        defaultValue={currentCI}
+        isClearable
         isDisabled={disabled}
       />
       <Typography className="helpertext" group="input" variant="text">
