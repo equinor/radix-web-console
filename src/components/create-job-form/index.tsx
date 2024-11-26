@@ -1,11 +1,6 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
-  type ComponentProps,
-  type FunctionComponent,
-  useCallback,
-  useMemo,
-} from 'react';
+import { type ComponentProps, type FunctionComponent, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import { pollingInterval } from '../../store/defaults';
@@ -59,15 +54,12 @@ export default function CreateJobForm({
   const buildBranches = useGetApplicationBranches(application);
   const hasBuildBranches = Object.keys(buildBranches).length > 0;
   const [searchParams, setSearchParams] = useSearchParams();
-  const setPipelineType = useCallback(
-    (pipeline: string) => {
-      setSearchParams((prev) => {
-        prev.set(pipelineSearchParam, pipeline);
-        return prev;
-      });
-    },
-    [setSearchParams]
-  );
+  const setPipelineType = (pipeline: string) =>
+    setSearchParams((prev) => {
+      prev.set(pipelineSearchParam, pipeline);
+      return prev;
+    });
+
   const pipeline = useMemo(() => {
     const urlPipeline = searchParams.get(pipelineSearchParam);
     if (Object.keys(Pipelines).includes(urlPipeline)) {
