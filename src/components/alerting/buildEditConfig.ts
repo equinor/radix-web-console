@@ -3,10 +3,11 @@ import type {
   AlertingConfig,
   ReceiverConfigMap,
   UpdateAlertingConfig,
+  UpdateReceiverConfigSecretsMap,
 } from '../../store/radix-api';
 
 const buildReceiverSecrets = (receviers: ReceiverConfigMap) => {
-  const secretsConfig = {};
+  const secretsConfig: UpdateReceiverConfigSecretsMap = {};
   if (!receviers) {
     return secretsConfig;
   }

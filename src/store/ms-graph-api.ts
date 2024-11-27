@@ -27,11 +27,12 @@ function ensureClient(state: unknown) {
   return graphClient
 }
 
-function parseGraphError(e): FetchBaseQueryError {
+function parseGraphError(e: unknown): FetchBaseQueryError {
   if (e instanceof GraphError) {
     return { data: e.body, status: e.statusCode };
   }
 
+  // @ts-expect-error not sure what e is in this case
   return { error: e, status: 'CUSTOM_ERROR' };
 }
 
