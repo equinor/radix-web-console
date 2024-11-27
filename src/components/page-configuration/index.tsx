@@ -18,16 +18,14 @@ import { Breadcrumb } from '../breadcrumb';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
 
-import './style.css';
 import { pollingInterval } from '../../store/defaults';
 import { type ApplicationRegistration, radixApi } from '../../store/radix-api';
 import { ExternalLink } from '../link/external-link';
+import { RadixConfigFileLink } from '../link/radix-config-file-link';
+import './style.css';
+
 function getConfigBranch(configBranch: string): string {
   return configBranch || 'master';
-}
-
-function getRadixConfigFullName(radixConfigFullName: string): string {
-  return radixConfigFullName || 'radixconfig.yaml';
 }
 
 function getConfigBranchUrl({
@@ -35,16 +33,6 @@ function getConfigBranchUrl({
   repository,
 }: ApplicationRegistration): string {
   return `${repository}/tree/${getConfigBranch(configBranch)}`;
-}
-
-function getConfigFileUrl({
-  configBranch,
-  radixConfigFullName,
-  repository,
-}: ApplicationRegistration): string {
-  return `${repository}/blob/${configBranch}/${getRadixConfigFullName(
-    radixConfigFullName
-  )}`;
 }
 
 export function PageConfiguration({ appName }: { appName: string }) {
@@ -88,10 +76,7 @@ export function PageConfiguration({ appName }: { appName: string }) {
                 </ExternalLink>
               </Typography>
               <Typography>
-                Config file{' '}
-                <ExternalLink href={getConfigFileUrl(registration)}>
-                  {getRadixConfigFullName(registration.radixConfigFullName)}
-                </ExternalLink>
+                Config file <RadixConfigFileLink registration={registration} />
               </Typography>
               <ConfigureApplicationGithub
                 refetch={refetch}

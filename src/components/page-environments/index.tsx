@@ -16,7 +16,6 @@ export function PageEnvironments({ appName }: Props) {
     { appName },
     { skip: !appName, pollingInterval }
   );
-  const { environments, registration } = application ?? {};
 
   return (
     <>
@@ -29,11 +28,7 @@ export function PageEnvironments({ appName }: Props) {
       />
 
       <AsyncResource asyncState={state}>
-        <EnvironmentsSummary
-          appName={appName}
-          envs={environments}
-          repository={registration?.repository}
-        />
+        {application && <EnvironmentsSummary application={application} />}
       </AsyncResource>
     </>
   );
