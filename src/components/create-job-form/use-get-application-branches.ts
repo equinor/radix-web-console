@@ -1,6 +1,6 @@
 import type { Application } from '../../store/radix-api';
 
-export function useGetApplicationBranches(application: Application) {
+export function useGetApplicationBranches(application?: Application) {
   return (
     application?.environments
       ?.filter(({ branchMapping }) => !!branchMapping)

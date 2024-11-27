@@ -59,20 +59,15 @@ function getEnvironmentComponentScanModel(
   data: Readonly<EnvironmentVulnerabilities>,
   name: string,
   type: Component['type']
-): ImageWithLastScan {
-  let componentKey = '' as keyof EnvironmentVulnerabilities;
+): ImageWithLastScan | undefined {
   switch (type) {
     case 'component':
-      componentKey = 'components';
-      break;
+      return data?.components?.[name];
     case 'job':
-      componentKey = 'jobs';
-      break;
+      return data?.jobs?.[name];
     default:
-      break;
+      return undefined;
   }
-
-  return data?.[componentKey]?.[name];
 }
 
 function hasComponentOAuth2Service(

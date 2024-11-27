@@ -44,6 +44,7 @@ export const GenericStatusBadge = ({
   <StatusBadgeTemplate
     {...{
       ...chipProps,
+      // @ts-expect-error ToLowerCase should return Lowercase<> https://github.com/microsoft/TypeScript/issues/44268
       ...BadgeTemplates[type.toLowerCase()],
       ...(!!customIconData && { icon: <Icon data={customIconData} /> }),
     }}

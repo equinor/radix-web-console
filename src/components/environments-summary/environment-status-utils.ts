@@ -39,17 +39,18 @@ const ReplicaStatusMap = {
 export function aggregateComponentEnvironmentStatus(
   components: Component[]
 ): EnvironmentStatus {
-  return components.reduce<EnvironmentStatus>(
-    (obj, { status, oauth2 }) =>
-      Math.max(
-        ComponentStatusMap[status ?? 'unknown'] ?? EnvironmentStatus.Warning,
-        AuxiliaryResourceDeploymentStatusMap[
-          oauth2?.deployment.status ?? 'Consistent'
-        ] ?? EnvironmentStatus.Warning,
-        obj
-      ),
-    EnvironmentStatus.Consistent
-  );
+  return components.reduce<EnvironmentStatus>((obj, { status, oauth2 }) => {
+    const compStatus = status ?? 'unknown';
+    const oauth2Status = oauth2?.deployment.status ?? 'Consistent';
+    return Math.max(
+      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
+      ComponentStatusMap[compStatus] ?? EnvironmentStatus.Warning,
+      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
+      AuxiliaryResourceDeploymentStatusMap[oauth2Status] ??
+        EnvironmentStatus.Warning,
+      obj
+    );
+  }, EnvironmentStatus.Consistent);
 }
 
 export function aggregateComponentReplicaEnvironmentStatus(
@@ -60,15 +61,14 @@ export function aggregateComponentReplicaEnvironmentStatus(
     .concat(components?.flatMap((c) => c.oauth2?.deployment.replicaList ?? []))
     .filter((x) => !!x);
 
-  return replicas.reduce(
-    (obj, { replicaStatus }) =>
-      Math.max(
-        ReplicaStatusMap[replicaStatus?.status ?? 'unknown'] ??
-          EnvironmentStatus.Warning,
-        obj
-      ),
-    EnvironmentStatus.Consistent
-  );
+  return replicas.reduce((obj, { replicaStatus }) => {
+    const status = replicaStatus?.status ?? 'Pending';
+    return Math.max(
+      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
+      ReplicaStatusMap[status] ?? EnvironmentStatus.Warning,
+      obj
+    );
+  }, EnvironmentStatus.Consistent);
 }
 
 export function aggregateVulnerabilitySummaries(

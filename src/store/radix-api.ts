@@ -2769,8 +2769,8 @@ export type Application = {
   /** Jobs list of run jobs for the application */
   jobs?: JobSummary[];
   /** Name the name of the application */
-  name?: string;
-  registration?: ApplicationRegistration;
+  name: string;
+  registration: ApplicationRegistration;
   /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };

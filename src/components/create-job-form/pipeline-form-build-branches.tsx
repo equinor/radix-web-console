@@ -26,7 +26,8 @@ export function PipelineFormBuildBranches({
   application,
   pipelineName,
 }: FormProp) {
-  const hasEnvironments = application?.environments?.length > 0;
+  const hasEnvironments =
+    application.environments && application.environments.length > 0;
   const isBuildDeployPipeline = pipelineName === 'build-deploy';
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
@@ -38,7 +39,7 @@ export function PipelineFormBuildBranches({
   const [toEnvironment, setToEnvironment] = useState('');
   const branches = useGetApplicationBranches(application);
   const hasBranches = Object.keys(branches).length > 0;
-  const [filteredBranches, setFilteredBranches] = useState([]);
+  const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
 
   const handleOnTextChange = ({
     target: { value },
