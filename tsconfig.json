@@ -24,7 +24,7 @@
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
     "noImplicitAny": false,
-    "strictFunctionTypes": false,
+    "strictFunctionTypes": true,
     "types": ["vitest/globals"]
   },
   "include": ["./src/**/*"],

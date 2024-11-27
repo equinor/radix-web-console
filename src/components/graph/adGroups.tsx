@@ -3,7 +3,6 @@ import { computer, group, person } from '@equinor/eds-icons';
 import * as PropTypes from 'prop-types';
 import {
   type CSSObjectWithLabel,
-  type GroupBase,
   type MultiValue,
   type MultiValueGenericProps,
   type OptionsOrGroups,
@@ -33,7 +32,7 @@ type GroupedOption = {
 };
 
 type CallbackType = (
-  options: OptionsOrGroups<AdGroupItem, GroupBase<AdGroupItem>>
+  options: OptionsOrGroups<AdGroupItem, GroupedOption>
 ) => void;
 
 interface Props {
@@ -171,7 +170,9 @@ function selectValueStyle(
   return base;
 }
 
-function MultiValueLabel(props: MultiValueGenericProps<AdGroupItem>) {
+const MultiValueLabel = (
+  props: MultiValueGenericProps<AdGroupItem, true, GroupedOption>
+) => {
   let icon = computer;
   if (props.data.type === 'Group') icon = group;
   if (props.data.type === 'User') icon = person;
@@ -191,4 +192,4 @@ function MultiValueLabel(props: MultiValueGenericProps<AdGroupItem>) {
       <components.MultiValueLabel {...props} />
     </div>
   );
-}
+};

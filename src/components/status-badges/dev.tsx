@@ -108,11 +108,11 @@ const EnumBadge: <P extends { status: S }, S extends string>(
 
 const testData = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
+  // @ts-expect-error No idea how to fix this one
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
   EnumBadge(
     'BuildSecretStatusBadge',
     ['Consistent', 'Pending'],
-    // @ts-expect-error No idea how to fix this one
     BuildSecretStatusBadge
   ),
   EnumBadge(
@@ -131,6 +131,7 @@ const testData = [
       'ComponentOutdated',
       'Unsupported',
     ],
+    // @ts-expect-error No idea how to fix this one
     ComponentStatusBadge
   ),
   EnumBadge(
@@ -140,6 +141,7 @@ const testData = [
   ),
   EnumBadge(
     'PipelineRunBadges',
+    // @ts-expect-error No idea how to fix this one
     Object.keys(BadgeTemplates),
     PipelineRunStatusBadge
   ),
@@ -150,6 +152,7 @@ const testData = [
   ),
   EnumBadge(
     'RadixJobConditionBadges',
+    // @ts-expect-error No idea how to fix this one
     Object.keys(JobConditionBadgeTemplates),
     RadixJobConditionBadge
   ),

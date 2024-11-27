@@ -10,6 +10,7 @@ import {
   warning_outlined,
 } from '@equinor/eds-icons';
 
+import type { PropsWithChildren } from 'react';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
@@ -29,18 +30,20 @@ const BadgeTemplates = {
   warning: { icon: <Icon data={warning_outlined} />, type: 'warning' },
 } satisfies Record<string, StatusBadgeTemplateProps>;
 
-export type GenericStatusBadgeProps = {
-  customIconData?: IconData;
-  type: keyof typeof BadgeTemplates;
-} & ChipProps;
+export type GenericStatusBadgeProps = PropsWithChildren<
+  {
+    customIconData?: IconData;
+    type: keyof typeof BadgeTemplates;
+  } & ChipProps
+>;
 export const GenericStatusBadge = ({
   customIconData,
   type,
-  ...rest
+  ...chipProps
 }: GenericStatusBadgeProps) => (
   <StatusBadgeTemplate
     {...{
-      ...rest,
+      ...chipProps,
       ...BadgeTemplates[type.toLowerCase()],
       ...(!!customIconData && { icon: <Icon data={customIconData} /> }),
     }}

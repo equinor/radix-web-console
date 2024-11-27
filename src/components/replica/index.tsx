@@ -251,7 +251,7 @@ export const Replica = ({
     if (logState?.data || log) {
       return;
     }
-    getHistoryLog?.().then(setHistoryLog);
+    getHistoryLog?.().then((data: unknown) => setHistoryLog(data as string));
   }, [replica, logState?.data]);
 
   return (

@@ -102,8 +102,8 @@ export function AppConfigConfigurationItem({
         Configuration item
       </Typography>
       <AsyncSelect<Application>
-        components={{ IndicatorsContainer }}
         // @ts-expect-error onInfoIconClick is defined in IndicatorsContainer
+        components={{ IndicatorsContainer }}
         onInfoIconClick={onInfoIconClick}
         containerRef={containerRef}
         name="ConfigurationItem"

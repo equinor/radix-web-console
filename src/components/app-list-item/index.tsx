@@ -145,7 +145,7 @@ const AppItemStatus = ({
                           environmentActiveComponents[x]?.length > 0
                             ? [...obj, ...environmentActiveComponents[x]]
                             : obj,
-                        []
+                        [] as Component[]
                       )
                     ),
                   }),
