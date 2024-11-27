@@ -23,7 +23,7 @@
     "noImplicitThis": true,
     "strictPropertyInitialization": true,
     "strictBindCallApply": true,
-    "noImplicitAny": false,
+    "noImplicitAny": true,
     "strictFunctionTypes": true,
     "types": ["vitest/globals"]
   },
