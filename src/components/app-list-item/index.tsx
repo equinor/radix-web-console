@@ -51,10 +51,6 @@ export interface AppListItemProps {
   isLoaded: boolean;
 }
 
-const latestJobStatus = {
-  Failed: EnvironmentStatus.Danger,
-} as const;
-
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
   'critical',
   'high',
@@ -135,8 +131,9 @@ const AppItemStatus = ({
                 statusElements={{
                   ...(latestJob && {
                     'Latest Job':
-                      latestJobStatus[latestJob.status ?? 'unknown'] ??
-                      EnvironmentStatus.Consistent,
+                      latestJob.status == 'Failed'
+                        ? EnvironmentStatus.Danger
+                        : EnvironmentStatus.Consistent,
                   }),
                   ...(environmentActiveComponents && {
                     Environments: aggregateEnvironmentStatus(

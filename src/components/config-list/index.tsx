@@ -3,9 +3,9 @@ import type { FunctionComponent } from 'react';
 
 import { configVariables } from '../../utils/config';
 
-const ConfigVariableTableCell: FunctionComponent<{ value: unknown }> = ({
-  value,
-}) => (
+const ConfigVariableTableCell: FunctionComponent<{
+  value: string[] | unknown;
+}> = ({ value }) => (
   <Table.Cell>
     <pre>
       <Typography>
