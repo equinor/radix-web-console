@@ -1,53 +1,53 @@
-import { Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { externalUrls } from '../../externalUrls';
-import { routes } from '../../routes';
-import type { EnvironmentSummary } from '../../store/radix-api';
-import { routeWithParams } from '../../utils/string';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import type { Application } from '../../store/radix-api';
+import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import { EnvironmentCard } from './environment-card';
 import './style.css';
-import { ExternalLink } from '../link/external-link';
+import { info_circle } from '@equinor/eds-icons';
+import { Alert } from '../alert';
+import { RadixConfigFileLink } from '../link/radix-config-file-link';
 
-export interface EnvironmentsSummaryProps {
-  appName: string;
-  envs?: Readonly<Array<EnvironmentSummary>>;
-  repository?: string;
-}
+export type EnvironmentsSummaryProps = {
+  application: Application;
+};
 
 export const EnvironmentsSummary = ({
-  appName,
-  envs,
-  repository,
-}: EnvironmentsSummaryProps) => (
-  <div className="environments-summary">
-    {envs && envs.length > 0 ? (
-      envs.map((env, i) => (
-        <EnvironmentCard key={i} {...{ appName, env, repository }} />
-      ))
-    ) : (
-      <span>
-        <Typography bold>No enironments.</Typography>
-        <Typography>
-          Please run the{' '}
-          <Typography
-            as={Link}
-            to={routeWithParams(
-              routes.appJobNew,
-              {
-                appName: appName,
-              },
-              { pipeline: 'apply-config' }
-            )}
-            link
-          >
-            apply-config
-          </Typography>{' '}
-          pipeline job to apply{' '}
-          <ExternalLink href={externalUrls.referenceRadixConfig}>
-            radixconfig.yaml
-          </ExternalLink>
-        </Typography>
-      </span>
-    )}
-  </div>
-);
+  application,
+}: EnvironmentsSummaryProps) => {
+  return (
+    <>
+      {application.environments?.length > 0 ? (
+        <div className="environments-summary">
+          {application.environments?.map((env, i) => (
+            <EnvironmentCard
+              key={i}
+              appName={application.name}
+              env={env}
+              repository={application.registration?.repository}
+            />
+          ))}
+        </div>
+      ) : (
+        <Alert className="icon">
+          <Icon data={info_circle} color="primary" />
+          <span className="grid grid--gap-x-small">
+            <Typography>
+              The{' '}
+              <RadixConfigFileLink registration={application.registration} />{' '}
+              file must be read by Radix in order to show information about
+              environments.
+            </Typography>
+            <Typography>
+              Run the{' '}
+              <NewApplyConfigPipelineLink appName={application.name}>
+                apply-config
+              </NewApplyConfigPipelineLink>{' '}
+              pipeline job to read the file from the application's GitHub
+              repository.
+            </Typography>
+          </span>
+        </Alert>
+      )}
+    </>
+  );
+};

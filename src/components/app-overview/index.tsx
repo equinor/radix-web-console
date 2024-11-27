@@ -26,14 +26,7 @@ export function AppOverview({ appName }: { appName: string }) {
     { skip: !appName, pollingInterval }
   );
 
-  const {
-    appAlias,
-    dnsAliases,
-    dnsExternalAliases,
-    environments,
-    jobs,
-    registration,
-  } = application ?? {};
+  const { appAlias, dnsAliases, dnsExternalAliases, jobs } = application ?? {};
 
   return (
     <main className="grid grid--gap-medium">
@@ -69,18 +62,10 @@ export function AppOverview({ appName }: { appName: string }) {
             title={'DNS external aliases'}
           />
         )}
-        {environments && environments.length > 0 && (
+        <span className="grid grid--gap-small">
           <Typography variant="h4">Environments</Typography>
-        )}
-        <EnvironmentsSummary
-          appName={appName}
-          envs={environments}
-          repository={registration?.repository}
-        />
-
-        {jobs && jobs.length > 0 && (
-          <Typography variant="h4">Latest pipeline jobs</Typography>
-        )}
+          {application && <EnvironmentsSummary application={application} />}
+        </span>
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>
     </main>

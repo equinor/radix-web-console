@@ -9,8 +9,9 @@ import { ConfigureApplicationGithub } from '../configure-application-github';
 import CreateApplicationForm from '../create-application-form';
 import { ScrimPopup } from '../scrim-popup';
 
-import './style.css';
 import type { ApplicationRegistration } from '../../store/radix-api';
+import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
+import './style.css';
 
 function scrollToPosition(
   elementRef: Element | null,
@@ -70,19 +71,9 @@ export default function PageCreateApplication() {
               />
               <Typography>
                 Now you can run the{' '}
-                <Typography
-                  as={Link}
-                  to={routeWithParams(
-                    routes.appJobNew,
-                    {
-                      appName: registration.name,
-                    },
-                    { pipeline: 'apply-config' }
-                  )}
-                  link
-                >
+                <NewApplyConfigPipelineLink appName={registration.name}>
                   apply-config pipeline job
-                </Typography>{' '}
+                </NewApplyConfigPipelineLink>
                 to apply radixconfig.yaml, or go to{' '}
                 <Typography
                   as={Link}

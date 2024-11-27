@@ -1,18 +1,20 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import {
-  type FunctionComponent,
-  type PropsWithChildren,
-  useState,
-} from 'react';
+import { type ComponentProps, type FunctionComponent, useMemo } from 'react';
 
-import { PipelineFormPromote } from './pipeline-form-promote';
-
-import './style.css';
 import { useSearchParams } from 'react-router-dom';
+import { pollingInterval } from '../../store/defaults';
+import {
+  type Application,
+  useGetApplicationQuery,
+} from '../../store/radix-api';
 import { PipelineFormApplyConfig } from './pipeline-form-apply-config';
 import { PipelineFormBuildBranches } from './pipeline-form-build-branches';
 import { PipelineFormDeploy } from './pipeline-form-deploy';
+import { PipelineFormPromote } from './pipeline-form-promote';
+import { useGetApplicationBranches } from './use-get-application-branches';
+import './style.css';
+import AsyncResource from '../async-resource/async-resource';
 
 export interface CreateJobFormProps {
   appName: string;
@@ -24,11 +26,11 @@ type SupportedPipelineNames =
   | ComponentProps<typeof PipelineFormPromote>['pipelineName']
   | ComponentProps<typeof PipelineFormApplyConfig>['pipelineName'];
 
-export type FormProp = PropsWithChildren<{
-  appName: string;
+export type FormProp = {
+  application: Application;
   onSuccess: (jobName: string) => void;
   pipelineName: string;
-}>;
+};
 
 const Pipelines = {
   build: PipelineFormBuildBranches,
@@ -38,28 +40,43 @@ const Pipelines = {
   'apply-config': PipelineFormApplyConfig,
 } satisfies Record<SupportedPipelineNames, FunctionComponent<FormProp>>;
 
+const pipelineSearchParam = 'pipeline';
+
 export default function CreateJobForm({
   appName,
   onSuccess,
 }: CreateJobFormProps) {
-  const [searchParams] = useSearchParams();
-  const [pipeline, setPipeline] = useState<SupportedPipelineNames>(() => {
-    const urlPipeline = searchParams.get('pipeline');
-    if (urlPipeline && Object.keys(Pipelines).includes(urlPipeline)) {
-      return urlPipeline as SupportedPipelineNames;
+  const { data: application, ...appState } = useGetApplicationQuery(
+    { appName },
+    { pollingInterval }
+  )
+  const hasEnvironments = application?.environments?.length;
+  const buildBranches = useGetApplicationBranches(application);
+  const hasBuildBranches = Object.keys(buildBranches).length > 0;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const setPipelineType = (pipeline: string) =>
+    setSearchParams((prev) => {
+      prev.set(pipelineSearchParam, pipeline);
+      return prev;
+    });
+
+  const pipeline = useMemo(() => {
+    const urlPipeline = searchParams.get(pipelineSearchParam);
+    if (Object.keys(Pipelines).includes(urlPipeline)) {
+      return urlPipeline;
     }
 
-    return 'build-deploy';
-  });
+    return !hasEnvironments
+      ? 'apply-config'
+      : hasBuildBranches
+        ? 'build-deploy'
+        : '';
+  }, [searchParams, hasEnvironments, hasBuildBranches]);
 
   const PipelineForm = Pipelines[pipeline];
 
   return (
-    <PipelineForm
-      onSuccess={onSuccess}
-      appName={appName}
-      pipelineName={pipeline}
-    >
+    <AsyncResource asyncState={appState}>
       <Typography
         group="input"
         variant="text"
@@ -71,9 +88,9 @@ export default function CreateJobForm({
         id="PipelineNameSelect"
         label=""
         value={pipeline}
-        onChange={(e) => setPipeline(e.target.value as SupportedPipelineNames)}
+        onChange={(e) => setPipelineType(e.target.value)}
       >
-        <option disabled value="">
+        <option hidden value="">
           — Please select —
         </option>
         {Object.keys(Pipelines).map((pipeline) => (
@@ -82,10 +99,13 @@ export default function CreateJobForm({
           </option>
         ))}
       </NativeSelect>
-    </PipelineForm>
+      {PipelineForm && (
+        <PipelineForm
+          onSuccess={onSuccess}
+          application={application}
+          pipelineName={pipeline}
+        />
+      )}
+    </AsyncResource>
   );
 }
-CreateJobForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-};

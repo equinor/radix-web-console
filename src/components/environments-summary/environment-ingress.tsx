@@ -32,8 +32,8 @@ type ComponentDetailsProps = {
   component: Readonly<Component>;
 };
 const ComponentDetails = ({ icon, component }: ComponentDetailsProps) => (
-  <span className="grid grid--auto-columns grid--gap-small grid--align-center">
-    <Icon data={icon} />
+  <>
+    <Icon data={icon} style={{ marginRight: 'var(--eds_spacing_small)' }} />
     <Typography
       as="span"
       token={{
@@ -44,7 +44,7 @@ const ComponentDetails = ({ icon, component }: ComponentDetailsProps) => (
     >
       {component.name}
     </Typography>
-  </span>
+  </>
 );
 
 export const EnvironmentIngress = ({
@@ -80,21 +80,19 @@ export const EnvironmentIngress = ({
           <ExternalLink
             key={component.name}
             href={`https://${component.variables?.[URL_VAR_NAME] ?? ''}`}
-            className="grid grid--auto-columns grid--gap-x-small grid--align-center"
+            className=""
           >
             <ComponentDetails icon={link} component={component} />
           </ExternalLink>
         ))
       ) : (
-        <span>
-          <Typography
-            color="disabled"
-            className="grid grid--auto-columns grid--gap-small grid--align-center"
-          >
-            <Icon data={link} />
-            No link available
-          </Typography>
-        </span>
+        <Typography color="disabled">
+          <Icon
+            data={link}
+            style={{ marginRight: 'var(--eds_spacing_small)' }}
+          />
+          No link available
+        </Typography>
       )}
       {comps.passive
         .filter(({ status }) => status === 'Outdated')
