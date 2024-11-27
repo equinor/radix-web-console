@@ -4,11 +4,30 @@ import { getReasonPhrase } from 'http-status-codes';
 
 import type { FetchQueryError } from '../types';
 
-export function getFetchErrorData(error: FetchQueryError|SerializedError): {
+type ManagedErrors = FetchQueryError | SerializedError | Error | unknown;
+
+export function getFetchErrorData(error: ManagedErrors): {
   code?: number;
   message: string;
   error: string;
 } {
+  if (typeof error === "string") {
+    return {
+      code: undefined,
+      message: error,
+      error: "unknown error",
+    }
+  }
+
+  if (typeof error !== "object" || error === null) {
+    console.warn("unkown error: ", error)
+    return {
+      code: undefined,
+      message: "unknown error",
+      error: "unknown error",
+    }
+  }
+
   if (IsRTKQueryError(error)) {
     const code = isFetchBaseQueryError(error) ? error.status : IsParsingError(error) ? error.originalStatus : undefined;
     return {
@@ -18,36 +37,24 @@ export function getFetchErrorData(error: FetchQueryError|SerializedError): {
     }
   }
 
-  // SerializedError
-  if (error?.message) {
-    return {
-      code: Number(error?.code),
-      message: error?.message,
-      error: error?.name ?? "unknown error",
-    }
-  }
-
-  if (typeof error === "string") {
-    return {
-      code: undefined,
-      message: error,
-      error: "unknown error",
-    }
-  }
 
   console.warn("unkown error received: ", error)
-  // @ts-expect-error I dont know what this is
-  return error;
+  // This might be SerialziedError, or something unknown
+  return {
+    code: 'code' in error ? Number(error.code) : undefined,
+    message: 'message' in error ? String(error.message) : "unknown error",
+    error: 'name' in error ? String(error.name) : "unknown error",
+  };
 }
 
 export function getFetchErrorCode(
-  error: FetchQueryError
+  error: ManagedErrors
 ): number|undefined {
   return getFetchErrorData(error).code;
 }
 
 export function getFetchErrorMessage(
-  error: FetchQueryError
+  error: ManagedErrors
 ): string|undefined {
   return getFetchErrorData(error).message;
 }

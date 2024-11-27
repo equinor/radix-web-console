@@ -14,7 +14,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "strict": false,
+    "strict": true,
     "strictNullChecks": true,
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,
@@ -25,6 +25,7 @@
     "strictBindCallApply": true,
     "noImplicitAny": true,
     "strictFunctionTypes": true,
+    "useUnknownInCatchVariables": true,
     "types": ["vitest/globals"]
   },
   "include": ["./src/**/*"],
