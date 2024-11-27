@@ -5,16 +5,12 @@ import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
 import type { Deployment } from '../../store/radix-api';
-import {
-  linkToGitHubCommit,
-  routeWithParams,
-  smallGithubCommitHash,
-  smallJobName,
-} from '../../utils/string';
+import { routeWithParams, smallJobName } from '../../utils/string';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { CommitHash } from '../commit-hash';
 
 type Props = {
   appName: string;
@@ -67,17 +63,10 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => (
         {deployment.gitCommitHash && (
           <Typography>
             Built from commit{' '}
-            <Typography
-              link
-              href={linkToGitHubCommit(
-                deployment.repository,
-                deployment.gitCommitHash
-              )}
-              token={{ textDecoration: 'none' }}
-            >
-              {smallGithubCommitHash(deployment.gitCommitHash)}{' '}
-              <Icon data={github} size={24} />
-            </Typography>
+            <CommitHash
+              repo={deployment.repository}
+              commit={deployment.gitCommitHash}
+            />
           </Typography>
         )}
       </div>

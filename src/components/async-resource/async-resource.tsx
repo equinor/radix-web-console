@@ -5,6 +5,7 @@ import { externalUrls } from '../../externalUrls';
 import type { FetchQueryResult } from '../../store/types';
 import { getFetchErrorCode, getFetchErrorData } from '../../store/utils';
 import { Alert } from '../alert';
+import { ExternalLink } from '../link/external-link';
 
 type AnotherAsyncResourceProps = PropsWithChildren<{
   asyncState: Pick<FetchQueryResult, 'error' | 'isError' | 'isLoading'>;
@@ -34,7 +35,7 @@ export default function AsyncResource({
   }
 
   if (
-    asyncState.isError &&
+    asyncState.error &&
     !nonErrorCodes?.includes(getFetchErrorCode(asyncState.error))
   ) {
     const { code, message } = getFetchErrorData(asyncState.error);
@@ -44,9 +45,7 @@ export default function AsyncResource({
         content={errorContent}
         defaultContent={
           <Alert type="danger">
-            <Typography variant="h4">
-              That didn't work <image aria-label="Sad">😞</image>
-            </Typography>
+            <Typography variant="h4">That didn't work 😞</Typography>
             <div className="grid grid--gap-small">
               <div>
                 <Typography variant="caption">Error message:</Typography>
@@ -57,14 +56,9 @@ export default function AsyncResource({
               <Typography>
                 You may want to refresh the page. If the problem persists, get
                 in touch on our Slack{' '}
-                <Typography
-                  link
-                  href={externalUrls.slackRadixSupport}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
+                <ExternalLink href={externalUrls.slackRadixSupport}>
                   support channel
-                </Typography>
+                </ExternalLink>
               </Typography>
             </div>
           </Alert>

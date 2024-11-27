@@ -17,10 +17,10 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
   title,
 }) => (
   <>
-    {dnsAliases?.length > 0 &&
-      (dnsAliases.length == 1 ? (
-        <div className="grid grid--gap-x-small">
-          <Typography variant="h4">{title}</Typography>
+    {dnsAliases?.length > 0 && (
+      <div className="grid grid--gap-small">
+        <Typography variant="h4">{title}</Typography>
+        {dnsAliases.length == 1 ? (
           <Typography as="span">
             <DNSAlias
               appName={appName}
@@ -29,12 +29,7 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
               environmentName={dnsAliases[0].environmentName}
             />
           </Typography>
-        </div>
-      ) : (
-        <>
-          <Typography className="whitespace-nowrap" variant="h4" as="span">
-            {title}
-          </Typography>
+        ) : (
           <Accordion className="accordion elevated" chevronPosition="right">
             <Accordion.Item isExpanded={false}>
               <Accordion.Header>
@@ -60,7 +55,8 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
-        </>
-      ))}
+        )}
+      </div>
+    )}
   </>
 );

@@ -20,6 +20,7 @@ export default (
       onDeployKeyChange={() => void 0}
       refetch={() => void 0}
       initialSecretPollInterval={5000}
+      useOtherCiToolOptionVisible={true}
     />
   </div>
 );

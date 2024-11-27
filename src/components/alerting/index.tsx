@@ -14,6 +14,7 @@ import type {
   UpdateAlertingConfig,
 } from '../../store/radix-api';
 import { Alert } from '../alert';
+import { ExternalLink } from '../link/external-link';
 
 interface Props {
   isSaving: boolean;
@@ -53,15 +54,13 @@ export const Alerting = ({
         <Icon data={info_circle} color="primary" />
         <div>
           <Typography>
-            You can setup Radix to send alerts to a Slack channel. See{' '}
-            <Typography
-              link
-              href={externalUrls.alertingGuide}
-              rel="noopener noreferrer"
-              target="_blank"
-            >
+            You can setup Radix to send alerts to a Slack channel.
+          </Typography>
+          <Typography>
+            See{' '}
+            <ExternalLink href={externalUrls.alertingGuide}>
               Radix documentation on alert setup
-            </Typography>
+            </ExternalLink>
           </Typography>
         </div>
       </Alert>

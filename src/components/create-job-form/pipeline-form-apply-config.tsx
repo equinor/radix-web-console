@@ -12,19 +12,16 @@ import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import type { FormProp } from './index';
 
-export function PipelineFormApplyConfig({
-  children,
-  appName,
-  onSuccess,
-}: FormProp) {
+export function PipelineFormApplyConfig({ application, onSuccess }: FormProp) {
   const [trigger, state] = useTriggerPipelineApplyConfigMutation();
   const [deployExternalDNS, setDeployExternalDNS] = useState(false);
+
   const handleSubmit = handlePromiseWithToast(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
       const response = await trigger({
-        appName,
+        appName: application.name,
         pipelineParametersApplyConfig: {
           deployExternalDNS: deployExternalDNS,
         },
@@ -37,7 +34,6 @@ export function PipelineFormApplyConfig({
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
         <div className="grid grid--gap-small input">
-          {children}
           <Typography
             className="input-label"
             as="span"

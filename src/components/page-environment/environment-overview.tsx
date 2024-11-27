@@ -26,10 +26,8 @@ import {
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
 import {
   linkToGitHubBranch,
-  linkToGitHubCommit,
   routeWithParams,
   smallDeploymentName,
-  smallGithubCommitHash,
 } from '../../utils/string';
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';
@@ -41,9 +39,11 @@ import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
 import useLocalStorage from '../../effects/use-local-storage';
+import { CommitHash } from '../commit-hash';
 import { DefaultAppAlias } from '../component/default-app-alias';
 import { DNSAliases } from '../component/dns-aliases';
 import { GitCommitTags } from '../component/git-commit-tags';
+import { ExternalLink } from '../link/external-link';
 
 export const EnvironmentOverview: FunctionComponent<{
   appName: string;
@@ -157,17 +157,15 @@ export const EnvironmentOverview: FunctionComponent<{
                   {environment.branchMapping && environment.activeDeployment ? (
                     <Typography>
                       Built and deployed from{' '}
-                      <Typography
-                        link
+                      <ExternalLink
                         href={linkToGitHubBranch(
                           application.registration.repository,
                           environment.branchMapping
                         )}
-                        token={{ textDecoration: 'none' }}
                       >
-                        {environment.branchMapping} branch{' '}
-                        <Icon data={github} size={24} />
-                      </Typography>
+                        {environment.branchMapping}
+                      </ExternalLink>{' '}
+                      branch
                     </Typography>
                   ) : (
                     <Typography>Not automatically deployed</Typography>
@@ -175,17 +173,10 @@ export const EnvironmentOverview: FunctionComponent<{
                   {deployment?.gitCommitHash && (
                     <Typography>
                       Built from commit{' '}
-                      <Typography
-                        link
-                        href={linkToGitHubCommit(
-                          application.registration.repository,
-                          deployment.gitCommitHash
-                        )}
-                        token={{ textDecoration: 'none' }}
-                      >
-                        {smallGithubCommitHash(deployment.gitCommitHash)}{' '}
-                        <Icon data={github} size={24} />
-                      </Typography>
+                      <CommitHash
+                        repo={application.registration.repository}
+                        commit={deployment.gitCommitHash}
+                      />
                     </Typography>
                   )}
                   {skippedDeployComponents && (

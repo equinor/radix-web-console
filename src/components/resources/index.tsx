@@ -1,5 +1,4 @@
-import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
-import { library_books } from '@equinor/eds-icons';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { externalUrls } from '../../externalUrls';
@@ -11,6 +10,8 @@ import { formatDateTimeYear } from '../../utils/datetime';
 import AsyncResource from '../async-resource/async-resource';
 
 import './style.css';
+import { library_books } from '@equinor/eds-icons';
+import { ExternalLink } from '../link/external-link';
 
 function getPeriod({ from, to }: GetResourcesApiResponse): string {
   return `${formatDateTimeYear(new Date(from))} - ${formatDateTimeYear(
@@ -111,15 +112,11 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
     <div className="grid grid--gap-medium">
       <div className="grid grid--gap-medium grid--auto-columns">
         <Typography variant="h6"> Used resources</Typography>
-        <Typography
-          link
+        <ExternalLink
           href={externalUrls.resourcesDocs}
-          rel="noopener noreferrer"
-        >
-          <Tooltip title="Read more in the documentation">
-            <Icon data={library_books} />
-          </Tooltip>
-        </Typography>
+          icon={library_books}
+          toolTip="Read more in the documentation"
+        />
       </div>
       <AsyncResource asyncState={state}>
         {resources ? (

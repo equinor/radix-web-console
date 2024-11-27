@@ -14,6 +14,7 @@ import {
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
+import { ExternalLink } from '../link/external-link';
 
 interface Props {
   adGroups: Array<string>;
@@ -64,26 +65,20 @@ export function Overview({ adGroups, adUsers, appName }: Props) {
                     <List className="grid grid--gap-small">
                       {groups?.map(({ id, displayName }) => (
                         <List.Item key={id}>
-                          <Typography
-                            link
+                          <ExternalLink
                             href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
                           >
                             <Icon data={group} size={16} /> {displayName}
-                          </Typography>
+                          </ExternalLink>
                         </List.Item>
                       ))}
-                      {SPs?.map(({ id, displayName }) => (
+                      {SPs?.map(({ id, displayName, appId }) => (
                         <List.Item key={id}>
-                          <Typography
-                            link
-                            href={`https://portal.azure.com/#blade/Microsoft_AAD_IAM/GroupDetailsMenuBlade/Overview/groupId/${id}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                          <ExternalLink
+                            href={`https://portal.azure.com/#view/Microsoft_AAD_IAM/ManagedAppMenuBlade/~/Overview/objectId/${id}/appId/${appId}`}
                           >
                             <Icon data={computer} size={16} /> {displayName}
-                          </Typography>
+                          </ExternalLink>
                         </List.Item>
                       ))}
                     </List>

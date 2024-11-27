@@ -1,5 +1,4 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { external_link } from '@equinor/eds-icons';
+import { Typography } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
 
 import { DefaultAlias } from './default-alias';
@@ -18,6 +17,7 @@ import type {
 } from '../../store/radix-api';
 import './style.css';
 import { IngressAllowList } from '../component/ingress-allow-list';
+import { ExternalLink } from '../link/external-link';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 import { DNSAliases } from './dns-aliases';
@@ -72,14 +72,11 @@ export const Overview = ({
           {component.variables?.[URL_VAR_NAME] && (
             <Typography>
               Publicly available{' '}
-              <Typography
-                link
+              <ExternalLink
                 href={`https://${component.variables[URL_VAR_NAME]}`}
-                rel="noopener noreferrer"
-                target="_blank"
               >
-                link <Icon data={external_link} size={16} />
-              </Typography>
+                link
+              </ExternalLink>
             </Typography>
           )}
           {appAlias && (

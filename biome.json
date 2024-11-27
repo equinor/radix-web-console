@@ -10,7 +10,8 @@
       "build/",
       "dist/",
       "src/store/*.ts",
-      ".idea"
+      ".idea",
+      "src/utils/config/index.ts"
     ]
   },
   "formatter": {

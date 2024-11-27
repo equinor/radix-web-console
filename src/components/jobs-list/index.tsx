@@ -55,48 +55,55 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
     );
   }, [dateSort, envSort, jobs, limit, pipelineSort]);
 
-  return sortedData.length > 0 ? (
-    <div className="jobs-list grid grid--table-overflow">
-      <Table>
-        <Table.Head>
-          <Table.Row>
-            <Table.Cell>ID</Table.Cell>
-            <Table.Cell
-              sort="none"
-              onClick={() => setDateSort(getNewSortDir(dateSort))}
-            >
-              Date/Time
-              <TableSortIcon direction={dateSort} />
-            </Table.Cell>
-            <Table.Cell
-              sort="none"
-              onClick={() => setEnvSort(getNewSortDir(envSort, true))}
-            >
-              Environment
-              <TableSortIcon direction={envSort} />
-            </Table.Cell>
-            <Table.Cell>Status</Table.Cell>
-            <Table.Cell
-              sort="none"
-              onClick={() => setPipelineSort(getNewSortDir(pipelineSort, true))}
-            >
-              Pipeline
-              <TableSortIcon direction={pipelineSort} />
-            </Table.Cell>
-          </Table.Row>
-        </Table.Head>
-        <Table.Body>
-          {sortedData.map((x) => (
-            <JobSummaryTableRow key={x.name} appName={appName} job={x} />
-          ))}
-        </Table.Body>
-      </Table>
-    </div>
-  ) : (
-    <>
-      <Typography variant="h4">No pipeline jobs yet</Typography>
-      <Typography>Push to GitHub to trigger a job</Typography>
-    </>
+  return (
+    <span className="grid grid--gap-small">
+      <Typography variant="h4">Latest pipeline jobs</Typography>
+      {sortedData.length > 0 ? (
+        <div className="jobs-list grid grid--table-overflow">
+          <Table>
+            <Table.Head>
+              <Table.Row>
+                <Table.Cell>ID</Table.Cell>
+                <Table.Cell
+                  sort="none"
+                  onClick={() => setDateSort(getNewSortDir(dateSort))}
+                >
+                  Date/Time
+                  <TableSortIcon direction={dateSort} />
+                </Table.Cell>
+                <Table.Cell
+                  sort="none"
+                  onClick={() => setEnvSort(getNewSortDir(envSort, true))}
+                >
+                  Environment
+                  <TableSortIcon direction={envSort} />
+                </Table.Cell>
+                <Table.Cell>Status</Table.Cell>
+                <Table.Cell
+                  sort="none"
+                  onClick={() =>
+                    setPipelineSort(getNewSortDir(pipelineSort, true))
+                  }
+                >
+                  Pipeline
+                  <TableSortIcon direction={pipelineSort} />
+                </Table.Cell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {sortedData.map((x) => (
+                <JobSummaryTableRow key={x.name} appName={appName} job={x} />
+              ))}
+            </Table.Body>
+          </Table>
+        </div>
+      ) : (
+        <span className="grid grid--gap-small">
+          <Typography>No pipeline jobs yet</Typography>
+          <Typography>Push to GitHub to trigger a job</Typography>
+        </span>
+      )}
+    </span>
   );
 };
 
