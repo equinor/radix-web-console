@@ -1,5 +1,4 @@
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import './style.css';
@@ -36,10 +35,3 @@ export const Alert: FunctionComponent<PropsWithChildren<AlertProps>> = ({
     )}
   </div>
 );
-
-Alert.propTypes = {
-  children: PropTypes.node,
-  actions: PropTypes.node,
-  className: PropTypes.string,
-  type: PropTypes.oneOf<AlertType>(['info', 'success', 'warning', 'danger']),
-};

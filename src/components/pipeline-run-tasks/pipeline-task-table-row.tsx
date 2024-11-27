@@ -1,5 +1,4 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
@@ -62,11 +61,3 @@ export function PipelineTaskTableRow({
     </Table.Row>
   );
 }
-
-PipelineTaskTableRow.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  pipelineRunName: PropTypes.string,
-  task: PropTypes.object
-    .isRequired as PropTypes.Validator<PipelineRunTaskModel>,
-};

@@ -4,8 +4,6 @@ import {
   List,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import { computer, group } from '@equinor/eds-icons';
 import {
   useGetAdGroupsQuery,
@@ -103,8 +101,3 @@ export function Overview({ adGroups, adUsers, appName }: Props) {
     </div>
   );
 }
-
-Overview.propTypes = {
-  adGroups: PropTypes.arrayOf(PropTypes.string),
-  appName: PropTypes.string.isRequired,
-};

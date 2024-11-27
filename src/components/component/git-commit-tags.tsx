@@ -1,6 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { github } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { CommitHash } from '../commit-hash';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 
@@ -32,10 +31,4 @@ export const GitCommitTags = ({ commitID, gitTags, repository }: Props) => {
       )}
     </>
   );
-};
-
-GitCommitTags.propTypes = {
-  commitID: PropTypes.string,
-  gitTags: PropTypes.string,
-  repository: PropTypes.string,
 };

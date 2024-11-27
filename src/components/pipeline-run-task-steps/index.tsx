@@ -1,7 +1,5 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
-
 import type { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
 import {
   type SortDirection,
@@ -53,8 +51,3 @@ export function PipelineRunTaskSteps({ steps, limit }: Props) {
     <Typography variant="h4">No pipeline tasks</Typography>
   );
 }
-
-PipelineRunTaskSteps.propTypes = {
-  steps: PropTypes.array.isRequired,
-  limit: PropTypes.number,
-};

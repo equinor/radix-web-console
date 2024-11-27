@@ -1,6 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { computer, group, person } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import {
   type CSSObjectWithLabel,
   type MultiValue,
@@ -153,12 +152,6 @@ export function ADGroups({ onChange, adGroups, adUsers, isDisabled }: Props) {
     </AsyncResource>
   );
 }
-
-ADGroups.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  adGroups: PropTypes.arrayOf(PropTypes.string),
-  isDisabled: PropTypes.bool,
-};
 
 function selectValueStyle(
   base: CSSObjectWithLabel,

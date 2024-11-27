@@ -1,12 +1,9 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { notifications, notifications_off } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
-
 import { Alerting } from '../alerting';
 import AsyncResource from '../async-resource/async-resource';
 import { ScrimPopup } from '../scrim-popup';
-
 import './style.css';
 import { pollingInterval } from '../../store/defaults';
 import { type UpdateAlertingConfig, radixApi } from '../../store/radix-api';
@@ -97,8 +94,3 @@ export default function EnvironmentAlerting({ appName, envName }: Props) {
     </AsyncResource>
   );
 }
-
-EnvironmentAlerting.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-};

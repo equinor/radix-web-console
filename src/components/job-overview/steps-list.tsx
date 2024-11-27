@@ -8,7 +8,6 @@ import {
   record,
   track_changes,
 } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import { StepSummary } from './step-summary';
@@ -85,10 +84,4 @@ export const StepsList: FunctionComponent<{
       </div>
     </>
   );
-};
-
-StepsList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Step>),
 };

@@ -1,7 +1,5 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-
 import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
@@ -93,9 +91,4 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
       </main>
     </>
   );
-};
-
-DeploymentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
 };

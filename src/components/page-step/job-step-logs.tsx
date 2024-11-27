@@ -1,5 +1,4 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { addMinutes } from 'date-fns';
@@ -194,11 +193,3 @@ export function JobStepLogs({
     </Accordion>
   );
 }
-
-JobStepLogs.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  stepName: PropTypes.string.isRequired,
-  start: PropTypes.string,
-  end: PropTypes.string,
-};

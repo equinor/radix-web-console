@@ -1,7 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
-
 import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 import { getTaskRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
@@ -67,7 +65,3 @@ export function PipelineRunTask({ task }: Props) {
     </div>
   );
 }
-
-PipelineRunTask.propTypes = {
-  task: PropTypes.object.isRequired,
-};

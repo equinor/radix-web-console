@@ -1,6 +1,5 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { send } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
 import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
@@ -128,13 +127,4 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
       )}
     </div>
   );
-};
-
-DeploymentsList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<DeploymentSummary>
-  ),
-  limit: PropTypes.number,
-  inEnv: PropTypes.bool,
 };

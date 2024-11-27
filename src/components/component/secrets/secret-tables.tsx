@@ -1,5 +1,4 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import {
   type FunctionComponent,
   type ReactNode,
@@ -29,22 +28,15 @@ export type SecretComponent<T extends object = object> = FunctionComponent<
   }
 >;
 
-const secretPropTypes = Object.freeze<SecretComponent['propTypes']>({
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  secrets: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Secret>)
-    .isRequired,
-});
-
-const SecretLink: FunctionComponent<{
+type Props = {
   title: string;
   scrimTitle?: ReactNode;
   appName: string;
   componentName: string;
   envName: string;
   secretName: string;
-}> = ({ title, scrimTitle, ...rest }) => {
+};
+const SecretLink = ({ title, scrimTitle, ...rest }: Props) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   return (
@@ -150,8 +142,6 @@ export const GenericSecrets: SecretComponent = ({
   );
 };
 
-GenericSecrets.propTypes = { ...secretPropTypes };
-
 export const KeyVaultSecrets: SecretComponent = ({
   appName,
   envName,
@@ -202,8 +192,6 @@ export const KeyVaultSecrets: SecretComponent = ({
   );
 };
 
-KeyVaultSecrets.propTypes = { ...secretPropTypes };
-
 export const VolumeMountSecrets: SecretComponent = ({
   appName,
   envName,
@@ -244,5 +232,3 @@ export const VolumeMountSecrets: SecretComponent = ({
     </Table>
   );
 };
-
-VolumeMountSecrets.propTypes = { ...secretPropTypes };

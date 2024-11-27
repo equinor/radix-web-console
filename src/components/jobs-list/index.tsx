@@ -1,5 +1,4 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
 import { JobSummaryTableRow } from './job-summary-table-row';
@@ -105,10 +104,4 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
       )}
     </span>
   );
-};
-
-JobsList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<JobSummary>),
-  limit: PropTypes.number,
 };

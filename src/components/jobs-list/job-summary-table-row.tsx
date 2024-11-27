@@ -1,5 +1,4 @@
 import { Table, Tooltip } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -71,8 +70,3 @@ export const JobSummaryTableRow: FunctionComponent<{
     <Table.Cell>{job.pipeline}</Table.Cell>
   </Table.Row>
 );
-
-JobSummaryTableRow.propTypes = {
-  appName: PropTypes.string.isRequired,
-  job: PropTypes.object.isRequired as PropTypes.Validator<JobSummary>,
-};

@@ -1,9 +1,5 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
-
-import { PipelineRunTableRow } from './pipeline-run-table-row';
-
 import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import {
   type SortDirection,
@@ -12,7 +8,7 @@ import {
   sortCompareString,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
-
+import { PipelineRunTableRow } from './pipeline-run-table-row';
 import './style.css';
 
 interface Props {
@@ -73,12 +69,3 @@ export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
     <Typography variant="h4">No pipeline runs yet</Typography>
   );
 }
-
-PipelineRuns.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  pipelineRuns: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<PipelineRunModel>
-  ).isRequired,
-  limit: PropTypes.number,
-};

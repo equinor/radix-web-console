@@ -7,7 +7,6 @@ import {
 } from '@equinor/eds-core-react';
 import { clear } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
 
 import './style.css';
@@ -53,12 +52,3 @@ export const ScrimPopup: FunctionComponent<
     </div>
   </Scrim>
 );
-
-ScrimPopup.propTypes = {
-  className: PropTypes.string,
-  title: PropTypes.node.isRequired,
-  children: PropTypes.node,
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func,
-  isDismissable: PropTypes.bool,
-};

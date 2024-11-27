@@ -1,6 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { time } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -121,9 +120,3 @@ export const StepSummary: FunctionComponent<{
     </div>
   </div>
 );
-
-StepSummary.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  step: PropTypes.object.isRequired as PropTypes.Validator<Step>,
-};

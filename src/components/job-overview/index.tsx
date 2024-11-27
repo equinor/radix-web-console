@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -389,9 +388,4 @@ export const JobOverview = ({ appName, jobName }: Props) => {
       </main>
     </>
   );
-};
-
-JobOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
 };

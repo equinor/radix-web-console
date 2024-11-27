@@ -1,5 +1,4 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type ComponentProps, type FunctionComponent, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
@@ -49,7 +48,7 @@ export default function CreateJobForm({
   const { data: application, ...appState } = useGetApplicationQuery(
     { appName },
     { pollingInterval }
-  )
+  );
   const hasEnvironments = application?.environments?.length;
   const buildBranches = useGetApplicationBranches(application);
   const hasBuildBranches = Object.keys(buildBranches).length > 0;

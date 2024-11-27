@@ -1,6 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 
 import {
   StatusBadgeTemplate,
@@ -32,7 +31,3 @@ export function ExternalDNSStatusBadge({ status }: Props) {
     </StatusBadgeTemplate>
   );
 }
-
-ExternalDNSStatusBadge.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<Status>,
-};

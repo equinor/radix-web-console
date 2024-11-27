@@ -1,8 +1,6 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { stop } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import { type FunctionComponent, useState } from 'react';
-
+import { useState } from 'react';
 import {
   type AzureKeyVaultSecretVersion,
   type Secret,
@@ -36,14 +34,14 @@ function consumerSecretName(
   return `replica: ${smallReplicaName(replicaName)}`;
 }
 
-const ConsumerSecretCreated: FunctionComponent<AzureKeyVaultSecretVersion> = ({
+const ConsumerSecretCreated = ({
   replicaCreated,
   replicaName,
   batchCreated,
   batchName,
   jobCreated,
   jobName,
-}) => {
+}: AzureKeyVaultSecretVersion) => {
   if (batchName && batchName.length > 0) {
     return <Duration start={batchCreated} end={new Date()} />;
   }
@@ -56,14 +54,22 @@ const ConsumerSecretCreated: FunctionComponent<AzureKeyVaultSecretVersion> = ({
   return <Duration start={new Date(replicaCreated)} end={new Date()} />;
 };
 
-export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
+type AzureKeyVaultItemProps = {
   appName: string;
   envName: string;
   componentName: string;
   title: string;
   scrimTitle?: string;
   secret: Pick<Secret, 'resource' | 'id'>;
-}> = ({ appName, envName, componentName, title, scrimTitle, secret }) => {
+};
+export const SecretListItemTitleAzureKeyVaultItem = ({
+  appName,
+  envName,
+  componentName,
+  title,
+  scrimTitle,
+  secret,
+}: AzureKeyVaultItemProps) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const [pollingInterval, setPollingInterval] = useState(0);
 
@@ -159,13 +165,4 @@ export const SecretListItemTitleAzureKeyVaultItem: FunctionComponent<{
       </ScrimPopup>
     </>
   );
-};
-
-SecretListItemTitleAzureKeyVaultItem.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  scrimTitle: PropTypes.string,
-  secret: PropTypes.object.isRequired as PropTypes.Validator<Secret>,
 };

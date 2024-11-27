@@ -55,10 +55,11 @@ export function PipelineFormBuildBranches({
       }
       return val;
     };
-    const values = uniq(Object.entries(branches)
-          .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
-          .flatMap(([, commits]) => commits)
-      )
+    const values = uniq(
+      Object.entries(branches)
+        .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
+        .flatMap(([, commits]) => commits)
+    );
     setFilteredBranches(values);
   };
   const handleChange = ({

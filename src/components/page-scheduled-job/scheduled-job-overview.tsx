@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import { isNil } from 'lodash-es';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import type { ScheduledJobSummary } from '../../store/radix-api';
 import {
@@ -136,8 +135,3 @@ export const ScheduledJobOverview: FunctionComponent<{
     </section>
   </>
 );
-
-ScheduledJobOverview.propTypes = {
-  job: PropTypes.object.isRequired as PropTypes.Validator<ScheduledJobSummary>,
-  jobComponentName: PropTypes.string.isRequired,
-};

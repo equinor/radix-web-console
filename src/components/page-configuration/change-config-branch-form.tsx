@@ -6,7 +6,6 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FormEvent, type FunctionComponent, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -123,9 +122,4 @@ export const ChangeConfigBranchForm: FunctionComponent<
       </Accordion.Item>
     </Accordion>
   );
-};
-
-ChangeConfigBranchForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  configBranch: PropTypes.string.isRequired,
 };

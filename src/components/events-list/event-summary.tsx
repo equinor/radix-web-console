@@ -1,5 +1,4 @@
 import { List, Table } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import type { Event } from '../../store/radix-api';
@@ -81,7 +80,3 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({
     </Table.Cell>
   </Table.Row>
 );
-
-EventSummary.propTypes = {
-  event: PropTypes.object.isRequired as PropTypes.Validator<Event>,
-};

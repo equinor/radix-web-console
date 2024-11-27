@@ -1,7 +1,5 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type ReactNode, useState } from 'react';
-
 import { pollingInterval } from '../../store/defaults';
 import {
   type ImageHubSecret,
@@ -145,7 +143,3 @@ export function ImageHubsAccordion({ appName }: Props) {
     </Accordion>
   );
 }
-
-ImageHubsAccordion.propTypes = {
-  appName: PropTypes.string.isRequired,
-};

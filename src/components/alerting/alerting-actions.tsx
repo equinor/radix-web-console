@@ -1,6 +1,4 @@
 import { Button } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import './style.css';
 import type { AlertingConfig } from '../../store/radix-api';
 
@@ -65,16 +63,4 @@ export const AlertingActions = ({
       </div>
     </div>
   );
-};
-
-AlertingActions.propTypes = {
-  isSaving: PropTypes.bool.isRequired,
-  isEdit: PropTypes.bool.isRequired,
-  config: PropTypes.object.isRequired as PropTypes.Validator<AlertingConfig>,
-
-  onSave: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired,
-  onEdit: PropTypes.func.isRequired,
-  onEnable: PropTypes.func.isRequired,
-  onDisable: PropTypes.func.isRequired,
 };

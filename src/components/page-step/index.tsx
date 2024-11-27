@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import {
   getPipelineStepDescription,
   getPipelineStepTitle,
@@ -159,10 +158,4 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
     </>
   );
 }
-PageStep.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  stepName: PropTypes.string.isRequired,
-};
-
 export default withRouteParams(PageStep);

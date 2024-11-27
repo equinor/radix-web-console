@@ -1,6 +1,5 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { upperFirst } from 'lodash-es';
-import * as PropTypes from 'prop-types';
 import {
   Fragment,
   type FunctionComponent,
@@ -330,12 +329,4 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
       ))}
     </>
   );
-};
-
-ComponentList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  environment: PropTypes.object.isRequired as PropTypes.Validator<Environment>,
-  components: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<Component>
-  ).isRequired,
 };
