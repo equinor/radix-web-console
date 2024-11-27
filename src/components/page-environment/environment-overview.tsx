@@ -15,7 +15,6 @@ import {
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
-import { configVariables } from '../../utils/config';
 import {
   getAppDeploymentUrl,
   getAppUrl,
@@ -221,23 +220,21 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                         >
                           {smallDeploymentName(deployment.name)}
                         </Typography>{' '}
-                        {configVariables.FLAGS.enablePromotionPipeline && (
-                          <Button
-                            variant="ghost"
-                            as={Link}
-                            to={routeWithParams(
-                              routes.appJobNew,
-                              { appName: appName },
-                              {
-                                pipeline: 'promote',
-                                deploymentName: deployment.name,
-                                fromEnvironment: deployment.environment,
-                              }
-                            )}
-                          >
-                            Promote <Icon data={trending_up} />
-                          </Button>
-                        )}
+                        <Button
+                          variant="ghost"
+                          as={Link}
+                          to={routeWithParams(
+                            routes.appJobNew,
+                            { appName: appName },
+                            {
+                              pipeline: 'promote',
+                              deploymentName: deployment.name,
+                              fromEnvironment: deployment.environment,
+                            }
+                          )}
+                        >
+                          Promote <Icon data={trending_up} />
+                        </Button>
                       </Typography>
                       {deployment.gitTags && (
                         <div className="environment-overview__tags grid grid--gap-x-small grid--auto-columns">
