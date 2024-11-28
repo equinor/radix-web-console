@@ -100,12 +100,9 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
         {sortedExternalDnsList.map((externalDns) => {
           const expanded = !!expandedRows[externalDns.fqdn];
           const certificates = externalDns.tls.certificates ?? [];
-          const hasCertificates = certificates.length > 0;
           const automationMessage = externalDns.tls.automation?.message;
           const statusMessage = externalDns.tls.statusMessages;
-          const certificateExpiry = hasCertificates
-            ? certificates[0].notAfter
-            : undefined;
+          const certificateExpiry = certificates[0]?.notAfter;
 
           return (
             <Fragment key={externalDns.fqdn}>
@@ -115,7 +112,9 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
                 })}
               >
                 <Table.Cell className="fitwidth padding-right-0">
-                  {(hasCertificates || statusMessage || automationMessage) && (
+                  {(certificates.length > 0 ||
+                    statusMessage ||
+                    automationMessage) && (
                     <Typography
                       link
                       as="span"
@@ -185,7 +184,7 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
                           messages={statusMessage}
                         />
                       )}
-                      {certificates && (
+                      {certificates.length > 0 && (
                         <TLSCertificateList tlsCertificates={certificates} />
                       )}
                     </div>
