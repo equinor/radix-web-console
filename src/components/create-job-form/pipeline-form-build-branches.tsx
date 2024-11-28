@@ -90,10 +90,10 @@ export function PipelineFormBuildBranches({
     `Created ${pipelineName} pipeline job`
   );
   const isAnyValidRegex = (pattern: string): boolean => {
-    return /[\^$.*+?()[\]{}|\\]/.test(pattern);
+    return pattern.length > 0 && /[\^$.*+?()[\]{}|\\]/.test(pattern);
   };
   const isValidBranchName = (branch: string): boolean => {
-    return !/[\^$*+?()[\]{}|\\]/.test(branch);
+    return branch.length > 0 && !/[\^$*+?()[\]{}|\\]/.test(branch);
   };
   return (
     <form onSubmit={handleSubmit}>
