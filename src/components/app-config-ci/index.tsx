@@ -122,7 +122,8 @@ export function AppConfigConfigurationItem({
         isDisabled={disabled}
       />
       <Typography className="helpertext" group="input" variant="text">
-        Application from IT Software Inventory (type 3 characters to search)
+        Application from Business Applications Inventory (type 3 characters to
+        search)
       </Typography>
 
       {currentCIState.isError && (
