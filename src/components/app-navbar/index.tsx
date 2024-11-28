@@ -127,7 +127,7 @@ const NavbarExpanded = ({ appName, links }: NavbarProps) => {
       ))}
       <ExternalLink
         href={urlToAppMonitoring(appName)}
-        icon={undefined}
+        icon={null}
         className="app-navbar__link"
         color="currentColor"
       >
@@ -155,7 +155,7 @@ const NavbarMinimized = ({ appName, links }: NavbarProps) => (
     ))}
 
     <Tooltip title="Monitoring" placement="right" enterDelay={0}>
-      <ExternalLink href={urlToAppMonitoring(appName)} icon={undefined}>
+      <ExternalLink href={urlToAppMonitoring(appName)} icon={null}>
         <Button variant="ghost_icon" color="secondary">
           <Icon data={desktop_mac} />
         </Button>
