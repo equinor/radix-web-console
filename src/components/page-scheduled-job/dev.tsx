@@ -5,7 +5,7 @@ import { PageScheduledJob } from '.';
 import type { ScheduledJobSummary } from '../../store/radix-api';
 
 const testData: Array<
-  Parameters<typeof PageScheduledJob>[0] & { jobData?: ScheduledJobSummary }
+  Parameters<typeof PageScheduledJob>[0] & { jobData: ScheduledJobSummary }
 > = [
   {
     appName: 'succeeded-app',
@@ -61,12 +61,6 @@ const testData: Array<
       deploymentName: 'unknown-deployment',
     },
   },
-  {
-    appName: 'empty-app',
-    envName: 'empty-env',
-    jobComponentName: 'empty-component',
-    scheduledJobName: 'no-job',
-  },
 ];
 
 // Mock API response
@@ -76,7 +70,6 @@ new Server({
     testData.forEach(({ scheduledJobName, jobData }) => {
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/jobs/${scheduledJobName}`,
-        // @ts-expect-error no need to fix the type here?
         () => jobData
       );
     });
