@@ -5,7 +5,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import * as PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
@@ -58,7 +58,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
   const [now, setNow] = useState(new Date());
   const { data: application } = useGetApplicationQuery(
     { appName },
-    { skip: !appName, pollingInterval }
+    { skip: true, pollingInterval }
   );
   const {
     data: job,
@@ -83,6 +83,36 @@ export const JobOverview = ({ appName, jobName }: Props) => {
 
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
+  const [messages, setMessages] = useState([]);
+  console.log(messages);
+  useEffect(() => {
+    // Create a new EventSource instance pointing to the SSE endpoint
+    const eventSource = new EventSource(
+      `http://localhost:8000/api/v1/applications/radix-mini-app/jobs/${jobName}?watch=true`
+    );
+
+    // Event listener for the message event
+    eventSource.onmessage = (event) => {
+      const newMessage = JSON.parse(event.data); // Assuming the backend sends JSON data
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    };
+
+    // Optional: handle specific events sent by the server
+    eventSource.addEventListener('customEvent', (event) => {
+      console.log('Received custom event:', event.data);
+    });
+
+    // Error handling and cleanup
+    eventSource.onerror = (error) => {
+      console.error('Error in SSE:', error);
+      eventSource.close();
+    };
+
+    return () => {
+      // Close the connection when the component unmounts
+      eventSource.close();
+    };
+  }, [jobName]);
   return (
     <>
       <Breadcrumb

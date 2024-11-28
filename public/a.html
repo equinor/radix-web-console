@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SSE Example</title>
+</head>
+<body>
+<div id="sse-data"></div>
+
+<script>
+  const eventSource = new EventSource('http://localhost:3002/api/v1/applications/radix-mini-app/jobs/radix-pipeline-20241114142236-2wwer?watch=true');
+  eventSource.onmessage = function(event) {
+    const dataElement = document.getElementById('sse-data');
+    dataElement.innerHTML += event.data + '<br>';
+  };
+</script>
+</body>
+</html>
