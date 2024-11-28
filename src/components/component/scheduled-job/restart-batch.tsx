@@ -83,71 +83,70 @@ export function RestartBatch({
     }
   }
 
+  if (!batchDeployment) {
+    return null;
+  }
+
   return (
     <div className="restart-job-content">
-      {batchDeployment && activeDeployment && (
-        <div>
-          {batchDeployment.activeTo ? (
-            <List className="grid grid--gap-medium">
-              <List.Item key="current">
-                <div className="grid grid--auto-columns restart-job-deployment-options">
-                  <Radio
-                    name="deploymentOptions"
-                    value="restart"
-                    checked={shouldRestart}
-                    onChange={() => setShouldRestart(true)}
-                  />
-                  <div className="grid grid--gap-small restart-job-deployment-option">
-                    <Typography>
-                      Restart with current batch deployment{' '}
-                      {batchDeployment.name} (active between{' '}
-                      {formatDateTime(batchDeployment.activeFrom)} and{' '}
-                      {formatDateTime(batchDeployment.activeTo)}).
-                    </Typography>
-                    <Typography>
-                      Existing batch jobs <strong>{batchName}</strong> <br />
-                      will be deleted and started again.
-                    </Typography>
-                  </div>
-                </div>
-              </List.Item>
-              <List.Item key="active">
-                <div className="grid grid--auto-columns restart-job-deployment-options">
-                  <Radio
-                    name="deploymentOptions"
-                    value="copy"
-                    checked={!shouldRestart}
-                    onChange={() => setShouldRestart(false)}
-                  />
-                  <div className="grid grid--gap-small restart-job-deployment-option">
-                    <Typography className="restart-job-deployment-option">
-                      Create new batch with deployment {activeDeployment.name}{' '}
-                      (active from {formatDateTime(activeDeployment.activeFrom)}
-                      ).
-                    </Typography>
-                  </div>
-                </div>
-              </List.Item>
-            </List>
-          ) : (
-            <>
-              <Typography className="restart-job-deployment-item">
-                The batch deployment <strong>{batchDeployment.name}</strong> is{' '}
-                <strong>active</strong> (from:{' '}
-                {formatDateTime(activeDeployment.activeFrom)})
-              </Typography>
-              <Typography className="restart-job-deployment-item">
-                Existing batch jobs <strong>{batchName}</strong> <br />
-                will be deleted and started again.
-              </Typography>
-            </>
-          )}
-        </div>
+      {batchDeployment.activeTo && activeDeployment ? (
+        <List className="grid grid--gap-medium">
+          <List.Item key="current">
+            <div className="grid grid--auto-columns restart-job-deployment-options">
+              <Radio
+                name="deploymentOptions"
+                value="restart"
+                checked={shouldRestart}
+                onChange={() => setShouldRestart(true)}
+              />
+              <div className="grid grid--gap-small restart-job-deployment-option">
+                <Typography>
+                  Restart with current batch deployment {batchDeployment.name}{' '}
+                  (active between {formatDateTime(batchDeployment.activeFrom)}{' '}
+                  and {formatDateTime(batchDeployment.activeTo)}).
+                </Typography>
+                <Typography>
+                  Existing batch jobs <strong>{batchName}</strong> <br />
+                  will be deleted and started again.
+                </Typography>
+              </div>
+            </div>
+          </List.Item>
+          <List.Item key="active">
+            <div className="grid grid--auto-columns restart-job-deployment-options">
+              <Radio
+                name="deploymentOptions"
+                value="copy"
+                checked={!shouldRestart}
+                onChange={() => setShouldRestart(false)}
+              />
+              <div className="grid grid--gap-small restart-job-deployment-option">
+                <Typography className="restart-job-deployment-option">
+                  Create new batch with deployment {activeDeployment.name}{' '}
+                  (active from {formatDateTime(activeDeployment.activeFrom)}
+                  ).
+                </Typography>
+              </div>
+            </div>
+          </List.Item>
+        </List>
+      ) : (
+        <>
+          <Typography className="restart-job-deployment-item">
+            The batch deployment <strong>{batchDeployment.name}</strong> is{' '}
+            <strong>active</strong> (from:{' '}
+            {formatDateTime(batchDeployment.activeFrom)})
+          </Typography>
+          <Typography className="restart-job-deployment-item">
+            Existing batch jobs <strong>{batchName}</strong> <br />
+            will be deleted and started again.
+          </Typography>
+        </>
       )}
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={isLoading && !activeDeployment}
+            disabled={isLoading || (!shouldRestart && !activeDeployment)}
             onClick={() => {
               shouldRestart
                 ? onRestartBatch()
