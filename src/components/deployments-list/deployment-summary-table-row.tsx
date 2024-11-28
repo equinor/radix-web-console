@@ -59,13 +59,11 @@ export const DeploymentSummaryTableRow = ({
           </Table.Cell>
           <Table.Cell>
             {deployment.activeTo ? (
-              <GenericStatusBadge type="stopped" variant="default">
+              <GenericStatusBadge variant="default">
                 Inactive
               </GenericStatusBadge>
             ) : (
-              <GenericStatusBadge type="running" variant="active">
-                Active
-              </GenericStatusBadge>
+              <GenericStatusBadge variant="active">Active</GenericStatusBadge>
             )}
           </Table.Cell>
         </>

@@ -33,7 +33,7 @@ const BadgeTemplates = {
 export type GenericStatusBadgeProps = PropsWithChildren<
   {
     customIconData?: IconData;
-    type: keyof typeof BadgeTemplates;
+    type?: keyof typeof BadgeTemplates;
   } & ChipProps
 >;
 export const GenericStatusBadge = ({
@@ -45,7 +45,7 @@ export const GenericStatusBadge = ({
     {...{
       ...chipProps,
       // @ts-expect-error ToLowerCase should return Lowercase<> https://github.com/microsoft/TypeScript/issues/44268
-      ...BadgeTemplates[type.toLowerCase()],
+      ...(type ? BadgeTemplates[type.toLowerCase()] : {}),
       ...(!!customIconData && { icon: <Icon data={customIconData} /> }),
     }}
   />
