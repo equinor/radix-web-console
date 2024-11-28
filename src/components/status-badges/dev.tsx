@@ -108,7 +108,6 @@ const EnumBadge: <P extends { status: S }, S extends string>(
 
 const testData = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
-  // @ts-expect-error No idea how to fix this one
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
   EnumBadge(
     'BuildSecretStatusBadge',
