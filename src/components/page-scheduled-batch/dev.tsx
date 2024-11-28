@@ -6,7 +6,7 @@ import type { ScheduledBatchSummary } from '../../store/radix-api';
 
 const testData: Array<
   Parameters<typeof PageScheduledBatch>[0] & {
-    batchData?: ScheduledBatchSummary;
+    batchData: ScheduledBatchSummary;
   }
 > = [
   {
@@ -131,12 +131,6 @@ const testData: Array<
       ],
     },
   },
-  {
-    appName: 'empty-app',
-    envName: 'empty-env',
-    jobComponentName: 'empty-component',
-    scheduledBatchName: 'no-btch',
-  },
 ];
 
 // Mock API response
@@ -146,7 +140,6 @@ new Server({
     testData.forEach(({ scheduledBatchName, batchData }) => {
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/batches/${scheduledBatchName}`,
-        // @ts-expect-error no idea why batchdata fails
         () => batchData
       );
     });

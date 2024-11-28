@@ -39,11 +39,6 @@ const ScheduledBatchDuration = ({ started, finished }: Props) => {
   );
 };
 
-type ScheduledBatchStateProps = Pick<ScheduledBatchSummary, 'status'>;
-const ScheduledBatchState = ({ status }: ScheduledBatchStateProps) => (
-  <>{status && <ProgressStatusBadge status={status} />}</>
-);
-
 type ScheduledBatchOverviewProps = {
   batch: ScheduledBatchSummary;
   jobComponentName: string;
@@ -70,7 +65,7 @@ export const ScheduledBatchOverview = ({
           </Typography>
           {batch.status && (
             <Typography className="status-title">
-              Batch status <ScheduledBatchState status={batch.status} />
+              Batch status <ProgressStatusBadge status={batch.status} />
             </Typography>
           )}
           <Typography className="status-title">
