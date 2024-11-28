@@ -18,7 +18,7 @@ const ToolTipWrapper = ({
 
 type ExternalLinkProps = {
   href: string;
-  icon?: IconData | null;
+  icon: IconData | null | undefined; // null = no icon, undefined = external_link (default), or custom
   color?: string;
   className?: string;
   toolTip?: string;
