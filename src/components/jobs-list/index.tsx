@@ -1,15 +1,14 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
 import { JobSummaryTableRow } from './job-summary-table-row';
 
 import type { JobSummary } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
@@ -28,9 +27,9 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
 }) => {
   const [sortedData, setSortedData] = useState([...(jobs ?? [])]);
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  const [envSort, setEnvSort] = useState<sortDirection>();
-  const [pipelineSort, setPipelineSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
+  const [envSort, setEnvSort] = useState<SortDirection>();
+  const [pipelineSort, setPipelineSort] = useState<SortDirection>();
   useEffect(() => {
     setSortedData(
       dataSorter(jobs?.slice(0, limit || jobs.length), [
@@ -105,10 +104,4 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
       )}
     </span>
   );
-};
-
-JobsList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobs: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<JobSummary>),
-  limit: PropTypes.number,
 };

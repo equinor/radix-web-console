@@ -1,5 +1,4 @@
 import { TextField } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type {
   ChangeEvent,
   Dispatch,
@@ -37,11 +36,3 @@ export const UpdateSlackReceivers: FunctionComponent<{
       ))}
   </>
 );
-
-UpdateSlackReceivers.propTypes = {
-  alertingConfig: PropTypes.object
-    .isRequired as PropTypes.Validator<AlertingConfig>,
-  changedReceivers: PropTypes.object
-    .isRequired as PropTypes.Validator<ChangedReceivers>,
-  setChangedReceivers: PropTypes.func.isRequired,
-};

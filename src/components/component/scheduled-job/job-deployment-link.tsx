@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -41,9 +40,3 @@ export const JobDeploymentLink: FunctionComponent<ScheduledJobListProps> = ({
     </Typography>
   </Typography>
 );
-
-JobDeploymentLink.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
-};

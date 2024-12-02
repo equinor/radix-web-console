@@ -1,5 +1,3 @@
-import * as PropTypes from 'prop-types';
-
 import { List, Typography } from '@equinor/eds-core-react';
 import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
@@ -11,13 +9,15 @@ import { DockerImage } from '../docker-image';
 type Props = {
   appName: string;
   deployments: DeploymentSummary[];
-  repository: string;
+  repository?: string;
 };
 
 export const ComponentList = ({ appName, deployments, repository }: Props) => {
   return (
     <>
-      {deployments.some((value) => value.components?.length > 0) && (
+      {deployments.some(
+        (value) => value.components && value.components.length > 0
+      ) && (
         <>
           <Typography variant="h4">Components</Typography>
           <List>
@@ -70,10 +70,4 @@ export const ComponentList = ({ appName, deployments, repository }: Props) => {
       )}
     </>
   );
-};
-
-ComponentList.propTypes = {
-  deployments: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<Array<DeploymentSummary>>
-  ).isRequired,
 };

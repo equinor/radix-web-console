@@ -1,12 +1,13 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep } from 'lodash-es';
 import type {
   AlertingConfig,
   ReceiverConfigMap,
   UpdateAlertingConfig,
+  UpdateReceiverConfigSecretsMap,
 } from '../../store/radix-api';
 
 const buildReceiverSecrets = (receviers: ReceiverConfigMap) => {
-  const secretsConfig = {};
+  const secretsConfig: UpdateReceiverConfigSecretsMap = {};
   if (!receviers) {
     return secretsConfig;
   }
@@ -25,8 +26,10 @@ export const buildEditConfig = (
   config: AlertingConfig
 ): UpdateAlertingConfig => {
   return {
-    alerts: cloneDeep(config.alerts),
-    receivers: cloneDeep(config.receivers),
-    receiverSecrets: buildReceiverSecrets(config.receivers),
+    alerts: config.alerts ? cloneDeep(config.alerts) : [],
+    receivers: config.receivers ? cloneDeep(config.receivers) : {},
+    receiverSecrets: config.receivers
+      ? buildReceiverSecrets(config.receivers)
+      : {},
   };
 };

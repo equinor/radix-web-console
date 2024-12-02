@@ -1,5 +1,4 @@
 import { Button, TextField, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import {
   type ChangeEvent,
   type FunctionComponent,
@@ -28,7 +27,7 @@ export const SecretForm: FunctionComponent<{
    * @param value form value
    * @returns true to prevent or disallow saving the same value twice, or false/void to allow this behavior
    */
-  onSave?: (value: string) => Promise<boolean | undefined>;
+  onSave: (value: string) => Promise<boolean | undefined>;
 }> = ({
   secret,
   secretName,
@@ -39,7 +38,7 @@ export const SecretForm: FunctionComponent<{
   onSave,
 }) => {
   const [value, setValue] = useState<{ current: string; previous?: string }>({
-    current: undefined,
+    current: '',
   });
   return (
     <div className="grid grid--gap-medium">
@@ -97,17 +96,4 @@ export const SecretForm: FunctionComponent<{
       </div>
     </div>
   );
-};
-
-SecretForm.propTypes = {
-  secret: PropTypes.oneOfType([
-    PropTypes.object as PropTypes.Validator<Secret>,
-    PropTypes.object as PropTypes.Validator<BuildSecret>,
-    PropTypes.object as PropTypes.Validator<ImageHubSecret>,
-  ]).isRequired,
-  secretName: PropTypes.string.isRequired,
-  overview: PropTypes.node,
-  disableForm: PropTypes.bool,
-  disableSave: PropTypes.bool,
-  onSave: PropTypes.func,
 };

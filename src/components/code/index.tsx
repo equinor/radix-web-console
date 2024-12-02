@@ -27,10 +27,10 @@ function scrollToBottom(elementRef: Element): void {
   // HACK elementRef.scrollHeight is incorrect when called directly
   // the callback in setTimeout is scheduled as a task to run after
   // PageCreateApplication has rendered DOM... it seems
-  setTimeout(() => elementRef?.scrollTo?.(0, elementRef.scrollHeight), 0);
+  setTimeout(() => elementRef.scrollTo(0, elementRef.scrollHeight), 0);
 }
 
-export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
+export const Code: FunctionComponent<CodeProps & { children: string }> = ({
   autoscroll,
   copy,
   download,
@@ -48,7 +48,7 @@ export const Code: FunctionComponent<CodeProps & { children?: string }> = ({
   }
 
   useEffect(() => {
-    if (autoscroll && scrollOffsetFromBottom === 0) {
+    if (containerRef.current && autoscroll && scrollOffsetFromBottom === 0) {
       scrollToBottom(containerRef.current);
     }
   });

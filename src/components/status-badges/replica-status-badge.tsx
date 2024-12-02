@@ -6,8 +6,6 @@ import {
   stop,
   time,
 } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -16,10 +14,9 @@ import {
 
 import type { ReplicaSummary } from '../../store/radix-api';
 
-const BadgeTemplates: Record<
-  ReplicaSummary['replicaStatus']['status'],
-  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
-> = {
+type Status = Required<ReplicaSummary>['replicaStatus']['status'];
+
+const BadgeTemplates = {
   Pending: { icon: <Icon data={time} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
@@ -27,19 +24,14 @@ const BadgeTemplates: Record<
   Running: { icon: <Icon data={run} /> },
   Starting: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },
-  Terminated: undefined,
-};
+  Terminated: { icon: <Icon data={stop} /> },
+} satisfies Record<Status, StatusBadgeTemplateProps>;
 
-export const ReplicaStatusBadge: FunctionComponent<{
-  status: ReplicaSummary['replicaStatus']['status'];
-}> = ({ status }) => (
+type Props = {
+  status: Status;
+};
+export const ReplicaStatusBadge = ({ status }: Props) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
 );
-
-ReplicaStatusBadge.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<
-    ReplicaSummary['replicaStatus']['status']
-  >,
-};

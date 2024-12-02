@@ -6,7 +6,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { warning_outlined } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { type ChangeEvent, useState } from 'react';
 
 import { Alert } from '../alert';
@@ -115,6 +114,3 @@ export default function DeleteApplicationForm({ appName }: Props) {
     </Accordion>
   );
 }
-DeleteApplicationForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-};

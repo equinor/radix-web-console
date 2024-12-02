@@ -6,8 +6,12 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { type FormEvent, type FunctionComponent, useState } from 'react';
+import {
+  type ChangeEvent,
+  type FormEvent,
+  type FunctionComponent,
+  useState,
+} from 'react';
 import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
@@ -71,7 +75,9 @@ export const ChangeConfigBranchForm: FunctionComponent<
               disabled={isLoading}
               type="text"
               value={configBranchState}
-              onChange={(e) => setConfigBranchState(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setConfigBranchState(e.target.value)
+              }
             />
             <div className="o-body-text">
               <List variant="numbered">
@@ -123,9 +129,4 @@ export const ChangeConfigBranchForm: FunctionComponent<
       </Accordion.Item>
     </Accordion>
   );
-};
-
-ChangeConfigBranchForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  configBranch: PropTypes.string.isRequired,
 };

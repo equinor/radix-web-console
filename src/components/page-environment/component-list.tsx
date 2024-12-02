@@ -1,6 +1,5 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
-import { upperFirst } from 'lodash';
-import * as PropTypes from 'prop-types';
+import { upperFirst } from 'lodash-es';
 import {
   Fragment,
   type FunctionComponent,
@@ -16,6 +15,7 @@ import clsx from 'clsx';
 import type {
   Component,
   Environment,
+  OAuth2AuxiliaryResource,
   ReplicaSummary,
 } from '../../store/radix-api';
 import {
@@ -59,23 +59,20 @@ function getEnvironmentComponentScanModel(
   data: Readonly<EnvironmentVulnerabilities>,
   name: string,
   type: Component['type']
-): ImageWithLastScan {
-  let componentKey = '' as keyof EnvironmentVulnerabilities;
+): ImageWithLastScan | undefined {
   switch (type) {
     case 'component':
-      componentKey = 'components';
-      break;
+      return data?.components?.[name];
     case 'job':
-      componentKey = 'jobs';
-      break;
+      return data?.jobs?.[name];
     default:
-      break;
+      return undefined;
   }
-
-  return data?.[componentKey]?.[name];
 }
 
-function hasComponentOAuth2Service(c: Component): boolean {
+function hasComponentOAuth2Service(
+  c: Component
+): c is Component & { oauth2: OAuth2AuxiliaryResource } {
   return !!c.oauth2;
 }
 
@@ -87,7 +84,7 @@ const ReplicaLinks: FunctionComponent<{
   replicaList?: Readonly<Array<ReplicaSummary>>;
   urlFunc: (replica: ReplicaSummary) => string;
 }> = ({ replicaList, urlFunc }) =>
-  replicaList?.length > 0 ? (
+  replicaList && replicaList.length > 0 ? (
     <div className="component-replica__link-container">
       {replicaList.map((x, i) => (
         <Typography
@@ -97,7 +94,7 @@ const ReplicaLinks: FunctionComponent<{
           to={urlFunc(x)}
           link
         >
-          <ReplicaStatusTooltip status={x.replicaStatus.status} />
+          <ReplicaStatusTooltip status={x.replicaStatus?.status ?? 'Pending'} />
           {smallReplicaName(x.name)}
         </Typography>
       ))}
@@ -134,20 +131,22 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
     Object.fromEntries(
       components
         .filter(hasComponentOAuth2Service)
-        .map((c) => [c.name, c.oauth2.deployment.status !== 'Consistent'])
+        .map((c) => [c.name, c.oauth2?.deployment.status !== 'Consistent'])
     )
   );
-  const [trigger, { data: vulnerabilities, ...state }] =
+  const [trigger, { data: vulnerabilities, ...vulnerabilityState }] =
     scanApi.endpoints.getEnvironmentVulnerabilitySummary.useLazyQuery();
   const expandComponent = useCallback(
     (name: string) =>
       setExpandedComponents((x) => ({ ...x, [name]: !x[name] })),
     []
   );
+
   useEffect(() => {
     const request = trigger({ appName, envName });
     return () => request?.abort();
   }, [appName, envName, trigger]);
+
   const compMap = useMemo(() => buildComponentMap(components), [components]);
   const showChevronColumn = useMemo(
     () => components.some(hasComponentAdditionalInfo),
@@ -232,7 +231,9 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                               </Typography>
                             </Table.Cell>
                             <Table.Cell>
-                              <ComponentStatusBadge status={x.status} />
+                              <ComponentStatusBadge
+                                status={x.status ?? 'Reconciling'}
+                              />
                             </Table.Cell>
                             <Table.Cell>
                               <ReplicaLinks
@@ -249,26 +250,30 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                             </Table.Cell>
                             <Table.Cell>
                               <AsyncResource
-                                asyncState={state}
+                                asyncState={vulnerabilityState}
                                 errorContent={
                                   <samp>
-                                    {state.isError &&
+                                    {vulnerabilityState.isError &&
                                       (({ code, message }) =>
                                         [code, message]
                                           .filter((x) => !!x)
                                           .join(': '))(
-                                        getFetchErrorData(state.error)
+                                        getFetchErrorData(
+                                          vulnerabilityState.error
+                                        )
                                       )}
                                   </samp>
                                 }
                               >
-                                <EnvironmentComponentScanSummary
-                                  scan={getEnvironmentComponentScanModel(
-                                    vulnerabilities,
-                                    x.name,
-                                    x.type
-                                  )}
-                                />
+                                {vulnerabilities && (
+                                  <EnvironmentComponentScanSummary
+                                    scan={getEnvironmentComponentScanModel(
+                                      vulnerabilities,
+                                      x.name,
+                                      x.type
+                                    )}
+                                  />
+                                )}
                               </AsyncResource>
                             </Table.Cell>
                           </Table.Row>
@@ -285,7 +290,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                                   </Table.Cell>
                                   <Table.Cell>
                                     <ComponentStatusBadge
-                                      status={x.oauth2?.deployment.status}
+                                      status={x.oauth2.deployment.status}
                                     />
                                   </Table.Cell>
                                   <Table.Cell>
@@ -319,12 +324,4 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
       ))}
     </>
   );
-};
-
-ComponentList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  environment: PropTypes.object.isRequired as PropTypes.Validator<Environment>,
-  components: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<Component>
-  ).isRequired,
 };

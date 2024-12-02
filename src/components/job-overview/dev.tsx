@@ -218,7 +218,7 @@ export default (
             padding: 'var(--eds_spacing_large)',
           }}
         >
-          <JobOverview appName="MyApp" jobName={name} />
+          <JobOverview appName="MyApp" jobName={name!} />
         </div>
         <div>{i < length - 1 && <Divider />}</div>
       </Fragment>

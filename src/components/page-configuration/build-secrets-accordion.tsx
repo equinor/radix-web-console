@@ -1,6 +1,5 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { type FunctionComponent, type ReactNode, useState } from 'react';
+import { type ReactNode, useState } from 'react';
 
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -17,12 +16,13 @@ import { BuildSecretStatusBadge } from '../status-badges/build-secret-status-bad
 
 import './style.css';
 
-const BuildSecretForm: FunctionComponent<{
+type Props = {
   appName: string;
   secret: BuildSecret;
   fetchSecret: () => void;
   onSave: () => void;
-}> = ({ appName, secret, fetchSecret, onSave }) => {
+};
+const BuildSecretForm = ({ appName, secret, fetchSecret, onSave }: Props) => {
   const [mutate, { isLoading }] = useUpdateBuildSecretsSecretValueMutation();
 
   const onSaveSecret = handlePromiseWithToast(async (secretValue: string) => {
@@ -48,12 +48,16 @@ const BuildSecretForm: FunctionComponent<{
   );
 };
 
-const SecretLink: FunctionComponent<
-  { title?: string; scrimTitle?: ReactNode } & Pick<
-    Parameters<typeof BuildSecretForm>[0],
-    'appName' | 'fetchSecret' | 'secret'
-  >
-> = ({ secret, title, scrimTitle, ...rest }) => {
+type SecretLinkProps = { title?: string; scrimTitle?: ReactNode } & Pick<
+  Parameters<typeof BuildSecretForm>[0],
+  'appName' | 'fetchSecret' | 'secret'
+>;
+const SecretLink = ({
+  secret,
+  title,
+  scrimTitle,
+  ...rest
+}: SecretLinkProps) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   return (
@@ -85,12 +89,10 @@ const SecretLink: FunctionComponent<
   );
 };
 
-export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
-  appName,
-}) => {
+export const BuildSecretsAccordion = ({ appName }: { appName: string }) => {
   const { data, refetch, ...state } = useGetBuildSecretsQuery(
     { appName },
-    { skip: !appName, pollingInterval }
+    { pollingInterval }
   );
 
   return (
@@ -101,7 +103,7 @@ export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
         </Accordion.Header>
         <Accordion.Panel>
           <AsyncResource asyncState={state}>
-            {data?.length > 0 ? (
+            {data && data.length > 0 ? (
               <List className="o-indent-list">
                 {dataSorter(data, [
                   (x, y) => sortCompareString(x.name, y.name),
@@ -127,8 +129,4 @@ export const BuildSecretsAccordion: FunctionComponent<{ appName: string }> = ({
       </Accordion.Item>
     </Accordion>
   );
-};
-
-BuildSecretsAccordion.propTypes = {
-  appName: PropTypes.string.isRequired,
 };

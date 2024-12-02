@@ -14,7 +14,6 @@ import {
   stop,
 } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import {
   Fragment,
   type FunctionComponent,
@@ -41,10 +40,10 @@ import {
   getScheduledJobUrl,
 } from '../../../utils/routing';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../../utils/sort-utils';
 import { smallScheduledJobName } from '../../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
@@ -61,9 +60,9 @@ function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
 }
 
 const JobReplicaInfo: FunctionComponent<{
-  replicaList: Array<ReplicaSummary>;
+  replicaList?: Array<ReplicaSummary>;
 }> = ({ replicaList }) =>
-  replicaList?.length > 0 ? (
+  replicaList && replicaList.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
   ) : (
     <Typography>
@@ -97,8 +96,8 @@ export const ScheduledJobList: FunctionComponent<{
 }) => {
   const [deleteJob] = useDeleteJobMutation();
   const [stopJob] = useStopJobMutation();
-  const [dateSort, setDateSort] = useState<sortDirection>();
-  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>(undefined);
+  const [statusSort, setStatusSort] = useState<SortDirection>(undefined);
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<
     Record<string, boolean>
@@ -181,10 +180,10 @@ export const ScheduledJobList: FunctionComponent<{
                 </Table.Head>
                 <Table.Body>
                   {sortedData
-                    .map((x) => ({
-                      job: x,
-                      smallJobName: smallScheduledJobName(x.name),
-                      expanded: !!expandedRows[x.name],
+                    .map((job) => ({
+                      job,
+                      smallJobName: smallScheduledJobName(job.name),
+                      expanded: !!expandedRows[job.name],
                     }))
                     .map(({ job, smallJobName, expanded }, i) => (
                       <Fragment key={i}>
@@ -241,14 +240,11 @@ export const ScheduledJobList: FunctionComponent<{
                             <ProgressStatusBadge status={job.status} />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
-                            <RelativeToNow
-                              time={new Date(job.created)}
-                              capitalize
-                            />
+                            <RelativeToNow time={job.created} capitalize />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
                             <Duration
-                              start={new Date(job.created)}
+                              start={job.created}
                               end={job.ended ? new Date(job.ended) : new Date()}
                             />
                           </Table.Cell>
@@ -387,19 +383,4 @@ export const ScheduledJobList: FunctionComponent<{
       </Accordion.Item>
     </Accordion>
   );
-};
-
-ScheduledJobList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  totalJobCount: PropTypes.number.isRequired,
-  scheduledJobList: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ScheduledJobSummary>
-  ),
-  batchName: PropTypes.string,
-  isDeletable: PropTypes.bool,
-  fetchJobs: PropTypes.func,
-  isExpanded: PropTypes.bool,
-  onExpanded: PropTypes.func,
 };

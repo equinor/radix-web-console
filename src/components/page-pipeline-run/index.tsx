@@ -1,5 +1,3 @@
-import * as PropTypes from 'prop-types';
-
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -81,9 +79,4 @@ export function PagePipelineRun({ appName, jobName, pipelineRunName }: Props) {
     </>
   );
 }
-PagePipelineRun.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  pipelineRunName: PropTypes.string.isRequired,
-};
 export default withRouteParams(PagePipelineRun);

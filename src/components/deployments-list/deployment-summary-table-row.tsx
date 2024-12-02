@@ -1,13 +1,10 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
-
 import { routes } from '../../routes';
 import type { DeploymentSummary } from '../../store/radix-api';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
 import { CommitHash } from '../commit-hash';
-import { StatusBadge } from '../status-badges';
+import { GenericStatusBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';
 
 export interface DeploymentSummaryTableRowProps {
@@ -17,9 +14,12 @@ export interface DeploymentSummaryTableRowProps {
   inEnv?: boolean;
 }
 
-export const DeploymentSummaryTableRow: FunctionComponent<
-  DeploymentSummaryTableRowProps
-> = ({ appName, deployment, repo, inEnv }) => {
+export const DeploymentSummaryTableRow = ({
+  appName,
+  deployment,
+  repo,
+  inEnv,
+}: DeploymentSummaryTableRowProps) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName: appName,
     deploymentName: deployment.name,
@@ -28,10 +28,7 @@ export const DeploymentSummaryTableRow: FunctionComponent<
     appName: appName,
     envName: deployment.environment,
   });
-  const promotedFromLink = routeWithParams(routes.appEnvironment, {
-    appName: appName,
-    envName: deployment.promotedFromEnvironment,
-  });
+
   const commitHash = deployment.gitCommitHash || deployment.commitID;
   return (
     <Table.Row>
@@ -62,9 +59,11 @@ export const DeploymentSummaryTableRow: FunctionComponent<
           </Table.Cell>
           <Table.Cell>
             {deployment.activeTo ? (
-              <StatusBadge variant="default">Inactive</StatusBadge>
+              <GenericStatusBadge variant="default">
+                Inactive
+              </GenericStatusBadge>
             ) : (
-              <StatusBadge variant="active">Active</StatusBadge>
+              <GenericStatusBadge variant="active">Active</GenericStatusBadge>
             )}
           </Table.Cell>
         </>
@@ -74,18 +73,19 @@ export const DeploymentSummaryTableRow: FunctionComponent<
         <CommitHash commit={commitHash} repo={repo} />
       </Table.Cell>
       <Table.Cell>
-        <Typography as={Link} to={promotedFromLink} link>
-          {deployment.promotedFromEnvironment}
-        </Typography>
+        {deployment.promotedFromEnvironment && (
+          <Typography
+            as={Link}
+            to={routeWithParams(routes.appEnvironment, {
+              appName: appName,
+              envName: deployment.promotedFromEnvironment ?? '',
+            })}
+            link
+          >
+            {deployment.promotedFromEnvironment}
+          </Typography>
+        )}
       </Table.Cell>
     </Table.Row>
   );
-};
-
-DeploymentSummaryTableRow.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deployment: PropTypes.object
-    .isRequired as PropTypes.Validator<DeploymentSummary>,
-  repo: PropTypes.string,
-  inEnv: PropTypes.bool,
 };

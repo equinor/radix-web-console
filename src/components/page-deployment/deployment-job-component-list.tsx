@@ -1,7 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-
 import { routes } from '../../routes';
 import type { Component } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
@@ -42,11 +40,3 @@ export const DeploymentJobComponentList = ({
     )}
   </>
 );
-
-DeploymentJobComponentList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<Component>
-  ),
-};

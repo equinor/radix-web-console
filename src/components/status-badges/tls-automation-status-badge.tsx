@@ -1,13 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-
+import type { TlsAutomation } from '../../store/radix-api';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
 } from './status-badge-template';
-
-import type { TlsAutomation } from '../../store/radix-api';
 
 type Status = TlsAutomation['status'] | 'Unknown';
 
@@ -45,7 +42,3 @@ export function TLSAutomationStatusBadge({ status }: Props) {
     </StatusBadgeTemplate>
   );
 }
-
-TLSAutomationStatusBadge.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<Status>,
-};

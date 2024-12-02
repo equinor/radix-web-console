@@ -310,7 +310,7 @@ export type GetPipelineJobContainerLogApiArg = {
 };
 export type ModelsContainer = {
   creationTimestamp?: string;
-  id?: string;
+  id: string;
   lastKnown?: string;
   name?: string;
 };
@@ -318,7 +318,7 @@ export type ModelsReplica = {
   containers?: ModelsContainer[];
   creationTimestamp?: string;
   lastKnown?: string;
-  name?: string;
+  name: string;
 };
 export type ModelsInventoryResponse = {
   replicas?: ModelsReplica[];

@@ -5,7 +5,7 @@ export class NetworkException extends Error {
   constructor(
     message: string,
     statusCode: number,
-    innerException: string = null
+    innerException: string | undefined = undefined
   ) {
     super(message);
     this.message = message;

@@ -1,5 +1,4 @@
 import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { formatDateTime } from '../../../utils/datetime';
@@ -85,72 +84,74 @@ export function RestartJob({
     }
   };
 
+  if (!jobDeployment) {
+    return null;
+  }
+
   return (
     <div className="restart-job-content">
-      {jobDeployment && activeDeployment && (
-        <div>
-          {jobDeployment.activeTo ? (
-            <List className="grid grid--gap-medium">
-              <List.Item key="current">
-                <div className="grid grid--auto-columns restart-job-deployment-options">
-                  <Radio
-                    name="deploymentOptions"
-                    value="restart"
-                    checked={shouldRestart}
-                    onChange={() => setShouldRestart(true)}
-                  />
-                  <div className="grid grid--gap-small restart-job-deployment-option">
-                    <Typography>
-                      Restart with current job deployment {jobDeployment.name}{' '}
-                      (active between {formatDateTime(jobDeployment.activeFrom)}{' '}
-                      and {formatDateTime(jobDeployment.activeTo)}).
-                    </Typography>
-                    <Typography>
-                      Existing job <strong>{jobName}</strong> <br />
-                      will be deleted and started again.
-                    </Typography>
-                  </div>
-                </div>
-              </List.Item>
-              <List.Item key="active">
-                <div className="grid grid--auto-columns restart-job-deployment-options">
-                  <Radio
-                    name="deploymentOptions"
-                    value="copy"
-                    checked={!shouldRestart}
-                    onChange={() => setShouldRestart(false)}
-                  />
-                  <div className="grid grid--gap-small restart-job-deployment-option">
-                    <Typography className="restart-job-deployment-option">
-                      Create new job with deployment {activeDeployment.name}{' '}
-                      (active from {formatDateTime(activeDeployment.activeFrom)}
-                      ).
-                    </Typography>
-                  </div>
-                </div>
-              </List.Item>
-            </List>
-          ) : (
-            <>
-              <Typography className="restart-job-deployment-item">
-                The job deployment <strong>{jobDeployment.name}</strong> is{' '}
-                <strong>active</strong> (from:{' '}
-                {formatDateTime(activeDeployment.activeFrom)})
-              </Typography>
-              <Typography className="restart-job-deployment-item">
-                Existing job <strong>{jobName}</strong> <br />
-                will be deleted and started again.
-              </Typography>
-            </>
-          )}
-        </div>
+      {jobDeployment.activeTo && activeDeployment ? (
+        <List className="grid grid--gap-medium">
+          <List.Item key="current">
+            <div className="grid grid--auto-columns restart-job-deployment-options">
+              <Radio
+                name="deploymentOptions"
+                value="restart"
+                checked={shouldRestart}
+                onChange={() => setShouldRestart(true)}
+              />
+              <div className="grid grid--gap-small restart-job-deployment-option">
+                <Typography>
+                  Restart with current job deployment {jobDeployment.name}{' '}
+                  (active between {formatDateTime(jobDeployment.activeFrom)} and{' '}
+                  {formatDateTime(jobDeployment.activeTo)}).
+                </Typography>
+                <Typography>
+                  Existing job <strong>{jobName}</strong> <br />
+                  will be deleted and started again.
+                </Typography>
+              </div>
+            </div>
+          </List.Item>
+          <List.Item key="active">
+            <div className="grid grid--auto-columns restart-job-deployment-options">
+              <Radio
+                name="deploymentOptions"
+                value="copy"
+                checked={!shouldRestart}
+                onChange={() => setShouldRestart(false)}
+              />
+              <div className="grid grid--gap-small restart-job-deployment-option">
+                <Typography className="restart-job-deployment-option">
+                  Create new job with deployment {activeDeployment.name} (active
+                  from {formatDateTime(activeDeployment.activeFrom)}
+                  ).
+                </Typography>
+              </div>
+            </div>
+          </List.Item>
+        </List>
+      ) : (
+        <>
+          <Typography className="restart-job-deployment-item">
+            The job deployment <strong>{jobDeployment.name}</strong> is{' '}
+            <strong>active</strong> (from:{' '}
+            {formatDateTime(jobDeployment.activeFrom)})
+          </Typography>
+          <Typography className="restart-job-deployment-item">
+            Existing job <strong>{jobName}</strong> <br />
+            will be deleted and started again.
+          </Typography>
+        </>
       )}
       <div className="grid grid--gap-medium">
         <Button.Group className="grid grid--gap-small grid--auto-columns restart-job-buttons">
           <Button
-            disabled={isLoading}
+            disabled={isLoading || (!shouldRestart && !activeDeployment)}
             onClick={() => {
-              shouldRestart ? onRestartJob() : onCopyJob(activeDeployment.name);
+              shouldRestart
+                ? onRestartJob()
+                : onCopyJob(activeDeployment!.name); //Button will be disabled if activeDeployment is undefined
             }}
           >
             Restart
@@ -161,14 +162,3 @@ export function RestartJob({
     </div>
   );
 }
-
-RestartJob.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  smallJobName: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func,
-  onDone: PropTypes.func.isRequired,
-};

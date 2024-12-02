@@ -1,5 +1,3 @@
-import * as PropTypes from 'prop-types';
-
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import { useGetApplicationQuery } from '../../store/radix-api';
@@ -33,9 +31,5 @@ export function PageEnvironments({ appName }: Props) {
     </>
   );
 }
-
-PageEnvironments.propTypes = {
-  appName: PropTypes.string.isRequired,
-};
 
 export default withRouteParams(PageEnvironments);

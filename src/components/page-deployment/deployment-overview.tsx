@@ -1,7 +1,5 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-
 import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
@@ -25,7 +23,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
   );
-  const componentMap = deployment && buildComponentMap(deployment.components);
+  const componentMap = buildComponentMap(deployment?.components ?? []);
 
   return (
     <>
@@ -76,7 +74,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
                 <DeploymentComponentList
                   appName={appName}
                   deployment={deployment}
-                  components={componentMap.component}
+                  components={componentMap?.component ?? []}
                 />
               </div>
 
@@ -84,7 +82,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
                 <DeploymentJobComponentList
                   appName={appName}
                   deploymentName={deploymentName}
-                  components={componentMap.job}
+                  components={componentMap?.job ?? []}
                 />
               </div>
             </>
@@ -93,9 +91,4 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
       </main>
     </>
   );
-};
-
-DeploymentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
 };

@@ -1,6 +1,4 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import { useDurationInterval } from '../../effects/use-interval';
 import {
   type OAuth2AuxiliaryResource,
@@ -55,10 +53,3 @@ export function OAuthToolbar({
     </div>
   );
 }
-
-OAuthToolbar.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  oauth2: PropTypes.object as PropTypes.Validator<OAuth2AuxiliaryResource>,
-};

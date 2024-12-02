@@ -1,6 +1,5 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { notifications, notifications_off } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import { Alerting } from '../alerting';
@@ -84,10 +83,6 @@ const ApplicationAlerting = ({ appName }: Props) => {
       )}
     </AsyncResource>
   );
-};
-
-ApplicationAlerting.propTypes = {
-  appName: PropTypes.string.isRequired,
 };
 
 export default ApplicationAlerting;
