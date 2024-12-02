@@ -21,7 +21,7 @@ interface ReplicaElements {
   state?: React.JSX.Element;
 }
 
-type DurationProps = { started: Date; ended?: Date };
+type DurationProps = { started: number | string | Date; ended?: Date };
 const ReplicaDuration = ({ started, ended }: DurationProps) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
@@ -131,10 +131,10 @@ const Overview = ({
         </div>
         <div className="grid grid--gap-medium">
           {duration ||
-            (replica.created ? (
+            (replica.startTime ? (
               <>
                 <ReplicaDuration
-                  started={new Date(replica.created)}
+                  started={replica.startTime}
                   ended={
                     replica.endTime ? new Date(replica.endTime) : undefined
                   }
