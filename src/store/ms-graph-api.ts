@@ -14,7 +14,7 @@ function ensureClient(state: unknown) {
   }
 
   if (!isRootState(state)){
-    throw new Error("Unkown state!")
+    throw new Error("Unknown state!")
   }
 
   if (!state.auth.provider) {
