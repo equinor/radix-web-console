@@ -18,7 +18,7 @@ function ensureClient(state: unknown) {
   }
 
   if (!state.auth.provider) {
-    throw new Error('MS Graph Provider not reay');
+    throw new Error('MS Graph Provider not ready');
   }
 
   graphClient = Client.initWithMiddleware({
