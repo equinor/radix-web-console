@@ -48,6 +48,8 @@ services:
       - radix
     ports:
       - "8080:8080"
+    depends_on:
+      - auth
 
   auth:
     image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.1
@@ -70,7 +72,7 @@ services:
       - OAUTH2_PROXY_PROVIDER=oidc
       - OAUTH2_PROXY_REDIRECT_URL=http://localhost:8000/oauth2/callback
       - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://auth-state:6379
-      - OAUTH2_PROXY_SCOPE=openid profile offline_access ${API_RESOURCE_ID}/user.read email # offline_access scope needed to get refresh token: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#successful-response-1
+      - OAUTH2_PROXY_SCOPE=openid profile offline_access 6dae42f8-4368-4678-94ff-3960e28e3630/user.read email # offline_access scope needed to get refresh token: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#successful-response-1
       - OAUTH2_PROXY_SESSION_STORE_TYPE=redis
       - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
       - OAUTH2_PROXY_UPSTREAMS=http://proxy:8080
