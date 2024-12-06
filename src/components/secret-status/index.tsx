@@ -1,12 +1,8 @@
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
 import type { Secret } from '../../store/radix-api';
-import { StatusBadge } from '../status-badges';
+import { GenericStatusBadge as StatusBadge } from '../status-badges';
 
-export const SecretStatus: FunctionComponent<{ status?: Secret['status'] }> = ({
-  status,
-}) => {
+type Props = { status?: Secret['status'] };
+export const SecretStatus = ({ status }: Props) => {
   if (!status) {
     console.warn('Secret for component is not being reported by environment');
     return <StatusBadge type="danger">Status not reported</StatusBadge>;
@@ -22,8 +18,4 @@ export const SecretStatus: FunctionComponent<{ status?: Secret['status'] }> = ({
     default:
       return <StatusBadge type="danger">{status}</StatusBadge>;
   }
-};
-
-SecretStatus.propTypes = {
-  status: PropTypes.string as PropTypes.Validator<Secret['status']>,
 };

@@ -12,28 +12,20 @@ import {
   stop,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { upperFirst } from 'lodash';
+import { upperFirst } from 'lodash-es';
 import type React from 'react';
-import { type FunctionComponent, useRef, useState } from 'react';
-
-import {
-  EnvironmentStatus,
-  getEnvironmentStatusType,
-} from './environment-status-utils';
-
+import { useRef, useState } from 'react';
 import type { ImageScan, Vulnerability } from '../../store/scan-api';
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import { StatusPopover } from '../status-popover/status-popover';
 import { VulnerabilitySummary } from '../vulnerability-summary';
-
+import {
+  EnvironmentStatus,
+  getEnvironmentStatusType,
+} from './environment-status-utils';
 import './style.css';
 
 export type EnvironmentCardStatusMap = Record<string, EnvironmentStatus>;
-
-export interface EnvironmentCardStatusProps {
-  title?: string;
-  statusElements: EnvironmentCardStatusMap;
-}
 
 const StatusIconMap: Record<EnvironmentStatus, React.JSX.Element> = {
   [EnvironmentStatus.Consistent]: <Icon data={check} />,
@@ -44,9 +36,7 @@ const StatusIconMap: Record<EnvironmentStatus, React.JSX.Element> = {
   [EnvironmentStatus.Danger]: <Icon data={error_outlined} />,
 };
 
-const EnvironmentStatusIcon: FunctionComponent<{
-  status: EnvironmentStatus;
-}> = ({ status }) => {
+const EnvironmentStatusIcon = ({ status }: { status: EnvironmentStatus }) => {
   switch (status) {
     case EnvironmentStatus.Warning:
       return (
@@ -63,12 +53,18 @@ const EnvironmentStatusIcon: FunctionComponent<{
   }
 };
 
-export const EnvironmentVulnerabilityIndicator: FunctionComponent<{
+type Props = {
   title?: string;
   size?: number;
   visibleKeys?: Array<Lowercase<Vulnerability['severity']>>;
-  summary: ImageScan['vulnerabilitySummary'];
-}> = ({ title, summary, size = 24, ...rest }) => {
+  summary: Required<ImageScan>['vulnerabilitySummary'];
+};
+export const EnvironmentVulnerabilityIndicator = ({
+  title,
+  summary,
+  size = 24,
+  ...rest
+}: Props) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -111,9 +107,15 @@ export const EnvironmentVulnerabilityIndicator: FunctionComponent<{
   );
 };
 
-export const EnvironmentCardStatus: FunctionComponent<
-  EnvironmentCardStatusProps
-> = ({ title, statusElements }) => {
+export interface EnvironmentCardStatusProps {
+  title?: string;
+  statusElements: EnvironmentCardStatusMap;
+}
+
+export const EnvironmentCardStatus = ({
+  title,
+  statusElements,
+}: EnvironmentCardStatusProps) => {
   const keys = Object.keys(statusElements ?? {});
   const aggregatedStatus: EnvironmentStatus = keys.reduce(
     (obj, key) =>

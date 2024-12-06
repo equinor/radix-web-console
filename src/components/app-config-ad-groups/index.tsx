@@ -1,9 +1,6 @@
 import { AuthenticatedTemplate } from '@azure/msal-react';
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import { ADGroups, type HandleAdGroupsChangeCB } from '../graph/adGroups';
-
 import './style.css';
 
 interface Props {
@@ -36,10 +33,3 @@ export const AppConfigAdGroups = ({
     </AuthenticatedTemplate>
   </div>
 );
-
-AppConfigAdGroups.propTypes = {
-  labeling: PropTypes.string.isRequired,
-  adGroups: PropTypes.arrayOf(PropTypes.string),
-  isDisabled: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-};

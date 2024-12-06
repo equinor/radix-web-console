@@ -14,7 +14,8 @@ import type { FormProp } from './index';
 import { MissingRadixConfigAlert } from './missing-radix-config-alert';
 
 export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
-  const hasEnvironments = application?.environments?.length > 0;
+  const hasEnvironments =
+    application.environments && application.environments.length > 0;
   const [trigger, state] = useTriggerPipelineDeployMutation();
   const [toEnvironment, setToEnvironment] = useState('');
   const handleSubmit = handlePromiseWithToast(

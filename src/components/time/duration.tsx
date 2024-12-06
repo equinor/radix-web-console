@@ -2,8 +2,8 @@ import { isValid } from 'date-fns';
 import { differenceInWords } from '../../utils/datetime';
 
 type Props = {
-  start: number | string | Date;
-  end: number | string | Date;
+  start?: number | string | Date;
+  end?: number | string | Date;
   title?: string;
 };
 export function Duration({ start, end, title }: Props) {
@@ -14,7 +14,7 @@ export function Duration({ start, end, title }: Props) {
     end = new Date(end);
   }
 
-  if (!end || !isValid(end) || !isValid(start)) {
+  if (!end || !isValid(end) || !start || !isValid(start)) {
     return null;
   }
 

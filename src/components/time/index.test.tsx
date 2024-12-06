@@ -20,8 +20,8 @@ const Times = [
   1705580730,
   '2024-01-05T14:35:16Z',
   new Date(''),
-  new Date(null),
-  new Date(undefined),
+  new Date(null!),
+  new Date(undefined!),
   new Date(Infinity),
   new Date(-Infinity),
   new Date(+Infinity),
@@ -35,7 +35,7 @@ describe('Test Duration mixed Render', () => {
       <>
         {Times.map((a, ai) =>
           Times.map((b, bi) => (
-            <Duration key={`${ai}-${bi}`} start={a} end={b} />
+            <Duration key={`${ai}-${bi}`} start={a!} end={b!} />
           ))
         )}
       </>
@@ -57,8 +57,8 @@ const DurationTests = [
   { test: 1705580730, result: '423857 hours 0 mins 59 secs' },
   { test: '2024-01-05T14:35:16Z', result: '0 secs' },
   { test: new Date(''), result: '' },
-  { test: new Date(null), result: '424330 hours 47 mins 20 secs' },
-  { test: new Date(undefined), result: '' },
+  { test: new Date(null!), result: '424330 hours 47 mins 20 secs' },
+  { test: new Date(undefined!), result: '' },
   { test: new Date(Infinity), result: '' },
   { test: new Date(-Infinity), result: '' },
   { test: new Date(+Infinity), result: '' },
@@ -69,7 +69,7 @@ describe('Test Duration results and render', () => {
   it('should render without error', () => {
     DurationTests.map(({ test, result }, i) => {
       const { container } = render(
-        <Duration key={i} start={test} end={new Date()} />
+        <Duration key={i} start={test!} end={new Date()} />
       );
       expect(container.textContent).to.equal(result, `Test ${i}`);
     });
@@ -90,8 +90,8 @@ const RelativeToNowTests = [
   { test: 1705580730, result: 'Jan 20, 1970 at 18:46' },
   { test: '2024-01-05T14:35:16Z', result: 'Jan 5, 2024 at 15:35' },
   { test: new Date(''), result: '' },
-  { test: new Date(null), result: 'Jan 1, 1970 at 01:00' },
-  { test: new Date(undefined), result: '' },
+  { test: new Date(null!), result: 'Jan 1, 1970 at 01:00' },
+  { test: new Date(undefined!), result: '' },
   { test: new Date(Infinity), result: '' },
   { test: new Date(-Infinity), result: '' },
   { test: new Date(+Infinity), result: '' },
@@ -101,7 +101,7 @@ const RelativeToNowTests = [
 describe('Test Relative-to-now Render', () => {
   it('should render without error', () => {
     RelativeToNowTests.map(({ test, result }, i) => {
-      const { container } = render(<RelativeToNow key={i} time={test} />);
+      const { container } = render(<RelativeToNow key={i} time={test!} />);
       expect(container.textContent).to.equal(result, `Test ${i}`);
     });
   });
@@ -121,8 +121,8 @@ const DurationToNowTimes = [
   { test: 1705580730, result: '423857 hours 0 mins 59 secs' },
   { test: '2024-01-05T14:35:16Z', result: '0 secs' },
   { test: new Date(''), result: '' },
-  { test: new Date(null), result: '424330 hours 47 mins 20 secs' },
-  { test: new Date(undefined), result: '' },
+  { test: new Date(null!), result: '424330 hours 47 mins 20 secs' },
+  { test: new Date(undefined!), result: '' },
   { test: new Date(Infinity), result: '' },
   { test: new Date(-Infinity), result: '' },
   { test: new Date(+Infinity), result: '' },
@@ -132,7 +132,7 @@ const DurationToNowTimes = [
 describe('Test Duration-to-now Render', () => {
   it('should render without error', () => {
     DurationToNowTimes.map(({ test, result }, i) => {
-      const { container } = render(<DurationToNow key={i} start={test} />);
+      const { container } = render(<DurationToNow key={i} start={test!} />);
       expect(container.textContent).to.equal(result, `Test ${i}`);
     });
   });

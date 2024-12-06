@@ -1,37 +1,31 @@
-import jsonConfig from '../../config.json';
-
-function arrayTransformer(
-  delimiter = ','
-): (value: string | Array<string>) => Array<string> {
-  return (v) => (Array.isArray(v) ? v : (v?.split(delimiter) ?? []));
+declare global {
+  interface Window {
+    injectEnv: Record<string, string> | undefined;
+  }
 }
 
-const transformers: Partial<
-  Record<
-    keyof typeof jsonConfig,
-    (...values: Array<unknown>) => string | Array<string>
-  >
-> = {
-  CLUSTER_EGRESS_IPS: arrayTransformer(),
-  CLUSTER_INGRESS_IPS: arrayTransformer(),
-  SERVICENOW_PROXY_SCOPES: arrayTransformer(' '),
-};
+export const configVariables = {
+  "APP_NAME": getVariable("APP_NAME", "Radix Web Console"),
+  "RADIX_CLUSTER_BASE": getVariable("RADIX_CLUSTER_BASE", "dev.radix.equinor.com"),
+  "RADIX_CLUSTERNAME": getVariable("RADIX_CLUSTERNAME", "weekly-32"),
+  "RADIX_CLUSTER_TYPE": getVariable("RADIX_CLUSTER_TYPE", "development"),
+  "RADIX_ENVIRONMENT": getVariable("RADIX_ENVIRONMENT", "prod"),
+  "CLUSTER_EGRESS_IPS": getVariable("CLUSTER_EGRESS_IPS", "1.1.1.1,1.1.1.1"),
+  "CLUSTER_INGRESS_IPS": getVariable("CLUSTER_INGRESS_IPS", "2.2.2.2,2.2.4.4"),
+  "OAUTH2_CLIENT_ID": getVariable("OAUTH2_CLIENT_ID", "5687b237-eda3-4ec3-a2a1-023e85a2bd84"),
+  "OAUTH2_AUTHORITY": getVariable("OAUTH2_AUTHORITY", "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0"),
+  "SERVICENOW_PROXY_SCOPES": getVariable("SERVICENOW_PROXY_SCOPES", "1b4a22f1-d4a1-4b6a-81b2-fd936daf1786/Application.Read"),
+  "SERVICENOW_PROXY_BASEURL": getVariable("SERVICENOW_PROXY_BASEURL", "https://api-radix-servicenow-proxy-qa.dev.radix.equinor.com/api/v1"),
+  "CMDB_CI_URL": getVariable("CMDB_CI_URL", "https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_spkg&sys_id={CIID}"),
+  "CLUSTER_OIDC_ISSUER_URL": getVariable("CLUSTER_OIDC_ISSUER_URL", ""),
+}
 
-const injectEnvKey = 'injectEnv';
 
-export const configVariables: Readonly<typeof jsonConfig> = Object.freeze(
-  Object.keys(jsonConfig).reduce<typeof jsonConfig>(
-    (config, key: keyof typeof jsonConfig) => {
-      const value =
-        !window[injectEnvKey] ||
-        !window[injectEnvKey][key] ||
-        window[injectEnvKey][key].startsWith('${')
-          ? jsonConfig[key]
-          : window[injectEnvKey][key];
+function getVariable(key: string, defaultVariable: string): string {
+  const envVar = window.injectEnv?.[key];
+  if (envVar === undefined || envVar.startsWith("${")) {
+    return defaultVariable
+  }
 
-      config[key] = transformers[key] ? transformers[key](value) : value;
-      return config;
-    },
-    Object.create({})
-  )
-);
+  return envVar
+}

@@ -9,8 +9,8 @@ type Store = {
 
 // Initial state
 const initialState: Store = {
-  provider: null,
-  account: null,
+  provider: undefined,
+  account: undefined,
 };
 
 const authSlice = createSlice({
@@ -27,7 +27,5 @@ const authSlice = createSlice({
 });
 
 export const { setProvider, setAccount } = authSlice.actions;
-export const selectAuth = (state) => state.auth;
-
 export const authReducer = authSlice.reducer;
 export default authReducer;

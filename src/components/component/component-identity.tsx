@@ -1,5 +1,4 @@
 import { List, Popover, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import {
   type FunctionComponent,
   type SyntheticEvent,
@@ -64,7 +63,7 @@ const AzureIdentityLink: FunctionComponent<{
               namespace={namespace}
               serviceAccountName={serviceAccountName}
             />
-            {azureKeyVaults?.length > 0 && (
+            {azureKeyVaults && azureKeyVaults.length > 0 && (
               <div className="grid grid--gap-small">
                 <Typography
                   className="whitespace-nowrap"
@@ -98,13 +97,3 @@ export const ComponentIdentity: FunctionComponent<{
     )}
   </Typography>
 );
-
-AzureIdentityLink.propTypes = {
-  namespace: PropTypes.string.isRequired,
-  azure: PropTypes.object.isRequired as PropTypes.Validator<AzureIdentityModel>,
-};
-
-ComponentIdentity.propTypes = {
-  identity: PropTypes.object.isRequired as PropTypes.Validator<Identity>,
-  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
-};

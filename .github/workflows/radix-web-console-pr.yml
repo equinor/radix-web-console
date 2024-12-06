@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build docker image
       env:
-        REF: ${{ github. sha }}
+        REF: ${{ github.sha }}
       run: docker build -t radix-web-console:${REF##*/} .
 
   test:
@@ -53,6 +53,13 @@ jobs:
   validate-radixconfig:
     name: Test RadixConfig
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env:
+          - dev
+          - c2
+          - playground
+          - platform
     steps:
       - name: 'Fake TOKEN FOR RADIX CLI'
         run: echo "APP_SERVICE_ACCOUNT_TOKEN=dummy" >> $GITHUB_ENV
@@ -60,4 +67,13 @@ jobs:
       - name: 'Validate'
         uses: equinor/radix-github-actions@v1
         with:
-          args: validate radix-config --config-file radixconfig.yaml
+          args: validate radix-config --config-file radixconfig.${{matrix.env}}.yaml
+
+  verify-code-generation:
+    name: Verify Code Generation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Code Generation
+        run: |
+          make verify-generate

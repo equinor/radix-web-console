@@ -1,6 +1,4 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import type { PipelineRunTaskStep as PipelineRunTaskStepModel } from '../../store/radix-api';
 import { PipelineRunStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
@@ -28,12 +26,8 @@ export function PipelineTaskStepsTableRow({
         )}
       </Table.Cell>
       <Table.Cell variant="icon">
-        <PipelineRunStatusBadge status={status} />
+        <PipelineRunStatusBadge status={status ?? 'PipelineRunPending'} />
       </Table.Cell>
     </Table.Row>
   );
 }
-
-PipelineTaskStepsTableRow.propTypes = {
-  step: PropTypes.object.isRequired,
-};

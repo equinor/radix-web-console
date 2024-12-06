@@ -10,7 +10,6 @@ import { ImageHubsAccordion } from './image-hubs-accordion';
 import { Overview } from './overview';
 
 import { routes } from '../../routes';
-import { configVariables } from '../../utils/config';
 import { withRouteParams } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
@@ -24,7 +23,7 @@ import { ExternalLink } from '../link/external-link';
 import { RadixConfigFileLink } from '../link/radix-config-file-link';
 import './style.css';
 
-function getConfigBranch(configBranch: string): string {
+function getConfigBranch(configBranch?: string): string {
   return configBranch || 'master';
 }
 
@@ -96,12 +95,7 @@ export function PageConfiguration({ appName }: { appName: string }) {
 
             <section className="grid grid--gap-small">
               <Typography variant="h4">Danger Zone</Typography>
-              {configVariables.FLAGS.enableChangeAdmin && (
-                <ChangeAdminForm
-                  registration={registration}
-                  refetch={refetch}
-                />
-              )}
+              <ChangeAdminForm registration={registration} refetch={refetch} />
               <ChangeRepositoryForm
                 appName={appName}
                 repository={registration.repository}

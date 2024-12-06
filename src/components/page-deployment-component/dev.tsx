@@ -160,6 +160,7 @@ new Server({
     );
 
     // Mock response for ChangeEnvVar
+    // @ts-expect-error no idea what this should be
     this.patch<ChangeEnvVarApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => void 0

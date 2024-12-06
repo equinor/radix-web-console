@@ -8,7 +8,6 @@ import {
   record,
   track_changes,
 } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import { StepSummary } from './step-summary';
@@ -17,7 +16,7 @@ import type { Step } from '../../store/radix-api';
 import { PipelineStep } from '../../utils/pipeline';
 import { sortCompareDate } from '../../utils/sort-utils';
 
-function getStepIcon({ name }: Step): IconData {
+function getStepIcon(name: string): IconData {
   switch (name) {
     case PipelineStep.CloneConfig:
     case PipelineStep.CloneRepository:
@@ -65,12 +64,15 @@ export const StepsList: FunctionComponent<{
                 sortCompareDate(
                   a.started ?? new Date('9999-01-01T00:00:00Z'),
                   b.started ?? new Date('9999-01-01T00:00:00Z')
-                ) ?? a.name.localeCompare(b.name)
+                ) ?? a.name?.localeCompare(b.name ?? '')
             )
             .map((step) => (
               <div key={getStepKey(step)} className="steps-list__step">
                 <div className="grid steps-list__divider">
-                  <Icon className="step__icon" data={getStepIcon(step)} />
+                  <Icon
+                    className="step__icon"
+                    data={getStepIcon(step.name ?? '')}
+                  />
                   <span className="steps-list__divider-line" />
                 </div>
                 <StepSummary appName={appName} jobName={jobName} step={step} />
@@ -82,10 +84,4 @@ export const StepsList: FunctionComponent<{
       </div>
     </>
   );
-};
-
-StepsList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  steps: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Step>),
 };

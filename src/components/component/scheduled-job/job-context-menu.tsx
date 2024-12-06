@@ -8,7 +8,7 @@ export const JobContextMenu: FunctionComponent<{
   menuItems: Array<ReturnType<(typeof Menu)['Item']>>;
 }> = ({ menuItems }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>();
 
   return (
     <>

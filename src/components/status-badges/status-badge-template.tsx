@@ -1,8 +1,8 @@
 import { Chip, type ChipProps } from '@equinor/eds-core-react';
 import { clsx } from 'clsx';
-import type React from 'react';
 
 import './style.css';
+import type { PropsWithChildren } from 'react';
 
 export type StatusBadgeTemplateType =
   | 'success'
@@ -23,14 +23,14 @@ export function StatusBadgeTemplate({
   icon,
   type,
   ...rest
-}: StatusBadgeTemplateProps) {
+}: PropsWithChildren<StatusBadgeTemplateProps>) {
   return (
     <Chip
       className={clsx(
         'status-badge',
         `status-badge-type__${type ?? 'default'}`,
         { center: !icon },
-        { [className]: !!className }
+        className ? { [className]: true } : undefined
       )}
       {...rest}
     >

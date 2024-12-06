@@ -7,7 +7,6 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 
 import imageDeployKey from '../configure-application-github/deploy-key02.png';
@@ -35,7 +34,7 @@ const DeployKey = ({ appName }: { appName: string }) => {
 
   return (
     <AsyncResource asyncState={depAndSecState}>
-      <Code copy>{deployKeAndSecret?.publicDeployKey}</Code>
+      <Code copy>{deployKeAndSecret?.publicDeployKey ?? ''}</Code>
     </AsyncResource>
   );
 };
@@ -43,7 +42,7 @@ const DeployKey = ({ appName }: { appName: string }) => {
 interface Props {
   appName: string;
   repository: string;
-  refetch?: () => unknown;
+  refetch: () => unknown;
   sharedSecret: string;
 }
 export function ChangeRepositoryForm({
@@ -231,10 +230,3 @@ export function ChangeRepositoryForm({
     </Accordion>
   );
 }
-
-ChangeRepositoryForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  repository: PropTypes.string.isRequired,
-  refetch: PropTypes.func,
-  sharedSecret: PropTypes.string.isRequired,
-};

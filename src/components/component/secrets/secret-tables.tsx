@@ -1,5 +1,4 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import {
   type FunctionComponent,
   type ReactNode,
@@ -9,9 +8,9 @@ import {
 
 import type { Secret } from '../../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareString,
-  type sortDirection,
 } from '../../../utils/sort-utils';
 import { ScrimPopup } from '../../scrim-popup';
 import { ComponentSecretStatusBadge } from '../../status-badges';
@@ -29,22 +28,15 @@ export type SecretComponent<T extends object = object> = FunctionComponent<
   }
 >;
 
-const secretPropTypes = Object.freeze<SecretComponent['propTypes']>({
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  secrets: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Secret>)
-    .isRequired,
-});
-
-const SecretLink: FunctionComponent<{
+type Props = {
   title: string;
   scrimTitle?: ReactNode;
   appName: string;
   componentName: string;
   envName: string;
   secretName: string;
-}> = ({ title, scrimTitle, ...rest }) => {
+};
+const SecretLink = ({ title, scrimTitle, ...rest }: Props) => {
   const [visibleScrim, setVisibleScrim] = useState(false);
 
   return (
@@ -81,8 +73,8 @@ function getDisplayName({
 
 function useGetSortedSecrets(
   secrets: Array<Secret>,
-  nameSort?: sortDirection | null,
-  resourceSort?: sortDirection | null
+  nameSort?: SortDirection,
+  resourceSort?: SortDirection
 ): Array<Secret> {
   const [sortedData, setSortedData] = useState(secrets);
 
@@ -150,15 +142,13 @@ export const GenericSecrets: SecretComponent = ({
   );
 };
 
-GenericSecrets.propTypes = { ...secretPropTypes };
-
 export const KeyVaultSecrets: SecretComponent = ({
   appName,
   envName,
   componentName,
   secrets,
 }) => {
-  const sortedSecrets = useGetSortedSecrets(secrets, null, 'ascending');
+  const sortedSecrets = useGetSortedSecrets(secrets, undefined, 'ascending');
 
   return (
     <Table className="secret-table">
@@ -202,8 +192,6 @@ export const KeyVaultSecrets: SecretComponent = ({
   );
 };
 
-KeyVaultSecrets.propTypes = { ...secretPropTypes };
-
 export const VolumeMountSecrets: SecretComponent = ({
   appName,
   envName,
@@ -244,5 +232,3 @@ export const VolumeMountSecrets: SecretComponent = ({
     </Table>
   );
 };
-
-VolumeMountSecrets.propTypes = { ...secretPropTypes };

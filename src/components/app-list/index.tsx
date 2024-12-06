@@ -14,7 +14,7 @@ import PageCreateApplication from '../page-create-application';
 
 import './style.css';
 import { refresh } from '@equinor/eds-icons';
-import { isEqual, uniq } from 'lodash';
+import { isEqual, uniq } from 'lodash-es';
 import useLocalStorage from '../../effects/use-local-storage';
 import { pollingInterval } from '../../store/defaults';
 import { getFetchErrorMessage } from '../../store/utils';

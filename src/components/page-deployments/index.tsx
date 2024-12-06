@@ -1,5 +1,3 @@
-import * as PropTypes from 'prop-types';
-
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import { useGetDeploymentsQuery } from '../../store/radix-api';
@@ -32,9 +30,4 @@ export function PageDeployments({ appName }: Props) {
     </>
   );
 }
-
-PageDeployments.propTypes = {
-  appName: PropTypes.string.isRequired,
-};
-
 export default withRouteParams(PageDeployments);

@@ -11,7 +11,12 @@ export const Breadcrumb: FunctionComponent<BreadcrumbProps> = ({ links }) => (
     {links.map(({ to, label }, i) => {
       return (
         label !== '' && (
-          <Breadcrumbs.Breadcrumb key={i} as={Link} to={to}>
+          <Breadcrumbs.Breadcrumb
+            key={i}
+            as={Link}
+            // @ts-expect-error EDS Breadcrumbs typescript doesnt reccognize Links props
+            to={to}
+          >
             {label}
           </Breadcrumbs.Breadcrumb>
         )

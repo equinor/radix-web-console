@@ -1,6 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { check_circle_outlined, warning_outlined } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { Fragment, type FunctionComponent } from 'react';
 import type { AlertingConfig } from '../../store/radix-api';
 
@@ -33,8 +32,4 @@ export const AlertingConfigStatus: FunctionComponent<{
       ))}
     </>
   );
-};
-
-AlertingConfigStatus.propTypes = {
-  config: PropTypes.object.isRequired as PropTypes.Validator<AlertingConfig>,
 };

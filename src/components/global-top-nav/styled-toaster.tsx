@@ -5,15 +5,9 @@ import {
   info_circle,
   warning_outlined,
 } from '@equinor/eds-icons';
-import { clsx } from 'clsx';
 import type { FunctionComponent } from 'react';
-import {
-  type Id,
-  ToastContainer,
-  type ToastContent,
-  type ToastOptions,
-  toast,
-} from 'react-toastify';
+import { type Id, ToastContainer, toast } from 'react-toastify';
+import type { ToastIcon, TypeOptions } from 'react-toastify/dist/types';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
@@ -26,56 +20,43 @@ export const StyledToastContainer: FunctionComponent = () => (
 );
 
 export function styledToaster<T>(
-  content: ToastContent<T>,
-  options?: ToastOptions
+  content: string,
+  options: {
+    type: TypeOptions;
+    icon: ToastIcon;
+  }
 ): Id {
   return toast(content, {
     ...options,
-    className: clsx('styled_toaster', options?.className),
+    className: 'styled_toaster',
     closeOnClick: false,
     draggable: false,
   });
 }
 
-export function infoToast<T>(
-  content: ToastContent<T>,
-  options?: Omit<ToastOptions, 'icon' | 'type'>
-): Id {
-  return styledToaster<T>(content, {
-    ...options,
+export function infoToast(content: string): Id {
+  return styledToaster(content, {
     type: 'info',
     icon: <Icon data={info_circle} />,
   });
 }
 
-export function errorToast<T>(
-  content: ToastContent<T>,
-  options?: Omit<ToastOptions, 'icon' | 'type'>
-): Id {
-  return styledToaster<T>(content, {
-    ...options,
+export function errorToast(content: string): Id {
+  return styledToaster(content, {
     type: 'error',
     icon: <Icon data={error_outlined} />,
   });
 }
 
-export function warningToast<T>(
-  content: ToastContent<T>,
-  options?: Omit<ToastOptions, 'icon' | 'type'>
-): Id {
-  return styledToaster<T>(content, {
-    ...options,
+export function warningToast(content: string): Id {
+  return styledToaster(content, {
     type: 'warning',
     icon: <Icon data={warning_outlined} />,
   });
 }
 
-export function successToast<T>(
-  content: ToastContent<T>,
-  options?: Omit<ToastOptions, 'icon' | 'type'>
-): Id {
-  return styledToaster<T>(content, {
-    ...options,
+export function successToast(content: string): Id {
+  return styledToaster(content, {
     type: 'success',
     icon: <Icon data={check_circle_outlined} />,
   });

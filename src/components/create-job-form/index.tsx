@@ -1,6 +1,5 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import { type ComponentProps, type FunctionComponent, useMemo } from 'react';
+import { type FunctionComponent, useMemo } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 import { pollingInterval } from '../../store/defaults';
@@ -16,16 +15,6 @@ import { useGetApplicationBranches } from './use-get-application-branches';
 import './style.css';
 import AsyncResource from '../async-resource/async-resource';
 
-export interface CreateJobFormProps {
-  appName: string;
-  onSuccess: (jobName: string) => void;
-}
-
-type SupportedPipelineNames =
-  | ComponentProps<typeof PipelineFormBuildBranches>['pipelineName']
-  | ComponentProps<typeof PipelineFormPromote>['pipelineName']
-  | ComponentProps<typeof PipelineFormApplyConfig>['pipelineName'];
-
 export type FormProp = {
   application: Application;
   onSuccess: (jobName: string) => void;
@@ -38,10 +27,16 @@ const Pipelines = {
   promote: PipelineFormPromote,
   deploy: PipelineFormDeploy,
   'apply-config': PipelineFormApplyConfig,
-} satisfies Record<SupportedPipelineNames, FunctionComponent<FormProp>>;
+} satisfies Record<string, FunctionComponent<FormProp>>;
+
+type SupportedPipelineNames = keyof typeof Pipelines;
 
 const pipelineSearchParam = 'pipeline';
 
+export interface CreateJobFormProps {
+  appName: string;
+  onSuccess: (jobName: string) => void;
+}
 export default function CreateJobForm({
   appName,
   onSuccess,
@@ -62,15 +57,13 @@ export default function CreateJobForm({
 
   const pipeline = useMemo(() => {
     const urlPipeline = searchParams.get(pipelineSearchParam);
-    if (Object.keys(Pipelines).includes(urlPipeline)) {
-      return urlPipeline;
+    if (urlPipeline && Object.keys(Pipelines).includes(urlPipeline)) {
+      return urlPipeline as SupportedPipelineNames;
     }
 
-    return !hasEnvironments
-      ? 'apply-config'
-      : hasBuildBranches
-        ? 'build-deploy'
-        : '';
+    return (
+      !hasEnvironments ? 'apply-config' : hasBuildBranches ? 'build-deploy' : ''
+    ) as SupportedPipelineNames;
   }, [searchParams, hasEnvironments, hasBuildBranches]);
 
   const PipelineForm = Pipelines[pipeline];
@@ -99,7 +92,7 @@ export default function CreateJobForm({
           </option>
         ))}
       </NativeSelect>
-      {PipelineForm && (
+      {PipelineForm && application && (
         <PipelineForm
           onSuccess={onSuccess}
           application={application}
@@ -109,7 +102,3 @@ export default function CreateJobForm({
     </AsyncResource>
   );
 }
-CreateJobForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  onSuccess: PropTypes.func.isRequired,
-};

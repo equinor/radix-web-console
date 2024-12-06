@@ -24,7 +24,8 @@ import type { FormProp } from './index';
 import { MissingRadixConfigAlert } from './missing-radix-config-alert';
 
 export function PipelineFormPromote({ application, onSuccess }: FormProp) {
-  const hasEnvironments = application?.environments?.length > 0;
+  const hasEnvironments =
+    application.environments && application.environments.length > 0;
   const [searchParams] = useSearchParams();
   const [trigger, state] = useTriggerPipelinePromoteMutation();
   const { data: deployments } = useGetDeploymentsQuery(

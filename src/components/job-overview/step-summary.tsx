@@ -1,6 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { time } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -44,10 +43,8 @@ const StepDuration: FunctionComponent<Pick<Step, 'started' | 'ended'>> = ({
     <>Not yet started</>
   );
 
-const StepDescription: FunctionComponent<Pick<Step, 'name' | 'components'>> = ({
-  name,
-  components,
-}) => {
+type StepDescriptionProps = { name?: string; components: Step['components'] };
+const StepDescription = ({ name, components }: StepDescriptionProps) => {
   const stepDescription = getPipelineStepDescription(name);
   if (stepDescription) {
     return <>{stepDescription}</>;
@@ -67,21 +64,23 @@ const StepDescription: FunctionComponent<Pick<Step, 'name' | 'components'>> = ({
     );
   }
 
-  const buildComponent = name.match(/^build-(.+)$/);
+  const buildComponent = name?.match(/^build-(.+)$/);
   if (buildComponent) {
     return (
       <>
-        Building <strong>{getComponents(buildComponent[1], components)}</strong>{' '}
+        Building{' '}
+        <strong>{getComponents(buildComponent[1], components ?? [])}</strong>{' '}
         component
       </>
     );
   }
 
-  const scanComponent = name.match(/^scan-(.+)$/);
+  const scanComponent = name?.match(/^scan-(.+)$/);
   if (scanComponent) {
     return (
       <>
-        Scanning <strong>{getComponents(scanComponent[1], components)}</strong>{' '}
+        Scanning{' '}
+        <strong>{getComponents(scanComponent[1], components ?? [])}</strong>{' '}
         component
       </>
     );
@@ -102,7 +101,7 @@ export const StepSummary: FunctionComponent<{
         to={routeWithParams(routes.appJobStep, {
           appName,
           jobName,
-          stepName: step.name,
+          stepName: step.name ?? '',
         })}
         link
         token={{ textDecoration: 'none', textTransform: 'capitalize' }}
@@ -110,7 +109,7 @@ export const StepSummary: FunctionComponent<{
         <StepDescription name={step.name} components={step.components} />
       </Typography>
 
-      <RadixJobConditionBadge status={step.status} />
+      <RadixJobConditionBadge status={step.status ?? 'Waiting'} />
     </div>
 
     <div className="step-summary__time">
@@ -121,9 +120,3 @@ export const StepSummary: FunctionComponent<{
     </div>
   </div>
 );
-
-StepSummary.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  step: PropTypes.object.isRequired as PropTypes.Validator<Step>,
-};

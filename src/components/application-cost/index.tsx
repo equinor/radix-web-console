@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import { format } from 'date-fns';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
@@ -72,12 +71,6 @@ export const ApplicationCost: FunctionComponent<ApplicationCostProps> = ({
       </AsyncResource>
     </div>
   );
-};
-
-ApplicationCost.propTypes = {
-  appName: PropTypes.string.isRequired,
-  from: PropTypes.string.isRequired,
-  to: PropTypes.string.isRequired,
 };
 
 export default connect<ApplicationCostDuration>(() => {

@@ -11,8 +11,8 @@ import { StatusBadgeTemplate } from './status-badge-template';
 
 type BadgeProps = ComponentProps<typeof StatusBadgeTemplate>;
 
-type TaskRunReason = PipelineRunTaskStep['status'];
-type PipelineRunReason = PipelineRunTask['status'];
+type TaskRunReason = Required<PipelineRunTaskStep>['status'];
+type PipelineRunReason = Required<PipelineRunTask>['status'];
 type Status = TaskRunReason | PipelineRunReason;
 
 const FailedIcon = {

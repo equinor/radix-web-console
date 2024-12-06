@@ -1,6 +1,5 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { check_circle_outlined, info_circle, stop } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import {
@@ -13,7 +12,9 @@ import type {
   Component,
 } from '../../store/radix-api';
 
-type ComponentStatus = (AuxiliaryResourceDeployment | Component)['status'];
+type ComponentStatus = Required<
+  AuxiliaryResourceDeployment | Component
+>['status'];
 
 const BadgeTemplates = {
   Reconciling: { icon: <CircularProgress /> },
@@ -30,7 +31,3 @@ export const ComponentStatusBadge: FunctionComponent<{
     {status}
   </StatusBadgeTemplate>
 );
-
-ComponentStatusBadge.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<ComponentStatus>,
-};

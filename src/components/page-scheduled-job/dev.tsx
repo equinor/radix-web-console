@@ -5,7 +5,7 @@ import { PageScheduledJob } from '.';
 import type { ScheduledJobSummary } from '../../store/radix-api';
 
 const testData: Array<
-  Parameters<typeof PageScheduledJob>[0] & { jobData?: ScheduledJobSummary }
+  Parameters<typeof PageScheduledJob>[0] & { jobData: ScheduledJobSummary }
 > = [
   {
     appName: 'succeeded-app',
@@ -22,6 +22,7 @@ const testData: Array<
       batchName: 'batchName',
       backoffLimit: 0,
       failedCount: 0,
+      deploymentName: 'unknown-deployment',
     },
   },
   {
@@ -38,6 +39,7 @@ const testData: Array<
       batchName: 'batchName',
       backoffLimit: 10,
       failedCount: 0,
+      deploymentName: 'unknown-deployment',
     },
   },
   {
@@ -56,13 +58,8 @@ const testData: Array<
       message: 'some optional failure message',
       backoffLimit: 0,
       failedCount: 0,
+      deploymentName: 'unknown-deployment',
     },
-  },
-  {
-    appName: 'empty-app',
-    envName: 'empty-env',
-    jobComponentName: 'empty-component',
-    scheduledJobName: 'no-job',
   },
 ];
 

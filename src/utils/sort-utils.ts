@@ -1,4 +1,4 @@
-export type sortDirection = 'ascending' | 'descending';
+export type SortDirection = 'ascending' | 'descending' | undefined;
 
 /**
  * Creates a copy of the array and performs multiple sort operations
@@ -8,7 +8,7 @@ export type sortDirection = 'ascending' | 'descending';
  * @returns sorted copy of array
  */
 export function dataSorter<T>(
-  array: Readonly<Array<T>>,
+  array: Readonly<Array<T> | undefined>,
   sorters: Array<Parameters<Array<T>['sort']>[0]>
 ): Array<T> {
   const data = [...(array ?? [])];
@@ -16,14 +16,14 @@ export function dataSorter<T>(
   return data;
 }
 
-function sorter(direction: sortDirection): 1 | -1 {
+function sorter(direction: SortDirection): 1 | -1 {
   return direction === 'ascending' ? 1 : -1;
 }
 
 function sortWhenNull(
   a: unknown | null | undefined,
   b: unknown | null | undefined,
-  direction: sortDirection
+  direction: SortDirection
 ): number {
   if (a == null && b == null) {
     return 0;
@@ -39,7 +39,7 @@ function sortWhenNull(
 export function sortCompareString(
   a: string | null | undefined,
   b: string | null | undefined,
-  direction: sortDirection = 'ascending',
+  direction: SortDirection = 'ascending',
   caseInsensitive = true,
   when?: () => boolean
 ): number {
@@ -64,7 +64,7 @@ export function sortCompareString(
 export function sortCompareBoolean(
   a: boolean | null | undefined,
   b: boolean | null | undefined,
-  direction: sortDirection = 'ascending',
+  direction: SortDirection = 'ascending',
   when?: () => boolean
 ): number {
   if (when && !when()) {
@@ -85,7 +85,7 @@ export function sortCompareBoolean(
 export function sortCompareNumber(
   a: number | null | undefined,
   b: number | null | undefined,
-  direction: sortDirection = 'ascending',
+  direction: SortDirection = 'ascending',
   when?: () => boolean
 ): number {
   if (when && !when()) {
@@ -106,7 +106,7 @@ export function sortCompareNumber(
 export function sortCompareDate(
   a: string | Date | null | undefined,
   b: string | Date | null | undefined,
-  direction: sortDirection = 'ascending',
+  direction: SortDirection = 'ascending',
   when?: () => boolean
 ): number {
   if (when && !when()) {

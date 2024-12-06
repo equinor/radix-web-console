@@ -1,7 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, time } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 
 import {
   StatusBadgeTemplate,
@@ -10,24 +8,15 @@ import {
 
 import type { ImageHubSecret } from '../../store/radix-api';
 
-const BadgeTemplates: Record<
-  ImageHubSecret['status'],
-  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
-> = {
+type StatusType = Required<ImageHubSecret>['status'];
+const BadgeTemplates = {
   Pending: { icon: <Icon data={time} /> },
   Consistent: { icon: <Icon data={check} /> },
-};
+} satisfies Record<StatusType, StatusBadgeTemplateProps>;
 
-export const ImageHubSecretStatusBadge: FunctionComponent<{
-  status: ImageHubSecret['status'];
-}> = ({ status }) => (
+type Props = { status: StatusType };
+export const ImageHubSecretStatusBadge = ({ status }: Props) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
     {status}
   </StatusBadgeTemplate>
 );
-
-ImageHubSecretStatusBadge.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<
-    ImageHubSecret['status']
-  >,
-};

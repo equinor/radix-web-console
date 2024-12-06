@@ -24,6 +24,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
       {
         created: '2021-07-28T06:33:34.000Z)',
@@ -42,6 +43,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
       {
         created: '2021-07-28T06:33:34.000Z',
@@ -60,6 +62,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
       {
         created: '2021-07-28T06:33:34.000Z',
@@ -78,6 +81,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
       {
         created: '2021-07-28T06:33:34.000Z',
@@ -96,6 +100,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
       {
         created: '2021-07-28T06:33:34.000Z',
@@ -114,6 +119,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
       {
         created: '2021-07-28T06:33:34.000Z',
@@ -132,6 +138,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
     ],
   },
@@ -158,6 +165,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
         ],
         backoffLimit: 0,
         failedCount: 0,
+        deploymentName: '',
       },
     ],
   },

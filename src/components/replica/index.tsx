@@ -1,7 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type React from 'react';
-import { type FunctionComponent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useInterval } from '../../effects/use-interval';
 import type { ReplicaSummary } from '../../store/radix-api';
@@ -22,10 +21,8 @@ interface ReplicaElements {
   state?: React.JSX.Element;
 }
 
-const ReplicaDuration: FunctionComponent<{ created: Date; ended?: Date }> = ({
-  created,
-  ended,
-}) => {
+type DurationProps = { started: number | string | Date; ended?: Date };
+const ReplicaDuration = ({ started, ended }: DurationProps) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
 
@@ -34,7 +31,7 @@ const ReplicaDuration: FunctionComponent<{ created: Date; ended?: Date }> = ({
       <Typography>
         Replica created{' '}
         <strong>
-          <RelativeToNow time={created} />
+          <RelativeToNow time={started} />
         </strong>
       </Typography>
       {ended && (
@@ -48,17 +45,14 @@ const ReplicaDuration: FunctionComponent<{ created: Date; ended?: Date }> = ({
       <Typography>
         Replica duration{' '}
         <strong>
-          <Duration start={created} end={ended || now} />
+          <Duration start={started} end={ended || now} />
         </strong>
       </Typography>
     </>
   );
 };
 
-const ContainerDuration: FunctionComponent<{ started: Date; ended?: Date }> = ({
-  started,
-  ended,
-}) => {
+const ContainerDuration = ({ started, ended }: DurationProps) => {
   useInterval(() => setNow(new Date()), 1000);
   const [now, setNow] = useState(new Date());
 
@@ -88,11 +82,13 @@ const ContainerDuration: FunctionComponent<{ started: Date; ended?: Date }> = ({
   );
 };
 
-const ReplicaState: FunctionComponent<
-  Pick<ReplicaSummary, 'restartCount' | 'statusMessage'>
-> = ({ restartCount, statusMessage }) => (
+type ReplicaStateProps = {
+  restartCount: ReplicaSummary['restartCount'];
+  statusMessage: ReplicaSummary['statusMessage'];
+};
+const ReplicaState = ({ restartCount, statusMessage }: ReplicaStateProps) => (
   <>
-    {!Number.isNaN(restartCount) && restartCount > 0 && (
+    {restartCount && restartCount > 0 && (
       <div>
         <Typography>
           Restarted <strong>{restartCount} times</strong>
@@ -109,9 +105,14 @@ const ReplicaState: FunctionComponent<
   </>
 );
 
-const Overview: FunctionComponent<
-  { replica: ReplicaSummary } & ReplicaElements
-> = ({ replica, title, duration, status, state }) => (
+type OverviewProps = { replica: ReplicaSummary } & ReplicaElements;
+const Overview = ({
+  replica,
+  title,
+  duration,
+  status,
+  state,
+}: OverviewProps) => (
   <>
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
@@ -123,26 +124,33 @@ const Overview: FunctionComponent<
           )}
           <ReplicaImage replica={replica} />
           {status || (
-            <ReplicaStatusBadge status={replica.replicaStatus?.status} />
+            <ReplicaStatusBadge
+              status={replica.replicaStatus?.status ?? 'Pending'}
+            />
           )}
         </div>
         <div className="grid grid--gap-medium">
-          {duration || (
-            <>
-              <ReplicaDuration
-                created={new Date(replica.created)}
-                ended={replica.endTime ? new Date(replica.endTime) : undefined}
-              />
-              {replica.containerStarted && (
-                <ContainerDuration
-                  started={new Date(replica.containerStarted)}
+          {duration ||
+            (replica.startTime ? (
+              <>
+                <ReplicaDuration
+                  started={replica.startTime}
                   ended={
                     replica.endTime ? new Date(replica.endTime) : undefined
                   }
                 />
-              )}
-            </>
-          )}
+                {replica.containerStarted && (
+                  <ContainerDuration
+                    started={new Date(replica.containerStarted)}
+                    ended={
+                      replica.endTime ? new Date(replica.endTime) : undefined
+                    }
+                  />
+                )}
+              </>
+            ) : (
+              'waiting'
+            ))}
         </div>
         <div className="grid grid--gap-medium">
           {replica.resources && (
@@ -152,18 +160,30 @@ const Overview: FunctionComponent<
       </div>
     </section>
     <section className="grid grid--gap-medium">
-      {state || <ReplicaState {...replica} />}
+      {state || (
+        <ReplicaState
+          restartCount={replica.restartCount}
+          statusMessage={replica.statusMessage}
+        />
+      )}
     </section>
   </>
 );
 
-const ReplicaLog: FunctionComponent<{
-  isCollapsibleLog: boolean;
-  isLogExpanded: boolean;
-  downloadCb: () => unknown;
+type RepliceLogProps = {
+  isCollapsibleLog?: boolean;
+  isLogExpanded?: boolean;
+  downloadCb?: () => unknown;
   log?: string;
   logState?: FetchQueryResult<string>;
-}> = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState }) => (
+};
+const ReplicaLog = ({
+  isCollapsibleLog,
+  isLogExpanded,
+  downloadCb,
+  log,
+  logState,
+}: RepliceLogProps) => (
   <>
     {isCollapsibleLog ? (
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -177,33 +197,32 @@ const ReplicaLog: FunctionComponent<{
           </Accordion.Header>
           <Accordion.Panel>
             <Code copy autoscroll resizable download downloadCb={downloadCb}>
-              {log || logState?.data}
+              {(log || logState?.data) ?? ''}
             </Code>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
       <Code copy autoscroll resizable download downloadCb={downloadCb}>
-        {log || logState?.data}
+        {(log || logState?.data) ?? ''}
       </Code>
     )}
   </>
 );
 
-export const Replica: FunctionComponent<
-  {
-    header?: string;
-    replica: ReplicaSummary;
-    logState?: FetchQueryResult<string>;
-    getLog?: () => Promise<string>;
-    isCollapsibleOverview?: boolean;
-    isCollapsibleLog?: boolean;
-    downloadCb?: () => unknown;
-    downloadHistoryCb?: () => unknown;
-    isLogExpanded?: boolean;
-    getHistoryLog?: () => Promise<unknown>;
-  } & ReplicaElements
-> = ({
+type ReplicaProps = {
+  header?: string;
+  replica: ReplicaSummary;
+  logState?: FetchQueryResult<string>;
+  getLog?: () => Promise<string>;
+  isCollapsibleOverview?: boolean;
+  isCollapsibleLog?: boolean;
+  downloadCb: () => unknown;
+  downloadHistoryCb?: () => unknown;
+  isLogExpanded?: boolean;
+  getHistoryLog?: () => Promise<unknown>;
+} & ReplicaElements;
+export const Replica = ({
   header,
   logState,
   getLog,
@@ -215,7 +234,7 @@ export const Replica: FunctionComponent<
   getHistoryLog,
   replica,
   ...rest
-}) => {
+}: ReplicaProps) => {
   const [log, setLog] = useState('');
   const [historyLog, setHistoryLog] = useState('');
 
@@ -232,7 +251,7 @@ export const Replica: FunctionComponent<
     if (logState?.data || log) {
       return;
     }
-    getHistoryLog?.().then(setHistoryLog);
+    getHistoryLog?.().then((data: unknown) => setHistoryLog(data as string));
   }, [replica, logState?.data]);
 
   return (
@@ -285,19 +304,4 @@ export const Replica: FunctionComponent<
       </section>
     </>
   );
-};
-
-Replica.propTypes = {
-  replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
-  logState: PropTypes.object as PropTypes.Validator<FetchQueryResult<string>>,
-  isCollapsibleOverview: PropTypes.bool,
-  isCollapsibleLog: PropTypes.bool,
-  downloadCb: PropTypes.func,
-  getLog: PropTypes.func,
-  title: PropTypes.element,
-  duration: PropTypes.element,
-  status: PropTypes.element,
-  state: PropTypes.element,
-  getHistoryLog: PropTypes.func,
-  downloadHistoryCb: PropTypes.func,
 };

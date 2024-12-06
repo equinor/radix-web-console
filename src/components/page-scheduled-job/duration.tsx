@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
 import type { ScheduledJobSummary } from '../../store/radix-api';
 import { pluraliser } from '../../utils/string';
 import { Duration } from '../time/duration';
@@ -7,20 +6,23 @@ import { RelativeToNow } from '../time/relative-to-now';
 
 const timesPluraliser = pluraliser('time', 'times');
 
-export const ScheduleJobDuration: FunctionComponent<{
+type Props = {
   job: ScheduledJobSummary;
-}> = ({ job: { created, started, ended, failedCount } }) => (
+};
+export const ScheduleJobDuration = ({
+  job: { created, started, ended, failedCount },
+}: Props) => (
   <>
     <Typography>
       Created{' '}
       <strong>
-        <RelativeToNow time={new Date(created)} />
+        <RelativeToNow time={created} />
       </strong>
     </Typography>
     <Typography>
       Started{' '}
       <strong>
-        <RelativeToNow time={new Date(started)} />
+        <RelativeToNow time={started} />
       </strong>
     </Typography>
     {ended && (
@@ -28,13 +30,13 @@ export const ScheduleJobDuration: FunctionComponent<{
         <Typography>
           Ended{' '}
           <strong>
-            <RelativeToNow time={new Date(ended)} />
+            <RelativeToNow time={ended} />
           </strong>
         </Typography>
         <Typography>
           Duration{' '}
           <strong>
-            <Duration start={new Date(started)} end={new Date(ended)} />
+            <Duration start={started} end={ended} />
           </strong>
         </Typography>
       </>

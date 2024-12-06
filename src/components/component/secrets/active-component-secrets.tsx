@@ -1,5 +1,4 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
 import {
@@ -155,11 +154,4 @@ export const ActiveComponentSecrets: FunctionComponent<{
       </Accordion.Item>
     </Accordion>
   );
-};
-
-ActiveComponentSecrets.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  secretNames: PropTypes.arrayOf(PropTypes.string),
 };

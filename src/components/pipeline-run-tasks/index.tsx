@@ -1,21 +1,17 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
-
 import type {
   PipelineRun as PipelineRunModel,
   PipelineRunTask as PipelineRunTaskModel,
 } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 import { PipelineTaskTableRow } from './pipeline-task-table-row';
-
 import './style.css';
-import type { Validator } from 'prop-types';
 
 interface Props {
   appName: string;
@@ -33,7 +29,7 @@ export function PipelineRunTasks({
 }: Props) {
   const [sortedData, setSortedData] = useState(tasks || []);
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
   useEffect(() => {
     setSortedData(
       dataSorter(tasks?.slice(0, limit || tasks?.length), [
@@ -73,13 +69,3 @@ export function PipelineRunTasks({
     <Typography variant="h4">No pipeline tasks</Typography>
   );
 }
-
-PipelineRunTasks.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  pipelineRun: PropTypes.object.isRequired as Validator<PipelineRunModel>,
-  tasks: PropTypes.arrayOf(PropTypes.object).isRequired as Validator<
-    PipelineRunTaskModel[]
-  >,
-  limit: PropTypes.number,
-};

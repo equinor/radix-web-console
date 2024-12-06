@@ -16,7 +16,7 @@ export const EnvironmentsSummary = ({
 }: EnvironmentsSummaryProps) => {
   return (
     <>
-      {application.environments?.length > 0 ? (
+      {application.environments && application.environments.length > 0 ? (
         <div className="environments-summary">
           {application.environments?.map((env, i) => (
             <EnvironmentCard

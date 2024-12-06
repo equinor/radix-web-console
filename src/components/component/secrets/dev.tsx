@@ -5,7 +5,6 @@ import { Fragment } from 'react';
 import { SecretOverview } from './secret-overview';
 
 import type {
-  ChangeComponentSecretApiResponse,
   GetEnvironmentApiArg,
   GetEnvironmentApiResponse,
 } from '../../../store/radix-api';
@@ -13,7 +12,13 @@ import type {
 const testData: Array<GetEnvironmentApiResponse> = [
   {
     name: 'env1',
-    activeDeployment: { namespace: 'any', repository: 'any' },
+    activeDeployment: {
+      environment: 'any',
+      name: 'alsdjflasj-asdfkljasdf',
+      namespace: 'any',
+      repository: 'any',
+      activeFrom: new Date('2023-12-01T11:27:17Z').toISOString(),
+    },
     secrets: [
       { name: 'secret_1', status: 'Consistent', component: 'component_1' },
       { name: 'secret_2', status: 'Pending', component: 'component_2' },
@@ -21,7 +26,13 @@ const testData: Array<GetEnvironmentApiResponse> = [
   },
   {
     name: 'env2',
-    activeDeployment: { namespace: 'any', repository: 'any' },
+    activeDeployment: {
+      environment: 'any',
+      name: 'alsdjflasj-asdfkljasdf',
+      namespace: 'any',
+      repository: 'any',
+      activeFrom: new Date('2023-12-01T11:27:17Z').toISOString(),
+    },
     secrets: [
       { name: 'pandora', status: 'Pending', component: 'component_1' },
       { name: 'ellipsis', status: 'NotAvailable', component: 'component_2' },
@@ -39,13 +50,14 @@ new Server({
         testData.find(
           ({ name }) =>
             name === (request.params as GetEnvironmentApiArg).envName
-        )
+        )!
     );
 
     // Mock response for ChangeComponentSecret
     this.put(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/secrets/:secretName',
-      (): ChangeComponentSecretApiResponse => void 0
+      // @ts-expect-error no idea what it should do
+      () => undefined
     );
   },
 });
@@ -61,12 +73,12 @@ export default (
       <Fragment key={i}>
         <Typography variant="h1_bold">TestData "{name}"</Typography>
         <div className="o-layout-constrained" style={{ margin: 'auto' }}>
-          {secrets.map(({ name: secretName, component }, j) => (
+          {secrets!.map(({ name: secretName, component }, j) => (
             <SecretOverview
               key={j}
               appName={`testData_${i}`}
-              envName={name}
-              componentName={component}
+              envName={name!}
+              componentName={component!}
               secretName={secretName}
             />
           ))}

@@ -5,7 +5,6 @@ import {
   TextField,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import {
   type ChangeEvent,
   type FormEvent,
@@ -90,8 +89,10 @@ export const ChangeConfigFileForm: FunctionComponent<
                     color="danger"
                     type="submit"
                     disabled={
-                      radixConfigFullName === configNameState ||
-                      configNameState?.length < 5
+                      !!(
+                        radixConfigFullName === configNameState ||
+                        (configNameState && configNameState.length < 5)
+                      )
                     }
                   >
                     Change config file
@@ -104,10 +105,4 @@ export const ChangeConfigFileForm: FunctionComponent<
       </Accordion.Item>
     </Accordion>
   );
-};
-
-ChangeConfigFileForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  radixConfigFullName: PropTypes.string,
-  refetch: PropTypes.func,
 };

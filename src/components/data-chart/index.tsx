@@ -25,7 +25,7 @@ export const AvailabilityCharts = () => {
     );
   }
 
-  if (uptime.length === 0) {
+  if (!uptime || uptime.length === 0) {
     return (
       <Typography variant="body_short_bold">
         Not enough data to display charts

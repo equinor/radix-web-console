@@ -1,5 +1,4 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useMemo, useState } from 'react';
 import { routes } from '../../routes';
 import {
@@ -23,7 +22,7 @@ import { ScheduledJobOverview } from './scheduled-job-overview';
 
 import './style.css';
 
-function isJobSettled(status: ScheduledJobSummary['status']): boolean {
+function isJobSettled(status?: ScheduledJobSummary['status']): boolean {
   switch (status) {
     case 'Failed':
     case 'Stopped':
@@ -184,13 +183,4 @@ export const PageScheduledJob: FunctionComponent<{
     </main>
   );
 };
-
-PageScheduledJob.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  scheduledBatchName: PropTypes.string,
-  scheduledJobName: PropTypes.string.isRequired,
-};
-
 export default withRouteParams(PageScheduledJob);

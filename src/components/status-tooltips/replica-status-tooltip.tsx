@@ -6,17 +6,13 @@ import {
   stop,
   time,
 } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 
 import {
   StatusTooltipTemplate,
   type StatusTooltipTemplateProps,
 } from './status-tooltip-template';
 
-import type { ReplicaSummary } from '../../store/radix-api';
-
-type ReplicaStatus = ReplicaSummary['replicaStatus']['status'];
+import type { ReplicaStatus } from '../../store/radix-api';
 
 const TooltipTemplates = {
   Pending: { title: 'Pending', icon: <Icon data={time} /> },
@@ -36,16 +32,11 @@ const TooltipTemplates = {
     icon: <Icon data={check_circle_outlined} />,
   },
   Stopped: { title: 'Stopped', icon: <Icon data={stop} /> },
-  Terminated: undefined,
+  Terminated: { title: 'Terminated', icon: <Icon data={stop} /> },
   Starting: { title: 'Starting', icon: <CircularProgress /> },
-} satisfies Record<ReplicaStatus, StatusTooltipTemplateProps>;
+} satisfies Record<ReplicaStatus['status'], StatusTooltipTemplateProps>;
 
-export const ReplicaStatusTooltip: FunctionComponent<{
-  status: ReplicaStatus;
-}> = ({ status }) => (
-  <StatusTooltipTemplate title={status} {...TooltipTemplates[status]} />
+type Props = { status: ReplicaStatus['status'] };
+export const ReplicaStatusTooltip = ({ status }: Props) => (
+  <StatusTooltipTemplate {...TooltipTemplates[status]} />
 );
-
-ReplicaStatusTooltip.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<ReplicaStatus>,
-};

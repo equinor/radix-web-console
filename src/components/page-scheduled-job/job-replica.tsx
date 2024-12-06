@@ -1,4 +1,3 @@
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { logApi } from '../../store/log-api';
 import { type ReplicaSummary, radixApi } from '../../store/radix-api';
@@ -15,7 +14,7 @@ export const JobReplica: FunctionComponent<{
   jobComponentName: string;
   envName: string;
   scheduledJobName: string;
-  replica?: ReplicaSummary;
+  replica: ReplicaSummary;
   logState?: FetchQueryResult<string>;
   isExpanded?: boolean;
 }> = ({
@@ -88,15 +87,4 @@ export const JobReplica: FunctionComponent<{
       </Accordion>
     </div>
   );
-};
-
-JobReplica.propTypes = {
-  header: PropTypes.string,
-  appName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  scheduledJobName: PropTypes.string.isRequired,
-  replica: PropTypes.object as PropTypes.Validator<ReplicaSummary>,
-  logState: PropTypes.object as PropTypes.Validator<FetchQueryResult<string>>,
-  isExpanded: PropTypes.bool,
 };

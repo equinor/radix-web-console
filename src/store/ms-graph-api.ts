@@ -3,25 +3,36 @@ import type { RootState } from '../store/store';
 import { Client, GraphError } from '@microsoft/microsoft-graph-client';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-let graphClient: Client | undefined = undefined;
-function ensureClient(state: RootState) {
-  if (!graphClient) {
-    const provider = state.auth.provider;
-    if (!provider) throw new Error('MS Graph Provider not reay');
-
-    graphClient = Client.initWithMiddleware({
-      authProvider: provider.graphAuthProvider,
-    });
-  }
-
-  return graphClient;
+function isRootState(state: any): state is RootState {
+  return !!state?.auth?.provider !== undefined;
 }
 
-function parseGraphError(e): FetchBaseQueryError {
+let graphClient: Client | undefined = undefined;
+function ensureClient(state: unknown) {
+  if (graphClient) {
+    return graphClient;
+  }
+
+  if (!isRootState(state)){
+    throw new Error("Unknown state!")
+  }
+
+  if (!state.auth.provider) {
+    throw new Error('MS Graph Provider not ready');
+  }
+
+  graphClient = Client.initWithMiddleware({
+    authProvider: state.auth.provider.graphAuthProvider,
+  });
+  return graphClient
+}
+
+function parseGraphError(e: unknown): FetchBaseQueryError {
   if (e instanceof GraphError) {
     return { data: e.body, status: e.statusCode };
   }
 
+  // @ts-expect-error not sure what e is in this case
   return { error: e, status: 'CUSTOM_ERROR' };
 }
 
@@ -30,8 +41,7 @@ const injectedRtkApi = api.injectEndpoints({
     getAdGroup: build.query<EntraItem, GetAdGroupArg>({
       queryFn: async ({ id }, { getState }) => {
         try {
-          ensureClient(getState() as RootState);
-          const group: EntraItem = await graphClient
+          const group: EntraItem = await ensureClient(getState())
             .api(`/groups/${id}`)
             .select('displayName,id')
             .get();
@@ -59,9 +69,8 @@ const injectedRtkApi = api.injectEndpoints({
             return { data: [] };
           }
 
-          ensureClient(getState() as RootState);
           const idFilter = ids.map((s) => `'${s}'`).join(',');
-          const response: SearchResponse = await graphClient
+          const response: SearchResponse = await ensureClient(getState())
             .api(`/groups`)
             .select('displayName,id')
             .filter(`id in (${idFilter})`)
@@ -91,9 +100,8 @@ const injectedRtkApi = api.injectEndpoints({
             return { data: [] };
           }
 
-          ensureClient(getState() as RootState);
           const idFilter = ids.map((s) => `'${s}'`).join(',');
-          const response: SearchResponse = await graphClient
+          const response: SearchResponse = await ensureClient(getState())
             .api(`/servicePrincipals`)
             .select('displayName,id,appId')
             .filter(`id in (${idFilter})`)
@@ -122,9 +130,8 @@ const injectedRtkApi = api.injectEndpoints({
             return { data: [] };
           }
 
-          ensureClient(getState() as RootState);
           const idFilter = ids.map((s) => `'${s}'`).join(',');
-          const response: SearchResponse = await graphClient
+          const response: SearchResponse = await ensureClient(getState())
             .api(`/applications`)
             .select('displayName,id,appId')
             .filter(`id in (${idFilter})`)
@@ -140,9 +147,7 @@ const injectedRtkApi = api.injectEndpoints({
     searchAdGroups: build.query<SearchResponse, SearchEntraArgs>({
       queryFn: async ({ displayName, limit }, { getState }) => {
         try {
-          ensureClient(getState() as RootState);
-
-          const groups: SearchResponse = await graphClient
+          const groups: SearchResponse = await ensureClient(getState())
             .api('/groups')
             .select('displayName,id')
             .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
@@ -159,9 +164,7 @@ const injectedRtkApi = api.injectEndpoints({
     searchAdServicePrincipals: build.query<SearchResponse, SearchEntraArgs>({
       queryFn: async ({ displayName, limit }, { getState }) => {
         try {
-          ensureClient(getState() as RootState);
-
-          const groups: SearchResponse = await graphClient
+          const groups: SearchResponse = await ensureClient(getState())
             .api('/servicePrincipals')
             .select('displayName,id,appId')
             .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
@@ -178,9 +181,7 @@ const injectedRtkApi = api.injectEndpoints({
     searchAdApplications: build.query<SearchResponse, SearchEntraArgs>({
       queryFn: async ({ displayName, limit }, { getState }) => {
         try {
-          ensureClient(getState() as RootState);
-
-          const groups: SearchResponse = await graphClient
+          const groups: SearchResponse = await ensureClient(getState())
             .api('/applications')
             .select('displayName,id,appId')
             .filter(displayName ? `startswith(displayName,'${displayName}')` : '')

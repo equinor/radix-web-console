@@ -7,7 +7,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { nanoid } from 'nanoid';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
 
 import imageDeployKey from './deploy-key02.png';
@@ -251,7 +250,9 @@ export const ConfigureApplicationGithub = ({
                       <List.Item>
                         The Shared Secret for this application is{' '}
                         <code>{secrets?.sharedSecret}</code>{' '}
-                        <CompactCopyButton content={secrets?.sharedSecret} />
+                        <CompactCopyButton
+                          content={secrets?.sharedSecret ?? ''}
+                        />
                       </List.Item>
                       <List.Item>Press "Add webhook"</List.Item>
                     </List>
@@ -264,15 +265,4 @@ export const ConfigureApplicationGithub = ({
       </div>
     </div>
   );
-};
-
-ConfigureApplicationGithub.propTypes = {
-  app: PropTypes.object
-    .isRequired as PropTypes.Validator<ApplicationRegistration>,
-  onDeployKeyChange: PropTypes.func.isRequired,
-  startVisible: PropTypes.bool,
-  useOtherCiToolOptionVisible: PropTypes.bool,
-  deployKeyTitle: PropTypes.string,
-  webhookTitle: PropTypes.string,
-  initialSecretPollInterval: PropTypes.number,
 };

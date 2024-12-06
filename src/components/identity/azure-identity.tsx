@@ -1,6 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import { externalUrls } from '../../externalUrls';
@@ -78,10 +77,3 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
     <WorkloadIdentityHelp />
   </div>
 );
-
-AzureIdentity.propTypes = {
-  oidcIssuerUrl: PropTypes.string.isRequired,
-  namespace: PropTypes.string.isRequired,
-  serviceAccountName: PropTypes.string.isRequired,
-  clientId: PropTypes.string.isRequired,
-};

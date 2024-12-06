@@ -43,7 +43,7 @@ export const serviceNowStoreApi = createApi({
       const state = getState() as RootState;
 
       const provider = state.auth.provider;
-      if (!provider) return headers;
+      if (!provider || !provider.serviceNowAuthProvider) return headers;
 
       const token = await provider.serviceNowAuthProvider.getAccessToken();
       headers.set('Authorization', `Bearer ${token}`);

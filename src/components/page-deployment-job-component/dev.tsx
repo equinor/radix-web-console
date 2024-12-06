@@ -215,6 +215,7 @@ const testData: Array<
           },
         },
       ],
+      activeFrom: '1970-01-01',
     },
   },
   {
@@ -226,6 +227,7 @@ const testData: Array<
       environment: 'prod',
       namespace: 'ns',
       repository: 'repo',
+      activeFrom: '1970-01-01',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-job-demo-api:2svag',
@@ -438,6 +440,7 @@ new Server({
     );
 
     // Mock response for ChangeEnvVar
+    // @ts-expect-error no idea what this should be
     this.patch<ChangeEnvVarApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => void 0

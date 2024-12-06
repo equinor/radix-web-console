@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import { isNil } from 'lodash';
-import * as PropTypes from 'prop-types';
+import { isNil } from 'lodash-es';
 import type { FunctionComponent } from 'react';
 import type { ScheduledJobSummary } from '../../store/radix-api';
 import {
@@ -16,7 +15,7 @@ import { RelativeToNow } from '../time/relative-to-now';
 
 const ScheduledJobDuration: FunctionComponent<{
   started: string;
-  finished: string;
+  finished?: string;
 }> = ({ started, finished }) => {
   return (
     <>
@@ -104,7 +103,12 @@ export const ScheduledJobOverview: FunctionComponent<{
                 <RelativeToNow time={job.created} />
               </strong>
             </Typography>
-            <ScheduledJobDuration started={job.started} finished={job.ended} />
+            {job.started && (
+              <ScheduledJobDuration
+                started={job.started}
+                finished={job.ended}
+              />
+            )}
           </>
         </div>
         <div className="grid grid--gap-medium">
@@ -131,8 +135,3 @@ export const ScheduledJobOverview: FunctionComponent<{
     </section>
   </>
 );
-
-ScheduledJobOverview.propTypes = {
-  job: PropTypes.object.isRequired as PropTypes.Validator<ScheduledJobSummary>,
-  jobComponentName: PropTypes.string.isRequired,
-};

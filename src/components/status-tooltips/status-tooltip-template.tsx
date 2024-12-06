@@ -36,7 +36,7 @@ export const StatusTooltipTemplate: FunctionComponent<
       className={clsx(
         'status-tooltip',
         `status-tooltip-type__${type ?? 'default'}`,
-        { [className]: !!className }
+        className ? { [className]: true } : undefined
       )}
     >
       {icon ?? <></>}

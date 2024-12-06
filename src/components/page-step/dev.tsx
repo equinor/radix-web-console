@@ -1,4 +1,4 @@
-import PageStep from '.';
+import { PageStep } from '.';
 
 export default (
   <>

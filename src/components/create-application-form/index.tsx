@@ -111,8 +111,9 @@ export default function CreateApplicationForm({ onCreated }: Props) {
         },
       }).unwrap();
 
+      // the response will only contains an application if there are no warnings
       //Only call onCreated when created without warnings, or created with ack warnings
-      if (!response.warnings?.length || acknowledgeWarnings) {
+      if (response.applicationRegistration) {
         onCreated(response.applicationRegistration);
         addAppNameToLocalStorage(response.applicationRegistration.name);
         refreshApps({});

@@ -1,5 +1,4 @@
 import { List, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import type { Component } from '../../../store/radix-api';
@@ -15,7 +14,7 @@ export const JobSchedulerDetails: FunctionComponent<{
       <List.Item key="status">
         <div className="grid grid--gap-small grid--auto-columns">
           <Typography>status</Typography>
-          <ComponentStatusBadge status={component.status} />
+          <ComponentStatusBadge status={component.status ?? 'Reconciling'} />
         </div>
       </List.Item>
       <List.Item key="port">
@@ -29,7 +28,8 @@ export const JobSchedulerDetails: FunctionComponent<{
       </List.Item>
       <List.Item key="payload-path">
         payload path{' '}
-        {component.scheduledJobPayloadPath?.length > 0 ? (
+        {component.scheduledJobPayloadPath &&
+        component.scheduledJobPayloadPath.length > 0 ? (
           <strong>{component.scheduledJobPayloadPath}</strong>
         ) : (
           <strong>is empty</strong>
@@ -41,7 +41,8 @@ export const JobSchedulerDetails: FunctionComponent<{
           <List className="o-indent-list">
             <List.Item key="webhook">
               webhook{' '}
-              {component.notifications.webhook?.length > 0 ? (
+              {component.notifications.webhook &&
+              component.notifications.webhook.length > 0 ? (
                 <strong>{component.notifications.webhook}</strong>
               ) : (
                 <strong>is empty</strong>
@@ -60,7 +61,3 @@ export const JobSchedulerDetails: FunctionComponent<{
     )}
   </>
 );
-
-JobSchedulerDetails.propTypes = {
-  component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
-};

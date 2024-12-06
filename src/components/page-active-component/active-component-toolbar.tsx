@@ -89,7 +89,7 @@ export function ActiveComponentToolbar({
             onScale={onScale}
             disabled={scaleState.isLoading}
             currentReplicas={
-              component.replicasOverride ?? component.replicaList.length
+              component.replicasOverride ?? component.replicaList?.length ?? 0
             }
           />
           <Button

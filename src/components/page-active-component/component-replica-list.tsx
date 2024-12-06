@@ -1,19 +1,24 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
 import type { ReplicaSummary } from '../../store/radix-api';
 import { getReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 
-export const ComponentReplicaList: FunctionComponent<{
+type Props = {
   title: string;
   appName: string;
   envName: string;
   componentName: string;
   replicaList?: Array<ReplicaSummary>;
   isExpanded?: boolean;
-}> = ({ title, appName, envName, componentName, replicaList, isExpanded }) => (
+};
+export const ComponentReplicaList = ({
+  title,
+  appName,
+  envName,
+  componentName,
+  replicaList,
+  isExpanded,
+}: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded={isExpanded}>
       <Accordion.Header>
@@ -25,7 +30,7 @@ export const ComponentReplicaList: FunctionComponent<{
       </Accordion.Header>
       <Accordion.Panel>
         <div className="grid">
-          {replicaList?.length > 0 ? (
+          {replicaList && replicaList.length > 0 ? (
             <ReplicaList
               replicaList={replicaList}
               replicaUrlFunc={(name) =>
@@ -40,14 +45,3 @@ export const ComponentReplicaList: FunctionComponent<{
     </Accordion.Item>
   </Accordion>
 );
-
-ComponentReplicaList.propTypes = {
-  title: PropTypes.string.isRequired,
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  replicaList: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ReplicaSummary>
-  ),
-  isExpanded: PropTypes.bool,
-};

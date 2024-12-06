@@ -1,6 +1,3 @@
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
 import { pollingInterval } from '../../../store/defaults';
 import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api';
 import { getFetchErrorMessage } from '../../../store/utils';
@@ -8,13 +5,20 @@ import AsyncResource from '../../async-resource/async-resource';
 import { errorToast, successToast } from '../../global-top-nav/styled-toaster';
 import { SecretForm } from '../../secret-form';
 
-export const SecretOverview: FunctionComponent<{
+type Props = {
   appName: string;
   componentName: string;
   envName: string;
   secretName: string;
   onSave?: () => void;
-}> = ({ appName, componentName, envName, secretName, onSave }) => {
+};
+export const SecretOverview = ({
+  appName,
+  componentName,
+  envName,
+  secretName,
+  onSave,
+}: Props) => {
   const { data, refetch, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
@@ -62,12 +66,4 @@ export const SecretOverview: FunctionComponent<{
       )}
     </AsyncResource>
   );
-};
-
-SecretOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  secretName: PropTypes.string.isRequired,
-  onSave: PropTypes.func,
 };

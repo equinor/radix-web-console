@@ -1,6 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
@@ -128,12 +126,5 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
     </>
   );
 }
-
-PageReplica.propTypes = {
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  replicaName: PropTypes.string.isRequired,
-};
 
 export default withRouteParams(PageReplica);

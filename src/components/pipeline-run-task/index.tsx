@@ -1,7 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useState } from 'react';
-
 import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-api';
 import { getTaskRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
@@ -24,7 +22,7 @@ export function PipelineRunTask({ task }: Props) {
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Task <strong>{task.status.toLowerCase()}</strong>
+                Task <strong>{task.status?.toLowerCase()}</strong>
               </Typography>
               <Typography>
                 {getTaskRunExecutionState(task.status)} task{' '}
@@ -57,7 +55,7 @@ export function PipelineRunTask({ task }: Props) {
               </div>
             )}
           </div>
-          {task.statusMessage?.length > 0 && (
+          {task.statusMessage && task.statusMessage.length > 0 && (
             <div className="grid grid--gap-medium grid--overview-columns">
               <Typography>Status message {task.statusMessage}</Typography>
             </div>
@@ -67,7 +65,3 @@ export function PipelineRunTask({ task }: Props) {
     </div>
   );
 }
-
-PipelineRunTask.propTypes = {
-  task: PropTypes.object.isRequired,
-};

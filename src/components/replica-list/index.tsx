@@ -1,7 +1,6 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import {
   Fragment,
   type FunctionComponent,
@@ -12,10 +11,10 @@ import {
 
 import type { ReplicaSummary } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 import { ReplicaImage } from '../replica-image';
@@ -31,8 +30,8 @@ export const ReplicaList: FunctionComponent<{
   replicaUrlFunc: (name: string) => string;
 }> = ({ replicaList, replicaUrlFunc }) => {
   const [sortedData, setSortedData] = useState(replicaList || []);
-  const [dateSort, setDateSort] = useState<sortDirection>();
-  const [statusSort, setStatusSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>();
+  const [statusSort, setStatusSort] = useState<SortDirection>();
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
@@ -118,16 +117,15 @@ export const ReplicaList: FunctionComponent<{
                   />
                 </Table.Cell>
                 <Table.Cell>
-                  <ReplicaStatusBadge status={replica.replicaStatus?.status} />
-                </Table.Cell>
-                <Table.Cell>
-                  <RelativeToNow time={new Date(replica.created)} />
-                </Table.Cell>
-                <Table.Cell>
-                  <Duration
-                    start={new Date(replica.created)}
-                    end={lastUpdate}
+                  <ReplicaStatusBadge
+                    status={replica.replicaStatus?.status ?? 'Pending'}
                   />
+                </Table.Cell>
+                <Table.Cell>
+                  <RelativeToNow time={replica.created} />
+                </Table.Cell>
+                <Table.Cell>
+                  <Duration start={replica.created} end={lastUpdate} />
                 </Table.Cell>
               </Table.Row>
               {expanded && (
@@ -145,11 +143,4 @@ export const ReplicaList: FunctionComponent<{
       </Table.Body>
     </Table>
   );
-};
-
-ReplicaList.propTypes = {
-  replicaList: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<ReplicaSummary>
-  ).isRequired,
-  replicaUrlFunc: PropTypes.func.isRequired,
 };

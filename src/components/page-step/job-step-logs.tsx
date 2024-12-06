@@ -1,5 +1,4 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
 import { addMinutes } from 'date-fns';
@@ -31,9 +30,12 @@ export interface StepLogsProps {
   end?: string;
 }
 
-function findContainer(data: ModelsInventoryResponse, stepName: string) {
+function findContainer(
+  data: ModelsInventoryResponse,
+  stepName: string
+): BrandedContainerModel | null {
   for (const replica of data?.replicas ?? []) {
-    for (const container of replica.containers) {
+    for (const container of replica.containers ?? []) {
       if (container.name === stepName) {
         return { ...container, parentId: replica.name };
       }
@@ -49,7 +51,7 @@ function HistoricalLog({
   start,
   end,
 }: StepLogsProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const { container, ...state } = useGetPipelineJobInventoryQuery(
     { appName, pipelineJobName: jobName, start, end },
     {
@@ -93,7 +95,7 @@ function ContainerLog({
   start,
   end,
 }: ContainerLogProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : null;
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
   const { data, ...state } = useGetPipelineJobContainerLogQuery(
     {
       appName,
@@ -191,11 +193,3 @@ export function JobStepLogs({
     </Accordion>
   );
 }
-
-JobStepLogs.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  stepName: PropTypes.string.isRequired,
-  start: PropTypes.string,
-  end: PropTypes.string,
-};

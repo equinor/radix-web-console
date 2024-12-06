@@ -4,7 +4,6 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FormEvent, useState } from 'react';
 
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
@@ -25,7 +24,7 @@ export const ChangeConfigurationItemForm = ({
   configurationItem,
   refetch,
 }: Props) => {
-  const [newCI, setNewCI] = useState<Application>();
+  const [newCI, setNewCI] = useState<Application | null>(null);
   const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
@@ -35,7 +34,7 @@ export const ChangeConfigurationItemForm = ({
       appName,
       applicationRegistrationPatchRequest: {
         applicationRegistrationPatch: {
-          configurationItem: newCI.id,
+          configurationItem: newCI!.id, //Button is disabled if newCI is not set
         },
       },
     }).unwrap();
@@ -88,10 +87,4 @@ export const ChangeConfigurationItemForm = ({
       </Accordion.Item>
     </Accordion>
   );
-};
-
-ChangeConfigurationItemForm.propTypes = {
-  appName: PropTypes.string.isRequired,
-  configurationItem: PropTypes.string,
-  refetch: PropTypes.func,
 };

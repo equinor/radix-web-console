@@ -11,7 +11,7 @@ type PipelineRunReason = PipelineRun['status'];
 type JobReason = Job['status'];
 
 export function getJobExecutionState(status: JobReason): string {
-  switch (status as JobReason) {
+  switch (status) {
     case 'Waiting':
     case 'Queued':
       return 'Will execute';
@@ -24,6 +24,8 @@ export function getJobExecutionState(status: JobReason): string {
     case 'StoppedNoChanges':
     case 'Succeeded':
       return 'Executed';
+    case undefined:
+      return 'unknown';
   }
 }
 export function getPipelineRunExecutionState(
@@ -53,6 +55,8 @@ export function getPipelineRunExecutionState(
     case 'ResourceVerificationFailed':
     case 'FailureIgnored':
       return 'Failed';
+    case undefined:
+      return 'unknown';
   }
 }
 
@@ -98,6 +102,8 @@ export function getTaskRunExecutionState(status: TaskRunReason): string {
     case 'CELEvaluationFailed':
     case 'InvalidParamValue':
       return 'Failed';
+    case undefined:
+      return 'unknown';
   }
 }
 
@@ -126,5 +132,7 @@ export function getStepTaskRunExecutionState(status: StepRunReason): string {
     case 'ResourceVerificationFailed':
     case 'FailureIgnored':
       return status;
+    case undefined:
+      return 'unknown';
   }
 }

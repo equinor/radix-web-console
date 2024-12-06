@@ -1,6 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
 import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import { getPipelineRunExecutionState } from '../component/execution-state';
 import { Duration } from '../time/duration';
@@ -21,7 +19,10 @@ export function PipelineRun({ pipelineRun }: Props) {
           <div className="grid grid--gap-medium grid--overview-columns">
             <div className="grid grid--gap-medium">
               <Typography>
-                Pipeline run <strong>{pipelineRun.status.toLowerCase()}</strong>
+                Pipeline run{' '}
+                <strong>
+                  {pipelineRun.status?.toLowerCase() ?? 'pending'}
+                </strong>
               </Typography>
               <Typography>
                 {getPipelineRunExecutionState(pipelineRun.status)} pipeline{' '}
@@ -65,7 +66,3 @@ export function PipelineRun({ pipelineRun }: Props) {
     </main>
   );
 }
-
-PipelineRun.propTypes = {
-  pipelineRun: PropTypes.object.isRequired,
-};

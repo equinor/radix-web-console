@@ -2,7 +2,7 @@ import { isValid } from 'date-fns';
 import { formatDateTimePrecise, relativeTimeToNow } from '../../utils/datetime';
 
 type Props = {
-  time: number | string | Date;
+  time?: number | string | Date;
   titlePrefix?: string;
   capitalize?: boolean;
   includeSeconds?: boolean;

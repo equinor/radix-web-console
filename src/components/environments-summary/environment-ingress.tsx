@@ -1,8 +1,5 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { type IconData, link, memory } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
 import { Link } from 'react-router-dom';
 import type { Component } from '../../store/radix-api';
 import {
@@ -30,10 +27,11 @@ function getComponentUrl(
     : getActiveComponentUrl(appName, environmentName, component.name);
 }
 
-const ComponentDetails: FunctionComponent<{
+type ComponentDetailsProps = {
   icon: IconData;
   component: Readonly<Component>;
-}> = ({ icon, component }) => (
+};
+const ComponentDetails = ({ icon, component }: ComponentDetailsProps) => (
   <>
     <Icon data={icon} style={{ marginRight: 'var(--eds_spacing_small)' }} />
     <Typography
@@ -49,17 +47,17 @@ const ComponentDetails: FunctionComponent<{
   </>
 );
 
-export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
+export const EnvironmentIngress = ({
   appName,
   envName,
   components,
-}) => {
+}: EnvironmentIngressProps) => {
   const comps = components.reduce<{
     public: Array<Component>;
     passive: Array<Component>;
   }>(
     (obj, x) => {
-      obj[!x.variables[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
+      obj[!x.variables?.[URL_VAR_NAME] ? 'passive' : 'public'].push(x);
       return obj;
     },
     { public: [], passive: [] }
@@ -81,7 +79,7 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
         comps.public.map((component) => (
           <ExternalLink
             key={component.name}
-            href={`https://${component.variables[URL_VAR_NAME]}`}
+            href={`https://${component.variables?.[URL_VAR_NAME] ?? ''}`}
             className=""
           >
             <ComponentDetails icon={link} component={component} />
@@ -112,12 +110,4 @@ export const EnvironmentIngress: FunctionComponent<EnvironmentIngressProps> = ({
       {tooManyPublic && tooManyPassive && <div>…</div>}
     </>
   );
-};
-
-EnvironmentIngress.propTypes = {
-  appName: PropTypes.string.isRequired,
-  components: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<Component>
-  ).isRequired,
-  envName: PropTypes.string.isRequired,
 };

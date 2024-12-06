@@ -2462,7 +2462,7 @@ export type ReplicaSummary = {
   /** Container started timestamp */
   containerStarted?: string;
   /** Created timestamp */
-  created?: string;
+  created: string;
   /** The time at which the batch job's pod finishedAt. */
   endTime?: string;
   /** Exit status from the last termination of the container */
@@ -2572,7 +2572,7 @@ export type JobSummary = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Created timestamp */
-  created?: string;
+  created: string;
   /** DeployExternalDNS deploy external DNS */
   deployExternalDNS?: boolean | null;
   /** Ended timestamp */
@@ -2584,7 +2584,7 @@ export type JobSummary = {
     [key: string]: string;
   };
   /** Name of the job */
-  name?: string;
+  name: string;
   /** OverrideUseBuildCache override default or configured build cache option */
   overrideUseBuildCache?: boolean | null;
   /** Name of the pipeline */
@@ -2617,7 +2617,7 @@ export type ApplicationSummary = {
   };
   latestJob?: JobSummary;
   /** Name the name of the application */
-  name?: string;
+  name: string;
 };
 export type ApplicationRegistration = {
   /** AdGroups the groups that should be able to access the application */
@@ -2751,7 +2751,7 @@ export type EnvironmentSummary = {
   /** BranchMapping The branch mapped to this environment */
   branchMapping?: string;
   /** Name of the environment */
-  name?: string;
+  name: string;
   /** Status of the environment
     Pending = Environment exists in Radix config, but not in cluster
     Consistent = Environment exists in Radix config and in cluster
@@ -2769,8 +2769,8 @@ export type Application = {
   /** Jobs list of run jobs for the application */
   jobs?: JobSummary[];
   /** Name the name of the application */
-  name?: string;
-  registration?: ApplicationRegistration;
+  name: string;
+  registration: ApplicationRegistration;
   /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };
@@ -2897,7 +2897,7 @@ export type DeployKeyAndSecret = {
 };
 export type Deployment = {
   /** ActiveFrom Timestamp when the deployment starts (or created) */
-  activeFrom?: string;
+  activeFrom: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
   /** Name of the branch used to build the deployment */
@@ -2907,13 +2907,13 @@ export type Deployment = {
   /** Name of job creating deployment */
   createdByJob?: string;
   /** Environment the environment this Radix application deployment runs in */
-  environment?: string;
+  environment: string;
   /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
   gitCommitHash?: string;
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
-  name?: string;
+  name: string;
   /** Namespace where the deployment is stored */
   namespace: string;
   /** Repository the GitHub repository that the deployment was built from */
@@ -2959,7 +2959,7 @@ export type Environment = {
   /** Deployments All deployments in environment */
   deployments?: DeploymentSummary[];
   /** Name of the environment */
-  name?: string;
+  name: string;
   /** Secrets All secrets in environment */
   secrets?: Secret[];
   /** Status of the environment
@@ -3066,7 +3066,7 @@ export type ScheduledJobSummary = {
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the job */
-  deploymentName?: string;
+  deploymentName: string;
   /** Ended timestamp */
   ended?: string;
   /** FailedCount is the number of times the job has failed */
@@ -3076,7 +3076,7 @@ export type ScheduledJobSummary = {
   /** Message of a status, if any, of the job */
   message?: string;
   /** Name of the scheduled job */
-  name?: string;
+  name: string;
   node?: Node;
   /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];

@@ -1,6 +1,5 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { send } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useEffect, useState } from 'react';
 
 import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
@@ -11,10 +10,10 @@ import {
   useGetApplicationQuery,
 } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
 
@@ -34,12 +33,12 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
   inEnv,
 }) => {
   const { data } = useGetApplicationQuery({ appName }, { pollingInterval });
-  const repo = data?.registration.repository;
+  const repo = data?.registration?.repository;
 
   const [sortedData, setSortedData] = useState(deployments || []);
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  const [envSort, setEnvSort] = useState<sortDirection>();
-  const [pipelineSort, setPipelineSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
+  const [envSort, setEnvSort] = useState<SortDirection>();
+  const [pipelineSort, setPipelineSort] = useState<SortDirection>();
 
   useEffect(() => {
     setSortedData(
@@ -128,13 +127,4 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
       )}
     </div>
   );
-};
-
-DeploymentsList.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deployments: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<DeploymentSummary>
-  ),
-  limit: PropTypes.number,
-  inEnv: PropTypes.bool,
 };

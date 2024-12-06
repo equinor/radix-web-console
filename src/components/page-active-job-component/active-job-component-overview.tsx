@@ -1,6 +1,3 @@
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
 import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
 import { Overview } from './overview';
 
@@ -25,11 +22,16 @@ import { EnvironmentVariables } from '../environment-variables';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ComponentReplicaList } from '../page-active-component/component-replica-list';
 
-export const ActiveJobComponentOverview: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
   jobComponentName: string;
-}> = ({ appName, envName, jobComponentName }) => {
+};
+export const ActiveJobComponentOverview = ({
+  appName,
+  envName,
+  jobComponentName,
+}: Props) => {
   const {
     data: environment,
     refetch,
@@ -167,10 +169,4 @@ export const ActiveJobComponentOverview: FunctionComponent<{
       </AsyncResource>
     </>
   );
-};
-
-ActiveJobComponentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
 };

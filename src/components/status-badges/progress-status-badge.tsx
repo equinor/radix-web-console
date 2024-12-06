@@ -7,7 +7,6 @@ import {
   time,
   traffic_light,
 } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import {
@@ -45,8 +44,3 @@ export const ProgressStatusBadge: FunctionComponent<{
     {status === 'Active' ? 'Starting' : status}
   </StatusBadgeTemplate>
 );
-
-ProgressStatusBadge.propTypes = {
-  status: PropTypes.string
-    .isRequired as PropTypes.Validator<JobSchedulerProgressStatus>,
-};

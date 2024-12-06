@@ -11,7 +11,7 @@ import { routes } from '../routes';
 type DefaultModuleImport = { default: React.JSX.Element };
 
 class DevComponent extends Component<
-  { component: string },
+  { component?: string },
   { content: React.JSX.Element }
 > {
   private isLoaded: boolean;

@@ -22,6 +22,10 @@ gen-scan-api:
 gen-log-api:
 	npm run "apigen:log"
 
+.PHONY: gen-local-radix-log-api
+gen-local-radix-log-api:
+	OVERRIDE_RADIX_LOG_API_SWAGGER_URL=http://localhost:8003/swagger/doc.json npm run "apigen:log"
+
 .PHONY: gen-service-now-api
 gen-service-now-api:
 	npm run "apigen:service-now"
@@ -67,3 +71,17 @@ run-mac-rebuild:
 down:
 	docker compose down
 
+.PHONY: radixconfigs
+radixconfigs: SHELL:=/bin/bash
+radixconfigs:
+	source .env.dev; envsubst < radixconfig.tpl.yaml > radixconfig.dev.yaml
+	source .env.c2; envsubst < radixconfig.tpl.yaml > radixconfig.c2.yaml
+	source .env.platform; envsubst < radixconfig.tpl.yaml > radixconfig.platform.yaml
+	source .env.playground; envsubst < radixconfig.tpl.yaml > radixconfig.playground.yaml
+
+.PHONY: generate
+generate: radixconfigs
+
+.PHONY: verify-generate
+verify-generate: generate
+	git diff --exit-code

@@ -1,5 +1,4 @@
 import { Table, Tooltip } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -21,7 +20,7 @@ export const JobSummaryTableRow: FunctionComponent<{
         className="job-summary__id-section"
         to={routeWithParams(routes.appJob, { appName, jobName: job.name })}
       >
-        {job.triggeredBy?.length > 25 ? (
+        {job.triggeredBy && job.triggeredBy.length > 25 ? (
           <Tooltip placement="top" title={job.triggeredBy}>
             <div>
               {`${job.triggeredBy.substring(0, 8)}...${job.triggeredBy.slice(
@@ -32,7 +31,7 @@ export const JobSummaryTableRow: FunctionComponent<{
         ) : (
           <div>{job.triggeredBy || 'N/A'}</div>
         )}
-        <CommitHash commit={job.commitID} />
+        <CommitHash commit={job.commitID ?? ''} />
       </Link>
     </Table.Cell>
     <Table.Cell>
@@ -66,13 +65,8 @@ export const JobSummaryTableRow: FunctionComponent<{
       </div>
     </Table.Cell>
     <Table.Cell variant="icon">
-      <RadixJobConditionBadge status={job.status} />
+      <RadixJobConditionBadge status={job.status ?? 'Waiting'} />
     </Table.Cell>
     <Table.Cell>{job.pipeline}</Table.Cell>
   </Table.Row>
 );
-
-JobSummaryTableRow.propTypes = {
-  appName: PropTypes.string.isRequired,
-  job: PropTypes.object.isRequired as PropTypes.Validator<JobSummary>,
-};
