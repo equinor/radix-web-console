@@ -71,3 +71,17 @@ run-mac-rebuild:
 down:
 	docker compose down
 
+.PHONY: radixconfigs
+radixconfigs: SHELL:=/bin/bash
+radixconfigs:
+	source .env.dev; envsubst < radixconfig.tpl.yaml > radixconfig.dev.yaml
+	source .env.c2; envsubst < radixconfig.tpl.yaml > radixconfig.c2.yaml
+	source .env.platform; envsubst < radixconfig.tpl.yaml > radixconfig.platform.yaml
+	source .env.playground; envsubst < radixconfig.tpl.yaml > radixconfig.playground.yaml
+
+.PHONY: generate
+generate: radixconfigs
+
+.PHONY: verify-generate
+verify-generate: generate
+	git diff --exit-code
