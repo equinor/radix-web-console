@@ -79,3 +79,9 @@ radixconfigs:
 	source .env.platform; envsubst < radixconfig.tpl.yaml > radixconfig.platform.yaml
 	source .env.playground; envsubst < radixconfig.tpl.yaml > radixconfig.playground.yaml
 
+.PHONY: generate
+generate: radixconfigs
+
+.PHONY: verify-generate
+verify-generate: generate
+	git diff --exit-code
