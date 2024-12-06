@@ -79,25 +79,6 @@ spec:
             limits:
               cpu: "100m"
               memory: "50Mi"
-      environmentConfig:
-        - environment: qa
-          resources:
-            requests:
-              cpu: "30m"
-              memory: "50Mi"
-            limits:
-              cpu: "100m"
-              memory: "50Mi"
-          horizontalScaling:
-            maxReplicas: 1
-            minReplicas: 0
-            triggers:
-              - name: cron
-                cron:
-                  timezone: Europe/Oslo
-                  start: 0 7 * * 1-5 # 07:00 Monday - Friday
-                  end: 0 17 * * 1-5 # 17:00 Monday - Friday
-                  desiredReplicas: 1
         - environment: prod
           resources:
             requests:
