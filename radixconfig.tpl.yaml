@@ -41,7 +41,7 @@ spec:
         SERVICENOW_PROXY_SCOPES: "1b4a22f1-d4a1-4b6a-81b2-fd936daf1786/Application.Read" # scopes must be seperated by comma
         CLUSTER_OIDC_ISSUER_URL: ""
         CMDB_CI_URL: "https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_business_app&sys_id={CIID}"
-        OAUTH2_CLIENT_ID: "${OAUTH2_CLIENT_ID}"
+        OAUTH2_CLIENT_ID: "${AZURE_CLIENT_ID}"
       authentication:
         oauth2:
           clientId: "${AZURE_CLIENT_ID}"
