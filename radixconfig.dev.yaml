@@ -43,7 +43,6 @@ spec:
         CLUSTER_OIDC_ISSUER_URL: ""
         CMDB_CI_URL: "https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_business_app&sys_id={CIID}"
         OAUTH2_CLIENT_ID: "5687b237-eda3-4ec3-a2a1-023e85a2bd84"
-        Hell oworld
       authentication:
         oauth2:
           clientId: "5687b237-eda3-4ec3-a2a1-023e85a2bd84"
