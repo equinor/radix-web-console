@@ -55,9 +55,13 @@ spec:
           setAuthorizationHeader: true
           sessionStoreType: redis
           redisStore:
-            connectionUrl: rediss://${OAUTH2_REDIS_QA_HOSTNAME}:6380
+            connectionUrl: rediss://${OAUTH2_REDIS_PROD_HOSTNAME}:6380
       environmentConfig:
         - environment: qa
+          authentication:
+            oauth2:
+              redisStore:
+                connectionUrl: rediss://${OAUTH2_REDIS_QA_HOSTNAME}:6380
           resources:
             requests:
               cpu: "20m"

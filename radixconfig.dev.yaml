@@ -55,9 +55,13 @@ spec:
           setAuthorizationHeader: true
           sessionStoreType: redis
           redisStore:
-            connectionUrl: rediss://radix-dev-qa.redis.cache.windows.net:6380
+            connectionUrl: rediss://radix-dev-prod.redis.cache.windows.net:6380
       environmentConfig:
         - environment: qa
+          authentication:
+            oauth2:
+              redisStore:
+                connectionUrl: rediss://radix-dev-qa.redis.cache.windows.net:6380
           resources:
             requests:
               cpu: "20m"
