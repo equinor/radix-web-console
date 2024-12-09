@@ -5,6 +5,10 @@ metadata:
 spec:
   build:
     useBuildKit: true
+  dnsAlias:
+    - alias: "console"
+      component: web
+      environment: "${ACTIVE_ENVIRONMENT}"
   environments:
     - name: qa
       build:
