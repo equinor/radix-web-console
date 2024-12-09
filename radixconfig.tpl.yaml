@@ -39,6 +39,13 @@ spec:
       publicPort: http
       runtime:
         architecture: arm64
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "50Mi"
+        limits:
+          cpu: "100m"
+          memory: "50Mi"
       variables:
         CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
         CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
@@ -81,18 +88,3 @@ spec:
                   desiredReplicas: 1
         - environment: prod
           replicas: 2
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "50Mi"
-            limits:
-              cpu: "100m"
-              memory: "50Mi"
-        - environment: prod
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "100Mi"
-            limits:
-              cpu: "100m"
-              memory: "100Mi"
