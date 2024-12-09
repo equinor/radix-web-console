@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'react';
 import { DNSAlias } from './dns-alias';
 
 export interface DefaultAppAliasProps {
-  urls?: string[];
+  urls: string[];
   title: string;
 }
 

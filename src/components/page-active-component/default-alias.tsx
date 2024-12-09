@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { ApplicationAlias } from '../../store/radix-api';
 import { ExternalLink } from '../link/external-link';
 
@@ -25,9 +24,3 @@ export function DefaultAlias({ appAlias, envName, componentName }: Props) {
     </>
   );
 }
-
-DefaultAlias.propTypes = {
-  appAlias: PropTypes.object as PropTypes.Validator<ApplicationAlias>,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-};

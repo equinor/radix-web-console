@@ -1,14 +1,4 @@
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
-
-import { ComponentReplicaList } from './component-replica-list';
-import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';
-import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
-import { ExternalDNSAccordion } from './external-dns';
-import { HorizontalScalingSummary } from './horizontal-scaling-summary';
-import { OAuthService } from './oauth-service';
-import { Overview } from './overview';
-
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -21,6 +11,13 @@ import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
 import { EnvironmentVariables } from '../environment-variables';
+import { ComponentReplicaList } from './component-replica-list';
+import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';
+import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
+import { ExternalDNSAccordion } from './external-dns';
+import { HorizontalScalingSummary } from './horizontal-scaling-summary';
+import { OAuthService } from './oauth-service';
+import { Overview } from './overview';
 
 import { routeWithParams } from '../../utils/string';
 import './style.css';
@@ -142,7 +139,7 @@ export const ActiveComponentOverview: FunctionComponent<{
                 envName={envName}
                 componentName={componentName}
               />
-              {component.externalDNS?.length > 0 && (
+              {component.externalDNS && component.externalDNS.length > 0 && (
                 <ExternalDNSAccordion
                   appName={appName}
                   envName={envName}
@@ -183,10 +180,4 @@ export const ActiveComponentOverview: FunctionComponent<{
       </AsyncResource>
     </>
   );
-};
-
-ActiveComponentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
 };

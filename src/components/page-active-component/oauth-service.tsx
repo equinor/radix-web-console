@@ -1,12 +1,9 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-
-import { OAuthToolbar } from './oauth-toolbar';
-
 import type { OAuth2AuxiliaryResource } from '../../store/radix-api';
 import { getOAuthReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 import { ComponentStatusBadge } from '../status-badges';
+import { OAuthToolbar } from './oauth-toolbar';
 
 type Props = {
   appName: string;
@@ -49,7 +46,8 @@ export const OAuthService = ({
             </span>
           </div>
           <div className="grid">
-            {oauth2.deployment.replicaList?.length > 0 ? (
+            {oauth2.deployment.replicaList &&
+            oauth2.deployment.replicaList.length > 0 ? (
               <ReplicaList
                 replicaList={oauth2.deployment.replicaList}
                 replicaUrlFunc={(name) =>
@@ -65,11 +63,3 @@ export const OAuthService = ({
     </Accordion.Item>
   </Accordion>
 );
-
-OAuthService.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  oauth2: PropTypes.object
-    .isRequired as PropTypes.Validator<OAuth2AuxiliaryResource>,
-};

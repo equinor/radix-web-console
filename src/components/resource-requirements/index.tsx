@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import type { ResourceRequirements as ResourceRequirementsModel } from '../../store/radix-api';
 
@@ -27,7 +26,3 @@ export const ResourceRequirements: FunctionComponent<
     </Typography>
   </>
 );
-
-ResourceRequirements.propTypes = {
-  resources: PropTypes.object as PropTypes.Validator<ResourceRequirementsModel>,
-};

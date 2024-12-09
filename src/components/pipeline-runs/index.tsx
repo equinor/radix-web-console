@@ -1,18 +1,14 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
-
-import { PipelineRunTableRow } from './pipeline-run-table-row';
-
 import type { PipelineRun as PipelineRunModel } from '../../store/radix-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
   sortCompareString,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
-
+import { PipelineRunTableRow } from './pipeline-run-table-row';
 import './style.css';
 
 interface Props {
@@ -23,8 +19,8 @@ interface Props {
 }
 
 export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
-  const [envSort, setEnvSort] = useState<sortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
+  const [envSort, setEnvSort] = useState<SortDirection>();
 
   const sortedData = useMemo(() => {
     return dataSorter(pipelineRuns?.slice(0, limit || pipelineRuns.length), [
@@ -73,12 +69,3 @@ export function PipelineRuns({ appName, jobName, pipelineRuns, limit }: Props) {
     <Typography variant="h4">No pipeline runs yet</Typography>
   );
 }
-
-PipelineRuns.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  pipelineRuns: PropTypes.arrayOf(
-    PropTypes.object as PropTypes.Validator<PipelineRunModel>
-  ).isRequired,
-  limit: PropTypes.number,
-};

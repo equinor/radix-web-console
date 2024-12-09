@@ -1,9 +1,7 @@
 import type { ApplicationRegistration } from '../../store/radix-api';
 import { ExternalLink } from './external-link';
 
-type Props = { registration?: ApplicationRegistration };
-
-function configFileFullName(radixConfigFullName: string): string {
+function configFileFullName(radixConfigFullName?: string): string {
   return radixConfigFullName || 'radixconfig.yaml';
 }
 
@@ -17,6 +15,7 @@ function configFileUrl({
   )}`;
 }
 
+type Props = { registration: ApplicationRegistration };
 export const RadixConfigFileLink = ({ registration }: Props) => (
   <ExternalLink href={configFileUrl(registration)}>
     {configFileFullName(registration.radixConfigFullName)}

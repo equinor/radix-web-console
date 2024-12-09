@@ -1,5 +1,4 @@
 import { Table, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
@@ -27,7 +26,7 @@ export function PipelineTaskTableRow({
   return (
     <Table.Row>
       <Table.Cell>
-        {pipelineRunName?.length > 0 && (
+        {pipelineRunName && pipelineRunName.length > 0 && (
           <Typography
             link
             as={Link}
@@ -57,16 +56,8 @@ export function PipelineTaskTableRow({
         )}
       </Table.Cell>
       <Table.Cell variant="icon">
-        <PipelineRunStatusBadge status={task.status} />
+        <PipelineRunStatusBadge status={task.status ?? 'PipelineRunPending'} />
       </Table.Cell>
     </Table.Row>
   );
 }
-
-PipelineTaskTableRow.propTypes = {
-  appName: PropTypes.string.isRequired,
-  jobName: PropTypes.string.isRequired,
-  pipelineRunName: PropTypes.string,
-  task: PropTypes.object
-    .isRequired as PropTypes.Validator<PipelineRunTaskModel>,
-};

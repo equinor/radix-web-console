@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 import { externalUrls } from '../../externalUrls';
 import {
@@ -155,8 +154,4 @@ export const UsedResources: FunctionComponent<UsedResourcesProps> = ({
       </AsyncResource>
     </div>
   );
-};
-
-UsedResources.propTypes = {
-  appName: PropTypes.string.isRequired,
 };

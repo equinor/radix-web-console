@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import {
@@ -61,8 +60,4 @@ export const FutureApplicationCost: FunctionComponent<
       </AsyncResource>
     </div>
   );
-};
-
-FutureApplicationCost.propTypes = {
-  appName: PropTypes.string.isRequired,
 };

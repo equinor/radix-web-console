@@ -63,6 +63,7 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
 
     const callbackId = msal.addEventCallback(callback);
 
+    // @ts-expect-error callbackId can be null if running on Node / Serverside
     return () => msal.removeEventCallback(callbackId);
   }, [dispatch, msal]);
 

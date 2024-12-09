@@ -52,6 +52,7 @@ export function mapRouteParamsToProps<
     const mappedProps = (
       Array.isArray(propMap) ? (propMap as Array<string>) : Object.keys(propMap)
     ).reduce<Partial<P>>(
+      // @ts-expect-error I gave up typing this //todo
       (obj, key) => ({ ...obj, [key]: params[propMap[key] || key] }),
       {}
     );

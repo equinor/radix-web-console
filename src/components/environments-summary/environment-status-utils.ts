@@ -1,8 +1,4 @@
-import type {
-  AuxiliaryResourceDeployment,
-  Component,
-  ReplicaStatus,
-} from '../../store/radix-api';
+import type { Component } from '../../store/radix-api';
 import type {
   EnvironmentVulnerabilities,
   ImageScan,
@@ -11,6 +7,7 @@ import type { StatusBadgeTemplateType } from '../status-badges/status-badge-temp
 import type { StatusPopoverType } from '../status-popover/status-popover';
 import type { StatusTooltipTemplateType } from '../status-tooltips/status-tooltip-template';
 
+export type VulnerabilitySummary = Required<ImageScan>['vulnerabilitySummary'];
 export enum EnvironmentStatus {
   Consistent = 0,
   Running = 1,
@@ -24,63 +21,59 @@ type EnvironmentStatusType = StatusBadgeTemplateType &
   StatusPopoverType &
   StatusTooltipTemplateType;
 
-const ComponentStatusMap = Object.freeze<
-  Partial<Record<Component['status'], EnvironmentStatus>>
->({
+const ComponentStatusMap = {
   Stopped: EnvironmentStatus.Stopped,
   Consistent: EnvironmentStatus.Consistent,
-});
+} as const;
 
-const AuxiliaryResourceDeploymentStatusMap = Object.freeze<
-  Partial<Record<AuxiliaryResourceDeployment['status'], EnvironmentStatus>>
->({
+const AuxiliaryResourceDeploymentStatusMap = {
   Stopped: EnvironmentStatus.Stopped,
   Consistent: EnvironmentStatus.Consistent,
-});
+} as const;
 
-const ReplicaStatusMap = Object.freeze<
-  Partial<Record<ReplicaStatus['status'], EnvironmentStatus>>
->({
+const ReplicaStatusMap = {
   Running: EnvironmentStatus.Running,
   Starting: EnvironmentStatus.Starting,
-});
+} as const;
 
 export function aggregateComponentEnvironmentStatus(
-  components: Readonly<Array<Component>>
+  components: Component[]
 ): EnvironmentStatus {
-  return (components ?? []).reduce<EnvironmentStatus>(
-    (obj, { status, oauth2 }) =>
-      Math.max(
-        ComponentStatusMap[status] ?? EnvironmentStatus.Warning,
-        AuxiliaryResourceDeploymentStatusMap[
-          oauth2?.deployment.status ?? 'Consistent'
-        ] ?? EnvironmentStatus.Warning,
-        obj
-      ),
-    EnvironmentStatus.Consistent
-  );
+  return components.reduce<EnvironmentStatus>((obj, { status, oauth2 }) => {
+    const compStatus = status ?? 'unknown';
+    const oauth2Status = oauth2?.deployment.status ?? 'Consistent';
+    return Math.max(
+      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
+      ComponentStatusMap[compStatus] ?? EnvironmentStatus.Warning,
+      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
+      AuxiliaryResourceDeploymentStatusMap[oauth2Status] ??
+        EnvironmentStatus.Warning,
+      obj
+    );
+  }, EnvironmentStatus.Consistent);
 }
 
 export function aggregateComponentReplicaEnvironmentStatus(
-  components: Readonly<Array<Component>>
+  components: Component[]
 ): EnvironmentStatus {
-  const replicas = (components ?? [])
+  const replicas = components
     .flatMap((c) => c.replicaList)
-    .concat(components.flatMap((c) => c.oauth2?.deployment.replicaList ?? []));
+    .concat(components?.flatMap((c) => c.oauth2?.deployment.replicaList ?? []))
+    .filter((x) => !!x);
 
-  return replicas.reduce<EnvironmentStatus>(
-    (obj, { replicaStatus }) =>
-      Math.max(
-        ReplicaStatusMap[replicaStatus?.status] ?? EnvironmentStatus.Warning,
-        obj
-      ),
-    EnvironmentStatus.Consistent
-  );
+  return replicas.reduce((obj, { replicaStatus }) => {
+    const status = replicaStatus?.status ?? 'Pending';
+    return Math.max(
+      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
+      ReplicaStatusMap[status] ?? EnvironmentStatus.Warning,
+      obj
+    );
+  }, EnvironmentStatus.Consistent);
 }
 
 export function aggregateVulnerabilitySummaries(
-  summaries: Readonly<Array<ImageScan['vulnerabilitySummary']>>
-): ImageScan['vulnerabilitySummary'] {
+  summaries: VulnerabilitySummary[]
+): VulnerabilitySummary {
   return summaries
     .filter((x) => !!x)
     .reduce(
@@ -94,23 +87,20 @@ export function aggregateVulnerabilitySummaries(
 }
 
 export function environmentVulnerabilitySummarizer(
-  envScans: Readonly<EnvironmentVulnerabilities>
-): ImageScan['vulnerabilitySummary'] {
-  return Object.keys(envScans ?? {})
-    .filter(
-      (x: keyof Omit<EnvironmentVulnerabilities, 'name'>) =>
-        x === 'components' || x === 'jobs'
-    )
-    .reduce<ImageScan['vulnerabilitySummary']>(
-      (obj, key1) =>
-        aggregateVulnerabilitySummaries([
-          obj,
-          ...Object.keys(envScans[key1]).map<ImageScan['vulnerabilitySummary']>(
-            (key2) => envScans[key1][key2].vulnerabilitySummary
-          ),
-        ]),
-      {}
-    );
+  envScans?: EnvironmentVulnerabilities
+): VulnerabilitySummary {
+  const componentSummaries = Object.values(envScans?.components ?? {})
+    .map((c) => c.vulnerabilitySummary)
+    .filter((c) => !!c);
+
+  const jobSummaries = Object.values(envScans?.jobs ?? {})
+    .map((c) => c.vulnerabilitySummary)
+    .filter((c) => !!c);
+
+  return aggregateVulnerabilitySummaries([
+    ...componentSummaries,
+    ...jobSummaries,
+  ]);
 }
 
 export function getEnvironmentStatusType(

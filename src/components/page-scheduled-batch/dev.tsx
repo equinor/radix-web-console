@@ -6,7 +6,7 @@ import type { ScheduledBatchSummary } from '../../store/radix-api';
 
 const testData: Array<
   Parameters<typeof PageScheduledBatch>[0] & {
-    batchData?: ScheduledBatchSummary;
+    batchData: ScheduledBatchSummary;
   }
 > = [
   {
@@ -33,6 +33,7 @@ const testData: Array<
           batchName: 'batchName',
           backoffLimit: 0,
           failedCount: 0,
+          deploymentName: '',
         },
         {
           created: '2022-03-29T13:09:37.608Z',
@@ -44,6 +45,7 @@ const testData: Array<
           batchName: 'batchName',
           backoffLimit: 0,
           failedCount: 0,
+          deploymentName: '',
         },
       ],
     },
@@ -71,6 +73,7 @@ const testData: Array<
           batchName: 'batchName',
           backoffLimit: 0,
           failedCount: 0,
+          deploymentName: '',
         },
         {
           created: '2022-03-29T13:09:37.608Z',
@@ -81,6 +84,7 @@ const testData: Array<
           batchName: 'batchName',
           backoffLimit: 0,
           failedCount: 0,
+          deploymentName: '',
         },
       ],
     },
@@ -110,6 +114,7 @@ const testData: Array<
           batchName: 'batchName',
           backoffLimit: 0,
           failedCount: 0,
+          deploymentName: '',
         },
         {
           created: '2022-03-29T13:09:37.608Z',
@@ -121,15 +126,10 @@ const testData: Array<
           batchName: 'batchName',
           backoffLimit: 0,
           failedCount: 0,
+          deploymentName: '',
         },
       ],
     },
-  },
-  {
-    appName: 'empty-app',
-    envName: 'empty-env',
-    jobComponentName: 'empty-component',
-    scheduledBatchName: 'no-btch',
   },
 ];
 

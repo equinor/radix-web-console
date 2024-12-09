@@ -1,6 +1,4 @@
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
-
 import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
@@ -71,10 +69,4 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
       </AsyncResource>
     </>
   );
-};
-
-DeploymentJobComponentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  deploymentName: PropTypes.string.isRequired,
-  jobComponentName: PropTypes.string.isRequired,
 };

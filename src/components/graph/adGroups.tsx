@@ -1,9 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { computer, group, person } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import {
   type CSSObjectWithLabel,
-  type GroupBase,
   type MultiValue,
   type MultiValueGenericProps,
   type OptionsOrGroups,
@@ -33,7 +31,7 @@ type GroupedOption = {
 };
 
 type CallbackType = (
-  options: OptionsOrGroups<AdGroupItem, GroupBase<AdGroupItem>>
+  options: OptionsOrGroups<AdGroupItem, GroupedOption>
 ) => void;
 
 interface Props {
@@ -113,10 +111,9 @@ export function ADGroups({ onChange, adGroups, adUsers, isDisabled }: Props) {
           menuPosition="fixed"
           closeMenuOnScroll={(e: Event) => {
             const target = e.target as HTMLInputElement;
-            return (
-              target?.parentElement?.className &&
-              !target.parentElement.className.match(/menu/)
-            );
+            return target?.parentElement?.className
+              ? !target.parentElement.className.match(/menu/)
+              : false;
           }}
           noOptionsMessage={() => null}
           loadOptions={(inputValue, callback) => {
@@ -156,12 +153,6 @@ export function ADGroups({ onChange, adGroups, adUsers, isDisabled }: Props) {
   );
 }
 
-ADGroups.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  adGroups: PropTypes.arrayOf(PropTypes.string),
-  isDisabled: PropTypes.bool,
-};
-
 function selectValueStyle(
   base: CSSObjectWithLabel,
   props: { data: AdGroupItem }
@@ -172,7 +163,9 @@ function selectValueStyle(
   return base;
 }
 
-function MultiValueLabel(props: MultiValueGenericProps<AdGroupItem>) {
+const MultiValueLabel = (
+  props: MultiValueGenericProps<AdGroupItem, true, GroupedOption>
+) => {
   let icon = computer;
   if (props.data.type === 'Group') icon = group;
   if (props.data.type === 'User') icon = person;
@@ -192,4 +185,4 @@ function MultiValueLabel(props: MultiValueGenericProps<AdGroupItem>) {
       <components.MultiValueLabel {...props} />
     </div>
   );
-}
+};

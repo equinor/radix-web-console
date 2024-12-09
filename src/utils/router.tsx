@@ -1,6 +1,12 @@
-import type { Attributes, ComponentType, FunctionComponent } from 'react';
+import type {
+  Attributes,
+  ComponentType,
+  ElementType,
+  FunctionComponent,
+} from 'react';
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
 
+import type * as React from 'react';
 import { useParams } from 'react-router-dom';
 import type { RouteParams } from '../routes';
 
@@ -38,6 +44,7 @@ const WithParams = ({ Component }: { Component: FunctionComponent }) => {
   const params = useParams();
   return <Component {...params} />;
 };
-export const withRouteParams = (Component: FunctionComponent) => {
+export const withRouteParams = (Component: FunctionComponent | ElementType) => {
+  // @ts-expect-error Component is not matching the type...
   return ({ ...props }) => <WithParams {...props} Component={Component} />;
 };

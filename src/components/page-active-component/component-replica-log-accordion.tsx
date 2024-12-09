@@ -8,7 +8,6 @@ import {
 } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import * as PropTypes from 'prop-types';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 
 import { addMinutes } from 'date-fns';
@@ -20,9 +19,9 @@ import {
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
 import {
+  type SortDirection,
   dataSorter,
   sortCompareDate,
-  type sortDirection,
 } from '../../utils/sort-utils';
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
@@ -70,7 +69,7 @@ export function ComponentReplicaLogAccordion({
     { skip: !appName || !envName || !componentName, pollingInterval }
   );
 
-  const [dateSort, setDateSort] = useState<sortDirection>('descending');
+  const [dateSort, setDateSort] = useState<SortDirection>('descending');
   const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
 
   const expandRow = useCallback<(name: string) => void>(
@@ -177,9 +176,6 @@ function ReplicaLogTableRow({
   const [getLog, { isFetching }] =
     logApi.endpoints.getComponentReplicaLog.useLazyQuery();
 
-  const created = new Date(creationTimestamp);
-  const ended = new Date(lastKnown);
-
   return (
     <Table.Row className={clsx({ 'border-bottom-transparent': isExpanded })}>
       <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
@@ -197,10 +193,10 @@ function ReplicaLogTableRow({
       </Table.Cell>
       <Table.Cell variant="numeric">{containers?.length || 0}</Table.Cell>
       <Table.Cell>
-        <RelativeToNow time={created} capitalize includeSeconds />
+        <RelativeToNow time={creationTimestamp} capitalize includeSeconds />
       </Table.Cell>
       <Table.Cell>
-        {Duration({ start: created, end: ended }) || 'N/A'}
+        {Duration({ start: creationTimestamp, end: lastKnown }) || 'N/A'}
       </Table.Cell>
       <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
@@ -214,12 +210,13 @@ function ReplicaLogTableRow({
                   envName,
                   componentName,
                   replicaName: name,
-                  start: created.toISOString(),
-                  end: addMinutes(ended, 10).toISOString(),
+                  start: creationTimestamp,
+                  // @ts-expect-error lastKnown is set, button is disabled when not
+                  end: addMinutes(lastKnown, 10).toISOString(),
                 }).unwrap() as Promise<string>
             )
           }
-          disabled={isFetching}
+          disabled={isFetching || !lastKnown}
         />
       </Table.Cell>
     </Table.Row>
@@ -242,9 +239,6 @@ function ReplicaContainerTableRow({
   const [getLog, { isFetching }] =
     logApi.endpoints.getComponentContainerLog.useLazyQuery();
 
-  const created = new Date(creationTimestamp);
-  const ended = new Date(lastKnown);
-
   return (
     <Table.Row className={className}>
       <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
@@ -261,10 +255,10 @@ function ReplicaContainerTableRow({
       </Table.Cell>
       <Table.Cell />
       <Table.Cell>
-        <RelativeToNow time={created} capitalize includeSeconds />
+        <RelativeToNow time={creationTimestamp} capitalize includeSeconds />
       </Table.Cell>
       <Table.Cell>
-        <Duration start={created} end={ended} />
+        <Duration start={creationTimestamp} end={lastKnown} />
       </Table.Cell>
       <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
         <LogDownloadButton
@@ -279,22 +273,15 @@ function ReplicaContainerTableRow({
                   componentName,
                   replicaName,
                   containerId: id,
-                  start: created.toISOString(),
-                  end: addMinutes(ended, 10).toISOString(),
+                  start: creationTimestamp,
+                  // @ts-expect-error last known is set, button is disabled when not
+                  end: addMinutes(lastKnown, 10).toISOString(),
                 }).unwrap() as Promise<string>
             )
           }
-          disabled={isFetching}
+          disabled={isFetching || !lastKnown}
         />
       </Table.Cell>
     </Table.Row>
   );
 }
-
-ComponentReplicaLogAccordion.propTypes = {
-  title: PropTypes.string.isRequired,
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  isExpanded: PropTypes.bool,
-};

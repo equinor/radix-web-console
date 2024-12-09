@@ -8,7 +8,7 @@ export enum PipelineStep {
   BuildComponent = 'build',
 }
 
-export function getPipelineStepDescription(stepName: string): string {
+export function getPipelineStepDescription(stepName?: string): string | null {
   switch (stepName) {
     case PipelineStep.CloneConfig:
       return 'Cloning Radix config from config branch';
@@ -27,7 +27,7 @@ export function getPipelineStepDescription(stepName: string): string {
   }
 }
 
-export function getPipelineStepTitle(stepName: string): string {
+export function getPipelineStepTitle(stepName?: string): string | null {
   switch (stepName) {
     case PipelineStep.CloneConfig:
       return 'Cloning Radix config';

@@ -3,9 +3,9 @@ import type { FunctionComponent } from 'react';
 
 import { configVariables } from '../../utils/config';
 
-const ConfigVariableTableCell: FunctionComponent<{ value: unknown }> = ({
-  value,
-}) => (
+const ConfigVariableTableCell: FunctionComponent<{
+  value: string[] | unknown;
+}> = ({ value }) => (
   <Table.Cell>
     <pre>
       <Typography>
@@ -34,7 +34,10 @@ export const ConfigList: FunctionComponent = () => (
               <Table.Cell>
                 <Typography>{key}</Typography>
               </Table.Cell>
-              <ConfigVariableTableCell value={configVariables[key]} />
+              <ConfigVariableTableCell
+                // @ts-expect-error key is mapped to string, even if its always keyof configVariable
+                value={configVariables[key]}
+              />
             </Table.Row>
           ))}
       </Table.Body>

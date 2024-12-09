@@ -7,6 +7,7 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
+import { uniq } from 'lodash-es';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import {
   useTriggerPipelineBuildDeployMutation,
@@ -25,7 +26,8 @@ export function PipelineFormBuildBranches({
   application,
   pipelineName,
 }: FormProp) {
-  const hasEnvironments = application?.environments?.length > 0;
+  const hasEnvironments =
+    application.environments && application.environments.length > 0;
   const isBuildDeployPipeline = pipelineName === 'build-deploy';
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation();
   const [triggerBuildDeploy, buildDeployState] =
@@ -37,7 +39,7 @@ export function PipelineFormBuildBranches({
   const [toEnvironment, setToEnvironment] = useState('');
   const branches = useGetApplicationBranches(application);
   const hasBranches = Object.keys(branches).length > 0;
-  const [filteredBranches, setFilteredBranches] = useState([]);
+  const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
 
   const handleOnTextChange = ({
     target: { value },
@@ -54,12 +56,10 @@ export function PipelineFormBuildBranches({
       }
       return val;
     };
-    const values = Array.from(
-      new Set(
-        Object.entries(branches)
-          .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
-          .flatMap(([, commits]) => commits)
-      )
+    const values = uniq(
+      Object.entries(branches)
+        .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
+        .flatMap(([, commits]) => commits)
     );
     setFilteredBranches(values);
   };
@@ -90,10 +90,10 @@ export function PipelineFormBuildBranches({
     `Created ${pipelineName} pipeline job`
   );
   const isAnyValidRegex = (pattern: string): boolean => {
-    return pattern && /[\^$.*+?()[\]{}|\\]/.test(pattern);
+    return pattern.length > 0 && /[\^$.*+?()[\]{}|\\]/.test(pattern);
   };
   const isValidBranchName = (branch: string): boolean => {
-    return branch && !/[\^$*+?()[\]{}|\\]/.test(branch);
+    return branch.length > 0 && !/[\^$*+?()[\]{}|\\]/.test(branch);
   };
   return (
     <form onSubmit={handleSubmit}>

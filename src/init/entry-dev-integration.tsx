@@ -30,7 +30,7 @@ export function createRadixApiUrl(
 fetchMock.post('*', { thisIsADummyResponse: true });
 
 class IntegrationComponent extends Component<
-  { component: string },
+  { component?: string },
   { content: React.JSX.Element }
 > {
   private isLoaded: boolean;

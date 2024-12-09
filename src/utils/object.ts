@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get } from 'lodash-es';
 
 type NestedKeyOf<T extends object> = {
   [K in keyof T & (string | number)]: T[K] extends object

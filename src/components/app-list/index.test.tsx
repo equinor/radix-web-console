@@ -27,6 +27,7 @@ describe('AppList component', () => {
             isSuccess: true,
             isUninitialized: false,
             status: QueryStatus.fulfilled,
+            // @ts-expect-error We dont care
             refetch: noop,
             data: [{ name: 'mock-app-1' }, { name: 'mock-app-2' }],
             currentData: [{ name: 'mock-app-1' }],
@@ -41,6 +42,7 @@ describe('AppList component', () => {
             isSuccess: false,
             isUninitialized: false,
             status: QueryStatus.pending,
+            // @ts-expect-error We dont care
             refetch: noop,
             data: undefined,
           }),

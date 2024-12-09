@@ -1,6 +1,6 @@
 import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import { type IconData, external_link } from '@equinor/eds-icons';
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren, forwardRef } from 'react';
 
 type ToolTipWrapperProps = { toolTip?: string };
 
@@ -18,33 +18,39 @@ const ToolTipWrapper = ({
 
 type ExternalLinkProps = {
   href: string;
-  icon?: IconData;
+  icon?: IconData | null | undefined; // null = no icon, undefined = external_link (default), or custom icon
   color?: string;
   className?: string;
   toolTip?: string;
   title?: string;
 };
 
-export const ExternalLink = ({
-  href,
-  children,
-  icon = external_link,
-  className = 'whitespace-nowrap',
-  color,
-  toolTip,
-  title,
-}: PropsWithChildren<ExternalLinkProps>) => (
-  <ToolTipWrapper toolTip={toolTip}>
-    <Typography
-      link
-      href={href}
-      rel="noopener noreferrer"
-      target="_blank"
-      color={color}
-      className={className}
-      title={title}
-    >
-      {children} {icon && <Icon data={icon} size={16} />}
-    </Typography>
-  </ToolTipWrapper>
+export const ExternalLink = forwardRef(
+  (
+    {
+      href,
+      children,
+      icon = external_link,
+      className = 'whitespace-nowrap',
+      color,
+      toolTip,
+      title,
+    }: PropsWithChildren<ExternalLinkProps>,
+    ref
+  ) => (
+    <ToolTipWrapper toolTip={toolTip}>
+      <Typography
+        ref={ref}
+        link
+        href={href}
+        rel="noopener noreferrer"
+        target="_blank"
+        color={color}
+        className={className}
+        title={title}
+      >
+        {children} {icon && <Icon data={icon} size={16} />}
+      </Typography>
+    </ToolTipWrapper>
+  )
 );

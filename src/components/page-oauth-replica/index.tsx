@@ -1,5 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
@@ -104,12 +103,4 @@ export function PageOAuthAuxiliaryReplica({
     </>
   );
 }
-
-PageOAuthAuxiliaryReplica.propTypes = {
-  appName: PropTypes.string.isRequired,
-  componentName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
-  replicaName: PropTypes.string.isRequired,
-};
-
 export default withRouteParams(PageOAuthAuxiliaryReplica);

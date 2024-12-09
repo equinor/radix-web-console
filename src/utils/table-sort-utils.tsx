@@ -7,9 +7,9 @@ import {
 } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';
 
-import type { sortDirection } from './sort-utils';
+import type { SortDirection } from './sort-utils';
 
-function getTableSortIcon(dir: sortDirection): IconData {
+function getTableSortIcon(dir: SortDirection): IconData {
   switch (dir) {
     case 'ascending':
       return chevron_down;
@@ -20,10 +20,7 @@ function getTableSortIcon(dir: sortDirection): IconData {
   }
 }
 
-export function getNewSortDir(
-  direction: sortDirection,
-  nullable?: boolean
-): sortDirection | null {
+export function getNewSortDir(direction: SortDirection, nullable?: boolean) {
   if (!direction) {
     return 'ascending';
   }
@@ -32,11 +29,11 @@ export function getNewSortDir(
     return 'descending';
   }
 
-  return nullable ? null : 'ascending';
+  return nullable ? undefined : 'ascending';
 }
 
 export const TableSortIcon: FunctionComponent<{
-  direction: sortDirection;
+  direction: SortDirection;
   size?: IconProps['size'];
 }> = ({ direction, size = 16 }) => (
   <Icon

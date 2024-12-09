@@ -1,7 +1,5 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { github, trending_up } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ComponentList } from './component-list';
@@ -17,7 +15,6 @@ import {
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
-import { configVariables } from '../../utils/config';
 import {
   getAppDeploymentUrl,
   getAppUrl,
@@ -45,10 +42,11 @@ import { DNSAliases } from '../component/dns-aliases';
 import { GitCommitTags } from '../component/git-commit-tags';
 import { ExternalLink } from '../link/external-link';
 
-export const EnvironmentOverview: FunctionComponent<{
+type Props = {
   appName: string;
   envName: string;
-}> = ({ appName, envName }) => {
+};
+export const EnvironmentOverview = ({ appName, envName }: Props) => {
   const { data: application } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
@@ -61,8 +59,10 @@ export const EnvironmentOverview: FunctionComponent<{
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
   );
-  const [isEventListExpanded, setIsEventListExpanded] =
-    useLocalStorage<boolean>('environmentEventListExpanded', true);
+  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage(
+    'environmentEventListExpanded',
+    true
+  );
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
     { skip: !appName || !envName || !isEventListExpanded, pollingInterval }
@@ -159,7 +159,7 @@ export const EnvironmentOverview: FunctionComponent<{
                       Built and deployed from{' '}
                       <ExternalLink
                         href={linkToGitHubBranch(
-                          application.registration.repository,
+                          application.registration?.repository ?? '',
                           environment.branchMapping
                         )}
                       >
@@ -174,7 +174,7 @@ export const EnvironmentOverview: FunctionComponent<{
                     <Typography>
                       Built from commit{' '}
                       <CommitHash
-                        repo={application.registration.repository}
+                        repo={application.registration?.repository ?? ''}
                         commit={deployment.gitCommitHash}
                       />
                     </Typography>
@@ -189,7 +189,7 @@ export const EnvironmentOverview: FunctionComponent<{
                             <GitCommitTags
                               commitID={component.commitID}
                               // gitTags={component.gitTags}
-                              repository={deployment.repository}
+                              repository={deployment?.repository ?? ''}
                             />
                           </>
                         </Typography>
@@ -220,30 +220,30 @@ export const EnvironmentOverview: FunctionComponent<{
                         >
                           {smallDeploymentName(deployment.name)}
                         </Typography>{' '}
-                        {configVariables.FLAGS.enablePromotionPipeline && (
-                          <Button
-                            variant="ghost"
-                            as={Link}
-                            to={routeWithParams(
-                              routes.appJobNew,
-                              { appName: appName },
-                              {
-                                pipeline: 'promote',
-                                deploymentName: deployment.name,
-                                fromEnvironment: deployment.environment,
-                              }
-                            )}
-                          >
-                            Promote <Icon data={trending_up} />
-                          </Button>
-                        )}
+                        <Button
+                          variant="ghost"
+                          as={Link}
+                          to={routeWithParams(
+                            routes.appJobNew,
+                            { appName: appName },
+                            {
+                              pipeline: 'promote',
+                              deploymentName: deployment.name,
+                              fromEnvironment: deployment.environment,
+                            }
+                          )}
+                        >
+                          Promote <Icon data={trending_up} />
+                        </Button>
                       </Typography>
                       {deployment.gitTags && (
                         <div className="environment-overview__tags grid grid--gap-x-small grid--auto-columns">
                           <Typography>Tags</Typography>
                           <GitTagLinks
                             gitTags={deployment.gitTags}
-                            repository={application.registration.repository}
+                            repository={
+                              application.registration?.repository ?? ''
+                            }
                           />
                           <Icon data={github} size={24} />
                         </div>
@@ -304,11 +304,6 @@ export const EnvironmentOverview: FunctionComponent<{
       </AsyncResource>
     </>
   );
-};
-
-EnvironmentOverview.propTypes = {
-  appName: PropTypes.string.isRequired,
-  envName: PropTypes.string.isRequired,
 };
 
 export default EnvironmentOverview;

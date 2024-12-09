@@ -12,8 +12,8 @@ export const MissingRadixConfigAlert = ({ application }: Props) => (
     <Icon data={info_circle} color="primary" />
     <span className="grid grid--gap-small">
       <Typography>
-        The <RadixConfigFileLink registration={application?.registration} />{' '}
-        file must be read by Radix before using this pipeline job.
+        The <RadixConfigFileLink registration={application.registration} /> file
+        must be read by Radix before using this pipeline job.
       </Typography>
       <Typography>
         Run the{' '}

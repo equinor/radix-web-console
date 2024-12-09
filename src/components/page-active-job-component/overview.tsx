@@ -1,7 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
-
 import type { Component, Deployment } from '../../store/radix-api';
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
@@ -10,10 +7,11 @@ import { DockerImage } from '../docker-image';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 
-export const Overview: FunctionComponent<{
+type Props = {
   component: Component;
-  deployment: Deployment;
-}> = ({ component, deployment }) => (
+  deployment?: Deployment;
+};
+export const Overview = ({ component, deployment }: Props) => (
   <div className="grid grid--gap-medium">
     <Typography variant="h4">Overview</Typography>
     <div className="grid grid--gap-medium grid--overview-columns">
@@ -24,7 +22,7 @@ export const Overview: FunctionComponent<{
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
-        {component.identity && (
+        {component.identity && deployment && (
           <ComponentIdentity
             identity={component.identity}
             deployment={deployment}
@@ -32,7 +30,7 @@ export const Overview: FunctionComponent<{
         )}
       </div>
       <div className="grid grid--gap-medium">
-        <ComponentPorts ports={component.ports} />
+        <ComponentPorts ports={component.ports ?? []} />
         {component.runtime && <Runtime runtime={component.runtime!} />}
         {component.resources && (
           <ResourceRequirements resources={component.resources} />
@@ -44,8 +42,3 @@ export const Overview: FunctionComponent<{
     </div>
   </div>
 );
-
-Overview.propTypes = {
-  component: PropTypes.object.isRequired as PropTypes.Validator<Component>,
-  deployment: PropTypes.object.isRequired as PropTypes.Validator<Deployment>,
-};

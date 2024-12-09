@@ -23,6 +23,7 @@ function splitFields<T extends object, K extends keyof T>(
 ): { filtered: Pick<T, K>; unfiltered: Omit<T, K> } {
   return Object.keys(obj ?? {}).reduce(
     (o, key) => {
+      // @ts-expect-error I gave up typing this //todo
       o[keys?.includes(key as K) ? 'filtered' : 'unfiltered'][key] = obj?.[key];
       return o;
     },

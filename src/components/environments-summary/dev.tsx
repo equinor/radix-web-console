@@ -81,7 +81,23 @@ export default (
     {testData.map((x, i) => (
       <div key={i}>
         <EnvironmentsSummary
-          application={{ environments: x, userIsAdmin: true }}
+          application={{
+            environments: x,
+            userIsAdmin: true,
+            name: 'any-name',
+            registration: {
+              adGroups: [],
+              adUsers: [],
+              configBranch: '',
+              creator: '',
+              name: '',
+              owner: '',
+              readerAdGroups: [],
+              readerAdUsers: [],
+              repository: '',
+              sharedSecret: '',
+            },
+          }}
         />
         {i !== testData.length - 1 && <Divider />}
       </div>

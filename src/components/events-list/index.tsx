@@ -1,6 +1,5 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import type { FunctionComponent } from 'react';
 
 import { EventSummary } from './event-summary';
@@ -58,10 +57,3 @@ export const EventsList: FunctionComponent<EventsListProps> = ({
     </Accordion.Item>
   </Accordion>
 );
-
-EventsList.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.object as PropTypes.Validator<Event>)
-    .isRequired,
-  isExpanded: PropTypes.bool.isRequired,
-  onExpanded: PropTypes.func,
-};

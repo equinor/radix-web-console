@@ -1,6 +1,4 @@
 import { Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { FunctionComponent } from 'react';
 import type { ScheduledBatchSummary } from '../../store/radix-api';
 import { smallScheduledBatchName } from '../../utils/string';
 import { BatchJobStatuses } from '../component/scheduled-job/batch-job-statuses';
@@ -8,10 +6,11 @@ import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
-const ScheduledBatchDuration: FunctionComponent<{
+type Props = {
   started: string;
-  finished: string;
-}> = ({ started, finished }) => {
+  finished?: string;
+};
+const ScheduledBatchDuration = ({ started, finished }: Props) => {
   return (
     <>
       <Typography>
@@ -40,14 +39,14 @@ const ScheduledBatchDuration: FunctionComponent<{
   );
 };
 
-const ScheduledBatchState: FunctionComponent<
-  Pick<ScheduledBatchSummary, 'status'>
-> = ({ status }) => <>{status && <ProgressStatusBadge status={status} />}</>;
-
-export const ScheduledBatchOverview: FunctionComponent<{
+type ScheduledBatchOverviewProps = {
   batch: ScheduledBatchSummary;
   jobComponentName: string;
-}> = ({ batch, jobComponentName }) => (
+};
+export const ScheduledBatchOverview = ({
+  batch,
+  jobComponentName,
+}: ScheduledBatchOverviewProps) => (
   <>
     <Typography variant="h4">Overview</Typography>
     <section className="grid grid--gap-medium overview">
@@ -66,7 +65,7 @@ export const ScheduledBatchOverview: FunctionComponent<{
           </Typography>
           {batch.status && (
             <Typography className="status-title">
-              Batch status <ScheduledBatchState status={batch.status} />
+              Batch status <ProgressStatusBadge status={batch.status} />
             </Typography>
           )}
           <Typography className="status-title">
@@ -82,19 +81,15 @@ export const ScheduledBatchOverview: FunctionComponent<{
                 <RelativeToNow time={batch.created} />
               </strong>
             </Typography>
-            <ScheduledBatchDuration
-              started={batch.started}
-              finished={batch.ended}
-            />
+            {batch.started && (
+              <ScheduledBatchDuration
+                started={batch.started}
+                finished={batch.ended}
+              />
+            )}
           </>
         </div>
       </div>
     </section>
   </>
 );
-
-ScheduledBatchOverview.propTypes = {
-  batch: PropTypes.object
-    .isRequired as PropTypes.Validator<ScheduledBatchSummary>,
-  jobComponentName: PropTypes.string.isRequired,
-};

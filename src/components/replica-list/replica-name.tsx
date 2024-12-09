@@ -5,7 +5,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
 import { type FunctionComponent, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { ReplicaSummary } from '../../store/radix-api';
@@ -91,9 +90,4 @@ export const ReplicaName: FunctionComponent<{
         </Typography>
       );
   }
-};
-
-ReplicaName.propTypes = {
-  replica: PropTypes.object.isRequired as PropTypes.Validator<ReplicaSummary>,
-  replicaUrlFunc: PropTypes.func.isRequired,
 };

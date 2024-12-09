@@ -1,31 +1,29 @@
 import { Table, TextField, Typography } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
-import type { ChangeEvent, FunctionComponent, ReactNode } from 'react';
-
+import type { ChangeEvent, ReactNode } from 'react';
 import type { EnvVar } from '../../store/radix-api';
-
 import './style.css';
 
 export interface FormattedEnvVar {
-  value: string;
+  value?: string;
   original: EnvVar;
 }
 
-export const EnvironmentVariableTable: FunctionComponent<{
+type Props = {
   values: Array<FormattedEnvVar>;
   valuePrefix?: ReactNode;
   isTextfieldDisabled?: boolean;
   inEditMode?: boolean;
   showOriginal?: boolean;
   onValueChange?: (value: string, name: string) => void;
-}> = ({
+};
+export const EnvironmentVariableTable = ({
   values,
   valuePrefix,
   isTextfieldDisabled,
   inEditMode,
   showOriginal,
   onValueChange = () => void 0,
-}) => (
+}: Props) => (
   <Table className="env-vars-table">
     <Table.Head className="whitespace-nowrap">
       <Table.Row>
@@ -69,17 +67,3 @@ export const EnvironmentVariableTable: FunctionComponent<{
     </Table.Body>
   </Table>
 );
-
-EnvironmentVariableTable.propTypes = {
-  values: PropTypes.arrayOf<FormattedEnvVar>(
-    PropTypes.shape({
-      value: PropTypes.string.isRequired,
-      original: PropTypes.object.isRequired as PropTypes.Validator<EnvVar>,
-    }) as PropTypes.Validator<FormattedEnvVar>
-  ),
-  valuePrefix: PropTypes.node,
-  inEditMode: PropTypes.bool,
-  isTextfieldDisabled: PropTypes.bool,
-  showOriginal: PropTypes.bool,
-  onValueChange: PropTypes.func,
-};

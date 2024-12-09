@@ -6,10 +6,11 @@ import {
   time,
   traffic_light,
 } from '@equinor/eds-icons';
-import * as PropTypes from 'prop-types';
-import type { ComponentProps, FunctionComponent } from 'react';
 
-import { StatusBadgeTemplate } from './status-badge-template';
+import {
+  StatusBadgeTemplate,
+  type StatusBadgeTemplateProps,
+} from './status-badge-template';
 
 import type {
   JobSummary,
@@ -18,10 +19,9 @@ import type {
   Step,
 } from '../../store/radix-api';
 
-type BadgeProps = ComponentProps<typeof StatusBadgeTemplate>;
 type JobSummaryStatus =
-  | Step['status']
-  | JobSummary['status']
+  | Required<Step>['status']
+  | Required<JobSummary>['status']
   | ScheduledBatchSummary['status']
   | ScheduledJobSummary['status'];
 
@@ -39,16 +39,13 @@ export const JobConditionBadgeTemplates = {
     type: 'danger',
     icon: <Icon data={error_outlined} />,
   },
-} satisfies Record<JobSummaryStatus, BadgeProps>;
+} satisfies Record<JobSummaryStatus, StatusBadgeTemplateProps>;
 
-export const RadixJobConditionBadge: FunctionComponent<{
+type Props = {
   status: JobSummaryStatus;
-}> = ({ status }) => (
+};
+export const RadixJobConditionBadge = ({ status }: Props) => (
   <StatusBadgeTemplate {...JobConditionBadgeTemplates[status]}>
     {status == 'Active' ? 'Starting' : status}
   </StatusBadgeTemplate>
 );
-
-RadixJobConditionBadge.propTypes = {
-  status: PropTypes.string.isRequired as PropTypes.Validator<JobSummaryStatus>,
-};

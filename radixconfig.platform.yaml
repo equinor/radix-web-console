@@ -1,0 +1,75 @@
+apiVersion: radix.equinor.com/v1
+kind: RadixApplication
+metadata:
+  name: radix-web-console
+spec:
+  build:
+    useBuildKit: true
+  environments:
+    - name: qa
+      build:
+        from: master
+    - name: prod
+      build:
+        from: release
+  components:
+    - name: web
+      readOnlyFileSystem: true
+      volumeMounts:
+        - name: tmp
+          path: /tmp
+          emptyDir:
+            sizeLimit: 1M
+        - name: nginxconfd
+          path: /etc/nginx/conf.d
+          emptyDir:
+            sizeLimit: 1M
+        - name: wwwconfig
+          path: /app/config
+          emptyDir:
+            sizeLimit: 1M
+      src: "."
+      ports:
+        - name: http
+          port: 8080
+      publicPort: http
+      runtime:
+        architecture: arm64
+      resources:
+        requests:
+          cpu: "50m"
+          memory: "50Mi"
+        limits:
+          cpu: "100m"
+          memory: "50Mi"
+      variables:
+        CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
+        CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
+        OAUTH2_AUTHORITY: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0"
+        SERVICENOW_PROXY_SCOPES: "1b4a22f1-d4a1-4b6a-81b2-fd936daf1786/Application.Read" # scopes must be seperated by comma
+        CLUSTER_OIDC_ISSUER_URL: ""
+        CMDB_CI_URL: "https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_business_app&sys_id={CIID}"
+        OAUTH2_CLIENT_ID: "a593a59c-8f76-490e-937b-a90779039a90"
+      authentication:
+        oauth2:
+          clientId: "a593a59c-8f76-490e-937b-a90779039a90"
+          scope: "openid profile offline_access 6dae42f8-4368-4678-94ff-3960e28e3630/user.read email"
+          setXAuthRequestHeaders: true
+          setAuthorizationHeader: true
+          sessionStoreType: redis
+          redisStore:
+            connectionUrl: rediss://radix-platform-qa.redis.cache.windows.net:6380
+      environmentConfig:
+        - environment: qa
+          horizontalScaling:
+            maxReplicas: 1
+            minReplicas: 0
+            triggers:
+              - name: cron
+                cron:
+                  timezone: Europe/Oslo
+                  start: 0 7 * * 1-5 # 07:00 Monday - Friday
+                  end: 0 17 * * 1-5 # 17:00 Monday - Friday
+                  desiredReplicas: 1
+        - environment: prod
+          replicas: 2

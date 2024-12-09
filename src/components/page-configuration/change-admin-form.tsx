@@ -4,10 +4,9 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import * as PropTypes from 'prop-types';
 import { type FormEvent, useState } from 'react';
 
-import { difference } from 'lodash';
+import { difference } from 'lodash-es';
 import {
   type ApplicationRegistration,
   useModifyRegistrationDetailsMutation,
@@ -65,11 +64,11 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
 
   const isUnchanged = adminUnchanged && readerUnchanged;
 
-  const handleReaderAdGroupsChange = (value: AdGroupItem[]) => {
+  const handleReaderAdGroupsChange = (value: Readonly<AdGroupItem[]>) => {
     setReaderAdGroup(value.filter((x) => x.type === 'Group').map((v) => v.id));
     setReaderAdUser(value.filter((x) => x.type !== 'Group').map((x) => x.id));
   };
-  const handleAdGroupsChange = (value: AdGroupItem[]) => {
+  const handleAdGroupsChange = (value: Readonly<AdGroupItem[]>) => {
     setAdminAdGroup(value.filter((x) => x.type === 'Group').map((v) => v.id));
     setAdminAdUser(value.filter((x) => x.type !== 'Group').map((x) => x.id));
   };
@@ -114,8 +113,3 @@ export default function ChangeAdminForm({ registration, refetch }: Props) {
     </Accordion>
   );
 }
-
-ChangeAdminForm.proptypes = {
-  registration: PropTypes.object.isRequired,
-  refetch: PropTypes.func,
-};
