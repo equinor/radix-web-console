@@ -5,6 +5,10 @@ metadata:
 spec:
   build:
     useBuildKit: true
+  dnsAlias:
+    - alias: "console"
+      component: web
+      environment: "prod"
   environments:
     - name: qa
       build:
@@ -58,9 +62,20 @@ spec:
           setAuthorizationHeader: true
           sessionStoreType: redis
           redisStore:
-            connectionUrl: rediss://radix-platform-qa.redis.cache.windows.net:6380
+            connectionUrl: rediss://radix-platform-prod.redis.cache.windows.net:6380
       environmentConfig:
         - environment: qa
+          authentication:
+            oauth2:
+              redisStore:
+                connectionUrl: rediss://radix-platform-qa.redis.cache.windows.net:6380
+          resources:
+            requests:
+              cpu: "20m"
+              memory: "50Mi"
+            limits:
+              cpu: "50m"
+              memory: "50Mi"
           horizontalScaling:
             maxReplicas: 1
             minReplicas: 0
