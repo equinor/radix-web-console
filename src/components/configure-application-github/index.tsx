@@ -6,7 +6,6 @@ import {
   Progress,
   Typography,
 } from '@equinor/eds-core-react';
-import { nanoid } from 'nanoid';
 import { useState } from 'react';
 
 import imageDeployKey from './deploy-key02.png';
@@ -68,7 +67,7 @@ export const ConfigureApplicationGithub = ({
     setVisibleRegenerateScrim(false);
     await regenerateSecrets({
       appName: app.name,
-      regenerateDeployKeyAndSecretData: { sharedSecret: nanoid() },
+      regenerateDeployKeyAndSecretData: { sharedSecret: crypto.randomUUID() },
     }).unwrap();
     await refetchSecrets();
     await refetch?.();
