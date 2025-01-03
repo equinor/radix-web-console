@@ -1,11 +1,11 @@
-FROM docker.io/node:20.14-alpine3.20 as builder
+FROM docker.io/node:22.12-alpine3.21 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
-FROM docker.io/nginxinc/nginx-unprivileged:1.27-alpine3.19
+FROM docker.io/nginxinc/nginx-unprivileged:1.27-alpine3.20
 WORKDIR /app
 COPY --from=builder /app/build /app
 COPY proxy/server.conf /default.conf
