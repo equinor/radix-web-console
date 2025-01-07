@@ -21,8 +21,8 @@ interface ReplicaElements {
   state?: React.JSX.Element;
 }
 
-type DurationProps = { started: number | string | Date; ended?: Date };
-const ReplicaDuration = ({ started, ended }: DurationProps) => {
+type ReplicaDurationProps = { created: number | string | Date; ended?: Date };
+const ReplicaDuration = ({ created: started, ended }: ReplicaDurationProps) => {
   const [now, setNow] = useState(new Date());
   useInterval(() => setNow(new Date()), 1000);
 
@@ -52,7 +52,8 @@ const ReplicaDuration = ({ started, ended }: DurationProps) => {
   );
 };
 
-const ContainerDuration = ({ started, ended }: DurationProps) => {
+type ContainerDurationProps = { started: number | string | Date; ended?: Date };
+const ContainerDuration = ({ started, ended }: ContainerDurationProps) => {
   useInterval(() => setNow(new Date()), 1000);
   const [now, setNow] = useState(new Date());
 
@@ -64,14 +65,6 @@ const ContainerDuration = ({ started, ended }: DurationProps) => {
           <RelativeToNow time={started} />
         </strong>
       </Typography>
-      {ended && (
-        <Typography>
-          Replica ended{' '}
-          <strong>
-            <RelativeToNow time={ended} />
-          </strong>
-        </Typography>
-      )}
       <Typography>
         Container duration{' '}
         <strong>
@@ -112,29 +105,29 @@ const Overview = ({
   duration,
   status,
   state,
-}: OverviewProps) => (
-  <>
-    <section className="grid grid--gap-medium overview">
-      <div className="grid grid--gap-medium grid--overview-columns">
-        <div className="grid grid--gap-medium">
-          {title || (
-            <Typography>
-              Replica <strong>{smallReplicaName(replica.name)}</strong>
-            </Typography>
-          )}
-          <ReplicaImage replica={replica} />
-          {status || (
-            <ReplicaStatusBadge
-              status={replica.replicaStatus?.status ?? 'Pending'}
-            />
-          )}
-        </div>
-        <div className="grid grid--gap-medium">
-          {duration ||
-            (replica.startTime ? (
+}: OverviewProps) => {
+  return (
+    <>
+      <section className="grid grid--gap-medium overview">
+        <div className="grid grid--gap-medium grid--overview-columns">
+          <div className="grid grid--gap-medium">
+            {title || (
+              <Typography>
+                Replica <strong>{smallReplicaName(replica.name)}</strong>
+              </Typography>
+            )}
+            <ReplicaImage replica={replica} />
+            {status || (
+              <ReplicaStatusBadge
+                status={replica.replicaStatus?.status ?? 'Pending'}
+              />
+            )}
+          </div>
+          <div className="grid grid--gap-medium">
+            {duration || (
               <>
                 <ReplicaDuration
-                  started={replica.startTime}
+                  created={replica.created}
                   ended={
                     replica.endTime ? new Date(replica.endTime) : undefined
                   }
@@ -148,27 +141,26 @@ const Overview = ({
                   />
                 )}
               </>
-            ) : (
-              'waiting'
-            ))}
+            )}
+          </div>
+          <div className="grid grid--gap-medium">
+            {replica.resources && (
+              <ResourceRequirements resources={replica.resources} />
+            )}
+          </div>
         </div>
-        <div className="grid grid--gap-medium">
-          {replica.resources && (
-            <ResourceRequirements resources={replica.resources} />
-          )}
-        </div>
-      </div>
-    </section>
-    <section className="grid grid--gap-medium">
-      {state || (
-        <ReplicaState
-          restartCount={replica.restartCount}
-          statusMessage={replica.statusMessage}
-        />
-      )}
-    </section>
-  </>
-);
+      </section>
+      <section className="grid grid--gap-medium">
+        {state || (
+          <ReplicaState
+            restartCount={replica.restartCount}
+            statusMessage={replica.statusMessage}
+          />
+        )}
+      </section>
+    </>
+  );
+};
 
 type RepliceLogProps = {
   isCollapsibleLog?: boolean;
