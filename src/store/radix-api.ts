@@ -2481,8 +2481,6 @@ export type ReplicaSummary = {
   resources?: ResourceRequirements;
   /** RestartCount count of restarts of a component container inside a pod */
   restartCount?: number;
-  /** The time at which the batch job's pod startedAt */
-  startTime?: string;
   /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
   /** Pod type
@@ -3116,11 +3114,8 @@ export type ScheduledBatchSummary = {
   ended?: string;
   /** Jobs within the batch of ScheduledJobSummary */
   jobList?: ScheduledJobSummary[];
-  /** Deprecated: Message of a status, if any, of the job */
-  message?: string;
   /** Name of the scheduled batch */
   name: string;
-  replica?: ReplicaSummary;
   /** Started timestamp */
   started?: string;
   /** Status of the job
