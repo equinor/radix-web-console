@@ -3177,13 +3177,13 @@ export type ScheduledJobRequest = {
 };
 export type ReplicaUtilization = {
   /** Average CPU Used */
-  cpu_avg: number;
+  cpuAverage: number;
   /** Cpu Requests */
-  cpu_reqs: number;
+  cpuRequests: number;
   /** Max memory used */
-  mem_max: number;
+  memoryMaximum: number;
   /** Memory Requests */
-  mem_reqs: number;
+  memoryRequests: number;
 };
 export type ComponentUtilization = {
   replicas?: {

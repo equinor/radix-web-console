@@ -183,6 +183,9 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                       <Table.Cell className="component-list-head__replicas">
                         Replicas
                       </Table.Cell>
+                      <Table.Cell className="component-list-head__resources">
+                        Resources
+                      </Table.Cell>
                       <Table.Cell className="component-list-head__vulnerabilities">
                         Vulnerabilities
                       </Table.Cell>
@@ -248,6 +251,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                                 }
                               />
                             </Table.Cell>
+                            <Table.Cell>resources</Table.Cell>
                             <Table.Cell>
                               <AsyncResource
                                 asyncState={vulnerabilityState}
@@ -308,6 +312,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                                       }
                                     />
                                   </Table.Cell>
+                                  <Table.Cell />
                                   <Table.Cell />
                                 </Table.Row>
                               )}
