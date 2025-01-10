@@ -2,7 +2,7 @@ import { Chip, type ChipProps } from '@equinor/eds-core-react';
 import { clsx } from 'clsx';
 
 import './style.css';
-import type { PropsWithChildren } from 'react';
+import { type ForwardedRef, type PropsWithChildren, forwardRef } from 'react';
 
 export type StatusBadgeTemplateType =
   | 'success'
@@ -17,25 +17,31 @@ export type StatusBadgeTemplateProps = {
 } & ChipProps;
 
 /** StatusBadge template */
-export function StatusBadgeTemplate({
-  className,
-  children,
-  icon,
-  type,
-  ...rest
-}: PropsWithChildren<StatusBadgeTemplateProps>) {
-  return (
-    <Chip
-      className={clsx(
-        'status-badge',
-        `status-badge-type__${type ?? 'default'}`,
-        { center: !icon },
-        className ? { [className]: true } : undefined
-      )}
-      {...rest}
-    >
-      {icon ?? <></>}
-      <div className="status-badge-content">{children}</div>
-    </Chip>
-  );
-}
+export const StatusBadgeTemplate = forwardRef(
+  (
+    {
+      className,
+      children,
+      icon,
+      type,
+      ...rest
+    }: PropsWithChildren<StatusBadgeTemplateProps>,
+    ref: ForwardedRef<HTMLDivElement>
+  ) => {
+    return (
+      <Chip
+        ref={ref}
+        className={clsx(
+          'status-badge',
+          `status-badge-type__${type ?? 'default'}`,
+          { center: !icon || !children },
+          className ? { [className]: true } : undefined
+        )}
+        {...rest}
+      >
+        {icon ?? <></>}
+        <div className="status-badge-content">{children}</div>
+      </Chip>
+    );
+  }
+);

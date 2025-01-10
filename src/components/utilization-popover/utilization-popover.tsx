@@ -1,16 +1,39 @@
-import { Chip, Popover } from '@equinor/eds-core-react';
-import { useEffect, useRef, useState } from 'react';
-import type { ReplicaResourcesUtilizationResponse } from '../../store/radix-api';
+import { Popover } from '@equinor/eds-core-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { pollingInterval } from '../../store/defaults';
+import {
+  type GetEnvironmentResourcesUtilizationApiResponse,
+  type ReplicaUtilization,
+  useGetApplicationResourcesUtilizationQuery,
+} from '../../store/radix-api';
+import {
+  GetHighestSeverity,
+  GetHighestSeverityFns,
+  Severity,
+  SeverityStatusBadge,
+} from '../status-badges/severity-status-badge';
+
+const LowCPUThreshold = 0.2;
+const HighCPUThreshold = 0.8;
+const MaxCPUThreshold = 1.0;
+
+const LowMemoryThreshold = 0.2;
+const HighMemoryThreshold = 0.7;
+const MaxMemoryThreshold = 0.9;
 
 type Props = {
   appName: string;
-  envName: string;
-  data: ReplicaResourcesUtilizationResponse;
+  path: string;
+  style?: 'icon' | 'chip';
 };
 
-export const UtilizationPopover = ({ appName, envName, data }: Props) => {
+export const UtilizationPopover = ({ appName, path }: Props) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const { data } = useGetApplicationResourcesUtilizationQuery(
+    { appName },
+    { pollingInterval }
+  );
 
   useEffect(() => {
     const handleBodyClick = () => setOpen(false);
@@ -20,102 +43,114 @@ export const UtilizationPopover = ({ appName, envName, data }: Props) => {
     };
   }, []);
 
-  console.log({ data });
+  const { highestMemoryAlert, highestCPUAlert } = useMemo(() => {
+    let highestMemoryAlert = Severity.None;
+    let highestCPUAlert = Severity.None;
+    flattenAndFilterResults(data, path).forEach((replica) => {
+      const cpuAlert = GetHighestSeverityFns(replica, [
+        HasMaxCPUtilizationPercentage,
+        HasHighCPUtilizationPercentage,
+        HasLowCPUtilizationPercentage,
+      ]);
 
+      const memoryAlert = GetHighestSeverityFns(replica, [
+        HasMaxMemorytilizationPercentage,
+        HasHighMemorytilizationPercentage,
+        HasLowMemorytilizationPercentage,
+      ]);
+
+      highestCPUAlert = GetHighestSeverity(cpuAlert, highestCPUAlert);
+      highestMemoryAlert = GetHighestSeverity(memoryAlert, highestMemoryAlert);
+    });
+
+    return { highestMemoryAlert, highestCPUAlert };
+  }, [data, path]);
+
+  const severity = GetHighestSeverity(highestMemoryAlert, highestCPUAlert);
   return (
     <>
-      <Chip ref={ref} onClick={() => setOpen(true)}>
-        Utilization
-      </Chip>
       <Popover
         anchorEl={ref.current}
-        open={open}
+        open={open && severity !== Severity.None}
         onClick={(ev) => ev.stopPropagation()}
       >
-        <Popover.Content>
-          hello world {appName} {envName}
-        </Popover.Content>
+        <Popover.Content>hello world {appName}</Popover.Content>
       </Popover>
+
+      <SeverityStatusBadge
+        severity={severity}
+        ref={ref}
+        onMouseEnter={() => setOpen(true)}
+        onMouseLeave={() => setOpen(false)}
+      />
     </>
   );
 };
 
-// @ts-expect-error not used yet
-const formatCpuUsage = (value?: number): string => {
-  if (!value) {
-    return '-';
-  }
-  if (value >= 1) {
-    return parseFloat(value.toPrecision(3)).toString();
-  }
+const flattenAndFilterResults = (
+  data: GetEnvironmentResourcesUtilizationApiResponse | undefined,
+  path: string
+): ReplicaUtilization[] => {
+  if (!data || !data.environments) return [];
 
-  const millicores = value * 1000.0;
-  let formattedValue: string;
-  if (millicores >= 1.0) {
-    formattedValue = parseFloat(millicores.toPrecision(3)).toString();
-    return `${formattedValue}m`;
-  }
-  let mcStr = millicores.toFixed(20); // Use 20 decimal places to ensure precision
-  mcStr = mcStr.replace(/0+$/, '');
-  // Find the position of the decimal point
-  const decimalIndex = mcStr.indexOf('.');
-  // Find the index of the first non-zero digit after the decimal point
-  let firstNonZeroIndex = -1;
-  for (let i = decimalIndex + 1; i < mcStr.length; i++) {
-    if (mcStr[i] !== '0') {
-      firstNonZeroIndex = i;
-      break;
-    }
-  }
-  if (firstNonZeroIndex === -1) {
-    return '0m';
-  }
-  // Create a new number where the digit at firstNonZeroIndex becomes the first decimal digit
-  const digits = `0.${mcStr.substring(firstNonZeroIndex)}`;
-  let num = parseFloat(digits);
-  // Round the number to one digit
-  num = Math.round(num * 10) / 10;
-  // Handle rounding that results in num >= 1
-  if (num >= 1) {
-    num = 1;
-  }
-  let numStr = num.toString();
-  // Remove the decimal point and any following zeros
-  numStr = numStr.replace('0.', '').replace(/0+$/, '');
-  // Replace the part of mcStr starting from firstNonZeroIndex - 1
-  let zerosCount = firstNonZeroIndex - decimalIndex - 1;
-  // Adjust zerosCount, when num is 1
-  if (num === 1) {
-    zerosCount -= 1;
-  }
-  const leadingDigitalZeros = '0'.repeat(Math.max(zerosCount, 0));
-  const output = `0.${leadingDigitalZeros}${numStr}`;
-  return `${output}m`;
+  const results: ReplicaUtilization[] = [];
+
+  Object.keys(data.environments).forEach((envName) => {
+    const components = data.environments?.[envName].components;
+    if (!components) return;
+
+    Object.keys(components).forEach((compName) => {
+      const replicas = components[compName].replicas;
+      if (!replicas) return;
+
+      Object.keys(replicas).forEach((replicaName) => {
+        const key = `${envName}.${compName}.${replicaName}`;
+        if (!key.startsWith(path)) return;
+
+        results.push(replicas[replicaName]);
+      });
+    });
+  });
+
+  return results;
 };
 
-// @ts-expect-error not used yet
-const formatMemoryUsage = (value?: number): string => {
-  if (!value) {
-    return '-';
-  }
-  const units = [
-    { unit: 'P', size: 1e15 },
-    { unit: 'T', size: 1e12 },
-    { unit: 'G', size: 1e9 },
-    { unit: 'M', size: 1e6 },
-    { unit: 'k', size: 1e3 },
-  ];
+const HasLowCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {
+  return data.cpuAverage / data.cpuRequests < LowCPUThreshold
+    ? Severity.Information
+    : Severity.None;
+};
 
-  let unit = ''; // Default to bytes
+const HasHighCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {
+  return data.cpuAverage / data.cpuRequests > HighCPUThreshold
+    ? Severity.Warning
+    : Severity.None;
+};
+const HasMaxCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {
+  return data.cpuAverage / data.cpuRequests > MaxCPUThreshold
+    ? Severity.Critical
+    : Severity.None;
+};
 
-  // Determine the appropriate unit
-  for (const u of units) {
-    if (value >= u.size) {
-      value = value / u.size;
-      unit = u.unit;
-      break;
-    }
-  }
-  const formattedValue = parseFloat(value.toPrecision(3)).toString();
-  return formattedValue + unit;
+const HasLowMemorytilizationPercentage = (
+  data: ReplicaUtilization
+): Severity => {
+  return data.memoryMaximum / data.memoryRequests < LowMemoryThreshold
+    ? Severity.Information
+    : Severity.None;
+};
+
+const HasHighMemorytilizationPercentage = (
+  data: ReplicaUtilization
+): Severity => {
+  return data.memoryMaximum / data.memoryRequests > HighMemoryThreshold
+    ? Severity.Warning
+    : Severity.None;
+};
+const HasMaxMemorytilizationPercentage = (
+  data: ReplicaUtilization
+): Severity => {
+  return data.memoryMaximum / data.memoryRequests > MaxMemoryThreshold
+    ? Severity.Critical
+    : Severity.None;
 };

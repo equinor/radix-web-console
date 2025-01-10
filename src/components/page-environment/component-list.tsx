@@ -38,6 +38,7 @@ import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 
 import './style.css';
+import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 
 export interface ComponentListProps {
   appName: string;
@@ -251,7 +252,13 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                                 }
                               />
                             </Table.Cell>
-                            <Table.Cell>resources</Table.Cell>
+                            <Table.Cell>
+                              <UtilizationPopover
+                                appName={appName}
+                                path={`${envName}.${x.name}.`}
+                                style={'chip'}
+                              />
+                            </Table.Cell>
                             <Table.Cell>
                               <AsyncResource
                                 asyncState={vulnerabilityState}

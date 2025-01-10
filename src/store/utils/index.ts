@@ -19,6 +19,14 @@ export function getFetchErrorData(error: ManagedErrors): {
     }
   }
 
+  if (IsAbortError(error)) {
+    return {
+      error: error.name,
+      message: "Request aborted",
+      code: undefined,
+    }
+  }
+
   if (typeof error !== "object" || error === null) {
     console.warn("unkown error: ", error)
     return {
@@ -157,4 +165,12 @@ function IsCustomError(e: FetchBaseQueryError): e is CustomError {
     return false
 
   return e.status === "CUSTOM_ERROR"
+}
+
+type AbortError = {
+  name: string;
+  message: string;
+}
+function IsAbortError(e: Error|unknown): e is AbortError {
+  return e != null && typeof e == "object" && 'name' in e && e.name === "AbortError"
 }
