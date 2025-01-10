@@ -70,10 +70,14 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
   return (
     <>
       <Popover
+        placement={'top'}
         anchorEl={ref.current}
         open={open && severity !== Severity.None}
         onClick={(ev) => ev.stopPropagation()}
       >
+        <Popover.Header>
+          <Popover.Title>Resource Status</Popover.Title>
+        </Popover.Header>
         <Popover.Content>hello world {appName}</Popover.Content>
       </Popover>
 
