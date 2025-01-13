@@ -165,7 +165,7 @@ const NavbarMinimized = ({ appName, links }: NavbarProps) => (
 );
 
 export const AppNavbar: FunctionComponent<AppNavbarProps> = ({ appName }) => {
-  const [toggle, setToggle] = useLocalStorage('app-nav', false);
+  const [toggle, setToggle] = useLocalStorage('app-nav', true);
 
   const links: Array<NavbarLinkItem> = [
     { label: 'Environments', to: getEnvsUrl(appName), icon: world },
