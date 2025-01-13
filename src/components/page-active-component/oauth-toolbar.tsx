@@ -34,7 +34,7 @@ export function OAuthToolbar({
       await trigger({ appName, envName, componentName }).unwrap();
       startRefetch();
     },
-    'Restaring OAuth2 Service',
+    'Restarting OAuth2 Service',
     'Failed to restart Oauth2 Service'
   );
   return (
