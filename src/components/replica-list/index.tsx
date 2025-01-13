@@ -1,13 +1,7 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import {
-  Fragment,
-  type FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import type { ReplicaSummary } from '../../store/radix-api';
 import {
@@ -23,12 +17,23 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 import { ReplicaName } from './replica-name';
 
-export const ReplicaList: FunctionComponent<{
+type Props = {
+  appName: string;
+  envName: string;
+  compName: string;
   replicaList: Array<ReplicaSummary>;
   replicaUrlFunc: (name: string) => string;
-}> = ({ replicaList, replicaUrlFunc }) => {
+};
+export const ReplicaList = ({
+  replicaList,
+  replicaUrlFunc,
+  appName,
+  envName,
+  compName,
+}: Props) => {
   const [sortedData, setSortedData] = useState(replicaList || []);
   const [dateSort, setDateSort] = useState<SortDirection>();
   const [statusSort, setStatusSort] = useState<SortDirection>();
@@ -83,6 +88,7 @@ export const ReplicaList: FunctionComponent<{
             <TableSortIcon direction={dateSort} />
           </Table.Cell>
           <Table.Cell>Duration</Table.Cell>
+          <Table.Cell>Resources</Table.Cell>
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -126,6 +132,13 @@ export const ReplicaList: FunctionComponent<{
                 </Table.Cell>
                 <Table.Cell>
                   <Duration start={replica.created} end={lastUpdate} />
+                </Table.Cell>
+                <Table.Cell>
+                  <UtilizationPopover
+                    appName={appName}
+                    path={`${envName}.${compName}.${replica.name}`}
+                    style={'chip'}
+                  />
                 </Table.Cell>
               </Table.Row>
               {expanded && (

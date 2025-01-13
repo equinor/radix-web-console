@@ -1,7 +1,5 @@
 import { Icon } from '@equinor/eds-core-react';
 import { pressure } from '@equinor/eds-icons';
-
-import { type ForwardedRef, forwardRef } from 'react';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
@@ -60,16 +58,11 @@ type Props = {
   severity: Severity;
 } & StatusBadgeTemplateProps;
 
-export const SeverityStatusBadge = forwardRef(
-  (
-    { severity, children, ...rest }: Props,
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    const { message, ...template } = BadgeTemplates[severity];
-    return (
-      <StatusBadgeTemplate ref={ref} {...template} {...rest}>
-        {children ?? message}
-      </StatusBadgeTemplate>
-    );
-  }
-);
+export const SeverityStatusBadge = ({ severity, children, ...rest }: Props) => {
+  const { message, ...template } = BadgeTemplates[severity];
+  return (
+    <StatusBadgeTemplate {...template} {...rest}>
+      {children ?? message}
+    </StatusBadgeTemplate>
+  );
+};

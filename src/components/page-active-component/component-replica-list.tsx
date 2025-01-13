@@ -32,6 +32,9 @@ export const ComponentReplicaList = ({
         <div className="grid">
           {replicaList && replicaList.length > 0 ? (
             <ReplicaList
+              appName={appName}
+              envName={envName}
+              compName={componentName}
               replicaList={replicaList}
               replicaUrlFunc={(name) =>
                 getReplicaUrl(appName, envName, componentName, name)

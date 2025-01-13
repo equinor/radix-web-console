@@ -23,18 +23,11 @@ const LowMemoryThreshold = 0.2;
 const HighMemoryThreshold = 0.7;
 const MaxMemoryThreshold = 0.9;
 
-const CPULabels = {
-  [Severity.None]: 'CPU utilization OK',
-  [Severity.Information]: 'CPU utilization Low',
-  [Severity.Warning]: 'CPU utilization High',
-  [Severity.Critical]: 'CPU utilization Critical',
-} satisfies Record<Severity, string>;
-
-const MemoryLabels = {
-  [Severity.None]: 'Memory utilization OK',
-  [Severity.Information]: 'Memory utilization Low',
-  [Severity.Warning]: 'Memory utilization High',
-  [Severity.Critical]: 'Memory utilization Critical',
+const Labels = {
+  [Severity.None]: 'Utilization ok',
+  [Severity.Information]: 'Utilization Low',
+  [Severity.Warning]: 'Utilization High',
+  [Severity.Critical]: 'Utilization Critical',
 } satisfies Record<Severity, string>;
 
 type Props = {
@@ -69,16 +62,20 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
 
       highestCPUAlert = GetHighestSeverity(cpuAlert, highestCPUAlert);
       highestMemoryAlert = GetHighestSeverity(memoryAlert, highestMemoryAlert);
+
+      console.log({ replica, memoryAlert });
     });
 
     return { highestMemoryAlert, highestCPUAlert };
   }, [data, path]);
 
-  console.log('rendered');
-
   const severity = GetHighestSeverity(highestMemoryAlert, highestCPUAlert);
   return (
-    <>
+    <div
+      ref={ref}
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
       <Popover
         placement={'top'}
         anchorEl={ref.current}
@@ -90,10 +87,10 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
         </Popover.Header>
         <Popover.Content className={'utilization_popover__content'}>
           <SeverityStatusBadge severity={highestMemoryAlert}>
-            {MemoryLabels[highestMemoryAlert]}
+            Memory {Labels[highestMemoryAlert]}
           </SeverityStatusBadge>
           <SeverityStatusBadge severity={highestCPUAlert}>
-            {CPULabels[highestCPUAlert]}
+            CPU {Labels[highestCPUAlert]}
           </SeverityStatusBadge>
         </Popover.Content>
         <Popover.Actions>
@@ -104,13 +101,10 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
         </Popover.Actions>
       </Popover>
 
-      <SeverityStatusBadge
-        severity={severity}
-        ref={ref}
-        onMouseEnter={() => setOpen(true)}
-        onMouseLeave={() => setOpen(false)}
-      />
-    </>
+      <SeverityStatusBadge severity={severity}>
+        {Labels[severity]}
+      </SeverityStatusBadge>
+    </div>
   );
 };
 
