@@ -1,5 +1,6 @@
-import { Popover } from '@equinor/eds-core-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Icon, Popover, Typography } from '@equinor/eds-core-react';
+import { desktop_mac } from '@equinor/eds-icons';
+import { useMemo, useRef, useState } from 'react';
 import { pollingInterval } from '../../store/defaults';
 import {
   type GetEnvironmentResourcesUtilizationApiResponse,
@@ -12,6 +13,7 @@ import {
   Severity,
   SeverityStatusBadge,
 } from '../status-badges/severity-status-badge';
+import './style.css';
 
 const LowCPUThreshold = 0.2;
 const HighCPUThreshold = 0.8;
@@ -20,6 +22,20 @@ const MaxCPUThreshold = 1.0;
 const LowMemoryThreshold = 0.2;
 const HighMemoryThreshold = 0.7;
 const MaxMemoryThreshold = 0.9;
+
+const CPULabels = {
+  [Severity.None]: 'CPU utilization OK',
+  [Severity.Information]: 'CPU utilization Low',
+  [Severity.Warning]: 'CPU utilization High',
+  [Severity.Critical]: 'CPU utilization Critical',
+} satisfies Record<Severity, string>;
+
+const MemoryLabels = {
+  [Severity.None]: 'Memory utilization OK',
+  [Severity.Information]: 'Memory utilization Low',
+  [Severity.Warning]: 'Memory utilization High',
+  [Severity.Critical]: 'Memory utilization Critical',
+} satisfies Record<Severity, string>;
 
 type Props = {
   appName: string;
@@ -34,14 +50,6 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
     { appName },
     { pollingInterval }
   );
-
-  useEffect(() => {
-    const handleBodyClick = () => setOpen(false);
-    document.body.addEventListener('click', handleBodyClick);
-    return () => {
-      document.body.removeEventListener('click', handleBodyClick);
-    };
-  }, []);
 
   const { highestMemoryAlert, highestCPUAlert } = useMemo(() => {
     let highestMemoryAlert = Severity.None;
@@ -66,6 +74,8 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
     return { highestMemoryAlert, highestCPUAlert };
   }, [data, path]);
 
+  console.log('rendered');
+
   const severity = GetHighestSeverity(highestMemoryAlert, highestCPUAlert);
   return (
     <>
@@ -78,7 +88,20 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
         <Popover.Header>
           <Popover.Title>Resource Status</Popover.Title>
         </Popover.Header>
-        <Popover.Content>hello world {appName}</Popover.Content>
+        <Popover.Content className={'utilization_popover__content'}>
+          <SeverityStatusBadge severity={highestMemoryAlert}>
+            {MemoryLabels[highestMemoryAlert]}
+          </SeverityStatusBadge>
+          <SeverityStatusBadge severity={highestCPUAlert}>
+            {CPULabels[highestCPUAlert]}
+          </SeverityStatusBadge>
+        </Popover.Content>
+        <Popover.Actions>
+          <Typography>
+            See Monitoring <Icon size={16} data={desktop_mac} /> for more
+            details.
+          </Typography>
+        </Popover.Actions>
       </Popover>
 
       <SeverityStatusBadge

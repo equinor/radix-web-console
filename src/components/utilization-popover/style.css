@@ -1,0 +1,5 @@
+.utilization_popover__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}

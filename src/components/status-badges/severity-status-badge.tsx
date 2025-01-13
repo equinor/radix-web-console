@@ -36,34 +36,40 @@ export const GetHighestSeverityFns = <TArgs,>(
 const BadgeTemplates = {
   [Severity.None]: {
     icon: <Icon data={pressure} />,
-    children: 'Normal',
+    message: 'Normal',
     type: 'none',
   },
   [Severity.Information]: {
     icon: <Icon data={pressure} />,
-    children: 'Information',
+    message: 'Information',
     type: 'default',
   },
   [Severity.Warning]: {
     icon: <Icon data={pressure} />,
-    children: 'Warning',
+    message: 'Warning',
     type: 'warning',
   },
   [Severity.Critical]: {
     icon: <Icon data={pressure} />,
-    children: 'Critical',
+    message: 'Critical',
     type: 'danger',
   },
-} satisfies Record<Severity, StatusBadgeTemplateProps>;
+} satisfies Record<Severity, StatusBadgeTemplateProps & { message: string }>;
 
 type Props = {
   severity: Severity;
 } & StatusBadgeTemplateProps;
 
 export const SeverityStatusBadge = forwardRef(
-  ({ severity, ...rest }: Props, ref: ForwardedRef<HTMLDivElement>) => {
+  (
+    { severity, children, ...rest }: Props,
+    ref: ForwardedRef<HTMLDivElement>
+  ) => {
+    const { message, ...template } = BadgeTemplates[severity];
     return (
-      <StatusBadgeTemplate ref={ref} {...BadgeTemplates[severity]} {...rest} />
+      <StatusBadgeTemplate ref={ref} {...template} {...rest}>
+        {children ?? message}
+      </StatusBadgeTemplate>
     );
   }
 );

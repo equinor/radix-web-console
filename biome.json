@@ -11,7 +11,8 @@
       "dist/",
       "src/store/*.ts",
       ".idea",
-      "src/utils/config/index.ts"
+      "src/utils/config/index.ts",
+      ".git"
     ]
   },
   "formatter": {
