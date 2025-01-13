@@ -1,6 +1,6 @@
 services:
   web:
-    image: node:20.9-alpine
+    image: node:22.12-alpine3.21
     container_name: radix-web_container
     read_only: true
     working_dir: /app
@@ -18,7 +18,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.26-alpine
+    image: nginxinc/nginx-unprivileged:1.27-alpine
     container_name: radix-proxy_container
     read_only: true
     volumes:
@@ -73,7 +73,7 @@ services:
 
   # for use with development
   auth-state:
-    image: redis:5-alpine
+    image: redis:7-alpine
     container_name: radix-auth-state_container
     network_mode: host
     ports:
