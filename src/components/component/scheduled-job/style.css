@@ -122,7 +122,6 @@
 
 .job-status-container {
   display: grid;
-  margin: var(--eds_spacing_small) 0;
   grid-template-columns: repeat(4, min-content);
   column-gap: var(--eds_spacing_small);
 }

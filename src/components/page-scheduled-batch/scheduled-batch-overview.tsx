@@ -13,7 +13,7 @@ type Props = {
 const ScheduledBatchDuration = ({ started, finished }: Props) => {
   return (
     <>
-      <Typography>
+      <Typography as="span">
         Started{' '}
         <strong>
           <RelativeToNow time={started} />
@@ -21,13 +21,13 @@ const ScheduledBatchDuration = ({ started, finished }: Props) => {
       </Typography>
       {finished && (
         <>
-          <Typography>
+          <Typography as="span">
             Ended{' '}
             <strong>
               <RelativeToNow time={finished} />
             </strong>
           </Typography>
-          <Typography>
+          <Typography as="span">
             Duration{' '}
             <strong>
               <Duration start={started} end={finished} />
@@ -52,30 +52,30 @@ export const ScheduledBatchOverview = ({
     <section className="grid grid--gap-medium overview">
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
-          <Typography>
+          <Typography as="span">
             Batch name <strong>{smallScheduledBatchName(batch.name)}</strong>
           </Typography>
           {batch.batchId && (
-            <Typography>
+            <Typography as="span">
               Batch ID <strong>{batch.batchId}</strong>
             </Typography>
           )}
-          <Typography>
+          <Typography as="span">
             Job component <strong>{jobComponentName}</strong>
           </Typography>
           {batch.status && (
-            <Typography className="status-title">
+            <Typography as="span" className="status-title">
               Batch status <ProgressStatusBadge status={batch.status} />
             </Typography>
           )}
-          <Typography className="status-title">
+          <Typography as="span" className="status-title">
             Jobs statuses
             <BatchJobStatuses jobs={batch.jobList} />
           </Typography>
         </div>
         <div className="grid grid--gap-medium">
           <>
-            <Typography>
+            <Typography as="span">
               Created{' '}
               <strong>
                 <RelativeToNow time={batch.created} />

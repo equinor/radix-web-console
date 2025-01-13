@@ -102,7 +102,6 @@ const testData: Array<
       started: '2022-03-29T13:10:52.269Z',
       ended: '2022-03-29T13:18:34.623Z',
       totalJobCount: 2,
-      message: 'some optional failure message',
       jobList: [
         {
           created: '2022-03-29T13:09:37.501Z',
