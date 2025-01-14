@@ -56,14 +56,13 @@ type VulnerabilityHeaderProps = {
 export const VulnerabilityHeader = ({ envScan }: VulnerabilityHeaderProps) => {
   const vulnerabilities = environmentVulnerabilitySummarizer(envScan);
 
+  if (!visibleKeys.some((key) => vulnerabilities[key] > 0)) return null;
   return (
-    visibleKeys.some((key) => vulnerabilities[key] > 0) && (
-      <EnvironmentVulnerabilityIndicator
-        title="Vulnerabilities"
-        size={22}
-        summary={filterFields(vulnerabilities, visibleKeys)}
-        visibleKeys={visibleKeys}
-      />
-    )
+    <EnvironmentVulnerabilityIndicator
+      title="Vulnerabilities"
+      size={22}
+      summary={filterFields(vulnerabilities, visibleKeys)}
+      visibleKeys={visibleKeys}
+    />
   );
 };

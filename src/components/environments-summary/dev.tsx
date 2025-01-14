@@ -255,7 +255,22 @@ const cards: EnvironmentCardLayoutProps[] = [
       activeFrom: '2020-02-02T12:00:00Z',
     },
     isLoading: false,
-    envScan: { name: 'dev' },
+    envScan: {
+      name: 'dev',
+      components: {
+        web: {
+          image: 'test:test',
+          scanSuccess: true,
+          scanTime: '2020-02-02T12:00:00Z',
+          vulnerabilitySummary: {
+            critical: 0,
+            high: 1,
+            medium: 2,
+            low: 5,
+          },
+        },
+      },
+    },
     components: [],
     repository: 'https://github.com/equinor/radix-web-console',
     utilization: {
