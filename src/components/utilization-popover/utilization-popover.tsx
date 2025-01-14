@@ -1,11 +1,10 @@
 import { Icon, Popover, Typography } from '@equinor/eds-core-react';
 import { desktop_mac } from '@equinor/eds-icons';
 import { useMemo, useRef, useState } from 'react';
-import { pollingInterval } from '../../store/defaults';
-import {
-  type GetEnvironmentResourcesUtilizationApiResponse,
-  type ReplicaUtilization,
-  useGetApplicationResourcesUtilizationQuery,
+import type {
+  GetEnvironmentResourcesUtilizationApiResponse,
+  ReplicaResourcesUtilizationResponse,
+  ReplicaUtilization,
 } from '../../store/radix-api';
 import {
   GetHighestSeverity,
@@ -13,7 +12,6 @@ import {
   Severity,
   SeverityStatusBadge,
 } from '../status-badges/severity-status-badge';
-import './style.css';
 
 const LowCPUThreshold = 0.2;
 const HighCPUThreshold = 0.8;
@@ -31,23 +29,19 @@ const Labels = {
 } satisfies Record<Severity, string>;
 
 type Props = {
-  appName: string;
   path: string;
-  style?: 'icon' | 'chip';
+  showLabel?: boolean;
+  utilization?: ReplicaResourcesUtilizationResponse;
 };
 
-export const UtilizationPopover = ({ appName, path }: Props) => {
+export const UtilizationPopover = ({ path, showLabel, utilization }: Props) => {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
-  const { data } = useGetApplicationResourcesUtilizationQuery(
-    { appName },
-    { pollingInterval }
-  );
 
   const { highestMemoryAlert, highestCPUAlert } = useMemo(() => {
     let highestMemoryAlert = Severity.None;
     let highestCPUAlert = Severity.None;
-    flattenAndFilterResults(data, path).forEach((replica) => {
+    flattenAndFilterResults(utilization, path).forEach((replica) => {
       const cpuAlert = GetHighestSeverityFns(replica, [
         HasMaxCPUtilizationPercentage,
         HasHighCPUtilizationPercentage,
@@ -62,12 +56,10 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
 
       highestCPUAlert = GetHighestSeverity(cpuAlert, highestCPUAlert);
       highestMemoryAlert = GetHighestSeverity(memoryAlert, highestMemoryAlert);
-
-      console.log({ replica, memoryAlert });
     });
 
     return { highestMemoryAlert, highestCPUAlert };
-  }, [data, path]);
+  }, [utilization, path]);
 
   const severity = GetHighestSeverity(highestMemoryAlert, highestCPUAlert);
   return (
@@ -85,7 +77,7 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
         <Popover.Header>
           <Popover.Title>Resource Status</Popover.Title>
         </Popover.Header>
-        <Popover.Content className={'utilization_popover__content'}>
+        <Popover.Content className={'grid grid--gap-small'}>
           <SeverityStatusBadge severity={highestMemoryAlert}>
             Memory {Labels[highestMemoryAlert]}
           </SeverityStatusBadge>
@@ -101,9 +93,7 @@ export const UtilizationPopover = ({ appName, path }: Props) => {
         </Popover.Actions>
       </Popover>
 
-      <SeverityStatusBadge severity={severity}>
-        {Labels[severity]}
-      </SeverityStatusBadge>
+      <SeverityStatusBadge label={Labels[severity]} severity={severity} />
     </div>
   );
 };

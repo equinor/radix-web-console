@@ -8,51 +8,14 @@ import {
 } from '../../utils/routing';
 import { ExternalLink } from '../link/external-link';
 
-export interface EnvironmentIngressProps {
-  appName: string;
-  envName: string;
-  components: Readonly<Array<Component>>;
-}
-
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+export const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const MAX_DISPLAY_COMPONENTS = 2;
 
-function getComponentUrl(
-  appName: string,
-  environmentName: string,
-  component: Readonly<Component>
-): string {
-  return component.type === 'job'
-    ? getActiveJobComponentUrl(appName, environmentName, component.name)
-    : getActiveComponentUrl(appName, environmentName, component.name);
+export interface EnvironmentIngressProps {
+  components?: Component[];
 }
-
-type ComponentDetailsProps = {
-  icon: IconData;
-  component: Readonly<Component>;
-};
-const ComponentDetails = ({ icon, component }: ComponentDetailsProps) => (
-  <>
-    <Icon data={icon} style={{ marginRight: 'var(--eds_spacing_small)' }} />
-    <Typography
-      as="span"
-      token={{
-        color: 'inherit',
-        fontSize: 'inherit',
-        fontWeight: 'inherit',
-      }}
-    >
-      {component.name}
-    </Typography>
-  </>
-);
-
-export const EnvironmentIngress = ({
-  appName,
-  envName,
-  components,
-}: EnvironmentIngressProps) => {
-  const comps = components.reduce<{
+export const EnvironmentIngress = ({ components }: EnvironmentIngressProps) => {
+  const comps = components?.reduce<{
     public: Array<Component>;
     passive: Array<Component>;
   }>(
@@ -61,7 +24,7 @@ export const EnvironmentIngress = ({
       return obj;
     },
     { public: [], passive: [] }
-  );
+  ) ?? { public: [], passive: [] };
 
   const tooManyPublic = comps.public.length > MAX_DISPLAY_COMPONENTS;
   const tooManyPassive = comps.passive.length > MAX_DISPLAY_COMPONENTS;
@@ -111,3 +74,33 @@ export const EnvironmentIngress = ({
     </>
   );
 };
+
+type ComponentDetailsProps = {
+  icon: IconData;
+  component: Readonly<Component>;
+};
+const ComponentDetails = ({ icon, component }: ComponentDetailsProps) => (
+  <>
+    <Icon data={icon} style={{ marginRight: 'var(--eds_spacing_small)' }} />
+    <Typography
+      as="span"
+      token={{
+        color: 'inherit',
+        fontSize: 'inherit',
+        fontWeight: 'inherit',
+      }}
+    >
+      {component.name}
+    </Typography>
+  </>
+);
+
+function getComponentUrl(
+  appName: string,
+  environmentName: string,
+  component: Readonly<Component>
+): string {
+  return component.type === 'job'
+    ? getActiveJobComponentUrl(appName, environmentName, component.name)
+    : getActiveComponentUrl(appName, environmentName, component.name);
+}

@@ -3,7 +3,10 @@ import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
-import type { ReplicaSummary } from '../../store/radix-api';
+import {
+  type ReplicaSummary,
+  useGetApplicationResourcesUtilizationQuery,
+} from '../../store/radix-api';
 import {
   type SortDirection,
   dataSorter,
@@ -17,6 +20,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { pollingInterval } from '../../store/defaults';
 import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 import { ReplicaName } from './replica-name';
 
@@ -43,6 +47,11 @@ export const ReplicaList = ({
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
+  );
+
+  const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
+    { appName },
+    { pollingInterval }
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes
@@ -135,9 +144,9 @@ export const ReplicaList = ({
                 </Table.Cell>
                 <Table.Cell>
                   <UtilizationPopover
-                    appName={appName}
+                    showLabel
+                    utilization={utilization}
                     path={`${envName}.${compName}.${replica.name}`}
-                    style={'chip'}
                   />
                 </Table.Cell>
               </Table.Row>

@@ -56,13 +56,14 @@ const BadgeTemplates = {
 
 type Props = {
   severity: Severity;
+  label?: string;
 } & StatusBadgeTemplateProps;
 
-export const SeverityStatusBadge = ({ severity, children, ...rest }: Props) => {
+export const SeverityStatusBadge = ({ severity, label, ...rest }: Props) => {
   const { message, ...template } = BadgeTemplates[severity];
   return (
     <StatusBadgeTemplate {...template} {...rest}>
-      {children ?? message}
+      {label ?? message}
     </StatusBadgeTemplate>
   );
 };

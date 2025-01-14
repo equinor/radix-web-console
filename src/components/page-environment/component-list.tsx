@@ -12,11 +12,12 @@ import { Link } from 'react-router-dom';
 
 import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
 import clsx from 'clsx';
-import type {
-  Component,
-  Environment,
-  OAuth2AuxiliaryResource,
-  ReplicaSummary,
+import {
+  type Component,
+  type Environment,
+  type OAuth2AuxiliaryResource,
+  type ReplicaSummary,
+  useGetApplicationResourcesUtilizationQuery,
 } from '../../store/radix-api';
 import {
   type EnvironmentVulnerabilities,
@@ -38,6 +39,7 @@ import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 
 import './style.css';
+import { pollingInterval } from '../../store/defaults';
 import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 
 export interface ComponentListProps {
@@ -141,6 +143,11 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
     (name: string) =>
       setExpandedComponents((x) => ({ ...x, [name]: !x[name] })),
     []
+  );
+
+  const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
+    { appName },
+    { pollingInterval }
   );
 
   useEffect(() => {
@@ -254,9 +261,9 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                             </Table.Cell>
                             <Table.Cell>
                               <UtilizationPopover
-                                appName={appName}
+                                showLabel
+                                utilization={utilization}
                                 path={`${envName}.${x.name}.`}
-                                style={'chip'}
                               />
                             </Table.Cell>
                             <Table.Cell>
