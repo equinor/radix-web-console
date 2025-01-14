@@ -11,6 +11,11 @@
       margin-right: 2px;
     }
 
+    & svg {
+      width: 16px;
+      height: 16px;
+    }
+
     color: var(--eds_interactive_primary__resting);
     & svg {
       fill: var(--eds_interactive_primary__resting);

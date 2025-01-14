@@ -1,3 +1,5 @@
+import { Icon } from '@equinor/eds-core-react';
+import { check } from '@equinor/eds-icons';
 import { StatusPopover, type StatusPopoverType } from './status-popover';
 
 const types = [
@@ -23,6 +25,7 @@ export default (
     {labels.map((label, i) =>
       types.map((type) => (
         <StatusPopover
+          icon={<Icon data={check} />}
           title={type}
           key={label + type}
           label={label}
