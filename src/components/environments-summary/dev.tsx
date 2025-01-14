@@ -165,6 +165,24 @@ const cards: EnvironmentCardLayoutProps[] = [
       },
     ],
     repository: 'https://github.com/equinor/radix-web-console',
+    utilization: {
+      environments: {
+        dev: {
+          components: {
+            web: {
+              replicas: {
+                'web-abcd-1': {
+                  cpuAverage: 0.5,
+                  cpuRequests: 1.0,
+                  memoryMaximum: 500,
+                  memoryRequests: 1000,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
   {
     appName: 'test-component',
@@ -228,6 +246,66 @@ const cards: EnvironmentCardLayoutProps[] = [
       },
     ],
     repository: 'https://github.com/equinor/radix-web-console',
+  },
+  {
+    appName: 'test-component',
+    env: { name: 'dev', status: 'Consistent' },
+    deployment: {
+      name: 'web',
+      activeFrom: '2020-02-02T12:00:00Z',
+    },
+    isLoading: false,
+    envScan: { name: 'dev' },
+    components: [],
+    repository: 'https://github.com/equinor/radix-web-console',
+    utilization: {
+      environments: {
+        dev: {
+          components: {
+            web: {
+              replicas: {
+                'web-abcd-1': {
+                  cpuAverage: 0.9,
+                  cpuRequests: 1.0,
+                  memoryMaximum: 900,
+                  memoryRequests: 1000,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    appName: 'test-component',
+    env: { name: 'dev', status: 'Consistent' },
+    deployment: {
+      name: 'web',
+      activeFrom: '2020-02-02T12:00:00Z',
+    },
+    isLoading: false,
+    envScan: { name: 'dev' },
+    components: [],
+    repository: 'https://github.com/equinor/radix-web-console',
+    utilization: {
+      environments: {
+        dev: {
+          components: {
+            web: {
+              replicas: {
+                'web-abcd-1': {
+                  cpuAverage: 0.1,
+                  cpuRequests: 1.0,
+                  memoryMaximum: 100,
+                  memoryRequests: 1000,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
 ] satisfies EnvironmentCardLayoutProps[];
 
