@@ -1,17 +1,16 @@
-import { Icon, Popover, Typography } from '@equinor/eds-core-react';
-import { desktop_mac } from '@equinor/eds-icons';
-import { useMemo, useRef, useState } from 'react';
+import { Icon, Typography } from '@equinor/eds-core-react';
+import { desktop_mac, pressure } from '@equinor/eds-icons';
+import { useMemo } from 'react';
 import type {
   GetEnvironmentResourcesUtilizationApiResponse,
   ReplicaResourcesUtilizationResponse,
   ReplicaUtilization,
 } from '../../store/radix-api';
+import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
 import {
-  GetHighestSeverity,
-  GetHighestSeverityFns,
-  Severity,
-  SeverityStatusBadge,
-} from '../status-badges/severity-status-badge';
+  StatusPopover,
+  type StatusPopoverType,
+} from '../status-popover/status-popover';
 
 const LowCPUThreshold = 0.2;
 const HighCPUThreshold = 0.8;
@@ -21,23 +20,33 @@ const LowMemoryThreshold = 0.2;
 const HighMemoryThreshold = 0.7;
 const MaxMemoryThreshold = 0.9;
 
-const Labels = {
-  [Severity.None]: 'Utilization ok',
-  [Severity.Information]: 'Utilization Low',
-  [Severity.Warning]: 'Utilization High',
-  [Severity.Critical]: 'Utilization Critical',
-} satisfies Record<Severity, string>;
+export enum Severity {
+  None = 0,
+  Information = 1,
+  Warning = 2,
+  Critical = 3,
+}
+
+const SeverityMap = {
+  [Severity.None]: { label: 'Utilization ok', type: 'none' },
+  [Severity.Information]: { label: 'Utilization Low', type: 'default' },
+  [Severity.Warning]: { label: 'Utilization High', type: 'warning' },
+  [Severity.Critical]: { label: 'Utilization Critical', type: 'danger' },
+} satisfies Record<Severity, { label: string; type: StatusPopoverType }>;
 
 type Props = {
   path: string;
   showLabel?: boolean;
+  minimumSeverity?: Severity;
   utilization?: ReplicaResourcesUtilizationResponse;
 };
 
-export const UtilizationPopover = ({ path, showLabel, utilization }: Props) => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement | null>(null);
-
+export const UtilizationPopover = ({
+  path,
+  showLabel,
+  utilization,
+  minimumSeverity,
+}: Props) => {
   const { highestMemoryAlert, highestCPUAlert } = useMemo(() => {
     let highestMemoryAlert = Severity.None;
     let highestCPUAlert = Severity.None;
@@ -62,39 +71,30 @@ export const UtilizationPopover = ({ path, showLabel, utilization }: Props) => {
   }, [utilization, path]);
 
   const severity = GetHighestSeverity(highestMemoryAlert, highestCPUAlert);
-  return (
-    <div
-      ref={ref}
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <Popover
-        placement={'top'}
-        anchorEl={ref.current}
-        open={open && severity !== Severity.None}
-        onClick={(ev) => ev.stopPropagation()}
-      >
-        <Popover.Header>
-          <Popover.Title>Resource Status</Popover.Title>
-        </Popover.Header>
-        <Popover.Content className={'grid grid--gap-small'}>
-          <SeverityStatusBadge severity={highestMemoryAlert}>
-            Memory {Labels[highestMemoryAlert]}
-          </SeverityStatusBadge>
-          <SeverityStatusBadge severity={highestCPUAlert}>
-            CPU {Labels[highestCPUAlert]}
-          </SeverityStatusBadge>
-        </Popover.Content>
-        <Popover.Actions>
-          <Typography>
-            See Monitoring <Icon size={16} data={desktop_mac} /> for more
-            details.
-          </Typography>
-        </Popover.Actions>
-      </Popover>
 
-      <SeverityStatusBadge label={Labels[severity]} severity={severity} />
-    </div>
+  if (minimumSeverity !== undefined && severity < minimumSeverity) {
+    return null;
+  }
+
+  return (
+    <StatusPopover
+      icon={<Icon data={pressure} />}
+      title="Resource Status"
+      label={showLabel ? SeverityMap[severity].label : undefined}
+      type={SeverityMap[severity].type}
+    >
+      <div className={'grid grid--gap-small'}>
+        <StatusBadgeTemplate type={SeverityMap[highestMemoryAlert].type}>
+          Memory {SeverityMap[highestMemoryAlert].label}
+        </StatusBadgeTemplate>
+        <StatusBadgeTemplate type={SeverityMap[highestCPUAlert].type}>
+          CPU {SeverityMap[highestCPUAlert].label}
+        </StatusBadgeTemplate>
+        <Typography>
+          See Monitoring <Icon size={16} data={desktop_mac} /> for more details.
+        </Typography>
+      </div>
+    </StatusPopover>
   );
 };
 
@@ -124,6 +124,25 @@ const flattenAndFilterResults = (
   });
 
   return results;
+};
+
+const GetHighestSeverity = (a: Severity, b: Severity): Severity => {
+  if (a > b) return a;
+  return b;
+};
+
+const GetHighestSeverityFns = <TArgs,>(
+  data: TArgs,
+  fns: ((data: TArgs) => Severity)[]
+): Severity => {
+  let highest = Severity.None;
+
+  fns.forEach((fn) => {
+    const res = fn(data);
+    highest = GetHighestSeverity(res, highest);
+  });
+
+  return highest;
 };
 
 const HasLowCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {

@@ -27,7 +27,10 @@ import { routeWithParams } from '../../utils/string';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 
 import './style.css';
-import { UtilizationPopover } from '../utilization-popover/utilization-popover';
+import {
+  Severity,
+  UtilizationPopover,
+} from '../utilization-popover/utilization-popover';
 import { DeploymentDetails } from './deployment-details';
 import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers';
 
@@ -130,6 +133,7 @@ export const EnvironmentCardLayout = ({
               <UtilizationPopover
                 utilization={utilization}
                 path={`${env.name}.`}
+                minimumSeverity={Severity.Information}
               />
               <VulnerabilityHeader envScan={envScan} />
               <DeplopymentHeader components={components} />
