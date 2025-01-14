@@ -126,7 +126,7 @@ export const EnvironmentCardLayout = ({
           {deployment?.name && (
             <>
               {isLoading && (
-                <Chip>
+                <Chip style={{ paddingRight: '4px' }}>
                   <CircularProgress size={16} />
                 </Chip>
               )}
