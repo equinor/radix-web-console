@@ -1,64 +1,105 @@
 import { Typography } from '@equinor/eds-core-react';
 
+import { addMinutes } from 'date-fns';
 import {
-  AppListItem,
-  type AppListItemProps,
+  AppListItemLayout,
+  type AppListItemLayoutProps,
   type FavouriteClickedHandler,
 } from '.';
 
 const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
 
-const testData: Array<{ description: string } & AppListItemProps> = [
+const testData = [
   {
     description: 'App',
-    app: { name: 'test-app' },
+    isLoading: false,
     handler: noop,
-    isLoaded: true,
-    name: 'some-app',
+    appName: 'some-app',
   },
   {
     description: 'App, marked Favourite, with Job',
-    app: {
-      name: 'toast-app',
-      latestJob: {
-        name: 'test-job',
-        created: new Date().toISOString(),
-        started: new Date().toISOString(),
-        status: 'Running',
-        pipeline: 'build-deploy',
+    isLoading: false,
+    latestJob: {
+      name: 'running-job-app',
+      created: addMinutes(new Date(), -15).toISOString(),
+      started: addMinutes(new Date(), -14).toISOString(),
+      status: 'Running',
+      pipeline: 'build-deploy',
+    },
+    vulnerabilitySummary: [
+      {
+        components: {
+          web: {
+            image: 'test:test',
+            scanSuccess: true,
+            scanTime: '2020-02-02T12:00:00Z',
+            vulnerabilitySummary: {
+              critical: 2,
+              high: 1,
+              medium: 2,
+              low: 5,
+            },
+          },
+        },
+        name: 'dev',
+      },
+    ],
+    utilization: {
+      environments: {
+        dev: {
+          components: {
+            web: {
+              replicas: {
+                'web-abcd-1': {
+                  cpuAverage: 1.1,
+                  cpuRequests: 1.0,
+                  memoryMaximum: 900,
+                  memoryRequests: 1000,
+                },
+              },
+            },
+          },
+        },
       },
     },
     handler: noop,
     isFavourite: true,
     showStatus: true,
-    isLoaded: true,
-    name: 'some-app',
+    appName: 'favorite-app-with-problems',
   },
   {
     description: 'App, marked Favourite, without Job',
-    app: { name: 'app-test' },
+    isLoading: false,
     handler: noop,
     isFavourite: true,
     showStatus: true,
-    isLoaded: true,
-    name: 'some-app',
+    appName: 'fav-app-without-job',
   },
   {
     description: 'App, marked Placeholder',
-    app: { name: 'app-placeholder' },
+    isLoading: false,
     handler: noop,
     isPlaceholder: true,
-    isLoaded: true,
-    name: 'some-app',
+    appName: 'placeholder-app',
   },
-];
+  {
+    description: 'Deleted App',
+    isLoading: false,
+    handler: noop,
+    isPlaceholder: false,
+    isFavourite: true,
+    showStatus: true,
+    isDeleted: true,
+    appName: 'deleted-app',
+  },
+] satisfies Array<{ description: string } & AppListItemLayoutProps>;
 
 export default (
   <div style={{ background: '#eee', padding: 'var(--eds_spacing_medium)' }}>
     {testData.map(({ description, ...rest }, i) => (
       <div key={i} style={{ padding: 'var(--eds_spacing_medium)' }}>
         <Typography variant="h4">{description}</Typography>
-        <AppListItem {...rest} />
+        <AppListItemLayout {...rest} />
       </div>
     ))}
   </div>

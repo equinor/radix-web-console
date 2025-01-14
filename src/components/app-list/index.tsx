@@ -26,7 +26,7 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
     {[...Array(amount || 1)].map((_, i) => (
       <AppListItem
         key={i}
-        app={{ name: 'dummy' }}
+        appName={'dummy'}
         handler={(e) => e.preventDefault()}
         isPlaceholder
         name={''}
@@ -132,20 +132,28 @@ export default function AppList() {
           <>
             <div className="grid grid--gap-medium app-list--section">
               <div className="app-list__list">
-                {favouriteNames.map((appName) => (
-                  <AppListItem
-                    key={appName}
-                    app={favsData?.find((a) => a.name === appName)}
-                    handler={(e) => {
-                      changeFavouriteApplication(appName, false);
-                      e.preventDefault();
-                    }}
-                    isFavourite
-                    showStatus
-                    isLoaded={favsState.isSuccess}
-                    name={appName}
-                  />
-                ))}
+                {favouriteNames.map((appName) => {
+                  const app = favsData?.find((a) => a.name === appName);
+                  return (
+                    <AppListItem
+                      key={appName}
+                      appName={appName}
+                      isDeleted={!app}
+                      environmentActiveComponents={
+                        app?.environmentActiveComponents
+                      }
+                      latestJob={app?.latestJob}
+                      handler={(e) => {
+                        changeFavouriteApplication(appName, false);
+                        e.preventDefault();
+                      }}
+                      isFavourite
+                      showStatus
+                      isLoaded={favsState.isSuccess}
+                      name={appName}
+                    />
+                  );
+                })}
               </div>
             </div>
           </>
@@ -196,19 +204,24 @@ export default function AppList() {
                 }
               >
                 <div className="app-list__list">
-                  {knownApps.map((app) => (
-                    <AppListItem
-                      key={app.name}
-                      app={app}
-                      handler={(e) => {
-                        changeFavouriteApplication(app.name, !app.isFavourite);
-                        e.preventDefault();
-                      }}
-                      isFavourite={app.isFavourite}
-                      name={app.name}
-                      isLoaded={true}
-                    />
-                  ))}
+                  {knownApps.map((app) => {
+                    return (
+                      <AppListItem
+                        key={app.name}
+                        appName={app.name}
+                        handler={(e) => {
+                          changeFavouriteApplication(
+                            app.name,
+                            !app.isFavourite
+                          );
+                          e.preventDefault();
+                        }}
+                        isFavourite={app.isFavourite}
+                        name={app.name}
+                        isLoaded={true}
+                      />
+                    );
+                  })}
                 </div>
               </AsyncResource>
             ) : (

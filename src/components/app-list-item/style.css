@@ -34,11 +34,14 @@
   width: unset;
 }
 
+.app-list-status {
+  color: grey;
+}
+
 .app-list-status--last-job {
   display: grid;
   grid-template-columns: 1fr auto;
   padding-top: 4px;
-  padding-right: 5px;
 }
 
 .app-list-item--placeholder {
