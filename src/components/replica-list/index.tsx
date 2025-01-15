@@ -4,6 +4,7 @@ import { clsx } from 'clsx';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import {
+  type ReplicaResourcesUtilizationResponse,
   type ReplicaSummary,
   useGetApplicationResourcesUtilizationQuery,
 } from '../../store/radix-api';
@@ -30,6 +31,7 @@ type Props = {
   compName: string;
   replicaList: Array<ReplicaSummary>;
   replicaUrlFunc: (name: string) => string;
+  showUtilization?: boolean;
 };
 export const ReplicaList = ({
   replicaList,
@@ -37,6 +39,7 @@ export const ReplicaList = ({
   appName,
   envName,
   compName,
+  showUtilization,
 }: Props) => {
   const [sortedData, setSortedData] = useState(replicaList || []);
   const [dateSort, setDateSort] = useState<SortDirection>();
@@ -97,7 +100,7 @@ export const ReplicaList = ({
             <TableSortIcon direction={dateSort} />
           </Table.Cell>
           <Table.Cell>Duration</Table.Cell>
-          <Table.Cell>Resources</Table.Cell>
+          {showUtilization && <Table.Cell>Resources</Table.Cell>}
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -142,13 +145,15 @@ export const ReplicaList = ({
                 <Table.Cell>
                   <Duration start={replica.created} end={lastUpdate} />
                 </Table.Cell>
-                <Table.Cell>
-                  <UtilizationPopover
-                    showLabel
-                    utilization={utilization}
-                    path={`${envName}.${compName}.${replica.name}`}
-                  />
-                </Table.Cell>
+                {showUtilization && (
+                  <Table.Cell>
+                    <UtilizationPopover
+                      showLabel
+                      utilization={utilization}
+                      path={`${envName}.${compName}.${replica.name}`}
+                    />
+                  </Table.Cell>
+                )}
               </Table.Row>
               {expanded && (
                 <Table.Row>

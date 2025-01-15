@@ -71,13 +71,13 @@ export const AppListItem = (props: AppListItemProps) => {
   const { data: vulnerabilitySummary, isLoading: isVulnSummaryLoading } =
     useGetApplicationVulnerabilitySummariesQuery(
       { appName: props.appName },
-      { pollingInterval: 0 }
+      { pollingInterval: 0, skip: !props.showStatus }
     );
 
   const { data: utilization, isLoading: isUtilizationLoading } =
     useGetApplicationResourcesUtilizationQuery(
       { appName: props.appName },
-      { pollingInterval: 0 }
+      { pollingInterval: 0, skip: !props.showStatus }
     );
 
   return (

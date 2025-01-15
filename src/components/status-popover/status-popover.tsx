@@ -26,6 +26,7 @@ export type StatusPopoverProps = {
   icon?: ReactNode;
   type?: StatusPopoverType;
   label?: string;
+  disablePopover?: boolean;
 } & Pick<PopoverProps, 'placement'>;
 
 export const StatusPopover = ({
@@ -34,6 +35,7 @@ export const StatusPopover = ({
   icon = <Icon data={info_circle} />,
   type,
   label,
+  disablePopover,
   placement = 'top',
 }: PropsWithChildren<StatusPopoverProps>) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
@@ -46,7 +48,7 @@ export const StatusPopover = ({
       onMouseLeave={() => setPopoverOpen(false)}
     >
       <Popover
-        open={popoverOpen}
+        open={popoverOpen && !disablePopover}
         anchorEl={containerRef.current}
         placement={placement}
       >

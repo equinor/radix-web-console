@@ -32,6 +32,7 @@ export const ComponentReplicaList = ({
         <div className="grid">
           {replicaList && replicaList.length > 0 ? (
             <ReplicaList
+              showUtilization
               appName={appName}
               envName={envName}
               compName={componentName}

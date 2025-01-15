@@ -28,10 +28,10 @@ export enum Severity {
 }
 
 const SeverityMap = {
-  [Severity.None]: { label: 'Utilization ok', type: 'none' },
-  [Severity.Information]: { label: 'Utilization Low', type: 'default' },
-  [Severity.Warning]: { label: 'Utilization High', type: 'warning' },
-  [Severity.Critical]: { label: 'Utilization Critical', type: 'danger' },
+  [Severity.None]: { label: 'Normal', type: 'default' },
+  [Severity.Information]: { label: 'Low', type: 'default' },
+  [Severity.Warning]: { label: 'High', type: 'warning' },
+  [Severity.Critical]: { label: 'Critical', type: 'danger' },
 } satisfies Record<Severity, { label: string; type: StatusPopoverType }>;
 
 type Props = {
@@ -82,6 +82,7 @@ export const UtilizationPopover = ({
       title="Resource Status"
       label={showLabel ? SeverityMap[severity].label : undefined}
       type={SeverityMap[severity].type}
+      disablePopover={severity === Severity.None}
     >
       <div className={'grid grid--gap-small'}>
         <StatusBadgeTemplate type={SeverityMap[highestMemoryAlert].type}>

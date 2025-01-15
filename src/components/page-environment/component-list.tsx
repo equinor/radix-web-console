@@ -192,7 +192,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                         Replicas
                       </Table.Cell>
                       <Table.Cell className="component-list-head__resources">
-                        Resources
+                        {type === 'component' ? 'Resources' : null}
                       </Table.Cell>
                       <Table.Cell className="component-list-head__vulnerabilities">
                         Vulnerabilities
@@ -260,11 +260,13 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                               />
                             </Table.Cell>
                             <Table.Cell>
-                              <UtilizationPopover
-                                showLabel
-                                utilization={utilization}
-                                path={`${envName}.${x.name}.`}
-                              />
+                              {type === 'component' && (
+                                <UtilizationPopover
+                                  showLabel
+                                  utilization={utilization}
+                                  path={`${envName}.${x.name}.`}
+                                />
+                              )}
                             </Table.Cell>
                             <Table.Cell>
                               <AsyncResource
