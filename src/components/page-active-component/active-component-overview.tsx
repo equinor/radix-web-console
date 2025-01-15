@@ -113,6 +113,7 @@ export const ActiveComponentOverview: FunctionComponent<{
 
             <div className="grid grid--gap-large">
               <ComponentReplicaList
+                showUtilization
                 title={'Replicas'}
                 appName={appName}
                 envName={envName}

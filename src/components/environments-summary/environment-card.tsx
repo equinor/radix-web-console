@@ -153,7 +153,11 @@ export const EnvironmentCardLayout = ({
           </Typography>
         )}
 
-        <EnvironmentIngress components={components} />
+        <EnvironmentIngress
+          components={components}
+          appName={appName}
+          envName={env.name}
+        />
 
         <DeploymentDetails appName={appName} deployment={deployment} />
 

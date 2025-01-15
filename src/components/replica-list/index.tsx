@@ -4,7 +4,6 @@ import { clsx } from 'clsx';
 import { Fragment, useCallback, useEffect, useState } from 'react';
 
 import {
-  type ReplicaResourcesUtilizationResponse,
   type ReplicaSummary,
   useGetApplicationResourcesUtilizationQuery,
 } from '../../store/radix-api';

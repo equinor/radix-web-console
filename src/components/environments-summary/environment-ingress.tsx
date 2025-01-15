@@ -12,9 +12,15 @@ export const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
 const MAX_DISPLAY_COMPONENTS = 2;
 
 export interface EnvironmentIngressProps {
+  appName: string;
+  envName: string;
   components?: Component[];
 }
-export const EnvironmentIngress = ({ components }: EnvironmentIngressProps) => {
+export const EnvironmentIngress = ({
+  components,
+  appName,
+  envName,
+}: EnvironmentIngressProps) => {
   const comps = components?.reduce<{
     public: Array<Component>;
     passive: Array<Component>;

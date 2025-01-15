@@ -10,6 +10,7 @@ type Props = {
   componentName: string;
   replicaList?: Array<ReplicaSummary>;
   isExpanded?: boolean;
+  showUtilization?: boolean;
 };
 export const ComponentReplicaList = ({
   title,
@@ -18,6 +19,7 @@ export const ComponentReplicaList = ({
   componentName,
   replicaList,
   isExpanded,
+  showUtilization,
 }: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded={isExpanded}>
@@ -32,7 +34,7 @@ export const ComponentReplicaList = ({
         <div className="grid">
           {replicaList && replicaList.length > 0 ? (
             <ReplicaList
-              showUtilization
+              showUtilization={showUtilization}
               appName={appName}
               envName={envName}
               compName={componentName}

@@ -26,11 +26,10 @@ const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
     {[...Array(amount || 1)].map((_, i) => (
       <AppListItem
         key={i}
-        appName={'dummy'}
+        appName={''}
         handler={(e) => e.preventDefault()}
         isPlaceholder
-        name={''}
-        isLoaded={false}
+        isLoading={false}
       />
     ))}
   </div>
@@ -149,8 +148,7 @@ export default function AppList() {
                       }}
                       isFavourite
                       showStatus
-                      isLoaded={favsState.isSuccess}
-                      name={appName}
+                      isLoading={favsState.isLoading}
                     />
                   );
                 })}
@@ -217,8 +215,7 @@ export default function AppList() {
                           e.preventDefault();
                         }}
                         isFavourite={app.isFavourite}
-                        name={app.name}
-                        isLoaded={true}
+                        isLoading={false}
                       />
                     );
                   })}
