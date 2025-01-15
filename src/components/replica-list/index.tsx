@@ -20,7 +20,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
-import { pollingInterval, slowPollingInterval } from '../../store/defaults';
+import { slowPollingInterval } from '../../store/defaults';
 import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 import { ReplicaName } from './replica-name';
 

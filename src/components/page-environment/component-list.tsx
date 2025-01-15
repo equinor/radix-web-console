@@ -39,7 +39,7 @@ import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 
 import './style.css';
-import { pollingInterval, slowPollingInterval } from '../../store/defaults';
+import { slowPollingInterval } from '../../store/defaults';
 import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 
 export interface ComponentListProps {
