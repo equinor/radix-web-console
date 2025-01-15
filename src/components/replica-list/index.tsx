@@ -20,7 +20,7 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval, slowPollingInterval } from '../../store/defaults';
 import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 import { ReplicaName } from './replica-name';
 
@@ -53,7 +53,7 @@ export const ReplicaList = ({
 
   const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
     { appName },
-    { pollingInterval }
+    { pollingInterval: slowPollingInterval }
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes

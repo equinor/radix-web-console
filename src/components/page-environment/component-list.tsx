@@ -39,7 +39,7 @@ import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 
 import './style.css';
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval, slowPollingInterval } from '../../store/defaults';
 import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 
 export interface ComponentListProps {
@@ -147,7 +147,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
 
   const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
     { appName },
-    { pollingInterval }
+    { pollingInterval: slowPollingInterval }
   );
 
   useEffect(() => {

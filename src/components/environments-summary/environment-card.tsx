@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 import { EnvironmentIngress } from './environment-ingress';
 
 import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval, slowPollingInterval } from '../../store/defaults';
 import {
   type Component,
   type DeploymentSummary,
@@ -64,7 +64,7 @@ export const EnvironmentCard = ({
   const { data: utilization, isLoading: isUtilizationLoading } =
     useGetApplicationResourcesUtilizationQuery(
       { appName },
-      { pollingInterval }
+      { pollingInterval: slowPollingInterval }
     );
 
   return (

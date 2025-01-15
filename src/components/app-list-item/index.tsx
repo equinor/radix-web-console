@@ -41,6 +41,7 @@ import {
 } from '../environments-summary/environment-status-utils';
 
 import './style.css';
+import { slowPollingInterval } from '../../store/defaults';
 import {
   Severity,
   UtilizationPopover,
@@ -78,7 +79,7 @@ export const AppListItem = ({ isLoading, ...props }: AppListItemProps) => {
   const { data: utilization, isLoading: isUtilizationLoading } =
     useGetApplicationResourcesUtilizationQuery(
       { appName: props.appName },
-      { pollingInterval: 0, skip: !props.showStatus }
+      { pollingInterval: slowPollingInterval, skip: !props.showStatus }
     );
 
   return (

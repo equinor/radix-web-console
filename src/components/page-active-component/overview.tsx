@@ -13,7 +13,7 @@ import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 import { DefaultAlias } from './default-alias';
 import './style.css';
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval, slowPollingInterval } from '../../store/defaults';
 import { IngressAllowList } from '../component/ingress-allow-list';
 import { ExternalLink } from '../link/external-link';
 import { ResourceRequirements } from '../resource-requirements';
@@ -48,7 +48,7 @@ export const Overview = ({
 
   const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
     { appName },
-    { pollingInterval }
+    { pollingInterval: slowPollingInterval }
   );
 
   return (
