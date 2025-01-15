@@ -30,10 +30,11 @@ export function getFetchErrorData(error: ManagedErrors): {
 
   if (IsRTKQueryError(error)) {
     const code = isFetchBaseQueryError(error) ? error.status : IsParsingError(error) ? error.originalStatus : undefined;
+    let errorMessage = error?.error??error?.data?.error;
     return {
       code: code,
-      error: isFetchBaseQueryError(error) ? "server error" : error.error,
-      message: "failed to fetch data: " + (code ? getReasonPhrase(code) : "unknown")
+      error: errorMessage,
+      message: "failed to fetch data: " + (code ? getReasonPhrase(code) : "unknown") + (errorMessage ? ". " + errorMessage : "")
     }
   }
 
