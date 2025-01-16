@@ -200,7 +200,8 @@ export default function CreateApplicationForm({ onCreated }: Props) {
         />
         {creationState.isError && (
           <Alert type="danger">
-            Failed to create application.{' '}
+            Failed to create application.
+            <br />
             {getFetchErrorMessage(creationState.error)}
           </Alert>
         )}

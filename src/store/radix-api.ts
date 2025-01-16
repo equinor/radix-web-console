@@ -798,6 +798,18 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getEnvironmentResourcesUtilization: build.query<
+      GetEnvironmentResourcesUtilizationApiResponse,
+      GetEnvironmentResourcesUtilizationApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/utilization`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     getApplicationJobs: build.query<
       GetApplicationJobsApiResponse,
       GetApplicationJobsApiArg
@@ -1070,21 +1082,6 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getResources: build.query<GetResourcesApiResponse, GetResourcesApiArg>({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/resources`,
-        headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
-        },
-        params: {
-          environment: queryArg.environment,
-          component: queryArg.component,
-          duration: queryArg.duration,
-          since: queryArg.since,
-        },
-      }),
-    }),
     restartApplication: build.mutation<
       RestartApplicationApiResponse,
       RestartApplicationApiArg
@@ -1118,6 +1115,18 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/stop`,
         method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
+    getApplicationResourcesUtilization: build.query<
+      GetApplicationResourcesUtilizationApiResponse,
+      GetApplicationResourcesUtilizationApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/utilization`,
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -2005,6 +2014,18 @@ export type StopEnvironmentApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type GetEnvironmentResourcesUtilizationApiResponse =
+  /** status 200 Successful trigger pipeline */ ReplicaResourcesUtilizationResponse;
+export type GetEnvironmentResourcesUtilizationApiArg = {
+  /** Name of the application */
+  appName: string;
+  /** Name of the application environment */
+  envName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type GetApplicationJobsApiResponse =
   /** status 200 Successful operation */ JobSummary[];
 export type GetApplicationJobsApiArg = {
@@ -2274,24 +2295,6 @@ export type ResetManuallyScaledComponentsInApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
-export type GetResourcesApiResponse =
-  /** status 200 Successful trigger pipeline */ UsedResources;
-export type GetResourcesApiArg = {
-  /** Name of the application */
-  appName: string;
-  /** Name of the application environment */
-  environment?: string;
-  /** Name of the application component in an environment */
-  component?: string;
-  /** Duration of the period, default is 30d (30 days). Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
-  duration?: string;
-  /** End time-point of the period in the past, default is now. Example 10m, 1h, 2d, 3w, where m-minutes, h-hours, d-days, w-weeks */
-  since?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
-};
 export type RestartApplicationApiResponse = unknown;
 export type RestartApplicationApiArg = {
   /** Name of application */
@@ -2313,6 +2316,16 @@ export type StartApplicationApiArg = {
 export type StopApplicationApiResponse = unknown;
 export type StopApplicationApiArg = {
   /** Name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type GetApplicationResourcesUtilizationApiResponse =
+  /** status 200 Successful trigger pipeline */ ReplicaResourcesUtilizationResponse;
+export type GetApplicationResourcesUtilizationApiArg = {
+  /** Name of the application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
@@ -2481,8 +2494,6 @@ export type ReplicaSummary = {
   resources?: ResourceRequirements;
   /** RestartCount count of restarts of a component container inside a pod */
   restartCount?: number;
-  /** The time at which the batch job's pod startedAt */
-  startTime?: string;
   /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
   /** Pod type
@@ -3116,11 +3127,8 @@ export type ScheduledBatchSummary = {
   ended?: string;
   /** Jobs within the batch of ScheduledJobSummary */
   jobList?: ScheduledJobSummary[];
-  /** Deprecated: Message of a status, if any, of the job */
-  message?: string;
   /** Name of the scheduled batch */
   name: string;
-  replica?: ReplicaSummary;
   /** Started timestamp */
   started?: string;
   /** Status of the job
@@ -3161,6 +3169,31 @@ export type DeploymentItem = {
 export type ScheduledJobRequest = {
   /** Name of the Radix deployment for a job */
   deploymentName?: string;
+};
+export type ReplicaUtilization = {
+  /** Average CPU Used */
+  cpuAverage: number;
+  /** Cpu Requests */
+  cpuRequests: number;
+  /** Max memory used */
+  memoryMaximum: number;
+  /** Memory Requests */
+  memoryRequests: number;
+};
+export type ComponentUtilization = {
+  replicas?: {
+    [key: string]: ReplicaUtilization;
+  };
+};
+export type EnvironmentUtilization = {
+  components?: {
+    [key: string]: ComponentUtilization;
+  };
+};
+export type ReplicaResourcesUtilizationResponse = {
+  environments?: {
+    [key: string]: EnvironmentUtilization;
+  };
 };
 export type Step = {
   /** Components associated components */
@@ -3489,24 +3522,6 @@ export type RegenerateDeployKeyAndSecretData = {
   /** SharedSecret of the shared secret */
   sharedSecret?: string;
 };
-export type UsedResource = {
-  /** Avg Average resource used */
-  avg?: number;
-  /** Max resource used */
-  max?: number;
-  /** Min resource used */
-  min?: number;
-};
-export type UsedResources = {
-  cpu?: UsedResource;
-  /** From timestamp */
-  from: string;
-  memory?: UsedResource;
-  /** To timestamp */
-  to: string;
-  /** Warning messages */
-  warnings?: string[];
-};
 export const {
   useShowApplicationsQuery,
   useRegisterApplicationMutation,
@@ -3573,6 +3588,7 @@ export const {
   useRestartEnvironmentMutation,
   useStartEnvironmentMutation,
   useStopEnvironmentMutation,
+  useGetEnvironmentResourcesUtilizationQuery,
   useGetApplicationJobsQuery,
   useGetApplicationJobQuery,
   useGetPipelineJobStepLogsQuery,
@@ -3594,8 +3610,8 @@ export const {
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
   useResetManuallyScaledComponentsInApplicationMutation,
-  useGetResourcesQuery,
   useRestartApplicationMutation,
   useStartApplicationMutation,
   useStopApplicationMutation,
+  useGetApplicationResourcesUtilizationQuery,
 } = injectedRtkApi;

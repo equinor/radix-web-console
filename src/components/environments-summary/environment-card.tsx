@@ -1,144 +1,38 @@
-import { Divider, Icon, Typography } from '@equinor/eds-core-react';
-import { github, link, send } from '@equinor/eds-icons';
-import type React from 'react';
+import {
+  Chip,
+  CircularProgress,
+  Divider,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
+import { github } from '@equinor/eds-icons';
 import { Link } from 'react-router-dom';
-
-import {
-  EnvironmentCardStatus,
-  type EnvironmentCardStatusMap,
-  EnvironmentVulnerabilityIndicator,
-} from './environment-card-status';
 import { EnvironmentIngress } from './environment-ingress';
-import {
-  aggregateComponentEnvironmentStatus,
-  aggregateComponentReplicaEnvironmentStatus,
-  environmentVulnerabilitySummarizer,
-} from './environment-status-utils';
 
 import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval, slowPollingInterval } from '../../store/defaults';
 import {
+  type Component,
   type DeploymentSummary,
   type EnvironmentSummary,
-  type ReplicaSummary,
+  type ReplicaResourcesUtilizationResponse,
   useComponentsQuery,
+  useGetApplicationResourcesUtilizationQuery,
 } from '../../store/radix-api';
 import {
-  type Vulnerability,
+  type EnvironmentVulnerabilities,
   useGetEnvironmentVulnerabilitySummaryQuery,
 } from '../../store/scan-api';
-import { filterFields } from '../../utils/filter-fields';
 import { routeWithParams } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
 import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
-import { getAppDeploymentUrl } from '../../utils/routing';
-
-type CardContent = { header: React.JSX.Element; body: React.JSX.Element };
-
-const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = [
-  'critical',
-  'high',
-];
-
-type Props = {
-  appName: string;
-  deployment?: Readonly<DeploymentSummary>;
-};
-const DeploymentDetails = ({ appName, deployment }: Props) =>
-  !deployment ? (
-    <Typography color="disabled">
-      <Icon data={link} style={{ marginRight: 'var(--eds_spacing_small)' }} />
-      No active deployment
-    </Typography>
-  ) : (
-    <Typography
-      as={Link}
-      to={getAppDeploymentUrl(appName, deployment.name)}
-      link
-      token={{ textDecoration: 'none' }}
-    >
-      <Icon data={send} style={{ marginRight: 'var(--eds_spacing_small)' }} />
-      <Typography as="span" color="primary">
-        deployment{' '}
-        <Typography as="span" color="gray">
-          (<RelativeToNow time={new Date(deployment.activeFrom)} />)
-        </Typography>
-      </Typography>
-    </Typography>
-  );
-
-function CardContentBuilder(
-  appName: string,
-  envName: string,
-  deploymentName: string
-): CardContent {
-  const { data: components, ...componentsState } = useComponentsQuery(
-    {
-      appName,
-      deploymentName,
-    },
-    { pollingInterval }
-  );
-  const { data: envScan, ...envScanState } =
-    useGetEnvironmentVulnerabilitySummaryQuery(
-      { appName, envName },
-      { pollingInterval: 0 }
-    );
-
-  const vulnerabilities = environmentVulnerabilitySummarizer(envScan);
-  const replicas = (components ?? []).reduce<Array<ReplicaSummary>>(
-    (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
-    []
-  );
-
-  const elements: EnvironmentCardStatusMap = {
-    Components: aggregateComponentEnvironmentStatus(components ?? []),
-    ...(replicas.length > 0 && {
-      Replicas: aggregateComponentReplicaEnvironmentStatus(components ?? []),
-    }),
-  };
-
-  const statusElement = (
-    <AsyncResource asyncState={componentsState} errorContent={false}>
-      {components && components.length > 0 && (
-        <div className="grid grid--gap-x-small grid--auto-columns">
-          {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
-            <EnvironmentVulnerabilityIndicator
-              title="Vulnerabilities"
-              size={22}
-              summary={filterFields(vulnerabilities, visibleKeys)}
-              visibleKeys={visibleKeys}
-            />
-          )}
-          <EnvironmentCardStatus
-            title="Environment status"
-            statusElements={elements}
-          />
-        </div>
-      )}
-    </AsyncResource>
-  );
-
-  return {
-    header: (
-      <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
-        <AsyncResource asyncState={envScanState} errorContent={statusElement}>
-          {statusElement}
-        </AsyncResource>
-      </div>
-    ),
-    body: (
-      <AsyncResource asyncState={componentsState} errorContent={false}>
-        {components && components.length > 0 && (
-          <EnvironmentIngress {...{ appName, envName, components }} />
-        )}
-      </AsyncResource>
-    ),
-  };
-}
+import {
+  Severity,
+  UtilizationPopover,
+} from '../utilization-popover/utilization-popover';
+import { DeploymentDetails } from './deployment-details';
+import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers';
 
 type EnvironmentCardProps = {
   appName: string;
@@ -151,21 +45,65 @@ export const EnvironmentCard = ({
   repository,
 }: EnvironmentCardProps) => {
   const deployment = env.activeDeployment;
-  const { header, body }: CardContent = !deployment?.name
-    ? {
-        header: <></>,
-        body: (
-          <Typography color="disabled">
-            <Icon
-              data={link}
-              style={{ marginRight: 'var(--eds_spacing_small)' }}
-            />
-            No link available
-          </Typography>
-        ),
-      }
-    : CardContentBuilder(appName, env.name, deployment.name);
 
+  const { data: envScan, isLoading: isEnvScanLoading } =
+    useGetEnvironmentVulnerabilitySummaryQuery(
+      { appName, envName: env.name },
+      { pollingInterval: 0 }
+    );
+
+  const { data: components, isLoading: isComponentsLoading } =
+    useComponentsQuery(
+      {
+        appName,
+        deploymentName: deployment?.name!,
+      },
+      { pollingInterval, skip: !deployment?.name }
+    );
+
+  const { data: utilization, isLoading: isUtilizationLoading } =
+    useGetApplicationResourcesUtilizationQuery(
+      { appName },
+      { pollingInterval: slowPollingInterval }
+    );
+
+  return (
+    <EnvironmentCardLayout
+      appName={appName}
+      env={env}
+      deployment={deployment}
+      isLoading={
+        isComponentsLoading || isUtilizationLoading || isEnvScanLoading
+      }
+      envScan={envScan}
+      components={components}
+      repository={repository}
+      utilization={utilization}
+    />
+  );
+};
+
+export type EnvironmentCardLayoutProps = {
+  appName: string;
+  isLoading: boolean;
+  components?: Component[];
+  repository?: string;
+  env: Pick<EnvironmentSummary, 'name' | 'status' | 'branchMapping'>;
+  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags'>;
+  envScan?: EnvironmentVulnerabilities;
+  utilization?: ReplicaResourcesUtilizationResponse;
+};
+
+export const EnvironmentCardLayout = ({
+  appName,
+  env,
+  deployment,
+  isLoading,
+  envScan,
+  components,
+  repository,
+  utilization,
+}: EnvironmentCardLayoutProps) => {
   return (
     <div className="env_card">
       <div className="env_card-header">
@@ -184,11 +122,26 @@ export const EnvironmentCard = ({
           </Typography>
         </div>
 
-        {header}
+        <div className="env_card-header_badges grid grid--auto-columns grid--gap-x-small">
+          {deployment?.name && (
+            <>
+              {isLoading && (
+                <Chip style={{ paddingRight: '4px' }}>
+                  <CircularProgress size={16} />
+                </Chip>
+              )}
+              <UtilizationPopover
+                utilization={utilization}
+                path={`${env.name}.`}
+                minimumSeverity={Severity.Information}
+              />
+              <VulnerabilityHeader envScan={envScan} />
+              <DeplopymentHeader components={components} />
+            </>
+          )}
+        </div>
       </div>
-
       <Divider variant="small" />
-
       <div className="env_card_content grid grid--gap-medium">
         {env.status === 'Orphan' && (
           <Typography
@@ -200,7 +153,12 @@ export const EnvironmentCard = ({
           </Typography>
         )}
 
-        {body}
+        <EnvironmentIngress
+          components={components}
+          appName={appName}
+          envName={env.name}
+        />
+
         <DeploymentDetails appName={appName} deployment={deployment} />
 
         <div className="grid">

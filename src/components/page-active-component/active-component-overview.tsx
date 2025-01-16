@@ -102,6 +102,7 @@ export const ActiveComponentOverview: FunctionComponent<{
             />
 
             <Overview
+              appName={appName}
               appAlias={appAlias}
               dnsAliases={componentDNSAliases}
               dnsExternalAliases={component.externalDNS}
@@ -112,6 +113,7 @@ export const ActiveComponentOverview: FunctionComponent<{
 
             <div className="grid grid--gap-large">
               <ComponentReplicaList
+                showUtilization
                 title={'Replicas'}
                 appName={appName}
                 envName={envName}

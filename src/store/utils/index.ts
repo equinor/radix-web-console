@@ -19,12 +19,28 @@ export function getFetchErrorData(error: ManagedErrors): {
     }
   }
 
+  if (IsAbortError(error)) {
+    return {
+      error: error.name,
+      message: "Request aborted",
+      code: undefined,
+    }
+  }
+
   if (typeof error !== "object" || error === null) {
     console.warn("unkown error: ", error)
     return {
       code: undefined,
       message: "unknown error",
       error: "unknown error",
+    }
+  }
+
+  if (IsRadixHttpError(error)) {
+    return {
+      code: error.status,
+      error: error.data.error ?? "unknown server error",
+      message: error.data.message
     }
   }
 
@@ -59,6 +75,25 @@ export function getFetchErrorMessage(
   return getFetchErrorData(error).message;
 }
 
+type RadixHttpError = {
+  status: number;
+  data: {
+    message: string
+    error?: string
+    type: "server"|"missing"|"user"|"forbidden"
+  }
+}
+function IsRadixHttpError(e: any): e is RadixHttpError {
+  if (typeof e !== "object" || e == null) return false;
+
+  if (!("data" in e && "status" in e)) return false;
+
+  if (typeof e.data !== "object" || e.data == null) return false;
+
+  if ("error" in e.data && "message" in e.data && "type" in e.data) return true;
+
+  return false;
+}
 
 function IsRTKQueryError(e: any): e is FetchBaseQueryError {
   return isFetchBaseQueryError(e) || IsFetchError(e) || IsParsingError(e) || IsTimeoutError(e) || IsCustomError(e)
@@ -157,4 +192,12 @@ function IsCustomError(e: FetchBaseQueryError): e is CustomError {
     return false
 
   return e.status === "CUSTOM_ERROR"
+}
+
+type AbortError = {
+  name: string;
+  message: string;
+}
+function IsAbortError(e: Error|unknown): e is AbortError {
+  return e != null && typeof e == "object" && 'name' in e && e.name === "AbortError"
 }

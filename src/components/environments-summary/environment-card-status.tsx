@@ -1,9 +1,4 @@
-import {
-  CircularProgress,
-  Icon,
-  type IconProps,
-  Popover,
-} from '@equinor/eds-core-react';
+import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import {
   check,
   error_outlined,
@@ -14,10 +9,12 @@ import {
 } from '@equinor/eds-icons';
 import { upperFirst } from 'lodash-es';
 import type React from 'react';
-import { useRef, useState } from 'react';
 import type { ImageScan, Vulnerability } from '../../store/scan-api';
 import { StatusBadgeTemplate } from '../status-badges/status-badge-template';
-import { StatusPopover } from '../status-popover/status-popover';
+import {
+  StatusPopover,
+  type StatusPopoverType,
+} from '../status-popover/status-popover';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 import {
   EnvironmentStatus,
@@ -53,11 +50,12 @@ const EnvironmentStatusIcon = ({ status }: { status: EnvironmentStatus }) => {
   }
 };
 
+type VulnerabilitySummaryType = Required<ImageScan>['vulnerabilitySummary'];
 type Props = {
-  title?: string;
+  title: string;
   size?: number;
   visibleKeys?: Array<Lowercase<Vulnerability['severity']>>;
-  summary: Required<ImageScan>['vulnerabilitySummary'];
+  summary: VulnerabilitySummaryType;
 };
 export const EnvironmentVulnerabilityIndicator = ({
   title,
@@ -65,45 +63,17 @@ export const EnvironmentVulnerabilityIndicator = ({
   size = 24,
   ...rest
 }: Props) => {
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  let type: StatusPopoverType = 'none';
+  if (summary.medium > 0 || summary.low > 0) type = 'success';
+  if (summary.high > 0 || summary.unknown > 0) type = 'warning';
+  if (summary.critical > 0) type = 'danger';
 
   return (
-    <>
-      <Popover
-        open={popoverOpen}
-        anchorEl={containerRef.current}
-        placement={'top'}
-      >
-        {title && (
-          <Popover.Header>
-            <Popover.Title>{title}</Popover.Title>
-          </Popover.Header>
-        )}
-        <Popover.Content className="grid grid--gap-x-small grid--auto-columns">
-          <VulnerabilitySummary summary={summary} {...rest} />
-        </Popover.Content>
-      </Popover>
-      <div
-        ref={containerRef}
-        onMouseEnter={() => setPopoverOpen(true)}
-        onMouseLeave={() => setPopoverOpen(false)}
-      >
-        <Icon
-          data={report_bug}
-          size={size as IconProps['size']}
-          color={`var(${
-            summary.critical > 0
-              ? '--eds_interactive_danger__text'
-              : summary.high > 0 || summary.unknown > 0
-                ? '--eds_interactive_warning__text'
-                : summary.medium > 0 || summary.low > 0
-                  ? '--eds_interactive_success__hover'
-                  : '--eds_text_static_icons__tertiary'
-          })`}
-        />
+    <StatusPopover title={title} icon={<Icon data={report_bug} />} type={type}>
+      <div className="grid grid--gap-x-small grid--auto-columns">
+        <VulnerabilitySummary summary={summary} {...rest} />
       </div>
-    </>
+    </StatusPopover>
   );
 };
 

@@ -17,19 +17,19 @@ export type StatusBadgeTemplateProps = {
 } & ChipProps;
 
 /** StatusBadge template */
-export function StatusBadgeTemplate({
+export const StatusBadgeTemplate = ({
   className,
   children,
   icon,
   type,
   ...rest
-}: PropsWithChildren<StatusBadgeTemplateProps>) {
+}: PropsWithChildren<StatusBadgeTemplateProps>) => {
   return (
     <Chip
       className={clsx(
         'status-badge',
         `status-badge-type__${type ?? 'default'}`,
-        { center: !icon },
+        { center: !icon || !children },
         className ? { [className]: true } : undefined
       )}
       {...rest}
@@ -38,4 +38,4 @@ export function StatusBadgeTemplate({
       <div className="status-badge-content">{children}</div>
     </Chip>
   );
-}
+};

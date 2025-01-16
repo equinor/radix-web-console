@@ -1,15 +1,12 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import {
-  Fragment,
-  type FunctionComponent,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
 
-import type { ReplicaSummary } from '../../store/radix-api';
+import {
+  type ReplicaSummary,
+  useGetApplicationResourcesUtilizationQuery,
+} from '../../store/radix-api';
 import {
   type SortDirection,
   dataSorter,
@@ -23,12 +20,26 @@ import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { slowPollingInterval } from '../../store/defaults';
+import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 import { ReplicaName } from './replica-name';
 
-export const ReplicaList: FunctionComponent<{
+type Props = {
+  appName: string;
+  envName: string;
+  compName: string;
   replicaList: Array<ReplicaSummary>;
   replicaUrlFunc: (name: string) => string;
-}> = ({ replicaList, replicaUrlFunc }) => {
+  showUtilization?: boolean;
+};
+export const ReplicaList = ({
+  replicaList,
+  replicaUrlFunc,
+  appName,
+  envName,
+  compName,
+  showUtilization,
+}: Props) => {
   const [sortedData, setSortedData] = useState(replicaList || []);
   const [dateSort, setDateSort] = useState<SortDirection>();
   const [statusSort, setStatusSort] = useState<SortDirection>();
@@ -38,6 +49,11 @@ export const ReplicaList: FunctionComponent<{
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
+  );
+
+  const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
+    { appName },
+    { pollingInterval: slowPollingInterval }
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes
@@ -83,6 +99,7 @@ export const ReplicaList: FunctionComponent<{
             <TableSortIcon direction={dateSort} />
           </Table.Cell>
           <Table.Cell>Duration</Table.Cell>
+          {showUtilization && <Table.Cell>Resources</Table.Cell>}
         </Table.Row>
       </Table.Head>
       <Table.Body>
@@ -127,6 +144,15 @@ export const ReplicaList: FunctionComponent<{
                 <Table.Cell>
                   <Duration start={replica.created} end={lastUpdate} />
                 </Table.Cell>
+                {showUtilization && (
+                  <Table.Cell>
+                    <UtilizationPopover
+                      showLabel
+                      utilization={utilization}
+                      path={`${envName}.${compName}.${replica.name}`}
+                    />
+                  </Table.Cell>
+                )}
               </Table.Row>
               {expanded && (
                 <Table.Row>
