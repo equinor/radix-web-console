@@ -7,21 +7,43 @@ import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 import { ConfigureApplicationGithub } from '../configure-application-github';
 import { ScrimPopup } from '../scrim-popup';
-import CreateApplicationForm from './create-application-form';
 
-import type { ApplicationRegistration } from '../../store/radix-api';
+import {
+  type ApplicationRegistration,
+  type RegisterApplicationApiArg,
+  type RegisterApplicationApiResponse,
+  radixApi,
+  useRegisterApplicationMutation,
+} from '../../store/radix-api';
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import './style.css';
-
-function scrollToPosition(
-  elementRef: Element | null,
-  x: number,
-  y: number
-): void {
-  elementRef?.scrollTo?.(x, y);
-}
+import { CreateApplicationForm } from './create-application-form';
 
 export default function PageCreateApplication() {
+  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
+  const [createApp] = useRegisterApplicationMutation();
+
+  return (
+    <PageCreateApplicationLayout
+      onRefreshApps={() => refreshApps({})}
+      onCreateApp={(data: RegisterApplicationApiArg) =>
+        createApp(data).unwrap()
+      }
+    />
+  );
+}
+
+type PageCreateApplicationLayoutProps = {
+  onRefreshApps: () => unknown;
+  onCreateApp: (
+    data: RegisterApplicationApiArg
+  ) => Promise<RegisterApplicationApiResponse>;
+};
+
+export function PageCreateApplicationLayout({
+  onRefreshApps,
+  onCreateApp,
+}: PageCreateApplicationLayoutProps) {
   const [visibleScrim, setVisibleScrim] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [registration, setRegistration] =
@@ -33,8 +55,9 @@ export default function PageCreateApplication() {
   };
 
   const onCreated = (newRegistration: ApplicationRegistration) => {
-    scrollToPosition(containerRef.current, 0, 0);
+    containerRef.current?.scrollTo(0, 0);
     setRegistration(newRegistration);
+    onRefreshApps();
   };
 
   return (
@@ -55,7 +78,10 @@ export default function PageCreateApplication() {
       >
         <div className="create-app-content" ref={containerRef}>
           {!registration ? (
-            <CreateApplicationForm onCreated={onCreated} />
+            <CreateApplicationForm
+              onCreated={onCreated}
+              onCreateApp={onCreateApp}
+            />
           ) : (
             <div className="grid grid--gap-medium">
               <Typography>

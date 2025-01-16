@@ -9,15 +9,12 @@ import {
 } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
-
 import useLocalStorage from '../../effects/use-local-storage';
 import { externalUrls } from '../../externalUrls';
-import {
-  type ApplicationRegistration,
-  type RegisterApplicationApiArg,
-  type RegisterApplicationApiResponse,
-  radixApi,
-  useRegisterApplicationMutation,
+import type {
+  ApplicationRegistration,
+  RegisterApplicationApiArg,
+  RegisterApplicationApiResponse,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { Alert } from '../alert';
@@ -36,48 +33,16 @@ import { ExternalLink } from '../link/external-link';
 
 type Props = {
   onCreated: (application: ApplicationRegistration) => void;
-};
-
-export default function CreateApplicationForm({ onCreated }: Props) {
-  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
-  const [createApp, creationState] = useRegisterApplicationMutation();
-
-  return (
-    <CreateApplicationFormLayout
-      isSuccess={creationState.isSuccess}
-      isLoading={creationState.isLoading}
-      error={creationState.error}
-      warnings={creationState.data?.warnings}
-      onCreated={onCreated}
-      onRefreshApps={() => refreshApps({})}
-      onCreateApp={(data: RegisterApplicationApiArg) =>
-        createApp(data).unwrap()
-      }
-    />
-  );
-}
-
-type CreateApplicationFormLayoutProps = {
-  isLoading: boolean;
-  isSuccess: boolean;
-  error?: unknown;
-  warnings?: string[];
-  onCreated: (application: ApplicationRegistration) => void;
-  onRefreshApps: () => unknown;
   onCreateApp: (
     data: RegisterApplicationApiArg
   ) => Promise<RegisterApplicationApiResponse>;
 };
-export function CreateApplicationFormLayout({
-  isLoading,
-  isSuccess,
-  error,
-  warnings,
-  onCreated,
-  onRefreshApps,
-  onCreateApp,
-}: CreateApplicationFormLayoutProps) {
+export function CreateApplicationForm({ onCreated, onCreateApp }: Props) {
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<unknown>();
+  const [warnings, setWarnings] = useState<string[]>();
+  const [success, setSuccess] = useState<boolean>(false);
   const [applicationRegistration, setAppRegistration] =
     useState<ApplicationRegistration>({
       name: '',
@@ -135,6 +100,8 @@ export function CreateApplicationFormLayout({
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     try {
+      setLoading(true);
+      setSuccess(false);
       ev.preventDefault();
       const response = await onCreateApp({
         applicationRegistrationRequest: {
@@ -142,19 +109,23 @@ export function CreateApplicationFormLayout({
           acknowledgeWarnings,
         },
       });
+      setSuccess(true);
 
       // the response will only contains an application if there are no warnings
       //Only call onCreated when created without warnings, or created with ack warnings
       if (response.applicationRegistration) {
         onCreated(response.applicationRegistration);
         addAppNameToLocalStorage(response.applicationRegistration.name);
-        onRefreshApps();
         successToast('Saved');
       } else {
+        setWarnings(response.warnings);
         warningToast('Registration had warnings');
       }
     } catch (e) {
       errorToast(`Error while saving. ${getFetchErrorMessage(e)}`);
+      setError(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -186,7 +157,7 @@ export function CreateApplicationFormLayout({
           </Typography>
         </div>
       </Alert>
-      <fieldset disabled={isLoading} className="grid grid--gap-medium">
+      <fieldset disabled={loading} className="grid grid--gap-medium">
         <TextField
           id="name_field"
           label="Name"
@@ -235,12 +206,12 @@ export function CreateApplicationFormLayout({
           </Alert>
         ) : null}
         <div className="o-action-bar grid grid--gap-medium">
-          {isLoading && (
+          {loading && (
             <Typography>
               <CircularProgress size={24} /> Creating…
             </Typography>
           )}
-          {isSuccess && warnings && (
+          {success && warnings && (
             <div className="grid grid--gap-medium">
               <List>
                 {warnings.map((message, i) => (
