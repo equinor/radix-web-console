@@ -13,7 +13,6 @@ import { DefaultAppAlias } from '../component/default-app-alias';
 import { DNSAliases } from '../component/dns-aliases';
 import { EnvironmentsSummary } from '../environments-summary';
 import { JobsList } from '../jobs-list';
-import { UsedResources } from '../resources';
 
 const LATEST_JOBS_LIMIT = 5;
 
@@ -44,7 +43,6 @@ export function AppOverview({ appName }: { appName: string }) {
         <div className="grid grid--gap-medium grid--overview-columns">
           <ApplicationCost appName={appName} />
           <FutureApplicationCost appName={appName} />
-          <UsedResources appName={appName} />
         </div>
 
         {appAlias && <DefaultAppAlias appName={appName} appAlias={appAlias} />}

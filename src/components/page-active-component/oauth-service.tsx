@@ -49,6 +49,9 @@ export const OAuthService = ({
             {oauth2.deployment.replicaList &&
             oauth2.deployment.replicaList.length > 0 ? (
               <ReplicaList
+                appName={appName}
+                envName={envName}
+                compName={componentName}
                 replicaList={oauth2.deployment.replicaList}
                 replicaUrlFunc={(name) =>
                   getOAuthReplicaUrl(appName, envName, componentName, name)

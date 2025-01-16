@@ -12,11 +12,12 @@ import { Link } from 'react-router-dom';
 
 import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
 import clsx from 'clsx';
-import type {
-  Component,
-  Environment,
-  OAuth2AuxiliaryResource,
-  ReplicaSummary,
+import {
+  type Component,
+  type Environment,
+  type OAuth2AuxiliaryResource,
+  type ReplicaSummary,
+  useGetApplicationResourcesUtilizationQuery,
 } from '../../store/radix-api';
 import {
   type EnvironmentVulnerabilities,
@@ -38,6 +39,8 @@ import { ReplicaStatusTooltip } from '../status-tooltips';
 import { VulnerabilitySummary } from '../vulnerability-summary';
 
 import './style.css';
+import { slowPollingInterval } from '../../store/defaults';
+import { UtilizationPopover } from '../utilization-popover/utilization-popover';
 
 export interface ComponentListProps {
   appName: string;
@@ -142,6 +145,11 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
     []
   );
 
+  const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
+    { appName },
+    { pollingInterval: slowPollingInterval }
+  );
+
   useEffect(() => {
     const request = trigger({ appName, envName });
     return () => request?.abort();
@@ -182,6 +190,9 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                       </Table.Cell>
                       <Table.Cell className="component-list-head__replicas">
                         Replicas
+                      </Table.Cell>
+                      <Table.Cell className="component-list-head__resources">
+                        {type === 'component' ? 'Resources' : null}
                       </Table.Cell>
                       <Table.Cell className="component-list-head__vulnerabilities">
                         Vulnerabilities
@@ -249,6 +260,15 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                               />
                             </Table.Cell>
                             <Table.Cell>
+                              {type === 'component' && (
+                                <UtilizationPopover
+                                  showLabel
+                                  utilization={utilization}
+                                  path={`${envName}.${x.name}.`}
+                                />
+                              )}
+                            </Table.Cell>
+                            <Table.Cell>
                               <AsyncResource
                                 asyncState={vulnerabilityState}
                                 errorContent={
@@ -308,6 +328,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                                       }
                                     />
                                   </Table.Cell>
+                                  <Table.Cell />
                                   <Table.Cell />
                                 </Table.Row>
                               )}

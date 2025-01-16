@@ -5,10 +5,13 @@
   width: 15%;
 }
 .component-list > thead .component-list-head__vulnerabilities {
-  width: 35%;
+  width: 30%;
 }
 .component-list > thead .component-list-head__replicas {
-  width: 25%;
+  width: 20%;
+}
+.component-list > thead .component-list-head__resources {
+  width: 10%;
 }
 .component-list > tbody td {
   word-break: break-all;
