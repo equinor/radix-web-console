@@ -48,7 +48,6 @@ spec:
           memory: "50Mi"
       variables:
         CLUSTER_EGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
-        CLUSTER_INGRESS_IPS: undefined # Comma separated list of IPs of all Public IP Prefixes assigned to the ClusterType (production, playground, development)
         OAUTH2_AUTHORITY: "https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0"
         SERVICENOW_PROXY_SCOPES: "1b4a22f1-d4a1-4b6a-81b2-fd936daf1786/Application.Read" # scopes must be seperated by comma
         CLUSTER_OIDC_ISSUER_URL: ""
