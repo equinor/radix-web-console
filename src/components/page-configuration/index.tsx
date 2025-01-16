@@ -18,7 +18,12 @@ import { ConfigureApplicationGithub } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
 
 import { pollingInterval } from '../../store/defaults';
-import { type ApplicationRegistration, radixApi } from '../../store/radix-api';
+import {
+  type ApplicationRegistration,
+  radixApi,
+  useGetDeployKeyAndSecretQuery,
+  useRegenerateDeployKeyMutation,
+} from '../../store/radix-api';
 import { ExternalLink } from '../link/external-link';
 import { RadixConfigFileLink } from '../link/radix-config-file-link';
 import './style.css';
@@ -41,6 +46,10 @@ export function PageConfiguration({ appName }: { appName: string }) {
     ...reqState
   } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval });
   const registration = application?.registration;
+  const [regenerateSecrets] = useRegenerateDeployKeyMutation();
+
+  const { data: secrets, refetch: refetchSecrets } =
+    useGetDeployKeyAndSecretQuery({ appName: appName }, { pollingInterval });
 
   return (
     <main>
@@ -78,12 +87,11 @@ export function PageConfiguration({ appName }: { appName: string }) {
                 Config file <RadixConfigFileLink registration={registration} />
               </Typography>
               <ConfigureApplicationGithub
+                onRefreshSecrets={() => refetchSecrets().unwrap()}
+                secrets={secrets}
+                onRegenerateSecrets={(data) => regenerateSecrets(data).unwrap()}
                 refetch={refetch}
                 app={registration}
-                deployKeyTitle="Deploy key"
-                webhookTitle="Webhook"
-                onDeployKeyChange={refetch}
-                initialSecretPollInterval={5000}
               />
             </section>
 

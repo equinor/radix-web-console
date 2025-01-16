@@ -1,76 +1,69 @@
 import {
   Accordion,
   Button,
-  Checkbox,
   List,
   Progress,
   Typography,
 } from '@equinor/eds-core-react';
 import { useState } from 'react';
 
-import imageDeployKey from './deploy-key02.png';
-import imageWebhook from './webhook02.png';
-
-import { externalUrls } from '../../externalUrls';
-import { configVariables } from '../../utils/config';
 import { Alert } from '../alert';
 import { Code } from '../code';
-import { CompactCopyButton } from '../compact-copy-button';
+import imageDeployKey from './deploy-key02.png';
 
 import './style.css';
-import { pollingInterval } from '../../store/defaults';
-import {
-  type ApplicationRegistration,
-  useGetDeployKeyAndSecretQuery,
-  useRegenerateDeployKeyMutation,
+import type {
+  ApplicationRegistration,
+  DeployKeyAndSecret,
+  RegenerateDeployKeyApiArg,
+  RegenerateDeployKeyApiResponse,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ExternalLink } from '../link/external-link';
 import { ScrimPopup } from '../scrim-popup';
 
-const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
-
 interface Props {
   app: ApplicationRegistration;
-  refetch?: () => unknown;
-  onDeployKeyChange: (appName: string) => void;
+  secrets?: DeployKeyAndSecret;
+  refetch: () => unknown;
   startVisible?: boolean;
-  useOtherCiToolOptionVisible?: boolean;
-  deployKeyTitle?: string;
-  webhookTitle?: string;
-  initialSecretPollInterval: number;
+  onRegenerateSecrets: (
+    data: RegenerateDeployKeyApiArg
+  ) => Promise<RegenerateDeployKeyApiResponse>;
+  onRefreshSecrets: () => Promise<unknown>;
 }
 
 export const ConfigureApplicationGithub = ({
   app,
   refetch,
+  secrets,
   startVisible,
-  useOtherCiToolOptionVisible = false,
-  deployKeyTitle = 'Add deploy key',
-  webhookTitle = 'Add webhook',
+  onRegenerateSecrets,
+  onRefreshSecrets,
 }: Props) => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<unknown>();
   const isExpanded = !!startVisible;
-  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${app.name}`;
-  const [useOtherCiTool, setUseOtherCiTool] = useState(false);
   const [visibleRegenerateScrim, setVisibleRegenerateScrim] =
     useState<boolean>(false);
-  const [regenerateSecrets, { isLoading, error }] =
-    useRegenerateDeployKeyMutation();
-  const { data: secrets, refetch: refetchSecrets } =
-    useGetDeployKeyAndSecretQuery(
-      { appName: app.name },
-      { pollingInterval, skip: useOtherCiTool }
-    );
 
   const onRegenerate = handlePromiseWithToast(async () => {
-    setVisibleRegenerateScrim(false);
-    await regenerateSecrets({
-      appName: app.name,
-      regenerateDeployKeyAndSecretData: { sharedSecret: crypto.randomUUID() },
-    }).unwrap();
-    await refetchSecrets();
-    await refetch?.();
+    try {
+      setLoading(true);
+      setVisibleRegenerateScrim(false);
+      await onRegenerateSecrets({
+        appName: app.name,
+        regenerateDeployKeyAndSecretData: { sharedSecret: crypto.randomUUID() },
+      });
+      await onRefreshSecrets();
+      await refetch?.();
+    } catch (e) {
+      setError(e);
+      throw e;
+    } finally {
+      setLoading(false);
+    }
   }, 'Successfully regenerated deploy key and webhook secret');
 
   return (
@@ -83,7 +76,7 @@ export const ConfigureApplicationGithub = ({
           <Accordion.Item isExpanded={isExpanded}>
             <Accordion.Header>
               <Accordion.HeaderTitle>
-                <Typography>{deployKeyTitle}</Typography>
+                <Typography>Add deploy key</Typography>
               </Accordion.HeaderTitle>
             </Accordion.Header>
             <Accordion.Panel>
@@ -122,13 +115,14 @@ export const ConfigureApplicationGithub = ({
                 </div>
                 <div>
                   <div className="o-action-bar">
-                    {error && (
+                    {error ? (
                       <Alert type="danger">
                         Failed to regenerate deploy key and webhook secret.
+                        <br />
                         {getFetchErrorMessage(error)}
                       </Alert>
-                    )}
-                    {isLoading ? (
+                    ) : null}
+                    {loading ? (
                       <>
                         <Progress.Circular size={16} /> Regenerating…
                       </>
@@ -163,7 +157,7 @@ export const ConfigureApplicationGithub = ({
                             </Button.Group>
                           </div>
                         </ScrimPopup>
-                        {!isLoading && secrets?.publicDeployKey && (
+                        {!loading && secrets?.publicDeployKey && (
                           <div>
                             <Typography variant="h5">
                               Regularly regenerate deploy key and webhook secret
@@ -183,84 +177,6 @@ export const ConfigureApplicationGithub = ({
             </Accordion.Panel>
           </Accordion.Item>
         </Accordion>
-
-        {useOtherCiToolOptionVisible && (
-          <fieldset className="check-input">
-            <Checkbox
-              name="deployOnly"
-              checked={useOtherCiTool}
-              onChange={() => setUseOtherCiTool(!useOtherCiTool)}
-            />{' '}
-            <span className="grid grid--gap-small">
-              <Typography
-                className="label"
-                group="input"
-                variant="text"
-                token={{ color: 'currentColor' }}
-              >
-                Use other CI tool than Radix
-              </Typography>
-              <Typography token={{ color: 'currentColor' }}>
-                Select this option if your project is hosted on multiple
-                repositories and/or requires external control of building. Radix
-                will no longer need a webhook and will instead deploy your app
-                through the API/CLI. Read the{' '}
-                <ExternalLink href={externalUrls.deployOnlyGuide}>
-                  Deployment Guide
-                </ExternalLink>{' '}
-                for details.
-              </Typography>
-            </span>
-          </fieldset>
-        )}
-
-        {!useOtherCiTool && (
-          <Accordion className="accordion" chevronPosition="right">
-            <Accordion.Item isExpanded={isExpanded}>
-              <Accordion.Header>
-                <Accordion.HeaderTitle>
-                  <Typography>{webhookTitle}</Typography>
-                </Accordion.HeaderTitle>
-              </Accordion.Header>
-              <Accordion.Panel>
-                <div className="grid grid--gap-medium">
-                  <Typography>
-                    GitHub notifies Radix using a webhook whenever a code push
-                    is made. Open the{' '}
-                    <ExternalLink href={`${app.repository}/settings/hooks/new`}>
-                      Add Webhook page
-                    </ExternalLink>{' '}
-                    and follow the steps below
-                  </Typography>
-                  <div className="grid grid--gap-medium o-body-text">
-                    <img
-                      alt="'Add webhook' steps on GitHub"
-                      src={imageWebhook}
-                      srcSet={`${imageWebhook} 2x`}
-                    />
-                    <List variant="numbered">
-                      <List.Item>
-                        As Payload URL, use <code>{webhookURL}</code>{' '}
-                        <CompactCopyButton content={webhookURL} />
-                      </List.Item>
-                      <List.Item>
-                        Choose <code>application/json</code> as Content type
-                      </List.Item>
-                      <List.Item>
-                        The Shared Secret for this application is{' '}
-                        <code>{secrets?.sharedSecret}</code>{' '}
-                        <CompactCopyButton
-                          content={secrets?.sharedSecret ?? ''}
-                        />
-                      </List.Item>
-                      <List.Item>Press "Add webhook"</List.Item>
-                    </List>
-                  </div>
-                </div>
-              </Accordion.Panel>
-            </Accordion.Item>
-          </Accordion>
-        )}
       </div>
     </div>
   );
