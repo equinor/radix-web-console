@@ -3,6 +3,7 @@
   display: inline-block;
   padding: var(--eds_spacing_medium);
   position: relative;
+  white-space: pre-line;
 }
 .alert.icon {
   display: grid;
