@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
 import { ConfigureApplicationGithub } from '../configure-application-github';
-import CreateApplicationForm from '../create-application-form';
 import { ScrimPopup } from '../scrim-popup';
+import CreateApplicationForm from './create-application-form';
 
 import type { ApplicationRegistration } from '../../store/radix-api';
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';

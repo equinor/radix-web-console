@@ -14,7 +14,8 @@ import useLocalStorage from '../../effects/use-local-storage';
 import { externalUrls } from '../../externalUrls';
 import {
   type ApplicationRegistration,
-  type ApplicationRegistrationUpsertResponse,
+  type RegisterApplicationApiArg,
+  type RegisterApplicationApiResponse,
   radixApi,
   useRegisterApplicationMutation,
 } from '../../store/radix-api';
@@ -33,17 +34,50 @@ import {
 import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { ExternalLink } from '../link/external-link';
 
-function sanitizeName(name: string): string {
-  // force name to lowercase, no spaces
-  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? '';
-}
-
 type Props = {
   onCreated: (application: ApplicationRegistration) => void;
 };
+
 export default function CreateApplicationForm({ onCreated }: Props) {
-  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
+  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
   const [createApp, creationState] = useRegisterApplicationMutation();
+
+  return (
+    <CreateApplicationFormLayout
+      isSuccess={creationState.isSuccess}
+      isLoading={creationState.isLoading}
+      error={creationState.error}
+      warnings={creationState.data?.warnings}
+      onCreated={onCreated}
+      onRefreshApps={() => refreshApps({})}
+      onCreateApp={(data: RegisterApplicationApiArg) =>
+        createApp(data).unwrap()
+      }
+    />
+  );
+}
+
+type CreateApplicationFormLayoutProps = {
+  isLoading: boolean;
+  isSuccess: boolean;
+  error?: unknown;
+  warnings?: string[];
+  onCreated: (application: ApplicationRegistration) => void;
+  onRefreshApps: () => unknown;
+  onCreateApp: (
+    data: RegisterApplicationApiArg
+  ) => Promise<RegisterApplicationApiResponse>;
+};
+export function CreateApplicationFormLayout({
+  isLoading,
+  isSuccess,
+  error,
+  warnings,
+  onCreated,
+  onRefreshApps,
+  onCreateApp,
+}: CreateApplicationFormLayoutProps) {
+  const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [applicationRegistration, setAppRegistration] =
     useState<ApplicationRegistration>({
       name: '',
@@ -60,8 +94,6 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       adUsers: [],
       readerAdUsers: [],
     });
-
-  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
 
   const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
     'knownApplications',
@@ -104,19 +136,19 @@ export default function CreateApplicationForm({ onCreated }: Props) {
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     try {
       ev.preventDefault();
-      const response: ApplicationRegistrationUpsertResponse = await createApp({
+      const response = await onCreateApp({
         applicationRegistrationRequest: {
           applicationRegistration,
           acknowledgeWarnings,
         },
-      }).unwrap();
+      });
 
       // the response will only contains an application if there are no warnings
       //Only call onCreated when created without warnings, or created with ack warnings
       if (response.applicationRegistration) {
         onCreated(response.applicationRegistration);
         addAppNameToLocalStorage(response.applicationRegistration.name);
-        refreshApps({});
+        onRefreshApps();
         successToast('Saved');
       } else {
         warningToast('Registration had warnings');
@@ -154,10 +186,7 @@ export default function CreateApplicationForm({ onCreated }: Props) {
           </Typography>
         </div>
       </Alert>
-      <fieldset
-        disabled={creationState.isLoading}
-        className="grid grid--gap-medium"
-      >
+      <fieldset disabled={isLoading} className="grid grid--gap-medium">
         <TextField
           id="name_field"
           label="Name"
@@ -198,23 +227,23 @@ export default function CreateApplicationForm({ onCreated }: Props) {
           onChange={handleAdGroupsChange}
           labeling="Administrators"
         />
-        {creationState.isError && (
+        {error ? (
           <Alert type="danger">
             Failed to create application.
             <br />
-            {getFetchErrorMessage(creationState.error)}
+            {getFetchErrorMessage(error)}
           </Alert>
-        )}
+        ) : null}
         <div className="o-action-bar grid grid--gap-medium">
-          {creationState.isLoading && (
+          {isLoading && (
             <Typography>
               <CircularProgress size={24} /> Creating…
             </Typography>
           )}
-          {creationState.isSuccess && creationState.data?.warnings && (
+          {isSuccess && warnings && (
             <div className="grid grid--gap-medium">
               <List>
-                {creationState.data.warnings.map((message, i) => (
+                {warnings.map((message, i) => (
                   <List.Item key={i}>
                     <Alert type="warning">{message}</Alert>
                   </List.Item>
@@ -239,4 +268,9 @@ export default function CreateApplicationForm({ onCreated }: Props) {
       </fieldset>
     </form>
   );
+}
+
+function sanitizeName(name: string): string {
+  // force name to lowercase, no spaces
+  return name?.toLowerCase().replace(/[^a-z0-9]/g, '-') ?? '';
 }
