@@ -17,10 +17,7 @@ export default (
         wbs: 'wbs123',
         radixConfigFullName: 'radixconfig.yaml',
       }}
-      onDeployKeyChange={() => void 0}
       refetch={() => void 0}
-      initialSecretPollInterval={5000}
-      useOtherCiToolOptionVisible={true}
     />
   </div>
 );
