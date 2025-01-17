@@ -18,9 +18,12 @@ import type { ScheduledJobSummary } from '../../store/radix-api';
 
 type StatusType = ScheduledJobSummary['status'];
 
-const BadgeTemplates: Record<StatusType, StatusBadgeTemplateProps> = {
-  Running: { icon: <Icon data={run} />, title: 'dsfsdf' },
-  Active: { icon: <Icon data={time} />, title: 'dsfsdf' },
+const BadgeTemplates: Record<
+  StatusType,
+  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
+> = {
+  Running: { icon: <Icon data={run} /> },
+  Active: { icon: <Icon data={time} /> },
   Succeeded: { icon: <Icon data={check} /> },
   Completed: { icon: <Icon data={check} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
