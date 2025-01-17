@@ -36,13 +36,13 @@ import {
 import { smallScheduledBatchName } from '../../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import { BatchJobStatuses } from './batch-job-statuses';
 
 import './style.css';
 import useLocalStorage from '../../../effects/use-local-storage';
+import { ScheduledBatchStatusBadge } from '../../status-badges/scheduled-batch-status';
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running';
@@ -196,7 +196,7 @@ export function ScheduledBatchList({
                           </Table.Cell>
                           <Table.Cell>{batch.batchId}</Table.Cell>
                           <Table.Cell>
-                            <ProgressStatusBadge status={batch.status} />
+                            <ScheduledBatchStatusBadge status={batch.status} />
                           </Table.Cell>
                           <Table.Cell>
                             <BatchJobStatuses jobs={batch.jobList} />

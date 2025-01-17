@@ -14,17 +14,12 @@ import {
   type StatusBadgeTemplateProps,
 } from './status-badge-template';
 
-import type {
-  ScheduledBatchSummary,
-  ScheduledJobSummary,
-} from '../../store/radix-api';
+import type { ScheduledBatchSummary } from '../../store/radix-api';
 
-type JobSchedulerProgressStatus =
-  | ScheduledBatchSummary['status']
-  | ScheduledJobSummary['status'];
+type StatusType = ScheduledBatchSummary['status'];
 
 const BadgeTemplates: Record<
-  JobSchedulerProgressStatus,
+  ScheduledBatchSummary['status'],
   Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
 > = {
   Running: { icon: <Icon data={run} /> },
@@ -37,10 +32,10 @@ const BadgeTemplates: Record<
   Stopped: { icon: <Icon data={blocked} /> },
 };
 
-export const ProgressStatusBadge: FunctionComponent<{
-  status: JobSchedulerProgressStatus;
+export const ScheduledBatchStatusBadge: FunctionComponent<{
+  status: StatusType;
 }> = ({ status }) => (
   <StatusBadgeTemplate {...BadgeTemplates[status]}>
-    {status === 'Active' ? 'Starting' : status}
+    {status}
   </StatusBadgeTemplate>
 );

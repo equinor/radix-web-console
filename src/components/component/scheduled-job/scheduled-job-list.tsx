@@ -49,7 +49,7 @@ import { smallScheduledJobName } from '../../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 import { ReplicaImage } from '../../replica-image';
 import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
+import { ScheduledJobStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 
@@ -237,7 +237,7 @@ export const ScheduledJobList: FunctionComponent<{
                           </Table.Cell>
                           <Table.Cell>{job.jobId}</Table.Cell>
                           <Table.Cell>
-                            <ProgressStatusBadge status={job.status} />
+                            <ScheduledJobStatusBadge status={job.status} />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
                             <RelativeToNow time={job.created} capitalize />

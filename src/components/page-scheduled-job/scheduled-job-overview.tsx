@@ -9,7 +9,7 @@ import {
 import { Code } from '../code';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
-import { RadixJobConditionBadge } from '../status-badges';
+import { ScheduledJobStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
@@ -57,7 +57,7 @@ const ScheduledJobState: FunctionComponent<
       </div>
     )}
 
-    {status && <RadixJobConditionBadge status={status} />}
+    {status && <ScheduledJobStatusBadge status={status} />}
 
     {message && (
       <>

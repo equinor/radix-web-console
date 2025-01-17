@@ -1,11 +1,5 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import {
-  check_circle_outlined,
-  error_outlined,
-  run,
-  stop,
-  time,
-} from '@equinor/eds-icons';
+import { check, error_outlined, run, stop, time } from '@equinor/eds-icons';
 
 import {
   StatusBadgeTemplate,
@@ -20,7 +14,7 @@ const BadgeTemplates = {
   Pending: { icon: <Icon data={time} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
-  Succeeded: { icon: <Icon data={check_circle_outlined} /> },
+  Succeeded: { icon: <Icon data={check} /> },
   Running: { icon: <Icon data={run} /> },
   Starting: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },

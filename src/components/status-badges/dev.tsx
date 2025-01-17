@@ -13,9 +13,9 @@ import {
   ImageHubSecretStatusBadge,
   JobConditionBadgeTemplates,
   PipelineRunStatusBadge,
-  ProgressStatusBadge,
   RadixJobConditionBadge,
   ReplicaStatusBadge,
+  ScheduledJobStatusBadge,
 } from '.';
 import {
   StatusBadgeTemplate,
@@ -147,7 +147,7 @@ const testData = [
   EnumBadge(
     'ProgressStatusBadges',
     ['Failed', 'Running', 'Stopped', 'Stopping', 'Succeeded', 'Waiting'],
-    ProgressStatusBadge
+    ScheduledJobStatusBadge
   ),
   EnumBadge(
     'RadixJobConditionBadges',

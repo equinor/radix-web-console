@@ -2,7 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import type { ScheduledBatchSummary } from '../../store/radix-api';
 import { smallScheduledBatchName } from '../../utils/string';
 import { BatchJobStatuses } from '../component/scheduled-job/batch-job-statuses';
-import { ProgressStatusBadge } from '../status-badges';
+import { ScheduledBatchStatusBadge } from '../status-badges/scheduled-batch-status';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
 
@@ -65,11 +65,11 @@ export const ScheduledBatchOverview = ({
           </Typography>
           {batch.status && (
             <Typography as="span" className="status-title">
-              Batch status <ProgressStatusBadge status={batch.status} />
+              Batch status <ScheduledBatchStatusBadge status={batch.status} />
             </Typography>
           )}
           <Typography as="span" className="status-title">
-            Jobs statuses
+            Job statuses
             <BatchJobStatuses jobs={batch.jobList} />
           </Typography>
         </div>
