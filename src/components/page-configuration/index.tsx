@@ -1,4 +1,4 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Accordion, Typography } from '@equinor/eds-core-react';
 import { BuildSecretsAccordion } from './build-secrets-accordion';
 import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
@@ -14,7 +14,10 @@ import { withRouteParams } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import { ConfigureApplicationGithub } from '../configure-application-github';
+import {
+  ConfigureApplicationGithub,
+  ConfigureGithubWebhook,
+} from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
 
 import { pollingInterval } from '../../store/defaults';
@@ -86,13 +89,48 @@ export function PageConfiguration({ appName }: { appName: string }) {
               <Typography>
                 Config file <RadixConfigFileLink registration={registration} />
               </Typography>
-              <ConfigureApplicationGithub
-                onRefreshSecrets={() => refetchSecrets().unwrap()}
-                secrets={secrets}
-                onRegenerateSecrets={(data) => regenerateSecrets(data).unwrap()}
-                refetch={refetch}
-                app={registration}
-              />
+              <Typography>
+                To integrate with GitHub you must add a deploy key and a webhook
+              </Typography>
+
+              <div className="grid grid--gap-small">
+                <Accordion className="accordion" chevronPosition="right">
+                  <Accordion.Item>
+                    <Accordion.Header>
+                      <Accordion.HeaderTitle>
+                        <Typography>Add deploy key</Typography>
+                      </Accordion.HeaderTitle>
+                    </Accordion.Header>
+                    <Accordion.Panel>
+                      <ConfigureApplicationGithub
+                        onRefreshSecrets={() => refetchSecrets().unwrap()}
+                        secrets={secrets}
+                        onRegenerateSecrets={(data) =>
+                          regenerateSecrets(data).unwrap()
+                        }
+                        app={registration}
+                      />
+                    </Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion>
+
+                <Accordion chevronPosition="right">
+                  <Accordion.Item>
+                    <Accordion.Header>
+                      <Accordion.HeaderTitle>
+                        <Typography>Add webhook</Typography>
+                      </Accordion.HeaderTitle>
+                    </Accordion.Header>
+                    <Accordion.Panel>
+                      <ConfigureGithubWebhook
+                        appName={registration.name}
+                        repository={registration.repository}
+                        sharedSecret={secrets?.sharedSecret}
+                      />
+                    </Accordion.Panel>
+                  </Accordion.Item>
+                </Accordion>
+              </div>
             </section>
 
             <section className="grid grid--gap-small">

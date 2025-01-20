@@ -12,7 +12,10 @@ import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
-import { ConfigureApplicationGithub } from '../configure-application-github';
+import {
+  ConfigureApplicationGithub,
+  ConfigureGithubWebhook,
+} from '../configure-application-github';
 import { ScrimPopup } from '../scrim-popup';
 
 import {
@@ -31,12 +34,8 @@ import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import './style.css';
 import { externalUrls } from '../../externalUrls';
 import { pollingInterval } from '../../store/defaults';
-import { configVariables } from '../../utils/config';
-import { CompactCopyButton } from '../compact-copy-button';
-import imageWebhook from '../configure-application-github/webhook02.png';
 import { ExternalLink } from '../link/external-link';
 import { CreateApplicationForm } from './create-application-form';
-const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE;
 
 export default function PageCreateApplication() {
   const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
@@ -137,13 +136,14 @@ export function PageCreateApplicationLayout({
                 The application <strong>{registration.name}</strong> has been
                 set up
               </Typography>
+              <Typography>
+                To integrate with GitHub you must add a deploy key and a webhook
+              </Typography>
               <ConfigureApplicationGithub
-                refetch={() => console.error('Implement refetch registration!')}
                 secrets={secrets}
                 onRegenerateSecrets={onRegenerateSecrets}
                 onRefreshSecrets={onRefreshSecrets}
                 app={registration}
-                startVisible
               />
 
               <fieldset className="check-input">
@@ -175,57 +175,11 @@ export function PageCreateApplicationLayout({
               </fieldset>
 
               {!useGithub && (
-                <Accordion className="accordion" chevronPosition="right">
-                  <Accordion.Item isExpanded={true}>
-                    <Accordion.Header>
-                      <Accordion.HeaderTitle>
-                        <Typography>Add webhook</Typography>
-                      </Accordion.HeaderTitle>
-                    </Accordion.Header>
-                    <Accordion.Panel>
-                      <div className="grid grid--gap-medium">
-                        <Typography>
-                          GitHub notifies Radix using a webhook whenever a code
-                          push is made. Open the{' '}
-                          <ExternalLink
-                            href={`${registration.repository}/settings/hooks/new`}
-                          >
-                            Add Webhook page
-                          </ExternalLink>{' '}
-                          and follow the steps below
-                        </Typography>
-                        <div className="grid grid--gap-medium o-body-text">
-                          <img
-                            alt="'Add webhook' steps on GitHub"
-                            src={imageWebhook}
-                            srcSet={`${imageWebhook} 2x`}
-                          />
-                          <List variant="numbered">
-                            <List.Item>
-                              As Payload URL, use{' '}
-                              <code>{`https://webhook.${radixZoneDNS}/events/github?appName=${registration.name}`}</code>{' '}
-                              <CompactCopyButton
-                                content={`https://webhook.${radixZoneDNS}/events/github?appName=${registration.name}`}
-                              />
-                            </List.Item>
-                            <List.Item>
-                              Choose <code>application/json</code> as Content
-                              type
-                            </List.Item>
-                            <List.Item>
-                              The Shared Secret for this application is{' '}
-                              <code>{secrets?.sharedSecret}</code>{' '}
-                              <CompactCopyButton
-                                content={secrets?.sharedSecret ?? ''}
-                              />
-                            </List.Item>
-                            <List.Item>Press "Add webhook"</List.Item>
-                          </List>
-                        </div>
-                      </div>
-                    </Accordion.Panel>
-                  </Accordion.Item>
-                </Accordion>
+                <ConfigureGithubWebhook
+                  appName={registration.name}
+                  repository={registration.repository}
+                  sharedSecret={secrets?.sharedSecret}
+                />
               )}
               <Typography>
                 Now you can run the{' '}
