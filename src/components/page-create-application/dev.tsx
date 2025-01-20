@@ -21,13 +21,10 @@ export default (
 );
 
 function TestComponent() {
-  const [useGithub, setUseGithub] = useState(false);
   const [secrets, setSecrets] = useState<DeployKeyAndSecret>();
 
   return (
     <PageCreateApplicationLayout
-      useGithub={useGithub}
-      setUseGithub={setUseGithub}
       secrets={secrets}
       onRefreshSecrets={() => Promise.resolve()}
       onRegenerateSecrets={() => Promise.resolve()}

@@ -1,7 +1,7 @@
 import { Button, Checkbox, Icon, Typography } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import { routes } from '../../routes';
 import { routeWithParams } from '../../utils/string';
@@ -34,19 +34,16 @@ export default function PageCreateApplication() {
   const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
   const [createApp] = useRegisterApplicationMutation();
   const [regenerateSecrets] = useRegenerateDeployKeyMutation();
-  const [useGithub, setUseGithub] = useState<boolean>(false);
   const [appName, setAppName] = useState<string>();
 
   const { data: secrets, refetch: refetchSecrets } =
     useGetDeployKeyAndSecretQuery(
       { appName: appName! },
-      { pollingInterval, skip: !useGithub || !appName }
+      { pollingInterval, skip: !appName }
     );
 
   return (
     <PageCreateApplicationLayout
-      useGithub={useGithub}
-      setUseGithub={setUseGithub}
       secrets={secrets}
       onRefreshSecrets={() => refetchSecrets().unwrap()}
       onRegenerateSecrets={(data) => regenerateSecrets(data).unwrap()}
@@ -63,8 +60,6 @@ export default function PageCreateApplication() {
 }
 
 type PageCreateApplicationLayoutProps = {
-  useGithub: boolean;
-  setUseGithub: (show: boolean) => unknown;
   secrets?: DeployKeyAndSecret;
   onRefreshApps: () => unknown;
   onCreateApp: (
@@ -76,29 +71,49 @@ type PageCreateApplicationLayoutProps = {
   onRefreshSecrets: () => Promise<unknown>;
 };
 
+type Page = 'registration' | 'deploykey' | 'ci' | 'webhook' | 'finished';
+function useCurrentPage(): [Page, (newPage: Page) => unknown] {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page') ?? 'registration';
+
+  const onNewPage = (newPage: Page) => {
+    setSearchParams((prev) => {
+      console.log({ newPage });
+      prev.set('page', newPage);
+      return prev;
+    });
+  };
+
+  return [page as Page, onNewPage];
+}
+
 export function PageCreateApplicationLayout({
-  useGithub,
-  setUseGithub,
   secrets,
   onRefreshApps,
   onCreateApp,
   onRegenerateSecrets,
   onRefreshSecrets,
 }: PageCreateApplicationLayoutProps) {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [visibleScrim, setVisibleScrim] = useState(true);
+  const [created, setCreated] = useState(false);
+  const [useGithub, setUseGithub] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [registration, setRegistration] =
     useState<ApplicationRegistration | null>(null);
+  const [page, setNewPage] = useCurrentPage();
 
   const onCloseScrim = () => {
     setVisibleScrim(false);
     setRegistration(null);
+    setCreated(false);
   };
 
   const onCreated = (newRegistration: ApplicationRegistration) => {
     containerRef.current?.scrollTo(0, 0);
     setRegistration(newRegistration);
+    setCreated(true);
     onRefreshApps();
+    setNewPage('deploykey');
   };
 
   return (
@@ -118,13 +133,15 @@ export function PageCreateApplicationLayout({
         onClose={onCloseScrim}
       >
         <div className="create-app-content" ref={containerRef}>
-          {!registration ? (
+          {(page === 'registration' || !registration) && (
             <CreateApplicationForm
+              created={created}
               onCreated={onCreated}
               onCreateApp={onCreateApp}
             />
-          ) : (
-            <div className="grid grid--gap-medium">
+          )}
+          {page === 'deploykey' && registration && (
+            <>
               <Typography>
                 The application <strong>{registration.name}</strong> has been
                 set up
@@ -138,12 +155,20 @@ export function PageCreateApplicationLayout({
                 onRefreshSecrets={onRefreshSecrets}
                 app={registration}
               />
+              <Button onClick={() => setNewPage('registration')}>
+                Registration
+              </Button>
+              <Button onClick={() => setNewPage('ci')}>Next: CI</Button>
+            </>
+          )}
 
+          {page === 'ci' && registration && (
+            <>
               <fieldset className="check-input">
                 <Checkbox
                   name="deployOnly"
-                  checked={useGithub}
-                  onChange={(e) => setUseGithub(e.target.checked)}
+                  checked={!useGithub}
+                  onChange={(e) => setUseGithub(!e.target.checked)}
                 />{' '}
                 <span className="grid grid--gap-small">
                   <Typography
@@ -166,14 +191,29 @@ export function PageCreateApplicationLayout({
                   </Typography>
                 </span>
               </fieldset>
+              <Button onClick={() => setNewPage('deploykey')}>
+                Previous: Deploykey
+              </Button>
+              <Button onClick={() => setNewPage('webhook')}>
+                Next: Webhook
+              </Button>
+            </>
+          )}
 
-              {!useGithub && (
-                <ConfigureGithubWebhook
-                  appName={registration.name}
-                  repository={registration.repository}
-                  sharedSecret={secrets?.sharedSecret}
-                />
-              )}
+          {page === 'webhook' && registration && (
+            <>
+              <ConfigureGithubWebhook
+                appName={registration.name}
+                repository={registration.repository}
+                sharedSecret={secrets?.sharedSecret}
+              />
+              <Button onClick={() => setNewPage('ci')}>Previous: CI</Button>
+              <Button onClick={() => setNewPage('finished')}>Finished</Button>
+            </>
+          )}
+
+          {page === 'webhook' && registration && (
+            <>
               <Typography>
                 Now you can run the{' '}
                 <NewApplyConfigPipelineLink appName={registration.name}>
@@ -190,7 +230,10 @@ export function PageCreateApplicationLayout({
                   your application's page
                 </Typography>
               </Typography>
-            </div>
+              <Button onClick={() => setNewPage('webhook')}>
+                Previous: Webhook
+              </Button>
+            </>
           )}
         </div>
       </ScrimPopup>

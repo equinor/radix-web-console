@@ -32,12 +32,17 @@ import type { HandleAdGroupsChangeCB } from '../graph/adGroups';
 import { ExternalLink } from '../link/external-link';
 
 type Props = {
+  created: boolean;
   onCreated: (application: ApplicationRegistration) => void;
   onCreateApp: (
     data: RegisterApplicationApiArg
   ) => Promise<RegisterApplicationApiResponse>;
 };
-export function CreateApplicationForm({ onCreated, onCreateApp }: Props) {
+export function CreateApplicationForm({
+  onCreated,
+  onCreateApp,
+  created,
+}: Props) {
   const [acknowledgeWarnings, setAcknowledgeWarnings] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
@@ -158,7 +163,7 @@ export function CreateApplicationForm({ onCreated, onCreateApp }: Props) {
           </Typography>
         </div>
       </Alert>
-      <fieldset disabled={loading} className="grid grid--gap-medium">
+      <fieldset disabled={loading || created} className="grid grid--gap-medium">
         <TextField
           id="name_field"
           label="Name"
