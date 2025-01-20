@@ -1,6 +1,6 @@
 import { Divider } from '@equinor/eds-core-react';
 import PageCreateApplication from '.';
-import { CreateApplicationFormLayout } from './create-application-form';
+import { CreateApplicationForm } from './create-application-form';
 
 export default (
   <div
@@ -14,12 +14,7 @@ export default (
     <PageCreateApplication />
     <Divider />
 
-    <CreateApplicationFormLayout
-      isLoading={true}
-      isSuccess={true}
-      error={new Error('hello world!')}
-      warnings={['test 1', 'test 2']}
-      onRefreshApps={console.log}
+    <CreateApplicationForm
       onCreated={console.log}
       onCreateApp={async (...args) => {
         console.info(args);

@@ -116,6 +116,7 @@ export function CreateApplicationForm({ onCreated, onCreateApp }: Props) {
       if (response.applicationRegistration) {
         onCreated(response.applicationRegistration);
         addAppNameToLocalStorage(response.applicationRegistration.name);
+        setAppRegistration(response.applicationRegistration);
         successToast('Saved');
       } else {
         setWarnings(response.warnings);

@@ -18,6 +18,8 @@ export default (
         radixConfigFullName: 'radixconfig.yaml',
       }}
       refetch={() => void 0}
+      onRefreshSecrets={() => Promise.resolve()}
+      onRegenerateSecrets={() => Promise.resolve()}
     />
   </div>
 );

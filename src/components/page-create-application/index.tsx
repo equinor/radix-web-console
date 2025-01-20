@@ -56,7 +56,7 @@ export default function PageCreateApplication() {
       useGithub={useGithub}
       setUseGithub={setUseGithub}
       secrets={secrets}
-      onRefreshSecrets={refetchSecrets}
+      onRefreshSecrets={() => refetchSecrets().unwrap()}
       onRegenerateSecrets={(data) => regenerateSecrets(data).unwrap()}
       onRefreshApps={() => refreshApps({})}
       onCreateApp={async (data: RegisterApplicationApiArg) => {
