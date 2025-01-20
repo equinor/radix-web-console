@@ -1,4 +1,4 @@
-import { ConfigureApplicationGithub } from '.';
+import { ConfigureApplicationGithub, ConfigureGithubWebhook } from '.';
 
 export default (
   <div className="o-layout-single">
@@ -19,6 +19,11 @@ export default (
       }}
       onRefreshSecrets={() => Promise.resolve()}
       onRegenerateSecrets={() => Promise.resolve()}
+    />
+    <ConfigureGithubWebhook
+      appName={'a-name-thing'}
+      repository={'https://some/path/to/a/repo'}
+      sharedSecret={crypto.randomUUID()}
     />
   </div>
 );

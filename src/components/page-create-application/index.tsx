@@ -1,11 +1,4 @@
-import {
-  Accordion,
-  Button,
-  Checkbox,
-  Icon,
-  List,
-  Typography,
-} from '@equinor/eds-core-react';
+import { Button, Checkbox, Icon, Typography } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
