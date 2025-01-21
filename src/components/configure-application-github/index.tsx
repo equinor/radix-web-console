@@ -153,15 +153,16 @@ export function ConfigureGithubWebhook({
   return (
     <div className="grid grid--gap-medium">
       <Typography>
-        GitHub notifies Radix using a webhook whenever a code push is made. Open
-        the{' '}
-        <ExternalLink href={`${repository}/settings/hooks/new`}>
-          Add Webhook page
-        </ExternalLink>{' '}
-        and follow the steps below
+        GitHub notifies Radix using a webhook whenever a code push is made.
       </Typography>
       <div className="grid grid--gap-medium o-body-text">
         <List variant="numbered">
+          <List.Item>
+            Open the{' '}
+            <ExternalLink href={`${repository}/settings/hooks/new`}>
+              Add Webhook page
+            </ExternalLink>{' '}
+          </List.Item>
           <List.Item>
             As Payload URL, use{' '}
             <code>{`https://webhook.${radixZoneDNS}/events/github?appName=${appName}`}</code>{' '}
@@ -179,11 +180,13 @@ export function ConfigureGithubWebhook({
           </List.Item>
           <List.Item>Press "Add webhook"</List.Item>
         </List>
-        <img
-          alt="'Add webhook' steps on GitHub"
-          src={imageWebhook}
-          srcSet={`${imageWebhook} 2x`}
-        />
+        <div className={'screenshot'}>
+          <img
+            alt="'Add webhook' steps on GitHub"
+            src={imageWebhook}
+            srcSet={`${imageWebhook} 2x`}
+          />
+        </div>
       </div>
     </div>
   );

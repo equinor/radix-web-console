@@ -16,6 +16,7 @@ import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import { AppConfigConfigurationItem } from '../app-config-ci';
 import { errorToast } from '../global-top-nav/styled-toaster';
+import type { AdGroupItem } from '../graph/adGroups';
 import { ExternalLink } from '../link/external-link';
 
 type Props = {
@@ -29,6 +30,7 @@ export function CreateApplicationForm({ registration, onCreate }: Props) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<unknown>();
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [adUsers, setAdUsers] = useState<Readonly<AdGroupItem>[]>();
 
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
@@ -38,7 +40,10 @@ export function CreateApplicationForm({ registration, onCreate }: Props) {
       const applicationRegistration: Partial<ApplicationRegistration> = {
         name: sanitizeName(data.get('name')?.toString() ?? ''),
         repository: data.get('repository')?.toString(),
-        adGroups: data.getAll('adGroups').map((x) => x.toString()),
+        adGroups: adUsers?.filter((x) => x.type === 'Group')?.map((x) => x.id),
+        adUsers: adUsers
+          ?.filter((x) => x.type === 'ServicePrincipal')
+          ?.map((x) => x.id),
         configBranch: data.get('configBranch')?.toString(),
         radixConfigFullName: data.get('radixConfigFullName')?.toString(),
         configurationItem: data.get('configurationItem')?.toString(),
@@ -125,7 +130,8 @@ export function CreateApplicationForm({ registration, onCreate }: Props) {
         />
         <AppConfigAdGroups
           name="adGroups"
-          adGroups={registration?.adGroups}
+          adGroups={adUsers?.map((x) => x.id) || registration?.adGroups}
+          onChange={(items) => setAdUsers([...items])}
           labeling="Administrators"
         />
         {error ? (

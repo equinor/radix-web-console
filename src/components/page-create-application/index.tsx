@@ -83,7 +83,7 @@ export function PageCreateApplicationLayout({
   onRefreshApps,
   onCreateApplication,
 }: PageCreateApplicationLayoutProps) {
-  const [visibleScrim, setVisibleScrim] = useState(true);
+  const [visibleScrim, setVisibleScrim] = useState(false);
   const [useGithub, setUseGithub] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const [registration, setRegistration] = useState<ApplicationRegistration>();
@@ -164,20 +164,18 @@ export function PageCreateApplicationLayout({
                 app={registration}
               />
               <Divider style={{ width: '100%' }} />
-              <Button onClick={() => setNewPage('registration')}>
-                Back: CI
-              </Button>
-              <Button onClick={() => setNewPage('ci')}>Next: CI</Button>
+              <Button onClick={() => setNewPage('ci')}>Configure CI</Button>
             </>
           )}
 
           {page === 'ci' && registration && (
             <>
-              <fieldset className="check-input">
+              <label htmlFor={'deployOnly'} className="check-input">
                 <Checkbox
+                  id={'deployOnly'}
                   name="deployOnly"
-                  checked={!useGithub}
-                  onChange={(e) => setUseGithub(!e.target.checked)}
+                  checked={useGithub}
+                  onChange={(e) => setUseGithub(e.target.checked)}
                 />{' '}
                 <span className="grid grid--gap-small">
                   <Typography
@@ -186,10 +184,10 @@ export function PageCreateApplicationLayout({
                     variant="text"
                     token={{ color: 'currentColor' }}
                   >
-                    Use other CI tool than Radix
+                    Use Radix for CI (build)
                   </Typography>
                   <Typography token={{ color: 'currentColor' }}>
-                    Select this option if your project is hosted on multiple
+                    Unselect this option if your project is hosted on multiple
                     repositories and/or requires external control of building.
                     Radix will no longer need a webhook and will instead deploy
                     your app through the API/CLI. Read the{' '}
@@ -199,11 +197,15 @@ export function PageCreateApplicationLayout({
                     for details.
                   </Typography>
                 </span>
-              </fieldset>
+              </label>
               <Divider style={{ width: '100%' }} />
-              <Button onClick={() => setNewPage('webhook')}>
-                Next: Webhook
-              </Button>
+              {useGithub ? (
+                <Button onClick={() => setNewPage('webhook')}>
+                  Configure Webhook
+                </Button>
+              ) : (
+                <Button onClick={() => setNewPage('finished')}>Complete</Button>
+              )}
             </>
           )}
 
@@ -215,18 +217,15 @@ export function PageCreateApplicationLayout({
                 sharedSecret={secrets?.sharedSecret}
               />
               <Divider style={{ width: '100%' }} />
-              <Button onClick={() => setNewPage('finished')}>Finished</Button>
+              <Button onClick={() => setNewPage('finished')}>Complete</Button>
             </>
           )}
 
-          {page === 'webhook' && registration && (
+          {page === 'finished' && registration && (
             <>
               <Typography>
-                Now you can run the{' '}
-                <NewApplyConfigPipelineLink appName={registration.name}>
-                  apply-config pipeline job
-                </NewApplyConfigPipelineLink>
-                to apply radixconfig.yaml, or go to{' '}
+                Now you can run the <em>apply-config</em> pipeline job, or or go
+                to{' '}
                 <Typography
                   as={Link}
                   to={routeWithParams(routes.app, {
@@ -236,6 +235,10 @@ export function PageCreateApplicationLayout({
                 >
                   your application's page
                 </Typography>
+                <Divider />
+                <NewApplyConfigPipelineLink button appName={registration.name}>
+                  Apply Config
+                </NewApplyConfigPipelineLink>
               </Typography>
             </>
           )}
