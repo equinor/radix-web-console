@@ -14,10 +14,11 @@ export default function PageCreateApplication() {
   const [createApp] = useRegisterApplicationMutation();
   const [appName, setAppName] = useState<string>();
 
-  const { data: secrets } = useGetDeployKeyAndSecretQuery(
-    { appName: appName! },
-    { pollingInterval, skip: !appName }
-  );
+  const { data: secrets, refetch: refetchSecrets } =
+    useGetDeployKeyAndSecretQuery(
+      { appName: appName! },
+      { pollingInterval, skip: !appName }
+    );
 
   const onCreateApplication = async (
     applicationRegistration: ApplicationRegistration,
@@ -32,6 +33,7 @@ export default function PageCreateApplication() {
 
     if (response.applicationRegistration) {
       setAppName(response.applicationRegistration.name);
+      setTimeout(refetchSecrets, 250); // We cant refetch secrets while its _skipped_, so give it a few ms so React can catch up
     }
 
     return response.warnings ?? [];
