@@ -14,13 +14,10 @@ import { ScrimPopup } from '../scrim-popup';
 import {
   type ApplicationRegistration,
   type DeployKeyAndSecret,
-  type RegenerateDeployKeyApiArg,
-  type RegenerateDeployKeyApiResponse,
   type RegisterApplicationApiArg,
   type RegisterApplicationApiResponse,
   radixApi,
   useGetDeployKeyAndSecretQuery,
-  useRegenerateDeployKeyMutation,
   useRegisterApplicationMutation,
 } from '../../store/radix-api';
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
@@ -33,20 +30,16 @@ import { CreateApplicationForm } from './create-application-form';
 export default function PageCreateApplication() {
   const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
   const [createApp] = useRegisterApplicationMutation();
-  const [regenerateSecrets] = useRegenerateDeployKeyMutation();
   const [appName, setAppName] = useState<string>();
 
-  const { data: secrets, refetch: refetchSecrets } =
-    useGetDeployKeyAndSecretQuery(
-      { appName: appName! },
-      { pollingInterval, skip: !appName }
-    );
+  const { data: secrets } = useGetDeployKeyAndSecretQuery(
+    { appName: appName! },
+    { pollingInterval, skip: !appName }
+  );
 
   return (
     <PageCreateApplicationLayout
       secrets={secrets}
-      onRefreshSecrets={() => refetchSecrets().unwrap()}
-      onRegenerateSecrets={(data) => regenerateSecrets(data).unwrap()}
       onRefreshApps={() => refreshApps({})}
       onCreateApp={async (data: RegisterApplicationApiArg) => {
         const response = await createApp(data).unwrap();
@@ -65,34 +58,12 @@ type PageCreateApplicationLayoutProps = {
   onCreateApp: (
     data: RegisterApplicationApiArg
   ) => Promise<RegisterApplicationApiResponse>;
-  onRegenerateSecrets: (
-    data: RegenerateDeployKeyApiArg
-  ) => Promise<RegenerateDeployKeyApiResponse>;
-  onRefreshSecrets: () => Promise<unknown>;
 };
-
-type Page = 'registration' | 'deploykey' | 'ci' | 'webhook' | 'finished';
-function useCurrentPage(): [Page, (newPage: Page) => unknown] {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = searchParams.get('page') ?? 'registration';
-
-  const onNewPage = (newPage: Page) => {
-    setSearchParams((prev) => {
-      console.log({ newPage });
-      prev.set('page', newPage);
-      return prev;
-    });
-  };
-
-  return [page as Page, onNewPage];
-}
 
 export function PageCreateApplicationLayout({
   secrets,
   onRefreshApps,
   onCreateApp,
-  onRegenerateSecrets,
-  onRefreshSecrets,
 }: PageCreateApplicationLayoutProps) {
   const [visibleScrim, setVisibleScrim] = useState(true);
   const [created, setCreated] = useState(false);
@@ -151,8 +122,6 @@ export function PageCreateApplicationLayout({
               </Typography>
               <ConfigureApplicationGithub
                 secrets={secrets}
-                onRegenerateSecrets={onRegenerateSecrets}
-                onRefreshSecrets={onRefreshSecrets}
                 app={registration}
               />
               <Button onClick={() => setNewPage('registration')}>
@@ -239,4 +208,20 @@ export function PageCreateApplicationLayout({
       </ScrimPopup>
     </>
   );
+}
+
+type Page = 'registration' | 'deploykey' | 'ci' | 'webhook' | 'finished';
+function useCurrentPage(): [Page, (newPage: Page) => unknown] {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get('page') ?? 'registration';
+
+  const onNewPage = (newPage: Page) => {
+    setSearchParams((prev) => {
+      console.log({ newPage });
+      prev.set('page', newPage);
+      return prev;
+    });
+  };
+
+  return [page as Page, onNewPage];
 }

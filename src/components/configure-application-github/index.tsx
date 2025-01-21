@@ -157,11 +157,6 @@ export function ConfigureGithubWebhook({
         and follow the steps below
       </Typography>
       <div className="grid grid--gap-medium o-body-text">
-        <img
-          alt="'Add webhook' steps on GitHub"
-          src={imageWebhook}
-          srcSet={`${imageWebhook} 2x`}
-        />
         <List variant="numbered">
           <List.Item>
             As Payload URL, use{' '}
@@ -180,6 +175,11 @@ export function ConfigureGithubWebhook({
           </List.Item>
           <List.Item>Press "Add webhook"</List.Item>
         </List>
+        <img
+          alt="'Add webhook' steps on GitHub"
+          src={imageWebhook}
+          srcSet={`${imageWebhook} 2x`}
+        />
       </div>
     </div>
   );
