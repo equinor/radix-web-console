@@ -33,7 +33,7 @@ export function PipelineFormBuildBranches({
   const [triggerBuildDeploy, buildDeployState] =
     useTriggerPipelineBuildDeployMutation();
   const createJobState = isBuildDeployPipeline ? buildDeployState : buildState;
-  const [branch, setBranch] = useState('');
+  const [buildBranch, setBuildBranch] = useState('');
   const [selectedBranch, setSelectedBranch] = useState('');
   const [branchFullName, setBranchFullName] = useState('');
   const [toEnvironment, setToEnvironment] = useState('');
@@ -44,29 +44,49 @@ export function PipelineFormBuildBranches({
   const handleOnTextChange = ({
     target: { value },
   }: ChangeEvent<HTMLInputElement>) => {
-    setBranch(value);
+    setBuildBranch(value);
     setBranchFullName(value);
     setToEnvironment('');
     const cleanRegex = (val: string): string => {
       switch (val) {
         case '*':
-          return '.+';
+          return '.*';
         case '':
           return '^$';
       }
       return val;
     };
-    const values = uniq(
-      Object.entries(branches)
-        .filter(([key]) => new RegExp(cleanRegex(key)).test(value))
-        .flatMap(([, commits]) => commits)
-    );
+    const cleanBranch = (val: string): string => {
+      return val.replace(/\*{2,}/g, '*');
+    };
+    const cleanedBranches = Object.entries(branches).map(([key, value]) => [
+      cleanBranch(key),
+      value,
+    ]);
+
+    const filter = cleanedBranches.filter(([key]) => {
+      if (typeof key === 'string') {
+        try {
+          const regExp = new RegExp(cleanRegex(key));
+          return regExp.test(buildBranch);
+        } catch (e) {
+          console.error(
+            `Error processing branch regex template: ${key} for the value: ${buildBranch}`,
+            e
+          );
+          return false;
+        }
+      }
+      return false;
+    });
+
+    const values = uniq(filter.flatMap(([, envs]) => envs));
     setFilteredBranches(values);
   };
   const handleChange = ({
     target: { value },
   }: ChangeEvent<HTMLSelectElement>) => {
-    setBranch(value);
+    setBuildBranch(value);
     setSelectedBranch(value);
     setBranchFullName(value);
   };
@@ -77,7 +97,7 @@ export function PipelineFormBuildBranches({
 
       const body = {
         appName: application.name,
-        pipelineParametersBuild: { branch, toEnvironment },
+        pipelineParametersBuild: { branch: buildBranch, toEnvironment },
       };
       let jobName: string;
       if (isBuildDeployPipeline) {
@@ -90,10 +110,12 @@ export function PipelineFormBuildBranches({
     `Created ${pipelineName} pipeline job`
   );
   const isAnyValidRegex = (pattern: string): boolean => {
-    return pattern.length > 0 && /[\^$.*+?()[\]{}|\\]/.test(pattern);
+    const b = pattern.length > 0 && /[\^$.*+?()[\]{}|\\]/.test(pattern);
+    return b;
   };
   const isValidBranchName = (branch: string): boolean => {
-    return branch.length > 0 && !/[\^$*+?()[\]{}|\\]/.test(branch);
+    const b = branch.length > 0 && !/[\^$*+?()[\]{}|\\]/.test(branch);
+    return b;
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -123,12 +145,7 @@ export function PipelineFormBuildBranches({
             >
               Git branch to build
             </Typography>
-            <NativeSelect
-              value={branch}
-              id="BranchSelect"
-              label=""
-              onChange={handleChange}
-            >
+            <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
               <option hidden value="">
                 — Please select —
               </option>
@@ -158,8 +175,8 @@ export function PipelineFormBuildBranches({
                 </fieldset>
               </>
             )}
-            {!isAnyValidRegex(branch) &&
-              branch &&
+            {!isAnyValidRegex(buildBranch) &&
+              buildBranch &&
               filteredBranches?.length > 0 && (
                 <div className="grid grid--gap-small input">
                   <Typography
@@ -177,7 +194,7 @@ export function PipelineFormBuildBranches({
                     value={toEnvironment}
                   >
                     <option value="">
-                      All environments build from the branch {branch}
+                      All environments build from the branch {buildBranch}
                     </option>
                     {filteredBranches?.map((envName) => (
                       <option key={envName} value={envName}>
@@ -187,12 +204,16 @@ export function PipelineFormBuildBranches({
                   </NativeSelect>
                 </div>
               )}
-            {isBuildDeployPipeline && branch && !isAnyValidRegex(branch) && (
-              <TargetEnvs
-                targetEnvs={toEnvironment ? [toEnvironment] : filteredBranches}
-                branch={branch}
-              />
-            )}
+            {isBuildDeployPipeline &&
+              buildBranch &&
+              !isAnyValidRegex(buildBranch) && (
+                <TargetEnvs
+                  targetEnvs={
+                    toEnvironment ? [toEnvironment] : filteredBranches
+                  }
+                  branch={buildBranch}
+                />
+              )}
           </div>
         ) : (
           <>
@@ -227,7 +248,7 @@ export function PipelineFormBuildBranches({
             </Alert>
           )}
           <div>
-            <Button type="submit" disabled={!isValidBranchName(branch)}>
+            <Button type="submit" disabled={!isValidBranchName(buildBranch)}>
               Create job
             </Button>
           </div>
