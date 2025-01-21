@@ -1,7 +1,7 @@
 import type React from 'react';
 import { Component } from 'react';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 
 import store from '../store/store';
 
@@ -70,8 +70,8 @@ const component = testPathMatch?.[1];
 
 export default (
   <Provider store={store}>
-    <MemoryRouter>
+    <BrowserRouter>
       <DevComponent component={component} />
-    </MemoryRouter>
+    </BrowserRouter>
   </Provider>
 );
