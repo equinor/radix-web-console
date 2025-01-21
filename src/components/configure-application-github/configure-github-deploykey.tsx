@@ -17,10 +17,7 @@ interface Props {
 export const ConfigureGithubDeploykey = ({ app, secrets }: Props) => {
   return (
     <div className="grid grid--gap-medium">
-      <Typography>
-        This allows Radix to clone the repository. Open the and follow the steps
-        below
-      </Typography>
+      <Typography>This allows Radix to clone the repository.</Typography>
       <div className="grid grid--gap-medium o-body-text">
         <List variant="numbered">
           <List.Item>
