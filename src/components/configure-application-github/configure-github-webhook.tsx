@@ -15,29 +15,31 @@ export function ConfigureGithubWebhook({
   return (
     <div className="grid grid--gap-medium">
       <Typography>
-        GitHub notifies Radix using a webhook whenever a code push is made.
+        <strong>Optionally</strong> add a Webhook to GitHub, Radix will then be
+        notified when new code is pushed to your repository and trigger a{' '}
+        <em>build-deploy</em> job.
       </Typography>
       <div className="grid grid--gap-medium o-body-text">
         <List variant="numbered">
           <List.Item>
-            Open the{' '}
-            <ExternalLink href={`${repository}/settings/hooks/new`}>
-              Add Webhook page
-            </ExternalLink>{' '}
-          </List.Item>
-          <List.Item>
-            As Payload URL, use{' '}
+            Copy your <em>Payload URL</em>
             <code>{`https://webhook.${radixZoneDNS}/events/github?appName=${appName}`}</code>{' '}
             <CompactCopyButton
               content={`https://webhook.${radixZoneDNS}/events/github?appName=${appName}`}
             />
           </List.Item>
           <List.Item>
+            Open the{' '}
+            <ExternalLink href={`${repository}/settings/hooks/new`}>
+              Add Webhook page
+            </ExternalLink>{' '}
+            and add your <em>Payload URL</em>.
+          </List.Item>
+          <List.Item>
             Choose <code>application/json</code> as Content type
           </List.Item>
           <List.Item>
-            The Shared Secret for this application is{' '}
-            <code>{sharedSecret}</code>{' '}
+            Set <em>Secret</em> to <code>{sharedSecret}</code>{' '}
             <CompactCopyButton content={sharedSecret ?? ''} />
           </List.Item>
           <List.Item>Press "Add webhook"</List.Item>

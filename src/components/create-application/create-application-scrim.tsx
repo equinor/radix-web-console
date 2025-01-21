@@ -14,7 +14,6 @@ import { ConfigureGithubWebhook } from '../configure-application-github/configur
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import { ScrimPopup } from '../scrim-popup';
 import { CreateApplicationForm } from './create-application-form';
-import { UseGithubCIForm } from './use-github-ci-form';
 
 type Props = {
   secrets?: DeployKeyAndSecret;
@@ -31,7 +30,6 @@ export function CreateApplicationScrim({
   onCreateApplication,
 }: Props) {
   const [visibleScrim, setVisibleScrim] = useState(false);
-  const [useGithub, setUseGithub] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const [registration, setRegistration] = useState<ApplicationRegistration>();
   const [page, setNewPage] = useCurrentPage();
@@ -108,24 +106,9 @@ export function CreateApplicationScrim({
               <Divider />
               <ConfigureGithubDeploykey secrets={secrets} app={registration} />
               <Divider style={{ width: '100%' }} />
-              <Button onClick={() => setNewPage('ci')}>Configure CI</Button>
-            </>
-          )}
-
-          {page === 'ci' && registration && (
-            <>
-              <UseGithubCIForm
-                useGithub={useGithub}
-                setUseGithub={setUseGithub}
-              />
-              <Divider style={{ width: '100%' }} />
-              {useGithub ? (
-                <Button onClick={() => setNewPage('webhook')}>
-                  Configure Webhook
-                </Button>
-              ) : (
-                <Button onClick={() => setNewPage('finished')}>Complete</Button>
-              )}
+              <Button onClick={() => setNewPage('webhook')}>
+                Configure Webhook
+              </Button>
             </>
           )}
 
@@ -167,7 +150,7 @@ export function CreateApplicationScrim({
   );
 }
 
-type Page = 'registration' | 'deploykey' | 'ci' | 'webhook' | 'finished';
+type Page = 'registration' | 'deploykey' | 'webhook' | 'finished';
 function useCurrentPage(): [Page, (newPage: Page) => unknown] {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get('page') ?? 'registration';
