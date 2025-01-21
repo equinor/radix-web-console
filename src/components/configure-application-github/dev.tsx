@@ -1,8 +1,9 @@
-import { ConfigureApplicationGithub, ConfigureGithubWebhook } from '.';
+import { ConfigureGithubDeploykey } from './configure-github-deploykey';
+import { ConfigureGithubWebhook } from './configure-github-webhook';
 
 export default (
   <div className="o-layout-single">
-    <ConfigureApplicationGithub
+    <ConfigureGithubDeploykey
       app={{
         adGroups: ['Group 1', 'Group 2'],
         adUsers: ['User 1', 'user 2'],

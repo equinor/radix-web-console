@@ -1,10 +1,10 @@
 import { Divider } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { PageCreateApplicationLayout } from '.';
 import type {
   ApplicationRegistration,
   DeployKeyAndSecret,
 } from '../../store/radix-api';
+import { CreateApplicationScrim } from './create-application-scrim';
 
 export default (
   <div
@@ -24,7 +24,7 @@ function TestComponent() {
   const [secrets, setSecrets] = useState<DeployKeyAndSecret>();
 
   return (
-    <PageCreateApplicationLayout
+    <CreateApplicationScrim
       secrets={secrets}
       onRefreshApps={() => console.log('Refresh apps...')}
       onCreateApplication={async (

@@ -14,11 +14,6 @@ import { withRouteParams } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
-import {
-  ConfigureApplicationGithub,
-  ConfigureGithubWebhook,
-  RegenerateSecretsScrim,
-} from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
 
 import { pollingInterval } from '../../store/defaults';
@@ -30,6 +25,9 @@ import {
 import { ExternalLink } from '../link/external-link';
 import { RadixConfigFileLink } from '../link/radix-config-file-link';
 import './style.css';
+import { ConfigureGithubDeploykey } from '../configure-application-github/configure-github-deploykey';
+import { ConfigureGithubWebhook } from '../configure-application-github/configure-github-webhook';
+import { RegenerateSecretsScrim } from '../configure-application-github/regenerate-secrets-scrim';
 
 function getConfigBranch(configBranch?: string): string {
   return configBranch || 'master';
@@ -101,7 +99,7 @@ export function PageConfiguration({ appName }: { appName: string }) {
                       </Accordion.HeaderTitle>
                     </Accordion.Header>
                     <Accordion.Panel>
-                      <ConfigureApplicationGithub
+                      <ConfigureGithubDeploykey
                         secrets={secrets}
                         app={registration}
                       />
