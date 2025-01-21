@@ -1,18 +1,17 @@
 import { Button, List, Progress, Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
-
-import { Alert } from '../alert';
 import { Code } from '../code';
 import imageDeployKey from './deploy-key02.png';
 
 import './style.css';
-import type {
-  ApplicationRegistration,
-  DeployKeyAndSecret,
-  RegenerateDeployKeyApiArg,
+import {
+  type ApplicationRegistration,
+  type DeployKeyAndSecret,
+  useRegenerateDeployKeyMutation,
 } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils';
 import { configVariables } from '../../utils/config';
+import { Alert } from '../alert';
 import { CompactCopyButton } from '../compact-copy-button';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ExternalLink } from '../link/external-link';
@@ -22,35 +21,9 @@ import imageWebhook from './webhook02.png';
 interface Props {
   app: ApplicationRegistration;
   secrets?: DeployKeyAndSecret;
-  onRegenerateSecrets: (data: RegenerateDeployKeyApiArg) => Promise<unknown>;
-  onRefreshSecrets: () => Promise<unknown>;
 }
 
-export const ConfigureApplicationGithub = ({
-  app,
-  secrets,
-  onRegenerateSecrets,
-  onRefreshSecrets,
-}: Props) => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>();
-
-  const onRegenerate = handlePromiseWithToast(async () => {
-    try {
-      setLoading(true);
-      await onRegenerateSecrets({
-        appName: app.name,
-        regenerateDeployKeyAndSecretData: { sharedSecret: crypto.randomUUID() },
-      });
-      await onRefreshSecrets();
-    } catch (e) {
-      setError(e);
-      throw e;
-    } finally {
-      setLoading(false);
-    }
-  }, 'Successfully regenerated deploy key and webhook secret');
-
+export const ConfigureApplicationGithub = ({ app, secrets }: Props) => {
   return (
     <div className="grid grid--gap-medium">
       <Typography>
@@ -61,11 +34,6 @@ export const ConfigureApplicationGithub = ({
         and follow the steps below
       </Typography>
       <div className="grid grid--gap-medium o-body-text">
-        <img
-          alt="Add deploy key' steps on GitHub"
-          src={imageDeployKey}
-          srcSet={`${imageDeployKey} 2x`}
-        />
         <List variant="numbered">
           <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
           <List.Item>
@@ -82,35 +50,39 @@ export const ConfigureApplicationGithub = ({
           </List.Item>
           <List.Item>Press "Add key"</List.Item>
         </List>
-      </div>
-      <div>
-        <div className="o-action-bar">
-          {error ? (
-            <Alert type="danger">
-              Failed to regenerate deploy key and webhook secret.
-              <br />
-              {getFetchErrorMessage(error)}
-            </Alert>
-          ) : null}
-          {loading ? (
-            <>
-              <Progress.Circular size={16} /> Regenerating…
-            </>
-          ) : (
-            <RegenerateSecretsScrim onRegenerate={onRegenerate} />
-          )}
-        </div>
+        <img
+          alt="Add deploy key' steps on GitHub"
+          src={imageDeployKey}
+          srcSet={`${imageDeployKey} 2x`}
+        />
       </div>
     </div>
   );
 };
 
+type RegenerateSecretsScrimProps = {
+  appName: string;
+  refetchSecrets: () => Promise<unknown>;
+};
+
 export function RegenerateSecretsScrim({
-  onRegenerate,
-}: { onRegenerate: () => Promise<unknown> }) {
+  appName,
+  refetchSecrets,
+}: RegenerateSecretsScrimProps) {
   const [show, setShow] = useState(false);
 
-  const onLocalRegenerate = handlePromiseWithToast(onRegenerate);
+  const [regenerateSecrets, regenerateSecretState] =
+    useRegenerateDeployKeyMutation();
+
+  const onRegenerate = handlePromiseWithToast(async () => {
+    await regenerateSecrets({
+      appName,
+      regenerateDeployKeyAndSecretData: {
+        sharedSecret: crypto.randomUUID(),
+      },
+    }).unwrap();
+    await refetchSecrets();
+  });
 
   return (
     <>
@@ -133,7 +105,7 @@ export function RegenerateSecretsScrim({
           </div>
 
           <Button.Group>
-            <Button onClick={onLocalRegenerate}>Rerun</Button>
+            <Button onClick={onRegenerate}>Rerun</Button>
             <Button variant="outlined" onClick={() => setShow(false)}>
               Cancel
             </Button>
@@ -142,10 +114,27 @@ export function RegenerateSecretsScrim({
       </ScrimPopup>
 
       <div>
-        <Typography variant="h5">
-          Regularly regenerate deploy key and webhook secret
-        </Typography>
-        <Button onClick={() => setShow(true)}>Regenerate</Button>
+        <div className="o-action-bar">
+          {regenerateSecretState.isError ? (
+            <Alert type="danger">
+              Failed to regenerate deploy key and webhook secret.
+              <br />
+              {getFetchErrorMessage(regenerateSecretState.error)}
+            </Alert>
+          ) : null}
+          {regenerateSecretState.isLoading ? (
+            <>
+              <Progress.Circular size={16} /> Regenerating…
+            </>
+          ) : (
+            <div>
+              <Typography variant="h5">
+                Regularly regenerate deploy key and webhook secret
+              </Typography>
+              <Button onClick={() => setShow(true)}>Regenerate</Button>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

@@ -1,5 +1,6 @@
 import { Divider } from '@equinor/eds-core-react';
 import { useState } from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { PageCreateApplicationLayout } from '.';
 import type {
   DeployKeyAndSecret,

@@ -17,6 +17,7 @@ import { Breadcrumb } from '../breadcrumb';
 import {
   ConfigureApplicationGithub,
   ConfigureGithubWebhook,
+  RegenerateSecretsScrim,
 } from '../configure-application-github';
 import { DocumentTitle } from '../document-title';
 
@@ -25,7 +26,6 @@ import {
   type ApplicationRegistration,
   radixApi,
   useGetDeployKeyAndSecretQuery,
-  useRegenerateDeployKeyMutation,
 } from '../../store/radix-api';
 import { ExternalLink } from '../link/external-link';
 import { RadixConfigFileLink } from '../link/radix-config-file-link';
@@ -49,7 +49,6 @@ export function PageConfiguration({ appName }: { appName: string }) {
     ...reqState
   } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval });
   const registration = application?.registration;
-  const [regenerateSecrets] = useRegenerateDeployKeyMutation();
 
   const { data: secrets, refetch: refetchSecrets } =
     useGetDeployKeyAndSecretQuery({ appName: appName }, { pollingInterval });
@@ -103,12 +102,12 @@ export function PageConfiguration({ appName }: { appName: string }) {
                     </Accordion.Header>
                     <Accordion.Panel>
                       <ConfigureApplicationGithub
-                        onRefreshSecrets={() => refetchSecrets().unwrap()}
                         secrets={secrets}
-                        onRegenerateSecrets={(data) =>
-                          regenerateSecrets(data).unwrap()
-                        }
                         app={registration}
+                      />
+                      <RegenerateSecretsScrim
+                        appName={registration.name}
+                        refetchSecrets={refetchSecrets}
                       />
                     </Accordion.Panel>
                   </Accordion.Item>
