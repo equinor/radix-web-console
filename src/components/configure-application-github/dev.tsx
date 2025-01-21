@@ -17,8 +17,6 @@ export default (
         wbs: 'wbs123',
         radixConfigFullName: 'radixconfig.yaml',
       }}
-      onRefreshSecrets={() => Promise.resolve()}
-      onRegenerateSecrets={() => Promise.resolve()}
     />
     <ConfigureGithubWebhook
       appName={'a-name-thing'}

@@ -27,19 +27,15 @@ export const ConfigureApplicationGithub = ({ app, secrets }: Props) => {
   return (
     <div className="grid grid--gap-medium">
       <Typography>
-        This allows Radix to clone the repository. Open the{' '}
-        <ExternalLink href={`${app.repository}/settings/keys/new`}>
-          Add New Deploy Key page
-        </ExternalLink>{' '}
-        and follow the steps below
+        This allows Radix to clone the repository. Open the and follow the steps
+        below
       </Typography>
       <div className="grid grid--gap-medium o-body-text">
         <List variant="numbered">
-          <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
           <List.Item>
             {secrets?.publicDeployKey ? (
               <section className="deploy-key">
-                Copy and paste this key:
+                Copy this key:
                 <Code copy>{secrets?.publicDeployKey}</Code>
               </section>
             ) : (
@@ -48,13 +44,21 @@ export const ConfigureApplicationGithub = ({ app, secrets }: Props) => {
               </>
             )}
           </List.Item>
-          <List.Item>Press "Add key"</List.Item>
+          <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
+          <List.Item>
+            Press "Add key" on Github's{' '}
+            <ExternalLink href={`${app.repository}/settings/keys/new`}>
+              Add New Deploy Key page
+            </ExternalLink>
+          </List.Item>
         </List>
-        <img
-          alt="Add deploy key' steps on GitHub"
-          src={imageDeployKey}
-          srcSet={`${imageDeployKey} 2x`}
-        />
+        <div className={'screenshot'}>
+          <img
+            alt="Add deploy key' steps on GitHub"
+            src={imageDeployKey}
+            srcSet={`${imageDeployKey} 2x`}
+          />
+        </div>
       </div>
     </div>
   );

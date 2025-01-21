@@ -1,4 +1,10 @@
-import { Button, Checkbox, Icon, Typography } from '@equinor/eds-core-react';
+import {
+  Button,
+  Checkbox,
+  Divider,
+  Icon,
+  Typography,
+} from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -14,14 +20,13 @@ import { ScrimPopup } from '../scrim-popup';
 import {
   type ApplicationRegistration,
   type DeployKeyAndSecret,
-  type RegisterApplicationApiArg,
-  type RegisterApplicationApiResponse,
   radixApi,
   useGetDeployKeyAndSecretQuery,
   useRegisterApplicationMutation,
 } from '../../store/radix-api';
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import './style.css';
+import useLocalStorage from '../../effects/use-local-storage';
 import { externalUrls } from '../../externalUrls';
 import { pollingInterval } from '../../store/defaults';
 import { ExternalLink } from '../link/external-link';
@@ -37,17 +42,29 @@ export default function PageCreateApplication() {
     { pollingInterval, skip: !appName }
   );
 
+  const onCreateApplication = async (
+    applicationRegistration: ApplicationRegistration,
+    acknowledgeWarnings: boolean
+  ) => {
+    const response = await createApp({
+      applicationRegistrationRequest: {
+        applicationRegistration,
+        acknowledgeWarnings,
+      },
+    }).unwrap();
+
+    if (response.applicationRegistration) {
+      setAppName(response.applicationRegistration.name);
+    }
+
+    return response.warnings ?? [];
+  };
+
   return (
     <PageCreateApplicationLayout
       secrets={secrets}
+      onCreateApplication={onCreateApplication}
       onRefreshApps={() => refreshApps({})}
-      onCreateApp={async (data: RegisterApplicationApiArg) => {
-        const response = await createApp(data).unwrap();
-        setAppName(
-          data.applicationRegistrationRequest?.applicationRegistration?.name
-        );
-        return response;
-      }}
     />
   );
 }
@@ -55,36 +72,57 @@ export default function PageCreateApplication() {
 type PageCreateApplicationLayoutProps = {
   secrets?: DeployKeyAndSecret;
   onRefreshApps: () => unknown;
-  onCreateApp: (
-    data: RegisterApplicationApiArg
-  ) => Promise<RegisterApplicationApiResponse>;
+  onCreateApplication: (
+    application: ApplicationRegistration,
+    acknowledgeWarnings: boolean
+  ) => Promise<string[]>;
 };
 
 export function PageCreateApplicationLayout({
   secrets,
   onRefreshApps,
-  onCreateApp,
+  onCreateApplication,
 }: PageCreateApplicationLayoutProps) {
   const [visibleScrim, setVisibleScrim] = useState(true);
-  const [created, setCreated] = useState(false);
-  const [useGithub, setUseGithub] = useState<boolean>(false);
+  const [useGithub, setUseGithub] = useState<boolean>(true);
   const containerRef = useRef<HTMLDivElement>(null);
-  const [registration, setRegistration] =
-    useState<ApplicationRegistration | null>(null);
+  const [registration, setRegistration] = useState<ApplicationRegistration>();
   const [page, setNewPage] = useCurrentPage();
 
   const onCloseScrim = () => {
     setVisibleScrim(false);
-    setRegistration(null);
-    setCreated(false);
+    setRegistration(undefined);
   };
 
-  const onCreated = (newRegistration: ApplicationRegistration) => {
+  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>(
+    'knownApplications',
+    []
+  );
+
+  const addAppNameToLocalStorage = (appName: string) => {
+    if (knownAppNames.some((knownAppName) => knownAppName === appName)) {
+      return;
+    }
+    setKnownAppNames([...knownAppNames, appName].sort());
+  };
+
+  const onLocalCreateApplication = async (
+    newRegistration: ApplicationRegistration,
+    acknowledgeWarnings: boolean
+  ) => {
+    const warnings = await onCreateApplication(
+      newRegistration,
+      acknowledgeWarnings
+    );
+    if (warnings.length > 0) {
+      return warnings;
+    }
+    addAppNameToLocalStorage(newRegistration.name);
     containerRef.current?.scrollTo(0, 0);
     setRegistration(newRegistration);
-    setCreated(true);
     onRefreshApps();
     setNewPage('deploykey');
+    return [];
   };
 
   return (
@@ -106,11 +144,11 @@ export function PageCreateApplicationLayout({
         <div className="create-app-content" ref={containerRef}>
           {(page === 'registration' || !registration) && (
             <CreateApplicationForm
-              created={created}
-              onCreated={onCreated}
-              onCreateApp={onCreateApp}
+              registration={registration}
+              onCreate={onLocalCreateApplication}
             />
           )}
+
           {page === 'deploykey' && registration && (
             <>
               <Typography>
@@ -120,12 +158,14 @@ export function PageCreateApplicationLayout({
               <Typography>
                 To integrate with GitHub you must add a deploy key and a webhook
               </Typography>
+              <Divider />
               <ConfigureApplicationGithub
                 secrets={secrets}
                 app={registration}
               />
+              <Divider style={{ width: '100%' }} />
               <Button onClick={() => setNewPage('registration')}>
-                Registration
+                Back: CI
               </Button>
               <Button onClick={() => setNewPage('ci')}>Next: CI</Button>
             </>
@@ -160,9 +200,7 @@ export function PageCreateApplicationLayout({
                   </Typography>
                 </span>
               </fieldset>
-              <Button onClick={() => setNewPage('deploykey')}>
-                Previous: Deploykey
-              </Button>
+              <Divider style={{ width: '100%' }} />
               <Button onClick={() => setNewPage('webhook')}>
                 Next: Webhook
               </Button>
@@ -176,7 +214,7 @@ export function PageCreateApplicationLayout({
                 repository={registration.repository}
                 sharedSecret={secrets?.sharedSecret}
               />
-              <Button onClick={() => setNewPage('ci')}>Previous: CI</Button>
+              <Divider style={{ width: '100%' }} />
               <Button onClick={() => setNewPage('finished')}>Finished</Button>
             </>
           )}
@@ -199,9 +237,6 @@ export function PageCreateApplicationLayout({
                   your application's page
                 </Typography>
               </Typography>
-              <Button onClick={() => setNewPage('webhook')}>
-                Previous: Webhook
-              </Button>
             </>
           )}
         </div>
@@ -217,7 +252,6 @@ function useCurrentPage(): [Page, (newPage: Page) => unknown] {
 
   const onNewPage = (newPage: Page) => {
     setSearchParams((prev) => {
-      console.log({ newPage });
       prev.set('page', newPage);
       return prev;
     });
