@@ -144,8 +144,7 @@ export function CreateApplicationScrim({
           {page === 'finished' && registration && (
             <>
               <Typography>
-                Now you can run the <em>apply-config</em> pipeline job, or or go
-                to{' '}
+                Now you can run the <em>apply-config</em> pipeline job, or go to{' '}
                 <Typography
                   as={Link}
                   to={routeWithParams(routes.app, {
