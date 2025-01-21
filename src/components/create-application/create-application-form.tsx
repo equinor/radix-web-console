@@ -99,7 +99,14 @@ export function CreateApplicationForm({ registration, onCreate }: Props) {
         <TextField
           id="name_field"
           label="Name"
-          helperText="Lower case; no spaces or special characters"
+          // @ts-expect-error Textfield does actually allow JSX
+          helperText={
+            <span>
+              Must be exactly the same as <em>name</em> in{' '}
+              <em>radixconfig.yaml</em> file. Lower case; no spaces or special
+              characters
+            </span>
+          }
           name="name"
           defaultValue={registration?.name}
         />
@@ -113,14 +120,20 @@ export function CreateApplicationForm({ registration, onCreate }: Props) {
         <TextField
           id="configbranch_field"
           label="Config Branch"
-          helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
+          // @ts-expect-error Textfield does actually allow JSX
+          helperText={
+            <span>
+              The name of the branch where Radix will read the{' '}
+              <em>radixconfig.yaml</em> from, e.g. 'main' or 'master'
+            </span>
+          }
           name="configBranch"
           defaultValue={registration?.configBranch ?? 'main'}
         />
         <TextField
           id="radixconfig_file_field"
           label="Config file"
-          helperText="The name and optionally the path of the Radix config file. By default it is radixconfig.yaml, located in the repository root folder of the config branch"
+          helperText="The name and optionally the path of the Radix config file. Located in the repository root folder of the config branch"
           name="radixConfigFullName"
           defaultValue={registration?.radixConfigFullName ?? 'radixconfig.yaml'}
         />

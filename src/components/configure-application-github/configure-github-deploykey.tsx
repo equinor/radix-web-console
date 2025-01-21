@@ -32,13 +32,18 @@ export const ConfigureGithubDeploykey = ({ app, secrets }: Props) => {
               </>
             )}
           </List.Item>
-          <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
           <List.Item>
-            Press "Add key" on Github's{' '}
+            Open Github's{' '}
             <ExternalLink href={`${app.repository}/settings/keys/new`}>
               Add New Deploy Key page
-            </ExternalLink>
+            </ExternalLink>{' '}
+            and paste in your key
           </List.Item>
+          <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
+          <List.Item>
+            Make sure "Allow write access" is <strong>not</strong> checked
+          </List.Item>
+          <List.Item>Press "Add key"</List.Item>
         </List>
         <div className={'screenshot'}>
           <img
