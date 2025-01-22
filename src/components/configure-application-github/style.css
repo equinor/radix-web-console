@@ -9,18 +9,6 @@
   padding-top: var(--eds_spacing_medium_small);
 }
 
-.configure-application-github ol {
-  counter-reset: list;
-  padding: 0 var(--eds_spacing_medium);
-  margin: 0;
-}
-
-.configure-application-github li {
-  display: list-item;
-  list-style: inherit;
-  padding: var(--eds_spacing_small) 0;
-}
-
 .deploy-key {
   margin-bottom: var(--eds_spacing_medium);
 }
@@ -49,4 +37,12 @@
 .regenerate-options {
   margin-top: auto;
   margin-bottom: auto;
+}
+
+.screenshot {
+  & img {
+    margin: auto;
+    border: 1px solid var(--eds_ui_background__medium);
+    border-radius: var(--eds_shape_corners_border_radius);
+  }
 }

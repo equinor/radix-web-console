@@ -10,7 +10,7 @@ import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api';
 import { dataSorter, sortCompareString } from '../../utils/sort-utils';
 import { AppListItem } from '../app-list-item';
 import AsyncResource from '../async-resource/async-resource';
-import PageCreateApplication from '../page-create-application';
+import CreateApplication from '../create-application';
 
 import './style.css';
 import { refresh } from '@equinor/eds-icons';
@@ -124,7 +124,7 @@ export default function AppList() {
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
         <Typography variant="body_short_bold">Favourites</Typography>
-        <PageCreateApplication />
+        <CreateApplication />
       </div>
       <div className="app-list">
         {favouriteNames?.length > 0 ? (

@@ -4,13 +4,15 @@ import { ADGroups, type HandleAdGroupsChangeCB } from '../graph/adGroups';
 import './style.css';
 
 interface Props {
+  name?: string;
   labeling: string;
   adGroups?: Array<string>;
   adUsers?: Array<string>;
   isDisabled?: boolean;
-  onChange: HandleAdGroupsChangeCB;
+  onChange?: HandleAdGroupsChangeCB;
 }
 export const AppConfigAdGroups = ({
+  name,
   labeling,
   adGroups,
   adUsers,
@@ -25,6 +27,7 @@ export const AppConfigAdGroups = ({
     </Typography>
     <AuthenticatedTemplate>
       <ADGroups
+        name={name}
         onChange={onChange}
         adGroups={adGroups ?? []}
         adUsers={adUsers ?? []}
