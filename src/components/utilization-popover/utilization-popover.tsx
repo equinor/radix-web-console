@@ -28,10 +28,10 @@ export enum Severity {
 }
 
 const SeverityMap = {
-  [Severity.None]: { label: 'Normal', type: 'default' },
-  [Severity.Information]: { label: 'Low', type: 'default' },
-  [Severity.Warning]: { label: 'High', type: 'warning' },
-  [Severity.Critical]: { label: 'Critical', type: 'danger' },
+  [Severity.None]: { label: 'Normal Utilization', type: 'default' },
+  [Severity.Information]: { label: 'Low Utilization', type: 'default' },
+  [Severity.Warning]: { label: 'High Utilization', type: 'warning' },
+  [Severity.Critical]: { label: 'Critical Utilization', type: 'danger' },
 } satisfies Record<Severity, { label: string; type: StatusPopoverType }>;
 
 type Props = {
@@ -86,10 +86,10 @@ export const UtilizationPopover = ({
     >
       <div className={'grid grid--gap-small'}>
         <StatusBadgeTemplate type={SeverityMap[highestMemoryAlert].type}>
-          Memory {SeverityMap[highestMemoryAlert].label}
+          Memory: {SeverityMap[highestMemoryAlert].label}
         </StatusBadgeTemplate>
         <StatusBadgeTemplate type={SeverityMap[highestCPUAlert].type}>
-          CPU {SeverityMap[highestCPUAlert].label}
+          CPU: {SeverityMap[highestCPUAlert].label}
         </StatusBadgeTemplate>
         <Typography>
           See Monitoring <Icon size={16} data={desktop_mac} /> for more details.
