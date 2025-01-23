@@ -244,5 +244,3 @@ function createSeverityWithReason(
 
   return { severity, reason, value };
 }
-
-// TODO:  CPU High utilization: 71% of requested
