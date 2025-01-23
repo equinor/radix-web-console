@@ -54,14 +54,9 @@ export const UtilizationPopover = ({
   minimumSeverity,
 }: Props) => {
   const { highestMemoryAlert, highestCPUAlert } = useMemo(() => {
-    let highestMemoryAlert: SeverityWithReason = createSeverityWithReason(
-      0,
-      Severity.None
-    );
-    let highestCPUAlert: SeverityWithReason = createSeverityWithReason(
-      0,
-      Severity.None
-    );
+    let highestMemoryAlert = createSeverityWithReason(0, Severity.None);
+    let highestCPUAlert = createSeverityWithReason(0, Severity.None);
+
     flattenAndFilterResults(utilization, path).forEach((replica) => {
       const cpuAlert = GetHighestSeverityFns(replica, [
         HasMaxCPUtilizationPercentage,
