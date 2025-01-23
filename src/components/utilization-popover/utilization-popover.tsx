@@ -86,7 +86,7 @@ export const UtilizationPopover = ({
   return (
     <StatusPopover
       icon={<Icon data={pressure} />}
-      title="Resource Status"
+      title="Resource Utilization Status"
       label={showLabel ? SeverityMap[severity.severity].label : undefined}
       type={SeverityMap[severity.severity].type}
       disablePopover={severity.severity === Severity.None}
