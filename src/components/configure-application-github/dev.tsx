@@ -1,8 +1,9 @@
-import { ConfigureApplicationGithub } from '.';
+import { ConfigureGithubDeploykey } from './configure-github-deploykey';
+import { ConfigureGithubWebhook } from './configure-github-webhook';
 
 export default (
   <div className="o-layout-single">
-    <ConfigureApplicationGithub
+    <ConfigureGithubDeploykey
       app={{
         adGroups: ['Group 1', 'Group 2'],
         adUsers: ['User 1', 'user 2'],
@@ -17,10 +18,11 @@ export default (
         wbs: 'wbs123',
         radixConfigFullName: 'radixconfig.yaml',
       }}
-      onDeployKeyChange={() => void 0}
-      refetch={() => void 0}
-      initialSecretPollInterval={5000}
-      useOtherCiToolOptionVisible={true}
+    />
+    <ConfigureGithubWebhook
+      appName={'a-name-thing'}
+      repository={'https://some/path/to/a/repo'}
+      sharedSecret={crypto.randomUUID()}
     />
   </div>
 );

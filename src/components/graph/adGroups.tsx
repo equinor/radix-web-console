@@ -35,12 +35,19 @@ type CallbackType = (
 ) => void;
 
 interface Props {
-  onChange: HandleAdGroupsChangeCB;
+  name?: string;
+  onChange?: HandleAdGroupsChangeCB;
   adGroups: Array<string>;
   adUsers: Array<string>;
   isDisabled?: boolean;
 }
-export function ADGroups({ onChange, adGroups, adUsers, isDisabled }: Props) {
+export function ADGroups({
+  name = 'ADGroups',
+  onChange,
+  adGroups,
+  adUsers,
+  isDisabled,
+}: Props) {
   const { data: groupsInfo, ...state } = useGetAdGroupsQuery({
     ids: adGroups ?? [],
   });
@@ -107,7 +114,7 @@ export function ADGroups({ onChange, adGroups, adUsers, isDisabled }: Props) {
       <AsyncResource asyncState={state} nonFailureErrorCodes={[404]}>
         <AsyncSelect<AdGroupItem, true, GroupedOption>
           isMulti
-          name="ADGroups"
+          name={name}
           menuPosition="fixed"
           closeMenuOnScroll={(e: Event) => {
             const target = e.target as HTMLInputElement;
