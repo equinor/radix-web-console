@@ -42,6 +42,7 @@ export function CreateApplicationForm({
     ev.preventDefault();
     setLoading(true);
     setError(undefined);
+    setWarnings([]);
     try {
       const data = new FormData(ev.currentTarget);
       const applicationRegistration: Partial<ApplicationRegistration> = {
