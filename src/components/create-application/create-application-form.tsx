@@ -41,6 +41,7 @@ export function CreateApplicationForm({
   const handleSubmit = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     setLoading(true);
+    setError(undefined);
     try {
       const data = new FormData(ev.currentTarget);
       const applicationRegistration: Partial<ApplicationRegistration> = {
