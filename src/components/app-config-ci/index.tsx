@@ -46,7 +46,8 @@ async function filterOptions(
 }
 
 export interface Props {
-  configurationItemChangeCallback: OnConfigurationItemChangeCallback;
+  name?: string;
+  configurationItemChangeCallback?: OnConfigurationItemChangeCallback;
   disabled?: boolean;
   configurationItem?: string;
 }
@@ -54,6 +55,7 @@ export function AppConfigConfigurationItem({
   configurationItem,
   configurationItemChangeCallback,
   disabled,
+  name = 'ConfigurationItem',
 }: Props) {
   const [selectedCI, setSelectedCI] = useState<Application | null | undefined>(
     undefined
@@ -73,7 +75,7 @@ export function AppConfigConfigurationItem({
   const containerRef = useRef<HTMLDivElement>();
 
   function onChange(newValue: Application | null): void {
-    configurationItemChangeCallback(newValue);
+    configurationItemChangeCallback?.(newValue);
     setSelectedCI(newValue);
     setPopoverOpen(false);
   }
@@ -106,7 +108,7 @@ export function AppConfigConfigurationItem({
         components={{ IndicatorsContainer }}
         onInfoIconClick={onInfoIconClick}
         containerRef={containerRef}
-        name="ConfigurationItem"
+        name={name}
         menuPosition="fixed"
         closeMenuOnScroll={({ target }: Event) =>
           !(target as HTMLElement)?.parentElement?.className?.match(/menu/)

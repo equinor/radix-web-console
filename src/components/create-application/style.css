@@ -1,0 +1,18 @@
+.create-app {
+  display: flex;
+  max-height: 70vh;
+  flex-direction: column;
+  max-width: calc(50rem - 2rem);
+}
+
+.create-app-content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+.create-app-footer {
+  flex-grow: 0;
+  border-top: 1px solid var(--eds_ui_background__medium);
+  padding: var(--eds_spacing_medium);
+}
