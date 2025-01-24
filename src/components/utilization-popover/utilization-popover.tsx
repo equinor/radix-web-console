@@ -20,6 +20,12 @@ const LowMemoryThreshold = 0.2;
 const HighMemoryThreshold = 0.7;
 const MaxMemoryThreshold = 0.9;
 
+type SeverityWithReason = {
+  severity: Severity;
+  reason: string;
+  value: number;
+};
+
 export enum Severity {
   None = 0,
   Information = 1,
@@ -28,10 +34,10 @@ export enum Severity {
 }
 
 const SeverityMap = {
-  [Severity.None]: { label: 'Normal', type: 'default' },
-  [Severity.Information]: { label: 'Low', type: 'default' },
-  [Severity.Warning]: { label: 'High', type: 'warning' },
-  [Severity.Critical]: { label: 'Critical', type: 'danger' },
+  [Severity.None]: { label: 'Normal Utilization', type: 'default' },
+  [Severity.Information]: { label: 'Low Utilization', type: 'default' },
+  [Severity.Warning]: { label: 'High Utilization', type: 'warning' },
+  [Severity.Critical]: { label: 'Critical Utilization', type: 'danger' },
 } satisfies Record<Severity, { label: string; type: StatusPopoverType }>;
 
 type Props = {
@@ -48,8 +54,9 @@ export const UtilizationPopover = ({
   minimumSeverity,
 }: Props) => {
   const { highestMemoryAlert, highestCPUAlert } = useMemo(() => {
-    let highestMemoryAlert = Severity.None;
-    let highestCPUAlert = Severity.None;
+    let highestMemoryAlert = createSeverityWithReason(0, Severity.None);
+    let highestCPUAlert = createSeverityWithReason(0, Severity.None);
+
     flattenAndFilterResults(utilization, path).forEach((replica) => {
       const cpuAlert = GetHighestSeverityFns(replica, [
         HasMaxCPUtilizationPercentage,
@@ -72,27 +79,49 @@ export const UtilizationPopover = ({
 
   const severity = GetHighestSeverity(highestMemoryAlert, highestCPUAlert);
 
-  if (minimumSeverity !== undefined && severity < minimumSeverity) {
+  if (minimumSeverity !== undefined && severity.severity < minimumSeverity) {
     return null;
   }
 
   return (
     <StatusPopover
       icon={<Icon data={pressure} />}
-      title="Resource Status"
-      label={showLabel ? SeverityMap[severity].label : undefined}
-      type={SeverityMap[severity].type}
-      disablePopover={severity === Severity.None}
+      title="Resource Utilization Status"
+      label={showLabel ? SeverityMap[severity.severity].label : undefined}
+      type={SeverityMap[severity.severity].type}
+      disablePopover={severity.severity === Severity.None}
     >
       <div className={'grid grid--gap-small'}>
-        <StatusBadgeTemplate type={SeverityMap[highestMemoryAlert].type}>
-          Memory {SeverityMap[highestMemoryAlert].label}
+        <StatusBadgeTemplate
+          type={SeverityMap[highestMemoryAlert.severity].type}
+        >
+          Memory {highestMemoryAlert.reason}
         </StatusBadgeTemplate>
-        <StatusBadgeTemplate type={SeverityMap[highestCPUAlert].type}>
-          CPU {SeverityMap[highestCPUAlert].label}
+        <StatusBadgeTemplate type={SeverityMap[highestCPUAlert.severity].type}>
+          CPU {highestCPUAlert.reason}
         </StatusBadgeTemplate>
-        <Typography>
+
+        <Typography variant={'h6'}>
           See Monitoring <Icon size={16} data={desktop_mac} /> for more details.
+        </Typography>
+
+        <br />
+
+        <Typography variant={'h6'}>
+          CPU Limits are based on average usage over the last 24 hours.
+        </Typography>
+        <Typography>
+          The thresholds are: Critical: {(MaxCPUThreshold * 100).toFixed()}%,
+          High: {(HighCPUThreshold * 100).toFixed()}% and Low:{' '}
+          {(LowCPUThreshold * 100).toFixed()}%.
+        </Typography>
+        <Typography variant={'h6'}>
+          Memory Limits are based on maximum usage over the last 24 hours.
+        </Typography>
+        <Typography>
+          The thresholds are: Critical: {(MaxMemoryThreshold * 100).toFixed()}%,
+          High: {(HighMemoryThreshold * 100).toFixed()}% and Low:{' '}
+          {(LowMemoryThreshold * 100).toFixed()}%.
         </Typography>
       </div>
     </StatusPopover>
@@ -127,16 +156,19 @@ const flattenAndFilterResults = (
   return results;
 };
 
-const GetHighestSeverity = (a: Severity, b: Severity): Severity => {
-  if (a > b) return a;
+const GetHighestSeverity = (
+  a: SeverityWithReason,
+  b: SeverityWithReason
+): SeverityWithReason => {
+  if (a.severity > b.severity) return a;
   return b;
 };
 
 const GetHighestSeverityFns = <TArgs,>(
   data: TArgs,
-  fns: ((data: TArgs) => Severity)[]
-): Severity => {
-  let highest = Severity.None;
+  fns: ((data: TArgs) => SeverityWithReason)[]
+): SeverityWithReason => {
+  let highest = createSeverityWithReason(0, Severity.None);
 
   fns.forEach((fn) => {
     const res = fn(data);
@@ -146,42 +178,69 @@ const GetHighestSeverityFns = <TArgs,>(
   return highest;
 };
 
-const HasLowCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {
-  return data.cpuAverage / data.cpuRequests < LowCPUThreshold
-    ? Severity.Information
-    : Severity.None;
+const HasLowCPUtilizationPercentage = (
+  data: ReplicaUtilization
+): SeverityWithReason => {
+  const utilization = data.cpuAverage / data.cpuRequests;
+  return utilization < LowCPUThreshold
+    ? createSeverityWithReason(utilization, Severity.Information)
+    : createSeverityWithReason(utilization, Severity.None);
 };
 
-const HasHighCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {
-  return data.cpuAverage / data.cpuRequests > HighCPUThreshold
-    ? Severity.Warning
-    : Severity.None;
+const HasHighCPUtilizationPercentage = (
+  data: ReplicaUtilization
+): SeverityWithReason => {
+  const utilization = data.cpuAverage / data.cpuRequests;
+  return utilization > HighCPUThreshold
+    ? createSeverityWithReason(utilization, Severity.Warning)
+    : createSeverityWithReason(utilization, Severity.None);
 };
-const HasMaxCPUtilizationPercentage = (data: ReplicaUtilization): Severity => {
-  return data.cpuAverage / data.cpuRequests > MaxCPUThreshold
-    ? Severity.Critical
-    : Severity.None;
+const HasMaxCPUtilizationPercentage = (
+  data: ReplicaUtilization
+): SeverityWithReason => {
+  const utilization = data.cpuAverage / data.cpuRequests;
+  return utilization > MaxCPUThreshold
+    ? createSeverityWithReason(utilization, Severity.Critical)
+    : createSeverityWithReason(utilization, Severity.None);
 };
 
 const HasLowMemorytilizationPercentage = (
   data: ReplicaUtilization
-): Severity => {
-  return data.memoryMaximum / data.memoryRequests < LowMemoryThreshold
-    ? Severity.Information
-    : Severity.None;
+): SeverityWithReason => {
+  const utilization = data.memoryMaximum / data.memoryRequests;
+  return utilization < LowMemoryThreshold
+    ? createSeverityWithReason(utilization, Severity.Information)
+    : createSeverityWithReason(utilization, Severity.None);
 };
 
 const HasHighMemorytilizationPercentage = (
   data: ReplicaUtilization
-): Severity => {
-  return data.memoryMaximum / data.memoryRequests > HighMemoryThreshold
-    ? Severity.Warning
-    : Severity.None;
+): SeverityWithReason => {
+  const utilization = data.memoryMaximum / data.memoryRequests;
+  return utilization > HighMemoryThreshold
+    ? createSeverityWithReason(utilization, Severity.Warning)
+    : createSeverityWithReason(utilization, Severity.None);
 };
+
 const HasMaxMemorytilizationPercentage = (
   data: ReplicaUtilization
-): Severity => {
-  return data.memoryMaximum / data.memoryRequests > MaxMemoryThreshold
-    ? Severity.Critical
-    : Severity.None;
+): SeverityWithReason => {
+  const utilization = data.memoryMaximum / data.memoryRequests;
+  return utilization > MaxMemoryThreshold
+    ? createSeverityWithReason(utilization, Severity.Critical)
+    : createSeverityWithReason(utilization, Severity.None);
 };
+
+function createSeverityWithReason(
+  value: number,
+  severity: Severity
+): SeverityWithReason {
+  const utilPercentage = (value * 100).toFixed();
+  let reason = SeverityMap[severity].label;
+
+  if (severity > Severity.None) {
+    reason = `${SeverityMap[severity].label}: ${utilPercentage}% of requested`;
+  }
+
+  return { severity, reason, value };
+}
