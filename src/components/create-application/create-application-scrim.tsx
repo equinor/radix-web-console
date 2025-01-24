@@ -1,4 +1,4 @@
-import { Button, Divider, Icon, Typography } from '@equinor/eds-core-react';
+import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -86,63 +86,92 @@ export function CreateApplicationScrim({
         open={visibleScrim}
         onClose={onCloseScrim}
       >
-        <div className="create-app-content" ref={containerRef}>
+        <div ref={containerRef}>
           {(page === 'registration' || !registration) && (
             <CreateApplicationForm
+              onNext={() => setNewPage('deploykey')}
               registration={registration}
               onCreate={onLocalCreateApplication}
             />
           )}
 
           {page === 'deploykey' && registration && (
-            <>
-              <Typography>
-                The application <strong>{registration.name}</strong> has been
-                set up
-              </Typography>
-              <Typography>
-                To integrate with GitHub you must add a deploy key and a webhook
-              </Typography>
-              <Divider />
-              <ConfigureGithubDeploykey secrets={secrets} app={registration} />
-              <Divider style={{ width: '100%' }} />
-              <Button onClick={() => setNewPage('webhook')}>
-                Configure Webhook
-              </Button>
-            </>
+            <div className={'create-app'}>
+              <div className="create-app-content">
+                <Typography>
+                  The application <strong>{registration.name}</strong> has been
+                  set up
+                </Typography>
+                <Typography>
+                  To integrate with GitHub you must add a deploy key and a
+                  webhook
+                </Typography>
+                <ConfigureGithubDeploykey
+                  secrets={secrets}
+                  app={registration}
+                />
+              </div>
+              <div className="create-app-footer">
+                <Button
+                  onClick={() => setNewPage('registration')}
+                  variant={'ghost'}
+                >
+                  Previous: Registration
+                </Button>
+                <Button onClick={() => setNewPage('webhook')}>
+                  Next: Configure Webhook
+                </Button>
+              </div>
+            </div>
           )}
 
           {page === 'webhook' && registration && (
-            <>
-              <ConfigureGithubWebhook
-                appName={registration.name}
-                repository={registration.repository}
-                sharedSecret={secrets?.sharedSecret}
-              />
-              <Divider style={{ width: '100%' }} />
-              <Button onClick={() => setNewPage('finished')}>Complete</Button>
-            </>
+            <div className={'create-app'}>
+              <div className="create-app-content">
+                <ConfigureGithubWebhook
+                  appName={registration.name}
+                  repository={registration.repository}
+                  sharedSecret={secrets?.sharedSecret}
+                />
+              </div>
+              <div className="create-app-footer">
+                <Button
+                  onClick={() => setNewPage('deploykey')}
+                  variant={'ghost'}
+                >
+                  Previous: Deploykey
+                </Button>
+                <Button onClick={() => setNewPage('finished')}>Complete</Button>
+              </div>
+            </div>
           )}
 
           {page === 'finished' && registration && (
-            <>
-              <Typography>
-                Now you can run the <em>apply-config</em> pipeline job, or go to{' '}
-                <Typography
-                  as={Link}
-                  to={routeWithParams(routes.app, {
-                    appName: registration.name,
-                  })}
-                  link
-                >
-                  your application's page
+            <div className={'create-app'}>
+              <div className="create-app-content">
+                <Typography>
+                  Now you can run the <em>apply-config</em> pipeline job, or go
+                  to{' '}
+                  <Typography
+                    as={Link}
+                    to={routeWithParams(routes.app, {
+                      appName: registration.name,
+                    })}
+                    link
+                  >
+                    your application's page
+                  </Typography>
                 </Typography>
-                <Divider />
+              </div>
+              <div className="create-app-footer">
+                <Button onClick={() => setNewPage('webhook')} variant={'ghost'}>
+                  Previous: Webhook
+                </Button>
                 <NewApplyConfigPipelineLink button appName={registration.name}>
                   Apply Config
                 </NewApplyConfigPipelineLink>
-              </Typography>
-            </>
+              </div>
+            </div>
           )}
         </div>
       </ScrimPopup>
