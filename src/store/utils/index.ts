@@ -6,6 +6,15 @@ import type { FetchQueryError } from '../types';
 
 type ManagedErrors = FetchQueryError | SerializedError | Error | unknown;
 
+function getStatusPhrase(code: number | undefined) {
+  try {
+    return code ? getReasonPhrase(code) : 'unknown';
+  } catch (e) {
+    console.warn("unknown status code", {e, code})
+    return "unknown"
+  }
+}
+
 export function getFetchErrorData(error: ManagedErrors): {
   code?: number;
   message: string;
@@ -49,7 +58,7 @@ export function getFetchErrorData(error: ManagedErrors): {
     return {
       code: code,
       error: isFetchBaseQueryError(error) ? "server error" : error.error,
-      message: "failed to fetch data: " + (code ? getReasonPhrase(code) : "unknown")
+      message: "failed to fetch data: " + getStatusPhrase(code)
     }
   }
 
