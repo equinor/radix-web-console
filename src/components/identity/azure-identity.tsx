@@ -39,7 +39,15 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
     <div className="grid grid--gap-small">
       <div>
         <Typography group="input" variant="label">
-          Client ID (Managed Identity or App Registration)
+          Client ID (
+          <ExternalLink href="https://portal.azure.com/#browse/Microsoft.ManagedIdentity%2FuserAssignedIdentities">
+            Managed Identity
+          </ExternalLink>{' '}
+          or{' '}
+          <ExternalLink href="https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps">
+            App Registration
+          </ExternalLink>
+          )
         </Typography>
         <div>
           <Typography as="span">{clientId}</Typography>
