@@ -18,9 +18,11 @@ import { AzureIdentity } from '../identity/azure-identity';
 const AzureIdentityLink: FunctionComponent<{
   namespace: string;
   azure: AzureIdentityModel;
+  allowManagedIdentity?: boolean;
 }> = ({
   namespace,
   azure: { clientId, serviceAccountName, azureKeyVaults },
+  allowManagedIdentity,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
@@ -62,6 +64,7 @@ const AzureIdentityLink: FunctionComponent<{
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}
+              allowManagedIdentity={allowManagedIdentity}
             />
             {azureKeyVaults && azureKeyVaults.length > 0 && (
               <div className="grid grid--gap-small">
@@ -98,6 +101,7 @@ export const ComponentIdentity: FunctionComponent<{
           <AzureIdentityLink
             namespace={deployment.namespace}
             azure={component.identity.azure}
+            allowManagedIdentity={true}
           />
         )}
       </Typography>

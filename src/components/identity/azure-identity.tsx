@@ -12,6 +12,7 @@ export interface AzureIdentityProps {
   namespace: string;
   serviceAccountName: string;
   clientId: string;
+  allowManagedIdentity?: boolean;
 }
 
 const WorkloadIdentityHelp: FunctionComponent = () => (
@@ -34,16 +35,21 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
   namespace,
   serviceAccountName,
   clientId,
+  allowManagedIdentity,
 }) => (
   <div className="grid grid--gap-medium">
     <div className="grid grid--gap-small">
       <div>
         <Typography group="input" variant="label">
           Client ID (
-          <ExternalLink href="https://portal.azure.com/#browse/Microsoft.ManagedIdentity%2FuserAssignedIdentities">
-            Managed Identity
-          </ExternalLink>{' '}
-          or{' '}
+          {allowManagedIdentity && (
+            <>
+              <ExternalLink href="https://portal.azure.com/#browse/Microsoft.ManagedIdentity%2FuserAssignedIdentities">
+                Managed Identity
+              </ExternalLink>{' '}
+              or{' '}
+            </>
+          )}
           <ExternalLink href="https://portal.azure.com/#view/Microsoft_AAD_IAM/ActiveDirectoryMenuBlade/~/RegisteredApps">
             App Registration
           </ExternalLink>
