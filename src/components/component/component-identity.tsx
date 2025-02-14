@@ -9,8 +9,8 @@ import {
 
 import type {
   AzureIdentity as AzureIdentityModel,
+  Component,
   Deployment,
-  Identity,
 } from '../../store/radix-api';
 import { configVariables } from '../../utils/config';
 import { AzureIdentity } from '../identity/azure-identity';
@@ -18,9 +18,11 @@ import { AzureIdentity } from '../identity/azure-identity';
 const AzureIdentityLink: FunctionComponent<{
   namespace: string;
   azure: AzureIdentityModel;
+  allowManagedIdentity?: boolean;
 }> = ({
   namespace,
   azure: { clientId, serviceAccountName, azureKeyVaults },
+  allowManagedIdentity,
 }) => {
   const [popoverOpen, setPopoverOpen] = useState(false);
   const containerRef = useRef<HTMLElement>(null);
@@ -62,6 +64,7 @@ const AzureIdentityLink: FunctionComponent<{
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}
+              allowManagedIdentity={allowManagedIdentity}
             />
             {azureKeyVaults && azureKeyVaults.length > 0 && (
               <div className="grid grid--gap-small">
@@ -87,13 +90,32 @@ const AzureIdentityLink: FunctionComponent<{
 };
 
 export const ComponentIdentity: FunctionComponent<{
-  identity: Identity;
+  component: Component;
   deployment: Deployment;
-}> = ({ identity: { azure }, deployment }) => (
-  <Typography as="span">
-    Identity enabled for{' '}
-    {azure && (
-      <AzureIdentityLink namespace={deployment.namespace} azure={azure} />
+}> = ({ component, deployment }) => (
+  <>
+    {component.identity?.azure && (
+      <Typography as="span">
+        Identity enabled for{' '}
+        {component.identity?.azure && (
+          <AzureIdentityLink
+            namespace={deployment.namespace}
+            azure={component.identity.azure}
+            allowManagedIdentity={true}
+          />
+        )}
+      </Typography>
     )}
-  </Typography>
+    {component.oauth2?.identity?.azure && (
+      <Typography as="span">
+        OAuth2 identity enabled for{' '}
+        {component.oauth2.identity && (
+          <AzureIdentityLink
+            namespace={deployment.namespace}
+            azure={component.oauth2.identity.azure}
+          />
+        )}
+      </Typography>
+    )}
+  </>
 );

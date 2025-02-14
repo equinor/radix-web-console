@@ -2519,6 +2519,7 @@ export type AuxiliaryResourceDeployment = {
 };
 export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
+  identity?: Identity;
 };
 export type Port = {
   /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */

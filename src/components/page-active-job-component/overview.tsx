@@ -22,11 +22,8 @@ export const Overview = ({ component, deployment }: Props) => (
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
-        {component.identity && deployment && (
-          <ComponentIdentity
-            identity={component.identity}
-            deployment={deployment}
-          />
+        {component && deployment && (
+          <ComponentIdentity component={component} deployment={deployment} />
         )}
       </div>
       <div className="grid grid--gap-medium">
