@@ -592,9 +592,35 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    stopAllBatchesAndJobsForEnvironment: build.mutation<
+      StopAllBatchesAndJobsForEnvironmentApiResponse,
+      StopAllBatchesAndJobsForEnvironmentApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/stop`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     getBatches: build.query<GetBatchesApiResponse, GetBatchesApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
+    stopAllBatches: build.mutation<
+      StopAllBatchesApiResponse,
+      StopAllBatchesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/stop`,
+        method: 'POST',
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -672,6 +698,16 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    stopAllJobs: build.mutation<StopAllJobsApiResponse, StopAllJobsApiArg>({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/stop`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     getJob: build.query<GetJobApiResponse, GetJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}`,
@@ -743,6 +779,19 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+        },
+      }),
+    }),
+    stopAllBatchesAndJobsForJobComponent: build.mutation<
+      StopAllBatchesAndJobsForJobComponentApiResponse,
+      StopAllBatchesAndJobsForJobComponentApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/stop`,
+        method: 'POST',
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
         },
       }),
     }),
@@ -1732,9 +1781,33 @@ export type GetReplicaEventsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type StopAllBatchesAndJobsForEnvironmentApiResponse = unknown;
+export type StopAllBatchesAndJobsForEnvironmentApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type GetBatchesApiResponse =
   /** status 200 scheduled batches */ ScheduledBatchSummary[];
 export type GetBatchesApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Name of job-component */
+  jobComponentName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type StopAllBatchesApiResponse = unknown;
+export type StopAllBatchesApiArg = {
   /** Name of application */
   appName: string;
   /** Name of environment */
@@ -1842,6 +1915,19 @@ export type GetJobComponentDeploymentsApiArg = {
 export type GetJobsApiResponse =
   /** status 200 scheduled jobs */ ScheduledJobSummary[];
 export type GetJobsApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Name of job-component */
+  jobComponentName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type StopAllJobsApiResponse = unknown;
+export type StopAllJobsApiArg = {
   /** Name of application */
   appName: string;
   /** Name of environment */
@@ -1965,6 +2051,19 @@ export type JobLogApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
+export type StopAllBatchesAndJobsForJobComponentApiResponse = unknown;
+export type StopAllBatchesAndJobsForJobComponentApiArg = {
+  /** Name of application */
+  appName: string;
+  /** Name of environment */
+  envName: string;
+  /** Name of job-component */
+  jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -2880,26 +2979,12 @@ export type BuildSecret = {
     Pending = Secret value is not set
     Consistent = Secret value is set */
   status?: 'Pending' | 'Consistent';
+  /** Updated when the secret was last changed */
+  updated?: any;
 };
 export type SecretParameters = {
   /** Name the unique name of the Radix application deployment */
   secretValue: string;
-  /** Type of the secret
-    generic SecretTypeGeneric
-    azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
-    csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
-    csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
-    csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
-    client-cert-auth SecretTypeClientCertificateAuth
-    oauth2-proxy SecretTypeOAuth2Proxy */
-  type?:
-    | 'generic'
-    | 'azure-blob-fuse-volume'
-    | 'csi-azure-blob-volume'
-    | 'csi-azure-key-vault-creds'
-    | 'csi-azure-key-vault-item'
-    | 'client-cert-auth'
-    | 'oauth2-proxy';
 };
 export type DeployKeyAndSecret = {
   /** PublicDeployKey the public value of the deploy key */
@@ -2963,6 +3048,8 @@ export type Secret = {
     | 'csi-azure-key-vault-item'
     | 'client-cert-auth'
     | 'oauth2-proxy';
+  /** Updated timestamp of the last change */
+  updated?: any;
 };
 export type Environment = {
   activeDeployment?: Deployment;
@@ -3514,6 +3601,8 @@ export type ImageHubSecret = {
     Pending = Secret value is not set
     Consistent = Secret value is set */
   status?: 'Pending' | 'Consistent';
+  /** Updated when the secret was last changed */
+  updated?: any;
   /** Username for connecting to private image hub */
   username: string;
 };
@@ -3570,7 +3659,9 @@ export const {
   useGetEnvironmentEventsQuery,
   useGetComponentEventsQuery,
   useGetReplicaEventsQuery,
+  useStopAllBatchesAndJobsForEnvironmentMutation,
   useGetBatchesQuery,
+  useStopAllBatchesMutation,
   useGetBatchQuery,
   useDeleteBatchMutation,
   useCopyBatchMutation,
@@ -3578,6 +3669,7 @@ export const {
   useStopBatchMutation,
   useGetJobComponentDeploymentsQuery,
   useGetJobsQuery,
+  useStopAllJobsMutation,
   useGetJobQuery,
   useDeleteJobMutation,
   useCopyJobMutation,
@@ -3585,6 +3677,7 @@ export const {
   useRestartJobMutation,
   useStopJobMutation,
   useJobLogQuery,
+  useStopAllBatchesAndJobsForJobComponentMutation,
   useResetManuallyScaledComponentsInEnvironmentMutation,
   useRestartEnvironmentMutation,
   useStartEnvironmentMutation,

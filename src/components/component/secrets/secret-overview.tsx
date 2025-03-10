@@ -37,6 +37,7 @@ export const SecretOverview = ({
     <AsyncResource asyncState={envState}>
       {data && secret ? (
         <SecretForm
+          updated={secret.updated}
           secret={secret}
           secretName={secret.name}
           disableForm={isLoading}
