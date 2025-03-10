@@ -14,9 +14,11 @@ import type {
 import { SecretStatus } from '../secret-status';
 
 import './style.css';
+import { SecretUpdatedBadge } from '../status-badges/secret-updated-badge';
 
 export const SecretForm: FunctionComponent<{
   secret: Secret | BuildSecret | ImageHubSecret;
+  updated: string;
   secretName: string;
   overview?: ReactNode;
   disableForm?: boolean;
@@ -35,6 +37,7 @@ export const SecretForm: FunctionComponent<{
   disableSave,
   disableForm,
   allowEmptyValue,
+  updated,
   onSave,
 }) => {
   const [value, setValue] = useState<{ current: string; previous?: string }>({
@@ -51,6 +54,11 @@ export const SecretForm: FunctionComponent<{
       <div className="secret-status">
         <Typography>Status</Typography>
         <SecretStatus status={secret.status} />
+      </div>
+
+      <div className="secret-status">
+        <Typography>Last changed</Typography>
+        <SecretUpdatedBadge updated={updated} />
       </div>
 
       <div className="secret-overview-form">
