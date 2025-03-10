@@ -1,8 +1,8 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, stop } from '@equinor/eds-icons';
 
-import { StatusBadgeTemplate } from './status-badge-template';
 import { RelativeToNow } from '../time/relative-to-now';
+import { StatusBadgeTemplate } from './status-badge-template';
 
 type Props = {
   updated?: string;
