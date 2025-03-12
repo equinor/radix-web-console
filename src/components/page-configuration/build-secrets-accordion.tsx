@@ -39,6 +39,7 @@ const BuildSecretForm = ({ appName, secret, fetchSecret, onSave }: Props) => {
 
   return (
     <SecretForm
+      updated={secret.updated}
       secret={secret}
       secretName={secret.name}
       disableForm={isLoading}

@@ -29,6 +29,7 @@ function ImageHubForm({ appName, secret, fetchSecret, onSave }: FormProps) {
   return (
     <SecretForm
       secret={secret}
+      updated={secret.updated}
       secretName={secret.server}
       disableForm={isLoading}
       disableSave={isLoading}
