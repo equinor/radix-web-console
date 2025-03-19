@@ -1,29 +1,26 @@
 import { Typography } from '@equinor/eds-core-react';
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import {
+  useGetApplicationJobQuery,
+  useGetTektonPipelineRunsQuery,
+} from '../../store/radix-api';
 import {
   getPipelineStepDescription,
   getPipelineStepTitle,
 } from '../../utils/pipeline';
+import { withRouteParams } from '../../utils/router';
 import { routeWithParams, smallJobName } from '../../utils/string';
-
-import { JobStepLogs } from './job-step-logs';
-
-import { routes } from '../../routes';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { getJobExecutionState } from '../component/execution-state';
 import { DocumentTitle } from '../document-title';
 import { PipelineRuns } from '../pipeline-runs';
 import { Duration } from '../time/duration';
+import { DurationToNow } from '../time/duration-to-now';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
-import { pollingInterval } from '../../store/defaults';
-import {
-  useGetApplicationJobQuery,
-  useGetTektonPipelineRunsQuery,
-} from '../../store/radix-api';
-import { withRouteParams } from '../../utils/router';
-import { DurationToNow } from '../time/duration-to-now';
 
 export interface PageStepProps {
   appName: string;
@@ -143,16 +140,6 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
                 No environment pipelines
               </Typography>
             ))}
-
-          <section>
-            <JobStepLogs
-              appName={appName}
-              jobName={jobName}
-              stepName={stepName}
-              start={step?.started}
-              end={step?.ended}
-            />
-          </section>
         </>
       )}
     </>
