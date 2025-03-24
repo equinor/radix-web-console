@@ -5,6 +5,7 @@ import {
   useGetApplicationJobQuery,
   useGetTektonPipelineRunsQuery,
 } from '../../store/radix-api';
+import { PipelineStep } from '../../utils/pipeline';
 import {
   getPipelineStepDescription,
   getPipelineStepTitle,
@@ -21,6 +22,7 @@ import { DurationToNow } from '../time/duration-to-now';
 import { RelativeToNow } from '../time/relative-to-now';
 
 import './style.css';
+import { JobStepLogs } from './job-step-logs';
 
 export interface PageStepProps {
   appName: string;
@@ -140,6 +142,17 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
                 No environment pipelines
               </Typography>
             ))}
+          {step.name !== PipelineStep.RunSubPipeline && (
+            <section>
+              <JobStepLogs
+                appName={appName}
+                jobName={jobName}
+                stepName={stepName}
+                start={step?.started}
+                end={step?.ended}
+              />
+            </section>
+          )}
         </>
       )}
     </>
