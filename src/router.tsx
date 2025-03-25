@@ -29,6 +29,7 @@ import * as PageReplica from './components/page-replica';
 import * as PageScheduledBatch from './components/page-scheduled-batch';
 import * as PageScheduledJob from './components/page-scheduled-job';
 import * as PageStep from './components/page-step';
+import * as PipelineRunTaskStep from './components/pipeline-run-task-step';
 
 /**
  * Radix Web Console page router
@@ -200,6 +201,10 @@ export const router = createBrowserRouter([
                   {
                     path: routes.appJobNew,
                     Component: PagePipelineJobNew.default,
+                  },
+                  {
+                    path: routes.appPipelineRunTaskStep,
+                    Component: PipelineRunTaskStep.default,
                   },
                   {
                     // PIPELINERUNS

@@ -15,6 +15,7 @@ import { StepSummary } from './step-summary';
 import type { Step } from '../../store/radix-api';
 import { PipelineStep } from '../../utils/pipeline';
 import { sortCompareDate } from '../../utils/sort-utils';
+import { SubPipelineStepSummary } from './sub-pipeline-step-summary';
 
 function getStepIcon(name: string): IconData {
   switch (name) {
@@ -75,7 +76,19 @@ export const StepsList: FunctionComponent<{
                   />
                   <span className="steps-list__divider-line" />
                 </div>
-                <StepSummary appName={appName} jobName={jobName} step={step} />
+                {step.name === 'sub-pipeline-step' ? (
+                  <SubPipelineStepSummary
+                    appName={appName}
+                    jobName={jobName}
+                    step={step}
+                  />
+                ) : (
+                  <StepSummary
+                    appName={appName}
+                    jobName={jobName}
+                    step={step}
+                  />
+                )}
               </div>
             ))
         ) : (

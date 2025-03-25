@@ -50,6 +50,7 @@ export const routes = {
   appPipelineRunTasks: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks',
   appPipelineRunTask: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/view/:taskName',
   appPipelineRunTaskSteps: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps',
+  appPipelineRunTaskStep: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps/:stepName',
 
   devComponent: '/dev-component/(.*)',
   devIntegration: '/dev-integration/(.*)',
