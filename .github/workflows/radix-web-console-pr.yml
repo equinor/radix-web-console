@@ -65,7 +65,7 @@ jobs:
         run: echo "APP_SERVICE_ACCOUNT_TOKEN=dummy" >> $GITHUB_ENV
       - uses: actions/checkout@v4
       - name: 'Validate'
-        uses: equinor/radix-github-actions@update-rx-version-1-27-0
+        uses: equinor/radix-github-actions@v1
         with:
           args: validate radix-config --config-file radixconfig.${{matrix.env}}.yaml
 
