@@ -48,8 +48,7 @@ export const SubPipelineStepSummary: FunctionComponent<{
         link
         token={{ textDecoration: 'none', textTransform: 'capitalize' }}
       >
-        Sub-pipeline step: {step.subPipelineTaskStep?.pipelineName} /{' '}
-        {step.subPipelineTaskStep?.environment} /{' '}
+        Sub-pipeline / {step.subPipelineTaskStep?.environment} /{' '}
         {step.subPipelineTaskStep?.taskName} / {step.subPipelineTaskStep?.name}
       </Typography>
 

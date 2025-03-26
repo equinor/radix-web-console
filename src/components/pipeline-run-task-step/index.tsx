@@ -1,9 +1,14 @@
 import { Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { routes } from '../../routes';
 import { useGetTektonPipelineRunTaskStepQuery } from '../../store/radix-api';
 import { withRouteParams } from '../../utils/router';
+import { routeWithParams, smallJobName } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { DocumentTitle } from '../document-title';
+import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
 import { Duration } from '../time/duration';
+import { DurationToNow } from '../time/duration-to-now';
 import { RelativeToNow } from '../time/relative-to-now';
 
 export interface Props {
@@ -21,7 +26,6 @@ export function PipelineRunTaskStep({
   taskName,
   stepName,
 }: Props) {
-  const [now] = useState(new Date());
   const { data: taskStep, ...stepState } = useGetTektonPipelineRunTaskStepQuery(
     { appName, jobName, pipelineRunName, taskName, stepName },
     {
@@ -31,21 +35,52 @@ export function PipelineRunTaskStep({
   );
 
   return (
-    <AsyncResource asyncState={stepState}>
-      <div className="grid grid--gap-large">
-        {!taskStep ? (
-          <Typography variant="h4">No task step…</Typography>
-        ) : (
+    <>
+      <DocumentTitle title={stepName} />
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          {
+            label: 'Pipeline Jobs',
+            to: routeWithParams(routes.appJobs, { appName }),
+          },
+          {
+            label: smallJobName(jobName),
+            to: routeWithParams(routes.appJob, { appName, jobName }),
+          },
+        ]}
+      />
+
+      {!taskStep?.subPipelineTaskStep ? (
+        <Typography>No step…</Typography>
+      ) : (
+        <>
           <section className="grid grid--gap-medium">
             <Typography variant="h4">Overview</Typography>
             <div className="grid grid--gap-medium grid--overview-columns">
               <div className="grid grid--gap-medium">
                 <Typography>
-                  Step <strong>{taskStep.status?.toLowerCase()}</strong>
+                  Pipeline{' '}
+                  <strong>
+                    {taskStep.subPipelineTaskStep.pipelineName}
+                  </strong>{' '}
                 </Typography>
                 <Typography>
-                  {/*{getStepTaskRunExecutionState(taskStep.status)} step{' '}*/}
-                  <strong>{taskStep.name}</strong>
+                  Environment{' '}
+                  <strong>
+                    {taskStep.subPipelineTaskStep.environment}
+                  </strong>{' '}
+                </Typography>
+                <Typography>
+                  Pipeline Task{' '}
+                  <strong>{taskStep.subPipelineTaskStep.taskName}</strong>{' '}
+                </Typography>
+                <Typography>
+                  Pipeline Step{' '}
+                  <strong>{taskStep.subPipelineTaskStep.name}</strong>{' '}
+                </Typography>
+                <Typography>
+                  Status: <strong>{taskStep.status}</strong>
                 </Typography>
               </div>
               {taskStep.started && (
@@ -58,7 +93,7 @@ export function PipelineRunTaskStep({
                   </Typography>
                   {taskStep.ended ? (
                     <Typography>
-                      Task took{' '}
+                      Step took{' '}
                       <strong>
                         <Duration
                           start={taskStep.started}
@@ -70,10 +105,7 @@ export function PipelineRunTaskStep({
                     <Typography>
                       Duration so far is{' '}
                       <strong>
-                        <Duration
-                          start={taskStep.started}
-                          end={taskStep.ended ?? now}
-                        />
+                        <DurationToNow start={taskStep.started} />
                       </strong>
                     </Typography>
                   )}
@@ -81,9 +113,21 @@ export function PipelineRunTaskStep({
               )}
             </div>
           </section>
-        )}
-      </div>
-    </AsyncResource>
+          <section>
+            <AsyncResource asyncState={stepState}>
+              <PipelineRunTaskStepLog
+                appName={appName}
+                jobName={jobName}
+                pipelineRunName={taskStep.subPipelineTaskStep.pipelineRunName}
+                taskName={taskStep.subPipelineTaskStep.kubeName}
+                stepName={taskStep.subPipelineTaskStep.name}
+                title={'Log'}
+              />
+            </AsyncResource>
+          </section>
+        </>
+      )}
+    </>
   );
 }
 export default withRouteParams(PipelineRunTaskStep);
