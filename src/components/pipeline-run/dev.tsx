@@ -8,7 +8,7 @@ const testData: Array<PipelineRinModel> = [
   {
     name: 'some-pipeline-run',
     env: 'dev',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
     ended: new Date().toISOString(),
     status: 'Succeeded',
@@ -16,14 +16,14 @@ const testData: Array<PipelineRinModel> = [
   {
     name: 'some-pipeline-run',
     env: 'dev',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
     status: 'Started',
   },
   {
     name: 'some-pipeline-run',
     env: 'dev',
-    realName: '',
+    kubeName: '',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
     ended: new Date().toISOString(),
     status: 'Succeeded',
@@ -31,7 +31,7 @@ const testData: Array<PipelineRinModel> = [
   {
     name: 'some-pipeline-run',
     env: 'dev',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     started: new Date('2022-05-10T14:31:23Z').toISOString(),
     status: 'Running',
   },

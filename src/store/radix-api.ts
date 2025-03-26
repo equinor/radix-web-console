@@ -3318,6 +3318,8 @@ export type ReplicaResourcesUtilizationResponse = {
 export type SubPipelineTaskStep = {
   /** Environment of the pipeline run */
   environment: string;
+  /** KubeName Name of the pipeline run in the namespace */
+  kubeName: string;
   /** Name of the step */
   name: string;
   /** PipelineName of the task */
@@ -3408,10 +3410,10 @@ export type PipelineRun = {
   ended?: string;
   /** Env Environment of the pipeline run */
   env: string;
+  /** KubeName Name of the pipeline run in the namespace */
+  kubeName: string;
   /** Name Original name of the pipeline run */
   name: string;
-  /** RealName Name of the pipeline run in the namespace */
-  realName: string;
   /** Started timestamp */
   started?: string;
   /** Status of the step
@@ -3454,14 +3456,14 @@ export type PipelineRun = {
 export type PipelineRunTask = {
   /** Ended timestamp */
   ended?: string;
+  /** KubeName Name of the pipeline run in the namespace */
+  kubeName: string;
   /** Name of the task */
   name: string;
   /** PipelineName of the task */
   pipelineName: string;
   /** PipelineRunEnv Environment of the pipeline run */
   pipelineRunEnv: string;
-  /** RealName Name of the pipeline run in the namespace */
-  realName: string;
   /** Started timestamp */
   started?: string;
   /** Status of the task

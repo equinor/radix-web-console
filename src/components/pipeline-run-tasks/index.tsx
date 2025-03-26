@@ -58,7 +58,7 @@ export function PipelineRunTasks({
           {sortedData.map((x, i) => (
             <PipelineTaskTableRow
               key={i}
-              pipelineRunName={pipelineRun?.realName}
+              pipelineRunName={pipelineRun?.kubeName}
               {...{ appName, jobName, task: x }}
             />
           ))}

@@ -35,7 +35,7 @@ export function PipelineTaskTableRow({
               appName,
               jobName,
               pipelineRunName,
-              taskName: task.realName,
+              taskName: task.kubeName,
             })}
           >
             {task.name}

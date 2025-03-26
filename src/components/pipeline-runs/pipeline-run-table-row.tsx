@@ -24,7 +24,7 @@ export function PipelineRunTableRow({ appName, jobName, pipelineRun }: Props) {
           to={routeWithParams(routes.appPipelineRun, {
             appName,
             jobName,
-            pipelineRunName: pipelineRun.realName,
+            pipelineRunName: pipelineRun.kubeName,
           })}
           link
           token={{ textDecoration: 'none' }}

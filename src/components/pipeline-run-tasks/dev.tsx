@@ -16,12 +16,12 @@ const testData: Array<{
         name: 'some-pipeline-run',
         env: 'dev',
         status: 'Succeeded',
-        realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
+        kubeName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
       },
       tasks: [
         {
           name: 'some-pipeline-run-task',
-          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          kubeName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
@@ -30,7 +30,7 @@ const testData: Array<{
         },
         {
           name: 'some-pipeline-run-task',
-          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          kubeName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
@@ -38,7 +38,7 @@ const testData: Array<{
         },
         {
           name: 'some-pipeline-run-task',
-          realName: '',
+          kubeName: '',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
@@ -47,7 +47,7 @@ const testData: Array<{
         },
         {
           name: 'some-pipeline-run-task',
-          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          kubeName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
@@ -55,7 +55,7 @@ const testData: Array<{
         },
         {
           name: 'some-pipeline-run-task',
-          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          kubeName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           status: 'PipelineRunStopping',
@@ -72,7 +72,7 @@ const testData: Array<{
         name: 'some-pipeline-run',
         env: 'dev',
         status: 'Succeeded',
-        realName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
+        kubeName: 'radix-run-20220510010101-abcde-dev-abcde-some-zxcv',
       },
       tasks: [],
     },
@@ -85,7 +85,7 @@ const testData: Array<{
       tasks: [
         {
           name: 'some-pipeline-run-task',
-          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          kubeName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           started: new Date('2022-05-10T14:31:23Z').toISOString(),
@@ -93,7 +93,7 @@ const testData: Array<{
         },
         {
           name: 'some-pipeline-run-task',
-          realName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
+          kubeName: 'radix-task-20220510010101-abcde-dev-abcde-some-zxcv',
           pipelineName: 'build-pipeline',
           pipelineRunEnv: 'dev',
           status: 'PipelineRunStopping',

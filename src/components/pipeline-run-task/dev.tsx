@@ -8,7 +8,7 @@ import type { PipelineRunTask as PipelineRunTaskModel } from '../../store/radix-
 const testData: Array<PipelineRunTaskModel> = [
   {
     name: 'some-pipeline-run',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
     status: 'Succeeded',
@@ -17,7 +17,7 @@ const testData: Array<PipelineRunTaskModel> = [
   },
   {
     name: 'some-pipeline-run',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
     status: 'PipelineRunPending',
@@ -25,7 +25,7 @@ const testData: Array<PipelineRunTaskModel> = [
   },
   {
     name: 'some-pipeline-run',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
     status: 'Succeeded',
@@ -34,7 +34,7 @@ const testData: Array<PipelineRunTaskModel> = [
   },
   {
     name: 'some-pipeline-run',
-    realName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
+    kubeName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     pipelineRunEnv: 'dev',
     pipelineName: 'build-pipeline',
     status: 'Succeeded',
