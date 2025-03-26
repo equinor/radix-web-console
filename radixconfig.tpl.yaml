@@ -58,6 +58,7 @@ spec:
         oauth2:
           clientId: "${AZURE_CLIENT_ID}"
           scope: "openid profile offline_access 6dae42f8-4368-4678-94ff-3960e28e3630/user.read email"
+          credentials: "${OAUTH_CREDENTIALS}"
           setXAuthRequestHeaders: true
           setAuthorizationHeader: true
           sessionStoreType: redis
