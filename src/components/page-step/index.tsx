@@ -1,22 +1,16 @@
 import { Typography } from '@equinor/eds-core-react';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
-import {
-  useGetApplicationJobQuery,
-  useGetTektonPipelineRunsQuery,
-} from '../../store/radix-api';
-import { PipelineStep } from '../../utils/pipeline';
+import { useGetApplicationJobQuery } from '../../store/radix-api';
 import {
   getPipelineStepDescription,
   getPipelineStepTitle,
 } from '../../utils/pipeline';
 import { withRouteParams } from '../../utils/router';
 import { routeWithParams, smallJobName } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { getJobExecutionState } from '../component/execution-state';
 import { DocumentTitle } from '../document-title';
-import { PipelineRuns } from '../pipeline-runs';
 import { Duration } from '../time/duration';
 import { DurationToNow } from '../time/duration-to-now';
 import { RelativeToNow } from '../time/relative-to-now';
@@ -35,14 +29,6 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
     { appName, jobName },
     { pollingInterval }
   );
-  const { data: pipelineRuns, ...pipelineRunsState } =
-    useGetTektonPipelineRunsQuery(
-      {
-        appName,
-        jobName,
-      },
-      { pollingInterval }
-    );
   const step = job?.steps?.find((step) => step.name === stepName);
 
   return (
@@ -116,43 +102,15 @@ export function PageStep({ appName, jobName, stepName }: PageStepProps) {
               )}
             </div>
           </section>
-
-          {stepName === 'run-pipelines' &&
-            (pipelineRuns && pipelineRuns.length > 0 ? (
-              <section>
-                <Typography
-                  variant="h4"
-                  className={`pipeline-run-header-absolute'`}
-                >
-                  Environment pipelines
-                </Typography>
-                <AsyncResource asyncState={pipelineRunsState}>
-                  <PipelineRuns
-                    pipelineRuns={pipelineRuns}
-                    jobName={jobName}
-                    appName={appName}
-                  />
-                </AsyncResource>
-              </section>
-            ) : (
-              <Typography
-                variant="h4"
-                className={`pipeline-run-header-absolute'`}
-              >
-                No environment pipelines
-              </Typography>
-            ))}
-          {step.name !== PipelineStep.RunSubPipeline && (
-            <section>
-              <JobStepLogs
-                appName={appName}
-                jobName={jobName}
-                stepName={stepName}
-                start={step?.started}
-                end={step?.ended}
-              />
-            </section>
-          )}
+          <section>
+            <JobStepLogs
+              appName={appName}
+              jobName={jobName}
+              stepName={stepName}
+              start={step?.started}
+              end={step?.ended}
+            />
+          </section>
         </>
       )}
     </>

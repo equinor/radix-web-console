@@ -23,8 +23,6 @@ import * as PageOauthReplica from './components/page-oauth-replica';
 import * as PagePipelineJob from './components/page-pipeline-job';
 import * as PagePipelineJobNew from './components/page-pipeline-job-new';
 import * as PagePipelineJobs from './components/page-pipeline-jobs';
-import * as PagePipelineRun from './components/page-pipeline-run';
-import * as PagePipelineRunTask from './components/page-pipeline-run-task';
 import * as PageReplica from './components/page-replica';
 import * as PageScheduledBatch from './components/page-scheduled-batch';
 import * as PageScheduledJob from './components/page-scheduled-job';
@@ -205,20 +203,6 @@ export const router = createBrowserRouter([
                   {
                     path: routes.appPipelineRunTaskStep,
                     Component: PipelineRunTaskStep.default,
-                  },
-                  {
-                    // PIPELINERUNS
-                    path: routes.appPipelineRuns,
-                    children: [
-                      {
-                        path: routes.appPipelineRun,
-                        Component: PagePipelineRun.default,
-                      },
-                      {
-                        path: routes.appPipelineRunTask,
-                        Component: PagePipelineRunTask.default,
-                      },
-                    ],
                   },
                 ],
               },
