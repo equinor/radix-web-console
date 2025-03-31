@@ -287,11 +287,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                       </div>
                     )}
                     <Typography>
-                      Triggered{' '}
-                      {job.triggeredFromWebhook && (
-                        <strong>from webhook</strong>
-                      )}{' '}
-                      by <strong>{job.triggeredBy || 'N/A'}</strong>
+                      Triggered by <strong>{job.triggeredBy || 'N/A'}</strong>
                       {job.commitID && (
                         <>
                           , commit{' '}

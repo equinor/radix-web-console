@@ -39,7 +39,19 @@ export const StepsList: FunctionComponent<{
 }> = ({ appName, jobName, steps }) => {
   const orchestrationStepName = 'radix-pipeline';
   const namedSteps = (steps ?? [])
-    .filter(({ name }) => !!name)
+    .filter(({ name }) => !!name && name !== 'sub-pipeline-step')
+    .sort((a: Step, b: Step): number =>
+      a.name == orchestrationStepName
+        ? -1
+        : b.name == orchestrationStepName
+          ? 1
+          : (sortCompareDate(
+              a.started ?? new Date('9999-01-01T00:00:00Z'),
+              b.started ?? new Date('9999-01-01T00:00:00Z')
+            ) ?? a.name?.localeCompare(b.name ?? ''))
+    );
+  const subPipelineSteps = (steps ?? [])
+    .filter(({ name }) => name === 'sub-pipeline-step')
     .sort((a: Step, b: Step): number =>
       a.name == orchestrationStepName
         ? -1
@@ -52,10 +64,16 @@ export const StepsList: FunctionComponent<{
     );
 
   const getStepKey = (step: Step) => {
-    return step.components?.length == 1
-      ? `${step.name}-${step.components[0]}`
-      : step.name;
+    let stepKey = `${step.name}`;
+    if (step.components) {
+      stepKey += `-${step.components.join('-')}`;
+    }
+    if (step.subPipelineTaskStep) {
+      stepKey += `-${step.subPipelineTaskStep.pipelineName}-${step.subPipelineTaskStep.environment}-${step.subPipelineTaskStep.taskName}-${step.subPipelineTaskStep.name}`;
+    }
+    return stepKey;
   };
+
   return (
     <>
       <Typography variant="h4">Steps</Typography>
@@ -70,20 +88,29 @@ export const StepsList: FunctionComponent<{
                 />
                 <span className="steps-list__divider-line" />
               </div>
-              {step.name === 'sub-pipeline-step' ? (
-                <SubPipelineStepSummary
-                  appName={appName}
-                  jobName={jobName}
-                  step={step}
-                />
-              ) : (
-                <StepSummary appName={appName} jobName={jobName} step={step} />
-              )}
+              <StepSummary appName={appName} jobName={jobName} step={step} />
             </div>
           ))
         ) : (
           <Typography>This job has no steps</Typography>
         )}
+        {subPipelineSteps.length > 0 &&
+          subPipelineSteps.map((step) => (
+            <div key={getStepKey(step)} className="steps-list__step">
+              <div className="grid steps-list__divider">
+                <Icon
+                  className="step__icon"
+                  data={getStepIcon(step.name ?? '')}
+                />
+                <span className="steps-list__divider-line" />
+              </div>
+              <SubPipelineStepSummary
+                appName={appName}
+                jobName={jobName}
+                step={step}
+              />
+            </div>
+          ))}
       </div>
     </>
   );

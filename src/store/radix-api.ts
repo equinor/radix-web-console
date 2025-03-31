@@ -2750,8 +2750,6 @@ export type JobSummary = {
     | 'StoppedNoChanges';
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api - usertoken.upn */
   triggeredBy?: string;
-  /** TriggeredFromWebhook indicates if the job was triggered from a webhook */
-  triggeredFromWebhook?: boolean;
 };
 export type ApplicationSummary = {
   /** EnvironmentActiveComponents All component summaries of the active deployments in the environments */
@@ -3402,8 +3400,6 @@ export type Job = {
   steps?: Step[];
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api = usertoken.upn */
   triggeredBy?: string;
-  /** TriggeredFromWebhook indicates if the job was triggered from a webhook */
-  triggeredFromWebhook?: boolean;
 };
 export type PipelineRun = {
   /** Ended timestamp */
