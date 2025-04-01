@@ -17,6 +17,12 @@
   width: 1px;
   margin: var(--eds_spacing_x_small) 0;
 }
+.steps-list__step--indented {
+  display: grid;
+  gap: 0 var(--eds_spacing_medium);
+  grid-template-columns: auto 1fr;
+  margin-left: var(--eds_spacing_x_large); /* or use px value like 24px */
+}
 .step-summary__content {
   display: grid;
   gap: var(--eds_spacing_medium);
