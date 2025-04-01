@@ -3,6 +3,7 @@ export enum PipelineStep {
   CloneRepository = 'clone',
   OrchestratePipeline = 'radix-pipeline',
   BuildComponent = 'build',
+  SubPipelineTaskStep = 'sub-pipeline-step',
 }
 
 export function getPipelineStepDescription(stepName?: string): string | null {

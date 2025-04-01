@@ -1,18 +1,18 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import {
   type IconData,
+  build_wrench,
   github,
+  lightbulb,
   pressure,
   radio_button_unselected,
   record,
 } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';
-
-import { StepSummary } from './step-summary';
-
 import type { Step } from '../../store/radix-api';
 import { PipelineStep } from '../../utils/pipeline';
 import { sortCompareDate } from '../../utils/sort-utils';
+import { StepSummary } from './step-summary';
 import { SubPipelineStepSummary } from './sub-pipeline-step-summary';
 
 function getStepIcon(name: string): IconData {
@@ -22,15 +22,67 @@ function getStepIcon(name: string): IconData {
       return github;
     case PipelineStep.OrchestratePipeline:
       return pressure;
+    case PipelineStep.BuildComponent:
+      return build_wrench;
+    case PipelineStep.SubPipelineTaskStep:
+      return lightbulb;
 
     default: {
       if (name.match(/^scan-(.+)$/)) {
         return record;
       }
+      if (name.match(/^build-(.+)$/)) {
+        return build_wrench;
+      }
       return radio_button_unselected;
     }
   }
 }
+
+type GroupedSteps = {
+  pipelineName: string;
+  environment: string;
+  steps: Step[];
+};
+
+// Assuming you already have your `steps` array:
+const getSubPipelineSteps = (steps: Step[]): GroupedSteps[] => {
+  const groups: Record<string, GroupedSteps> = {};
+  const subPipelineSteps = (steps ?? []).filter(
+    ({ name }) => name === 'sub-pipeline-step'
+  );
+  for (const step of subPipelineSteps) {
+    const sub = step.subPipelineTaskStep;
+    if (!sub) continue;
+
+    const key = `${sub.pipelineName}||${sub.environment}`;
+    if (!groups[key]) {
+      groups[key] = {
+        pipelineName: sub.pipelineName,
+        environment: sub.environment,
+        steps: [],
+      };
+    }
+
+    groups[key].steps.push(step);
+  }
+
+  // Sort steps inside each group
+  for (const key in groups) {
+    groups[key].steps.sort((a, b) => {
+      const aTime = a.started ? new Date(a.started).getTime() : 0;
+      const bTime = b.started ? new Date(b.started).getTime() : 0;
+      return aTime - bTime;
+    });
+  }
+
+  // Convert to array and sort groups
+  return Object.values(groups).sort((a, b) => {
+    const nameCompare = a.pipelineName.localeCompare(b.pipelineName);
+    if (nameCompare !== 0) return nameCompare;
+    return a.environment.localeCompare(b.environment);
+  });
+};
 
 export const StepsList: FunctionComponent<{
   appName: string;
@@ -50,18 +102,7 @@ export const StepsList: FunctionComponent<{
               b.started ?? new Date('9999-01-01T00:00:00Z')
             ) ?? a.name?.localeCompare(b.name ?? ''))
     );
-  const subPipelineSteps = (steps ?? [])
-    .filter(({ name }) => name === 'sub-pipeline-step')
-    .sort((a: Step, b: Step): number =>
-      a.name == orchestrationStepName
-        ? -1
-        : b.name == orchestrationStepName
-          ? 1
-          : (sortCompareDate(
-              a.started ?? new Date('9999-01-01T00:00:00Z'),
-              b.started ?? new Date('9999-01-01T00:00:00Z')
-            ) ?? a.name?.localeCompare(b.name ?? ''))
-    );
+  const subPipelineSteps = getSubPipelineSteps(steps ?? []);
 
   const getStepKey = (step: Step) => {
     let stepKey = `${step.name}`;
@@ -95,21 +136,44 @@ export const StepsList: FunctionComponent<{
           <Typography>This job has no steps</Typography>
         )}
         {subPipelineSteps.length > 0 &&
-          subPipelineSteps.map((step) => (
-            <div key={getStepKey(step)} className="steps-list__step">
-              <div className="grid steps-list__divider">
-                <Icon
-                  className="step__icon"
-                  data={getStepIcon(step.name ?? '')}
-                />
-                <span className="steps-list__divider-line" />
+          subPipelineSteps.map((groupedSteps) => (
+            <>
+              <div
+                key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
+                className="steps-list__step"
+              >
+                <div
+                  key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
+                  className="grid steps-list__divider"
+                >
+                  <Icon className="step__icon" data={lightbulb} />
+                </div>
+                <Typography
+                  key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
+                >
+                  {'Sub-Pipeline'} / {groupedSteps.environment}
+                </Typography>
               </div>
-              <SubPipelineStepSummary
-                appName={appName}
-                jobName={jobName}
-                step={step}
-              />
-            </div>
+              {groupedSteps.steps.map((step) => (
+                <div
+                  key={getStepKey(step)}
+                  className="steps-list__step--indented steps-list__step"
+                >
+                  <div className="grid steps-list__divider">
+                    <Icon
+                      className="step__icon"
+                      data={getStepIcon(step.name ?? '')}
+                    />
+                    <span className="steps-list__divider-line" />
+                  </div>
+                  <SubPipelineStepSummary
+                    appName={appName}
+                    jobName={jobName}
+                    step={step}
+                  />
+                </div>
+              ))}
+            </>
           ))}
       </div>
     </>
