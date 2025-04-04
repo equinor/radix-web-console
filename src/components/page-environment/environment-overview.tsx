@@ -154,6 +154,14 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                   <Typography>
                     Environment <strong>{envName}</strong>
                   </Typography>
+                  {environment && (
+                    <Typography>
+                      GitHub webhook{' '}
+                      <strong>
+                        {environment.webhookEnabled ? 'enabled' : 'disabled'}
+                      </strong>
+                    </Typography>
+                  )}
                   {environment.branchMapping && environment.activeDeployment ? (
                     <Typography>
                       Built and deployed from{' '}
