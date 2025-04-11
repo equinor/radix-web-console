@@ -1,6 +1,6 @@
 import { pollingInterval } from '../../../store/defaults';
 import { radixApi, useGetEnvironmentQuery } from '../../../store/radix-api';
-import { getFetchErrorMessage } from '../../../store/utils';
+import { getFetchErrorMessage } from '../../../store/utils/parse-errors';
 import AsyncResource from '../../async-resource/async-resource';
 import { errorToast, successToast } from '../../global-top-nav/styled-toaster';
 import { SecretForm } from '../../secret-form';

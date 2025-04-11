@@ -13,7 +13,7 @@ import {
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../store/radix-api';
-import { getFetchErrorData } from '../../store/utils';
+import { getFetchErrorData } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
 import { ExternalDNSList } from '../external-dns-list';

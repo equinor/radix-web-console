@@ -17,7 +17,7 @@ import { formatDateTime } from '../../utils/datetime';
 import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
 import { RelativeToNow } from '../time/relative-to-now';
 
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import type { FormProp } from './index';

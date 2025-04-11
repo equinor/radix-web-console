@@ -20,7 +20,7 @@ import {
   serviceNowApi,
   useGetApplicationQuery,
 } from '../../store/service-now-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 
 export type OnConfigurationItemChangeCallback = (
   ci: Application | null

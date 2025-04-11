@@ -24,7 +24,7 @@ import {
   type ImageWithLastScan,
   scanApi,
 } from '../../store/scan-api';
-import { getFetchErrorData } from '../../store/utils';
+import { getFetchErrorData } from '../../store/utils/parse-errors';
 import { buildComponentMap } from '../../utils/build-component-map';
 import {
   getActiveComponentUrl,

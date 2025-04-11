@@ -13,25 +13,25 @@ const responseHandler = (response: Response) => {
 
 export const costStoreApi = createApi({
   reducerPath: 'costApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/cost-api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/cost-api', redirect: "error" }),
   endpoints: () => ({}),
 });
 
 export const logStoreApi = createApi({
   reducerPath: 'logApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/log-api', responseHandler }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/log-api', responseHandler, redirect: "error" }),
   endpoints: () => ({}),
 });
 
 export const radixStoreApi = createApi({
   reducerPath: 'radixApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1', responseHandler }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1', responseHandler, redirect: "error" }),
   endpoints: () => ({}),
 });
 
 export const scanStoreApi = createApi({
   reducerPath: 'scanApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/scan-api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/scan-api', redirect: "error" }),
   endpoints: () => ({}),
 });
 
@@ -39,6 +39,7 @@ export const serviceNowStoreApi = createApi({
   reducerPath: 'serviceNowApi',
   baseQuery: fetchBaseQuery({
     baseUrl: configVariables.SERVICENOW_PROXY_BASEURL,
+    redirect: "error",
     prepareHeaders: async (headers, { getState }) => {
       const state = getState() as RootState;
 
@@ -56,12 +57,12 @@ export const serviceNowStoreApi = createApi({
 
 export const msGraphStoreApi = createApi({
   reducerPath: 'msGraphApi',
-  baseQuery: fetchBaseQuery(),
+  baseQuery: fetchBaseQuery({ redirect: 'error' }),
   endpoints: () => ({}),
 });
 
 export const uptimeApi = createApi({
   reducerPath: 'uptimeAPi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/uptime' }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/uptime', redirect: "error" }),
   endpoints: () => ({}),
 });
