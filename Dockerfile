@@ -16,4 +16,4 @@ RUN chown -R nginx /etc/nginx/conf.d \
     && chown -R nginx /app \
     && chmod +x run_nginx.sh
 USER 101
-CMD /bin/sh -c ". run_nginx.sh"
+CMD ["/bin/sh", "-c", ". run_nginx.sh"]
