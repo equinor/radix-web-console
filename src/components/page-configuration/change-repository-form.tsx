@@ -17,7 +17,7 @@ import {
   useGetDeployKeyAndSecretQuery,
   useModifyRegistrationDetailsMutation,
 } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { configVariables } from '../../utils/config';
 import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';

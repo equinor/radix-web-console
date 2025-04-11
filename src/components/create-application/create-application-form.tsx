@@ -11,7 +11,7 @@ import { info_circle } from '@equinor/eds-icons';
 import { type FormEvent, useRef, useState } from 'react';
 import { externalUrls } from '../../externalUrls';
 import type { ApplicationRegistration } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { AppConfigAdGroups } from '../app-config-ad-groups';
 import { AppConfigConfigurationItem } from '../app-config-ci';

@@ -13,7 +13,7 @@ import {
   radixApi,
   useGetPipelineJobStepLogsQuery,
 } from '../../store/radix-api';
-import { getFetchErrorCode } from '../../store/utils';
+import { getFetchErrorCode } from '../../store/utils/parse-errors';
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
 import { downloadLog } from '../code/log-helper';
