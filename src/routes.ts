@@ -45,11 +45,7 @@ export const routes = {
   appJob: '/applications/:appName/jobs/view/:jobName',
   appJobStep: '/applications/:appName/jobs/view/:jobName/steps/:stepName',
   appJobNew: '/applications/:appName/jobs/new',
-  appPipelineRuns: '/applications/:appName/jobs/:jobName/pipelineruns',
-  appPipelineRun: '/applications/:appName/jobs/:jobName/pipelineruns/view/:pipelineRunName',
-  appPipelineRunTasks: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks',
-  appPipelineRunTask: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/view/:taskName',
-  appPipelineRunTaskSteps: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps',
+  appPipelineRunTaskStep: '/applications/:appName/jobs/:jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps/:stepName',
 
   devComponent: '/dev-component/(.*)',
   devIntegration: '/dev-integration/(.*)',

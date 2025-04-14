@@ -1,7 +1,7 @@
 import { Button, Progress, Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { useRegenerateDeployKeyMutation } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';

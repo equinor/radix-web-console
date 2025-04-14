@@ -3,7 +3,10 @@ import type { PropsWithChildren, ReactNode } from 'react';
 
 import { externalUrls } from '../../externalUrls';
 import type { FetchQueryResult } from '../../store/types';
-import { getFetchErrorCode, getFetchErrorData } from '../../store/utils';
+import {
+  getFetchErrorCode,
+  getFetchErrorData,
+} from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { ExternalLink } from '../link/external-link';
 

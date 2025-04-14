@@ -8,7 +8,7 @@ import { type FormEvent, useState } from 'react';
 
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
 import type { Application } from '../../store/service-now-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { AppConfigConfigurationItem } from '../app-config-ci';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';

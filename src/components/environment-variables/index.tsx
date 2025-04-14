@@ -20,7 +20,7 @@ import {
   radixApi,
   useEnvVarsQuery,
 } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import AsyncResource from '../async-resource/async-resource';
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { HomeIcon } from '../home-icon';

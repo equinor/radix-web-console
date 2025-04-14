@@ -3,7 +3,7 @@ import type { FunctionComponent } from 'react';
 
 import { useDurationInterval } from '../../effects/use-interval';
 import { type Environment, radixApi } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { errorToast } from '../global-top-nav/styled-toaster';
 
 export const EnvironmentToolbar: FunctionComponent<{

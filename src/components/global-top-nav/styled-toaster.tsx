@@ -11,7 +11,7 @@ import type { ToastIcon, TypeOptions } from 'react-toastify/dist/types';
 
 import 'react-toastify/dist/ReactToastify.css';
 import './style.css';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 
 export const StyledToastContainer: FunctionComponent = () => (
   <div style={{ position: 'absolute' }}>

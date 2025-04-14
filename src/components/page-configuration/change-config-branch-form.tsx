@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 
 import { routes } from '../../routes';
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { routeWithParams } from '../../utils/string';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';

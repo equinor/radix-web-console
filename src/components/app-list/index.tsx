@@ -17,7 +17,7 @@ import { refresh } from '@equinor/eds-icons';
 import { isEqual, uniq } from 'lodash-es';
 import useLocalStorage from '../../effects/use-local-storage';
 import { pollingInterval } from '../../store/defaults';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { promiseHandler } from '../../utils/promise-handler';
 import { Alert } from '../alert';
 

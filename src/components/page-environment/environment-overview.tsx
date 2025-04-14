@@ -14,7 +14,7 @@ import {
   useGetEnvironmentEventsQuery,
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import {
   getAppDeploymentUrl,
   getAppUrl,

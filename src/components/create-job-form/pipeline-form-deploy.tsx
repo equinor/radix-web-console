@@ -7,7 +7,7 @@ import {
 import { type FormEvent, useState } from 'react';
 import { useTriggerPipelineDeployMutation } from '../../store/radix-api';
 
-import { getFetchErrorMessage } from '../../store/utils';
+import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import type { FormProp } from './index';

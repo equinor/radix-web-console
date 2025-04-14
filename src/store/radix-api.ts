@@ -965,6 +965,18 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getTektonPipelineRunTaskStep: build.query<
+      GetTektonPipelineRunTaskStepApiResponse,
+      GetTektonPipelineRunTaskStepApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks/${queryArg.taskName}/step/${queryArg.stepName}`,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
     getTektonPipelineRunTaskSteps: build.query<
       GetTektonPipelineRunTaskStepsApiResponse,
       GetTektonPipelineRunTaskStepsApiArg
@@ -2247,6 +2259,24 @@ export type GetTektonPipelineRunTaskStepLogsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
 };
+export type GetTektonPipelineRunTaskStepApiResponse =
+  /** status 200 List of Pipeline Run Task Steps */ Step;
+export type GetTektonPipelineRunTaskStepApiArg = {
+  /** name of Radix application */
+  appName: string;
+  /** Name of pipeline job */
+  jobName: string;
+  /** Name of pipeline run */
+  pipelineRunName: string;
+  /** Name of pipeline run task */
+  taskName: string;
+  /** Name of pipeline run task step */
+  stepName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+};
 export type GetTektonPipelineRunTaskStepsApiResponse =
   /** status 200 List of Pipeline Run Task Steps */ PipelineRunTaskStep[];
 export type GetTektonPipelineRunTaskStepsApiArg = {
@@ -3283,6 +3313,20 @@ export type ReplicaResourcesUtilizationResponse = {
     [key: string]: EnvironmentUtilization;
   };
 };
+export type SubPipelineTaskStep = {
+  /** Environment of the pipeline run */
+  environment: string;
+  /** KubeName Name of the pipeline run in the namespace */
+  kubeName: string;
+  /** Name of the step */
+  name: string;
+  /** PipelineName of the task */
+  pipelineName: string;
+  /** PipelineRunName of the task */
+  pipelineRunName: string;
+  /** TaskName of the task */
+  taskName: string;
+};
 export type Step = {
   /** Components associated components */
   components?: string[];
@@ -3301,6 +3345,7 @@ export type Step = {
     | 'Failed'
     | 'Stopped'
     | 'StoppedNoChanges';
+  subPipelineTaskStep?: SubPipelineTaskStep;
 };
 export type Job = {
   /** Branch to build from */
@@ -3361,10 +3406,10 @@ export type PipelineRun = {
   ended?: string;
   /** Env Environment of the pipeline run */
   env: string;
+  /** KubeName Name of the pipeline run in the namespace */
+  kubeName: string;
   /** Name Original name of the pipeline run */
   name: string;
-  /** RealName Name of the pipeline run in the namespace */
-  realName: string;
   /** Started timestamp */
   started?: string;
   /** Status of the step
@@ -3407,14 +3452,14 @@ export type PipelineRun = {
 export type PipelineRunTask = {
   /** Ended timestamp */
   ended?: string;
+  /** KubeName Name of the pipeline run in the namespace */
+  kubeName: string;
   /** Name of the task */
   name: string;
   /** PipelineName of the task */
   pipelineName: string;
   /** PipelineRunEnv Environment of the pipeline run */
   pipelineRunEnv: string;
-  /** RealName Name of the pipeline run in the namespace */
-  realName: string;
   /** Started timestamp */
   started?: string;
   /** Status of the task
@@ -3691,6 +3736,7 @@ export const {
   useGetTektonPipelineRunTasksQuery,
   useGetTektonPipelineRunTaskQuery,
   useGetTektonPipelineRunTaskStepLogsQuery,
+  useGetTektonPipelineRunTaskStepQuery,
   useGetTektonPipelineRunTaskStepsQuery,
   useRerunApplicationJobMutation,
   useStopApplicationJobMutation,
