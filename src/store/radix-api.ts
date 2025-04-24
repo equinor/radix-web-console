@@ -2751,7 +2751,7 @@ export type JobSummary = {
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api - usertoken.upn */
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
-  triggeredFromWebhook?: boolean;
+  triggeredFromWebhook: boolean;
 };
 export type ApplicationSummary = {
   /** EnvironmentActiveComponents All component summaries of the active deployments in the environments */
@@ -2900,8 +2900,6 @@ export type EnvironmentSummary = {
     Consistent = Environment exists in Radix config and in cluster
     Orphan = Environment does not exist in Radix config, but exists in cluster */
   status?: 'Pending' | 'Consistent' | 'Orphan';
-  /** WebhookEnabled Enabled webhook for this environment. Default true */
-  webhookEnabled?: boolean;
 };
 export type Application = {
   appAlias?: ApplicationAlias;
@@ -3100,8 +3098,6 @@ export type Environment = {
     Consistent = Environment exists in Radix config and in cluster
     Orphan = Environment does not exist in Radix config, but exists in cluster */
   status?: 'Pending' | 'Consistent' | 'Orphan';
-  /** WebhookEnabled Enabled webhook for this environment. Default true */
-  webhookEnabled?: boolean;
 };
 export type EnvVarMetadata = {
   /** Value of the environment variable in radixconfig.yaml */
@@ -3407,7 +3403,7 @@ export type Job = {
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api = usertoken.upn */
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
-  triggeredFromWebhook?: boolean;
+  triggeredFromWebhook: boolean;
 };
 export type PipelineRun = {
   /** Ended timestamp */
