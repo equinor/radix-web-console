@@ -12,6 +12,7 @@ const jobs: Array<JobSummary> = [
     status: 'Waiting',
     pipeline: 'build-deploy',
     environments: ['qa'],
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190110143554-t3tix',
@@ -23,6 +24,7 @@ const jobs: Array<JobSummary> = [
     status: 'Running',
     pipeline: 'build-deploy',
     environments: ['qa'],
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190110083646-uvdv4',
@@ -34,6 +36,7 @@ const jobs: Array<JobSummary> = [
     ended: '2019-01-10T08:39:04Z',
     status: 'Failed',
     pipeline: 'build-deploy',
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190109121011-idtna',
@@ -46,6 +49,7 @@ const jobs: Array<JobSummary> = [
     status: 'Succeeded',
     pipeline: 'build-deploy',
     environments: ['qa'],
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190109085250-obek3',
@@ -58,6 +62,7 @@ const jobs: Array<JobSummary> = [
     status: 'Succeeded',
     pipeline: 'build-deploy',
     environments: ['qa'],
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190104123104-875r3',
@@ -70,6 +75,7 @@ const jobs: Array<JobSummary> = [
     status: 'Succeeded',
     pipeline: 'build-deploy',
     environments: ['qa'],
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190104111729-mkni6',
@@ -82,6 +88,7 @@ const jobs: Array<JobSummary> = [
     status: 'Succeeded',
     pipeline: 'build-deploy',
     environments: ['qa'],
+    triggeredFromWebhook: false,
   },
 ];
 
