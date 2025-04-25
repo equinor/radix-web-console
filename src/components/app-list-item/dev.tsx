@@ -25,6 +25,7 @@ const testData = [
       started: addMinutes(new Date(), -14).toISOString(),
       status: 'Running',
       pipeline: 'build-deploy',
+      triggeredFromWebhook: false,
     },
     vulnerabilitySummary: [
       {

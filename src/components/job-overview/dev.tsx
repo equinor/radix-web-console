@@ -17,6 +17,7 @@ const testData: Array<Job> = [
     ended: '2019-01-21T14:58:02Z',
     status: 'Succeeded',
     pipeline: 'build-deploy',
+    triggeredFromWebhook: false,
     steps: [
       {
         name: 'radix-pipeline',
@@ -84,6 +85,7 @@ const testData: Array<Job> = [
     started: '2023-06-22T06:44:00Z',
     status: 'Running',
     pipeline: 'build-deploy',
+    triggeredFromWebhook: false,
     steps: [
       {
         name: 'clone-config',
@@ -119,6 +121,7 @@ const testData: Array<Job> = [
     ended: '2019-01-21T13:03:01Z',
     status: 'Failed',
     pipeline: 'build-deploy',
+    triggeredFromWebhook: false,
     steps: [
       {
         name: 'radix-pipeline',
@@ -165,6 +168,7 @@ const testData: Array<Job> = [
     created: '2019-01-21T12:59:00Z',
     status: 'Waiting',
     pipeline: 'build-deploy',
+    triggeredFromWebhook: false,
   },
   {
     name: 'radix-pipeline-20190118144919-2uhd9',
@@ -173,6 +177,7 @@ const testData: Array<Job> = [
     created: '2019-01-21T12:59:00Z',
     status: 'Failed',
     pipeline: 'deploy',
+    triggeredFromWebhook: false,
   },
 ];
 
@@ -197,6 +202,7 @@ const notAJob: Job = {
   created: new Date().toISOString(),
   status: 'Waiting',
   pipeline: 'build',
+  triggeredFromWebhook: false,
 };
 
 export default (

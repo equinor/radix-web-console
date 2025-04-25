@@ -27,6 +27,7 @@ const testApps: ShowApplicationsApiResponse = [
       status: 'Failed',
       started: new Date('2023-12-01T11:27:17Z').toISOString(),
       ended: new Date('2023-12-01T12:16:54Z').toISOString(),
+      triggeredFromWebhook: false,
     },
   },
   {
@@ -44,6 +45,7 @@ const testApps: ShowApplicationsApiResponse = [
       created: new Date('2023-12-01T11:27:17Z').toISOString(),
       status: 'Running',
       started: new Date('2023-12-01T12:27:17Z').toISOString(),
+      triggeredFromWebhook: false,
     },
   },
 ];
