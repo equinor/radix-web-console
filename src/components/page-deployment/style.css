@@ -1,3 +1,14 @@
 .deploy-summary_tags {
   align-items: center;
 }
+
+.deployment-name {
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.deployment-name:hover {
+  text-decoration: underline;
+}

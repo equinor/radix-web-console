@@ -32,3 +32,14 @@
   content: ",";
   margin-right: var(--eds_spacing_small);
 }
+
+.pipeline-name {
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pipeline-name:hover {
+  text-decoration: underline;
+}
