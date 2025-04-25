@@ -91,7 +91,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
             label: 'Pipeline Jobs',
             to: routeWithParams(routes.appJobs, { appName }),
           },
-          { label: smallJobName(jobName), fullName: jobName },
+          { label: smallJobName(jobName) },
         ]}
       />
       <main className="grid grid--gap-large">

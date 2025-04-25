@@ -49,7 +49,7 @@ export const JobSummaryTableRow: FunctionComponent<{
         <Tooltip placement="top" title={copyTitle} enterDelay={300}>
           <div
             onMouseLeave={() => setCopyTitle(job.name)}
-          >{`${job.name.substring(0, 5)}...${job.name.slice(-5)}`}</div>
+          >{`${job.name.slice(-5)}`}</div>
         </Tooltip>
       </Table.Cell>
       <Table.Cell>

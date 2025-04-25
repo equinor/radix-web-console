@@ -34,10 +34,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
             label: 'Deployments',
             to: routeWithParams(routes.appDeployments, { appName }),
           },
-          {
-            label: smallDeploymentName(deploymentName),
-            fullName: deploymentName,
-          },
+          { label: smallDeploymentName(deploymentName) },
         ]}
       />
 
