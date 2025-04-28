@@ -63,6 +63,7 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
             <Table.Head>
               <Table.Row>
                 <Table.Cell>ID</Table.Cell>
+                <Table.Cell>Name</Table.Cell>
                 <Table.Cell
                   sort="none"
                   onClick={() => setDateSort(getNewSortDir(dateSort))}
