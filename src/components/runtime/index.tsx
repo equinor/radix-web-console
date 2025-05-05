@@ -13,5 +13,10 @@ export const Runtime: FunctionComponent<RuntimeProps> = ({ runtime }) => (
         Architecture <strong>{runtime.architecture}</strong>
       </Typography>
     )}
+    {runtime.nodeType && (
+      <Typography>
+        Node type <strong>{runtime.nodeType}</strong>
+      </Typography>
+    )}
   </>
 );
