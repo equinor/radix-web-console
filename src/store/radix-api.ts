@@ -2736,6 +2736,8 @@ export type JobSummary = {
   promotedFromEnvironment?: string;
   /** Environment name, to which the Radix deployment is promoted */
   promotedToEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** Started timestamp */
   started?: string;
   /** Status of the job */
@@ -3606,6 +3608,8 @@ export type PipelineParametersBuild = {
   overrideUseBuildCache?: boolean | null;
   /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** Name of environment to build for */
   toEnvironment?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */
