@@ -1,5 +1,6 @@
 import {
   Button,
+  Checkbox,
   CircularProgress,
   Icon,
   NativeSelect,
@@ -10,6 +11,7 @@ import { info_circle } from '@equinor/eds-icons';
 import { uniq } from 'lodash-es';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
 import {
+  type PipelineParametersBuild,
   useTriggerPipelineBuildDeployMutation,
   useTriggerPipelineBuildMutation,
 } from '../../store/radix-api';
@@ -40,6 +42,13 @@ export function PipelineFormBuildBranches({
   const branches = useGetApplicationBranches(application);
   const hasBranches = Object.keys(branches).length > 0;
   const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
+  const useBuildCache =
+    application?.useBuildKit === true &&
+    (application?.useBuildCache === undefined ||
+      application?.useBuildCache === true);
+  const [overrideUseBuildCache, setOverrideUseBuildCache] =
+    useState<boolean>(useBuildCache);
+  const [refreshBuildCache, setRefreshBuildCache] = useState<boolean>(false);
 
   const handleOnTextChange = ({
     target: { value },
@@ -95,9 +104,19 @@ export function PipelineFormBuildBranches({
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
 
+      const pipelineParametersBuild: PipelineParametersBuild = {
+        branch: buildBranch,
+        toEnvironment,
+      };
+      if (application.useBuildKit) {
+        if (useBuildCache != overrideUseBuildCache) {
+          pipelineParametersBuild.overrideUseBuildCache = overrideUseBuildCache;
+        }
+        pipelineParametersBuild.refreshBuildCache = refreshBuildCache;
+      }
       const body = {
         appName: application.name,
-        pipelineParametersBuild: { branch: buildBranch, toEnvironment },
+        pipelineParametersBuild: pipelineParametersBuild,
       };
       let jobName: string;
       if (isBuildDeployPipeline) {
@@ -235,7 +254,33 @@ export function PipelineFormBuildBranches({
             )}
           </>
         )}
-
+        {application.useBuildKit && (
+          <>
+            <Typography
+              group="input"
+              variant="text"
+              token={{ color: 'currentColor' }}
+            >
+              Build Kit enabled
+            </Typography>
+            <div>
+              <Checkbox
+                label="Use Build Cache"
+                name="overrideUseBuildCache"
+                checked={overrideUseBuildCache}
+                onChange={() =>
+                  setOverrideUseBuildCache(!overrideUseBuildCache)
+                }
+              />
+            </div>
+            <Checkbox
+              label="Refresh Build Cache"
+              name="refreshBuildCache"
+              checked={refreshBuildCache}
+              onChange={() => setRefreshBuildCache(!refreshBuildCache)}
+            />
+          </>
+        )}
         <div className="o-action-bar">
           {createJobState.isLoading && (
             <div>

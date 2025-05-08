@@ -48,6 +48,26 @@ function getStopButtonText(status: Job['status']): string {
   }
 }
 
+function getBuildCacheStatus(job: Job | undefined): string {
+  if (!job || job.useBuildKit !== true) {
+    return '';
+  }
+  const statuses = [];
+  if (job.refreshBuildCache === true) {
+    statuses.push('refreshed');
+  }
+  if (typeof job.overrideUseBuildCache === 'boolean') {
+    statuses.push(job.overrideUseBuildCache === true ? 'used' : 'not used');
+  } else {
+    statuses.push(
+      typeof job.useBuildCache !== 'boolean' || job.useBuildCache === true
+        ? 'used'
+        : 'not used'
+    );
+  }
+  return statuses.join(', ');
+}
+
 type Props = {
   appName: string;
   jobName: string;
@@ -79,7 +99,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
     !stopJobState.isLoading &&
     (job?.status === 'Failed' || job?.status === 'Stopped');
   const isRerunning = rerunJobState.isLoading;
-
+  const buildCacheStatus = getBuildCacheStatus(job);
   useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
 
   return (
@@ -244,16 +264,6 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         </Typography>
                       </Typography>
                     )}
-                    {(job.pipeline === 'build-deploy' ||
-                      job.pipeline === 'build') &&
-                      typeof job.overrideUseBuildCache === 'boolean' && (
-                        <Checkbox
-                          label="Override use build cache"
-                          name="overrideUseBuildCache"
-                          checked={job.overrideUseBuildCache}
-                          disabled={true}
-                        />
-                      )}
                     {job.pipeline === 'apply-config' && (
                       <Checkbox
                         label="Deploy external DNS-es"
@@ -286,6 +296,20 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         </Typography>
                       </div>
                     )}
+                    {(job.pipeline === 'build-deploy' ||
+                      job.pipeline === 'build') &&
+                      job.useBuildKit === true && (
+                        <>
+                          <Typography>
+                            Build Kit <strong>used</strong>
+                          </Typography>
+                          {buildCacheStatus.length > 0 && (
+                            <Typography>
+                              Build Cache <strong>{buildCacheStatus}</strong>
+                            </Typography>
+                          )}
+                        </>
+                      )}
                     <Typography>
                       Triggered{' '}
                       {job.triggeredFromWebhook && (

@@ -2754,6 +2754,10 @@ export type JobSummary = {
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
   triggeredFromWebhook: boolean;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type ApplicationSummary = {
   /** EnvironmentActiveComponents All component summaries of the active deployments in the environments */
@@ -2916,6 +2920,10 @@ export type Application = {
   /** Name the name of the application */
   name: string;
   registration: ApplicationRegistration;
+  /** UseBuildCache if build cache is used for building the application. Applicable when UseBuildKit is true. Default is true. */
+  useBuildCache?: boolean;
+  /** UseBuildKit if buildkit is used for building the application */
+  useBuildKit?: boolean;
   /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };
@@ -3386,6 +3394,8 @@ export type Job = {
   promotedFromEnvironment?: string;
   /** PromotedToEnvironment the name of the environment that was promoted to */
   promotedToEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** RerunFromJob The source name of the job if this job was restarted from it */
   rerunFromJob?: string;
   /** Started timestamp */
@@ -3406,6 +3416,10 @@ export type Job = {
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
   triggeredFromWebhook: boolean;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type PipelineRun = {
   /** Ended timestamp */
