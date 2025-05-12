@@ -261,7 +261,7 @@ export function PipelineFormBuildBranches({
             >
               Build Kit enabled
             </Typography>
-            <div>
+            <div className="checkbox-group">
               <Checkbox
                 label="Use Build Cache"
                 name="overrideUseBuildCache"
@@ -270,13 +270,13 @@ export function PipelineFormBuildBranches({
                   setOverrideUseBuildCache(!overrideUseBuildCache)
                 }
               />
+              <Checkbox
+                label="Refresh Build Cache"
+                name="refreshBuildCache"
+                checked={refreshBuildCache}
+                onChange={() => setRefreshBuildCache(!refreshBuildCache)}
+              />
             </div>
-            <Checkbox
-              label="Refresh Build Cache"
-              name="refreshBuildCache"
-              checked={refreshBuildCache}
-              onChange={() => setRefreshBuildCache(!refreshBuildCache)}
-            />
           </>
         )}
         <div className="o-action-bar">

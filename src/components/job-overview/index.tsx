@@ -297,19 +297,22 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                       </div>
                     )}
                     {(job.pipeline === 'build-deploy' ||
-                      job.pipeline === 'build') &&
-                      job.useBuildKit === true && (
-                        <>
-                          <Typography>
-                            Build Kit <strong>used</strong>
-                          </Typography>
-                          {buildCacheStatus.length > 0 && (
+                      job.pipeline === 'build') && (
+                      <>
+                        <Typography>
+                          Build Kit{' '}
+                          <strong>
+                            {job.useBuildKit === true ? 'used' : 'not used'}
+                          </strong>
+                        </Typography>
+                        {job.useBuildKit === true &&
+                          buildCacheStatus.length > 0 && (
                             <Typography>
                               Build Cache <strong>{buildCacheStatus}</strong>
                             </Typography>
                           )}
-                        </>
-                      )}
+                      </>
+                    )}
                     <Typography>
                       Triggered{' '}
                       {job.triggeredFromWebhook && (
