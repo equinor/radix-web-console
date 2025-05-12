@@ -43,9 +43,7 @@ export function PipelineFormBuildBranches({
   const hasBranches = Object.keys(branches).length > 0;
   const [filteredBranches, setFilteredBranches] = useState<string[]>([]);
   const useBuildCache =
-    application?.useBuildKit === true &&
-    (application?.useBuildCache === undefined ||
-      application?.useBuildCache === true);
+    application.useBuildKit === true && application.useBuildCache !== false;
   const [overrideUseBuildCache, setOverrideUseBuildCache] =
     useState<boolean>(useBuildCache);
   const [refreshBuildCache, setRefreshBuildCache] = useState<boolean>(false);
