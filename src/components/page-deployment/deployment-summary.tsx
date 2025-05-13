@@ -15,88 +15,124 @@ type Props = {
   deployment: Deployment;
 };
 
-export const DeploymentSummary = ({ appName, deployment }: Props) => (
-  <div className="grid grid--gap-medium">
-    <Typography variant="h4">Overview</Typography>
-    <div className="grid grid--gap-medium grid--overview-columns">
-      <div className="grid grid--gap-medium">
-        <Typography>
-          {deployment.activeTo ? (
-            'This deployment was deployed to environment'
-          ) : (
-            <>
-              <strong>Currently deployed</strong> on environment
-            </>
-          )}{' '}
-          <Typography
-            as={Link}
-            to={routeWithParams(routes.appEnvironment, {
-              appName,
-              envName: deployment.environment,
-            })}
-            link
-          >
-            {deployment.environment}
-          </Typography>
-        </Typography>
+function getBuildCacheStatus(deployment: Deployment | undefined): string {
+  if (!deployment || deployment.useBuildKit !== true) {
+    return '';
+  }
+  const statuses = [];
+  if (deployment.refreshBuildCache === true) {
+    statuses.push('refreshed');
+  }
+  statuses.push(
+    typeof deployment.useBuildCache !== 'boolean' ||
+      deployment.useBuildCache === true
+      ? 'used'
+      : 'not used'
+  );
+  return statuses.join(', ');
+}
 
-        <Typography>
-          Active from{' '}
-          <strong>
-            <RelativeToNow
-              time={deployment.activeFrom && new Date(deployment.activeFrom)}
-            />
-          </strong>
-        </Typography>
-
-        {deployment.activeTo && (
+export const DeploymentSummary = ({ appName, deployment }: Props) => {
+  const buildCacheStatus = getBuildCacheStatus(deployment);
+  return (
+    <div className="grid grid--gap-medium">
+      <Typography variant="h4">Overview</Typography>
+      <div className="grid grid--gap-medium grid--overview-columns">
+        <div className="grid grid--gap-medium">
           <Typography>
-            Active until{' '}
-            <strong>
-              <RelativeToNow time={new Date(deployment.activeTo)} />
-            </strong>
-          </Typography>
-        )}
-
-        {deployment.gitCommitHash && (
-          <Typography>
-            Built from commit{' '}
-            <CommitHash
-              repo={deployment.repository}
-              commit={deployment.gitCommitHash}
-            />
-          </Typography>
-        )}
-      </div>
-
-      <div className="grid grid--gap-medium">
-        {deployment.createdByJob && (
-          <Typography>
-            Created by pipeline job{' '}
+            {deployment.activeTo ? (
+              'This deployment was deployed to environment'
+            ) : (
+              <>
+                <strong>Currently deployed</strong> on environment
+              </>
+            )}{' '}
             <Typography
               as={Link}
-              to={routeWithParams(routes.appJob, {
+              to={routeWithParams(routes.appEnvironment, {
                 appName,
-                jobName: deployment.createdByJob,
+                envName: deployment.environment,
               })}
               link
             >
-              {smallJobName(deployment.createdByJob)}
+              {deployment.environment}
             </Typography>
           </Typography>
-        )}
 
-        {deployment.gitTags && (
-          <div className="deploy-summary_tags grid grid--gap-x-small grid--auto-columns">
-            <Typography>Tags</Typography>
-            <GitTagLinks
-              gitTags={deployment.gitTags}
-              repository={deployment.repository}
-            />
-            <Icon data={github} size={24} />
-          </div>
-        )}
+          <Typography>
+            Active from{' '}
+            <strong>
+              <RelativeToNow
+                time={deployment.activeFrom && new Date(deployment.activeFrom)}
+              />
+            </strong>
+          </Typography>
+
+          {deployment.activeTo && (
+            <Typography>
+              Active until{' '}
+              <strong>
+                <RelativeToNow time={new Date(deployment.activeTo)} />
+              </strong>
+            </Typography>
+          )}
+
+          {deployment.gitCommitHash && (
+            <Typography>
+              Built from commit{' '}
+              <CommitHash
+                repo={deployment.repository}
+                commit={deployment.gitCommitHash}
+              />
+            </Typography>
+          )}
+          {deployment.useBuildKit != undefined && (
+            <>
+              <Typography>
+                Build Kit{' '}
+                <strong>
+                  {deployment.useBuildKit === true ? 'used' : 'not used'}
+                </strong>
+              </Typography>
+              {deployment.useBuildKit === true &&
+                buildCacheStatus.length > 0 && (
+                  <Typography>
+                    Build Cache <strong>{buildCacheStatus}</strong>
+                  </Typography>
+                )}
+            </>
+          )}
+        </div>
+
+        <div className="grid grid--gap-medium">
+          {deployment.createdByJob && (
+            <Typography>
+              Created by pipeline job{' '}
+              <Typography
+                as={Link}
+                to={routeWithParams(routes.appJob, {
+                  appName,
+                  jobName: deployment.createdByJob,
+                })}
+                link
+              >
+                {smallJobName(deployment.createdByJob)}
+              </Typography>
+            </Typography>
+          )}
+
+          {deployment.gitTags && (
+            <div className="deploy-summary_tags grid grid--gap-x-small grid--auto-columns">
+              <Typography>Tags</Typography>
+              <GitTagLinks
+                gitTags={deployment.gitTags}
+                repository={deployment.repository}
+              />
+              <Icon data={github} size={24} />
+            </div>
+          )}
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};

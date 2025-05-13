@@ -2896,6 +2896,12 @@ export type DeploymentSummary = {
   /** Name of the environment the deployment was promoted from
     Applies only for pipeline jobs of type 'promote' */
   promotedFromEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type EnvironmentSummary = {
   activeDeployment?: DeploymentSummary;
@@ -3057,8 +3063,14 @@ export type Deployment = {
   name: string;
   /** Namespace where the deployment is stored */
   namespace: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** Repository the GitHub repository that the deployment was built from */
   repository: string;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type Secret = {
   /** Component name of the component having the secret */
