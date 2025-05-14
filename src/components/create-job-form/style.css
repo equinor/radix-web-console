@@ -4,3 +4,7 @@
 .input .input-label {
   margin-left: var(--eds_spacing_small);
 }
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+}
