@@ -106,7 +106,7 @@ export function PipelineFormBuildBranches({
         toEnvironment,
       };
       if (application.useBuildKit) {
-        if (useBuildCache != overrideUseBuildCache) {
+        if (useBuildCache !== overrideUseBuildCache) {
           pipelineParametersBuild.overrideUseBuildCache = overrideUseBuildCache;
         }
         pipelineParametersBuild.refreshBuildCache = refreshBuildCache;
