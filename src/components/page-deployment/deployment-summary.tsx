@@ -86,7 +86,7 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
               />
             </Typography>
           )}
-          {deployment.useBuildKit != undefined && (
+          {typeof deployment.useBuildKit === 'boolean' && (
             <>
               <Typography>
                 Build Kit{' '}

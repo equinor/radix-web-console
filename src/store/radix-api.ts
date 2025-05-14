@@ -2929,9 +2929,9 @@ export type Application = {
   name: string;
   registration: ApplicationRegistration;
   /** UseBuildCache if build cache is used for building the application. Applicable when UseBuildKit is true. Default is true. */
-  useBuildCache?: boolean;
+  useBuildCache: boolean;
   /** UseBuildKit if buildkit is used for building the application */
-  useBuildKit?: boolean;
+  useBuildKit: boolean;
   /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };
