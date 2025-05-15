@@ -2738,6 +2738,8 @@ export type JobSummary = {
   promotedFromEnvironment?: string;
   /** Environment name, to which the Radix deployment is promoted */
   promotedToEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** Started timestamp */
   started?: string;
   /** Status of the job */
@@ -2754,6 +2756,10 @@ export type JobSummary = {
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
   triggeredFromWebhook: boolean;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type ApplicationSummary = {
   /** EnvironmentActiveComponents All component summaries of the active deployments in the environments */
@@ -2890,6 +2896,12 @@ export type DeploymentSummary = {
   /** Name of the environment the deployment was promoted from
     Applies only for pipeline jobs of type 'promote' */
   promotedFromEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type EnvironmentSummary = {
   activeDeployment?: DeploymentSummary;
@@ -2916,6 +2928,10 @@ export type Application = {
   /** Name the name of the application */
   name: string;
   registration: ApplicationRegistration;
+  /** UseBuildCache if build cache is used for building the application. Applicable when UseBuildKit is true. Default is true. */
+  useBuildCache: boolean;
+  /** UseBuildKit if buildkit is used for building the application */
+  useBuildKit: boolean;
   /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };
@@ -3047,8 +3063,14 @@ export type Deployment = {
   name: string;
   /** Namespace where the deployment is stored */
   namespace: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** Repository the GitHub repository that the deployment was built from */
   repository: string;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type Secret = {
   /** Component name of the component having the secret */
@@ -3386,6 +3408,8 @@ export type Job = {
   promotedFromEnvironment?: string;
   /** PromotedToEnvironment the name of the environment that was promoted to */
   promotedToEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** RerunFromJob The source name of the job if this job was restarted from it */
   rerunFromJob?: string;
   /** Started timestamp */
@@ -3406,6 +3430,10 @@ export type Job = {
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
   triggeredFromWebhook: boolean;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
 };
 export type PipelineRun = {
   /** Ended timestamp */
@@ -3608,6 +3636,8 @@ export type PipelineParametersBuild = {
   overrideUseBuildCache?: boolean | null;
   /** PushImage should image be pushed to container registry. Defaults pushing */
   pushImage?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
   /** Name of environment to build for */
   toEnvironment?: string;
   /** TriggeredBy of the job - if empty will use user token upn (user principle name) */

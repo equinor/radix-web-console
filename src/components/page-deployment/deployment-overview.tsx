@@ -24,7 +24,6 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
     { skip: !appName || !deploymentName, pollingInterval }
   );
   const componentMap = buildComponentMap(deployment?.components ?? []);
-
   return (
     <>
       <Breadcrumb
