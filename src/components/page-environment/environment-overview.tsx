@@ -154,30 +154,34 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                   <Typography>
                     Environment <strong>{envName}</strong>
                   </Typography>
-                  {environment.branchMapping && environment.activeDeployment ? (
+                  {environment.activeDeployment ? (
                     <Typography>
                       Built and deployed from{' '}
+                      {environment.activeDeployment?.gitRefType ?? 'branch'}{' '}
                       <ExternalLink
                         href={linkToGitHubBranch(
                           application.registration?.repository ?? '',
-                          environment.branchMapping
+                          environment.activeDeployment?.gitRef ??
+                            environment.branchMapping ??
+                            ''
                         )}
                       >
-                        {environment.branchMapping}
+                        {environment.activeDeployment.gitRef ??
+                          environment.branchMapping ??
+                          ''}
                       </ExternalLink>{' '}
-                      branch
+                      {deployment?.gitCommitHash && (
+                        <>
+                          {' commit '}
+                          <CommitHash
+                            repo={application.registration?.repository ?? ''}
+                            commit={deployment.gitCommitHash}
+                          />
+                        </>
+                      )}
                     </Typography>
                   ) : (
                     <Typography>Not automatically deployed</Typography>
-                  )}
-                  {deployment?.gitCommitHash && (
-                    <Typography>
-                      Built from commit{' '}
-                      <CommitHash
-                        repo={application.registration?.repository ?? ''}
-                        commit={deployment.gitCommitHash}
-                      />
-                    </Typography>
                   )}
                   {skippedDeployComponents && (
                     <>

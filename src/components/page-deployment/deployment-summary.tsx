@@ -77,13 +77,24 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
             </Typography>
           )}
 
-          {deployment.gitCommitHash && (
+          {(deployment.gitRef || deployment.gitCommitHash) && (
             <Typography>
-              Built from commit{' '}
-              <CommitHash
-                repo={deployment.repository}
-                commit={deployment.gitCommitHash}
-              />
+              Built from{' '}
+              {deployment.gitRef && (
+                <>
+                  {deployment.gitRefType ?? 'branch'}{' '}
+                  <strong>{deployment.gitRef}</strong>
+                </>
+              )}
+              {deployment.gitCommitHash && (
+                <>
+                  {' commit '}
+                  <CommitHash
+                    repo={deployment.repository}
+                    commit={deployment.gitCommitHash}
+                  />
+                </>
+              )}
             </Typography>
           )}
           {typeof deployment.useBuildKit === 'boolean' && (

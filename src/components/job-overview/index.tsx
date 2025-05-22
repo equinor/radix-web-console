@@ -272,13 +272,6 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         disabled={true}
                       />
                     )}
-                    {job.branch && (
-                      <div>
-                        <Typography>
-                          Branch <strong>{job.branch}</strong>
-                        </Typography>
-                      </div>
-                    )}
                     {job.deployedToEnvironment && (
                       <div>
                         <Typography>
@@ -319,16 +312,27 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         <strong>from GitHub webhook</strong>
                       )}{' '}
                       by <strong>{job.triggeredBy || 'N/A'}</strong>
-                      {job.commitID && (
-                        <>
-                          , commit{' '}
-                          <CommitHash
-                            commit={job.commitID}
-                            repo={application?.registration?.repository}
-                          />
-                        </>
-                      )}
                     </Typography>
+                    {(job.gitRef || job.branch || job.commitID) && (
+                      <Typography>
+                        Built from{' '}
+                        {(job.gitRef || job.branch) && (
+                          <>
+                            {job.gitRefType ?? 'branch'}{' '}
+                            <strong>{job.gitRef ?? job.branch}</strong>
+                          </>
+                        )}
+                        {job.commitID && (
+                          <>
+                            {' commit '}
+                            <CommitHash
+                              commit={job.commitID}
+                              repo={application?.registration?.repository}
+                            />
+                          </>
+                        )}
+                      </Typography>
+                    )}
                   </div>
                   {job.started && (
                     <div className="grid grid--gap-medium">
