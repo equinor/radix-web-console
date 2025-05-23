@@ -88,7 +88,10 @@ export type EnvironmentCardLayoutProps = {
   isLoading: boolean;
   components?: Component[];
   repository?: string;
-  env: Pick<EnvironmentSummary, 'name' | 'status' | 'branchMapping'>;
+  env: Pick<
+    EnvironmentSummary,
+    'name' | 'status' | 'branchMapping' | 'activeDeployment'
+  >;
   deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags'>;
   envScan?: EnvironmentVulnerabilities;
   utilization?: ReplicaResourcesUtilizationResponse;
@@ -163,9 +166,14 @@ export const EnvironmentCardLayout = ({
 
         <div className="grid">
           <Typography group="ui" variant="chip__badge">
-            {env.branchMapping
-              ? `Built from ${env.branchMapping} branch`
-              : 'Not built automatically'}
+            {env.activeDeployment?.gitRef || env.branchMapping ? (
+              <>
+                Built from {env.activeDeployment?.gitRefType ?? 'branch'}{' '}
+                {env.activeDeployment?.gitRef ?? env.branchMapping ?? ''}
+              </>
+            ) : (
+              <>'Not built automatically'</>
+            )}
           </Typography>
           {deployment?.gitTags && (
             <div className="env_card_tags grid grid--gap-x-small grid--auto-columns">
