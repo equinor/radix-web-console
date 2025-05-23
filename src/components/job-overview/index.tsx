@@ -289,6 +289,13 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         </Typography>
                       </div>
                     )}
+                    <Typography>
+                      Triggered{' '}
+                      {job.triggeredFromWebhook && (
+                        <strong>from GitHub webhook</strong>
+                      )}{' '}
+                      by <strong>{job.triggeredBy || 'N/A'}</strong>
+                    </Typography>
                     {(job.pipeline === 'build-deploy' ||
                       job.pipeline === 'build') && (
                       <>
@@ -306,13 +313,6 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           )}
                       </>
                     )}
-                    <Typography>
-                      Triggered{' '}
-                      {job.triggeredFromWebhook && (
-                        <strong>from GitHub webhook</strong>
-                      )}{' '}
-                      by <strong>{job.triggeredBy || 'N/A'}</strong>
-                    </Typography>
                     {(job.gitRef || job.branch || job.commitID) && (
                       <Typography>
                         Built from{' '}

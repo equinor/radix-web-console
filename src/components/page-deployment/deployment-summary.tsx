@@ -76,7 +76,22 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
               </strong>
             </Typography>
           )}
-
+          {typeof deployment.useBuildKit === 'boolean' && (
+            <>
+              <Typography>
+                Build Kit{' '}
+                <strong>
+                  {deployment.useBuildKit === true ? 'used' : 'not used'}
+                </strong>
+              </Typography>
+              {deployment.useBuildKit === true &&
+                buildCacheStatus.length > 0 && (
+                  <Typography>
+                    Build Cache <strong>{buildCacheStatus}</strong>
+                  </Typography>
+                )}
+            </>
+          )}
           {(deployment.gitRef || deployment.gitCommitHash) && (
             <Typography>
               Built from{' '}
@@ -96,22 +111,6 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
                 </>
               )}
             </Typography>
-          )}
-          {typeof deployment.useBuildKit === 'boolean' && (
-            <>
-              <Typography>
-                Build Kit{' '}
-                <strong>
-                  {deployment.useBuildKit === true ? 'used' : 'not used'}
-                </strong>
-              </Typography>
-              {deployment.useBuildKit === true &&
-                buildCacheStatus.length > 0 && (
-                  <Typography>
-                    Build Cache <strong>{buildCacheStatus}</strong>
-                  </Typography>
-                )}
-            </>
           )}
         </div>
 
