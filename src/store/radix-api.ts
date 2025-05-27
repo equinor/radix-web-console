@@ -2710,7 +2710,8 @@ export type Component = {
 export type JobSummary = {
   /** AppName of the application */
   appName?: string;
-  /** Branch to build from */
+  /** Deprecated: use GitRef instead
+    Branch to build from */
   branch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
@@ -2722,6 +2723,15 @@ export type JobSummary = {
   ended?: string;
   /** Environments the job deployed to */
   environments?: string[];
+  /** GitRef Branch or tag to build from */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag
+    
+    required false */
+  gitRefType?: 'branch' | 'tag' | '""';
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
@@ -2882,6 +2892,15 @@ export type DeploymentSummary = {
   environment: string;
   /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
   gitCommitHash?: string;
+  /** GitRef Branch or tag to build from */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag
+    
+    required false */
+  gitRefType?: 'branch' | 'tag' | '""';
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
@@ -3057,6 +3076,15 @@ export type Deployment = {
   environment: string;
   /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
   gitCommitHash?: string;
+  /** GitRef Branch or tag to build from */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag
+    
+    required false */
+  gitRefType?: 'branch' | 'tag' | '""';
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
@@ -3392,6 +3420,15 @@ export type Job = {
   deployments?: DeploymentSummary[];
   /** Ended timestamp */
   ended?: string;
+  /** GitRef Branch or tag to build from */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag
+    
+    required false */
+  gitRefType?: 'branch' | 'tag' | '""';
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
@@ -3618,7 +3655,8 @@ export type PipelineParametersApplyConfig = {
   triggeredBy?: string;
 };
 export type PipelineParametersBuild = {
-  /** Branch the branch to build
+  /** Deprecated: use GitRef instead
+    Branch the branch to build
     REQUIRED for "build" and "build-deploy" pipelines */
   branch?: string;
   /** CommitID the commit ID of the branch to build
@@ -3626,6 +3664,16 @@ export type PipelineParametersBuild = {
   commitID?: string;
   /** DeployExternalDNS deploy external DNS */
   deployExternalDNS?: boolean | null;
+  /** GitRef Branch or tag to build from
+    REQUIRED for "build" and "build-deploy" pipelines */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag
+    
+    required false */
+  gitRefType?: 'branch' | 'tag' | '""';
   /** ImageName of the component, without repository name and image-tag */
   imageName?: string;
   /** ImageRepository of the component, without image name and image-tag */
