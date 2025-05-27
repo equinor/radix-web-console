@@ -159,7 +159,6 @@ export const ActiveJobComponentOverview = ({
                 envName={envName}
                 componentName={jobComponentName}
                 componentType={component.type}
-                hideRadixVars
                 isExpanded={isEnvVarsListExpanded}
                 onExpanded={setIsEnvVarsListExpanded}
               />
