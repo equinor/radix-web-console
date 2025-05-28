@@ -1,6 +1,6 @@
 import { Button, Progress, Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { useRegenerateDeployKeyMutation } from '../../store/radix-api';
+import { useRegenerateSharedSecretMutation } from '../../store/radix-api';
 import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
@@ -11,16 +11,20 @@ type Props = {
   refetchSecrets: () => Promise<unknown>;
 };
 
-export function RegenerateSecretsScrim({ appName, refetchSecrets }: Props) {
+export function RegenerateSharedSecretScrim({
+  appName,
+  refetchSecrets,
+}: Props) {
   const [show, setShow] = useState(false);
 
   const [regenerateSecrets, regenerateSecretState] =
-    useRegenerateDeployKeyMutation();
+    useRegenerateSharedSecretMutation();
 
   const onRegenerate = handlePromiseWithToast(async () => {
+    setShow(false);
     await regenerateSecrets({
       appName,
-      regenerateDeployKeyAndSecretData: {
+      regenerateSharedSecretData: {
         sharedSecret: crypto.randomUUID(),
       },
     }).unwrap();
@@ -38,12 +42,11 @@ export function RegenerateSecretsScrim({ appName, refetchSecrets }: Props) {
         <div className="grid grid--gap-medium grid--auto-columns regenerate-content">
           <div className="regenerate-options">
             <Typography>
-              Do you want to <strong>regenerate</strong> deploy key and webhook
-              secret?
+              Do you want to <strong>regenerate</strong> webhook secret?
             </Typography>
             <Typography>
-              New deploy key and webhook secret need to be put to the GitHub
-              repository settings
+              New webhook secret need to be put to the GitHub repository
+              settings
             </Typography>
           </div>
 
@@ -60,7 +63,7 @@ export function RegenerateSecretsScrim({ appName, refetchSecrets }: Props) {
         <div className="o-action-bar">
           {regenerateSecretState.isError ? (
             <Alert type="danger">
-              Failed to regenerate deploy key and webhook secret.
+              Failed to regenerate webhook secret.
               <br />
               {getFetchErrorMessage(regenerateSecretState.error)}
             </Alert>
@@ -72,7 +75,7 @@ export function RegenerateSecretsScrim({ appName, refetchSecrets }: Props) {
           ) : (
             <div>
               <Typography variant="h5">
-                Regularly regenerate deploy key and webhook secret
+                Regularly regenerate webhook secret
               </Typography>
               <Button onClick={() => setShow(true)}>Regenerate</Button>
             </div>
