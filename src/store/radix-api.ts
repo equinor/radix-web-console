@@ -3763,9 +3763,6 @@ export type ImageHubSecret = {
 export type RegenerateDeployKeyData = {
   /** PrivateKey of the deploy key */
   privateKey?: string;
-  /** Deprecated: use RegenerateSharedSecretData instead
-    SharedSecret of the shared secret */
-  sharedSecret?: string;
 };
 export type RegenerateSharedSecretData = {
   /** SharedSecret of the shared secret */
