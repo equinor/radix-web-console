@@ -3378,6 +3378,28 @@ export type SubPipelineTaskStep = {
   pipelineName: string;
   /** PipelineRunName of the task */
   pipelineRunName: string;
+  /** Status of the step */
+  status?:
+    | 'Starting'
+    | 'Started'
+    | 'Running'
+    | 'Succeeded'
+    | 'Failed'
+    | 'Waiting'
+    | 'ToBeRetried'
+    | 'TaskRunCancelled'
+    | 'TaskRunTimeout'
+    | 'ResolvingTaskRef'
+    | 'ResolvingStepActionRef'
+    | 'TaskRunImagePullFailed'
+    | 'TaskRunResultLargerThanAllowedLimit'
+    | 'TaskRunStopSidecarFailed'
+    | 'InvalidParamValue'
+    | 'TaskRunResolutionFailed'
+    | 'TaskRunValidationFailedTaskValidationFailed'
+    | 'ResourceVerificationFailed'
+    | 'FailureIgnored'
+    | 'Error';
   /** TaskName of the task */
   taskName: string;
 };
