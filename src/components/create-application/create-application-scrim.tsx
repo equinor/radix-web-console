@@ -9,8 +9,8 @@ import type {
   DeployKeyAndSecret,
 } from '../../store/radix-api';
 import { routeWithParams } from '../../utils/string';
-import { ConfigureGithubDeploykey } from '../configure-application-github/configure-github-deploykey';
-import { ConfigureGithubWebhook } from '../configure-application-github/configure-github-webhook';
+import { ConfigureDeployKey } from '../configure-application-github/configure-deploy-key';
+import { ConfigureGitHubWebhook } from '../configure-application-github/configure-git-hub-webhook';
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link';
 import { ScrimPopup } from '../scrim-popup';
 import { CreateApplicationForm } from './create-application-form';
@@ -106,10 +106,7 @@ export function CreateApplicationScrim({
                   To integrate with GitHub you must add a deploy key and a
                   webhook
                 </Typography>
-                <ConfigureGithubDeploykey
-                  secrets={secrets}
-                  app={registration}
-                />
+                <ConfigureDeployKey deployKey={secrets} app={registration} />
               </div>
               <div className="create-app-footer">
                 <Button
@@ -128,7 +125,7 @@ export function CreateApplicationScrim({
           {page === 'webhook' && registration && (
             <div className={'create-app'}>
               <div className="create-app-content">
-                <ConfigureGithubWebhook
+                <ConfigureGitHubWebhook
                   appName={registration.name}
                   repository={registration.repository}
                   sharedSecret={secrets?.sharedSecret}

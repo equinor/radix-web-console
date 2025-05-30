@@ -6,7 +6,7 @@ import imageWebhook from './webhook02.png';
 
 type Props = { repository: string; appName: string; sharedSecret?: string };
 
-export function ConfigureGithubWebhook({
+export function ConfigureGitHubWebhook({
   repository,
   appName,
   sharedSecret,
