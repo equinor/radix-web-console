@@ -3,10 +3,7 @@ import { type PropsWithChildren, type ReactNode, useEffect } from 'react';
 
 import { externalUrls } from '../../externalUrls';
 import type { FetchQueryResult } from '../../store/types';
-import {
-  getFetchErrorCode,
-  getFetchErrorData,
-} from '../../store/utils/parse-errors';
+import { getFetchErrorData } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { ExternalLink } from '../link/external-link';
 
@@ -24,20 +21,7 @@ export default function AsyncResource({
   errorContent,
   nonFailureErrorCodes: nonErrorCodes,
 }: AnotherAsyncResourceProps) {
-  if (!asyncState || asyncState.isLoading) {
-    return (
-      <UseContentOrDefault
-        content={loadingContent}
-        defaultContent={
-          <span>
-            <CircularProgress size={16} /> Loading…
-          </span>
-        }
-      />
-    );
-  }
-
-  const { code, message, action } = asyncState.error
+  const { code, message, action } = asyncState?.error
     ? getFetchErrorData(asyncState.error)
     : {};
 
@@ -56,9 +40,23 @@ export default function AsyncResource({
       return;
     }
 
+    console.info('Refreshing MSAL authentication');
     window.localStorage.setItem('msal_last_refresh', Date.now().toString());
     window.location.reload();
   }, [action]);
+
+  if (!asyncState || asyncState.isLoading) {
+    return (
+      <UseContentOrDefault
+        content={loadingContent}
+        defaultContent={
+          <span>
+            <CircularProgress size={16} /> Loading…
+          </span>
+        }
+      />
+    );
+  }
 
   if (!asyncState.isError || nonErrorCodes?.includes(code ?? '')) {
     return children;

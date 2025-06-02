@@ -1,4 +1,3 @@
-import { Typography } from '@equinor/eds-core-react';
 import {
   type ApplicationAlias,
   type Component,
@@ -13,6 +12,8 @@ import { DockerImage } from '../docker-image';
 import { ComponentStatusBadge } from '../status-badges';
 import { DefaultAlias } from './default-alias';
 import './style.css';
+import { Typography } from '@equinor/eds-core-react';
+import { useEffect } from 'react';
 import { slowPollingInterval } from '../../store/defaults';
 import { IngressAllowList } from '../component/ingress-allow-list';
 import { ExternalLink } from '../link/external-link';
@@ -50,6 +51,11 @@ export const Overview = ({
     { appName },
     { pollingInterval: slowPollingInterval }
   );
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    console.log('hello world');
+  }, [appName]);
 
   return (
     <div className="grid grid--gap-medium">
