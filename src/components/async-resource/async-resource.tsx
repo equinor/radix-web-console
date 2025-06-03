@@ -1,12 +1,9 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import type { PropsWithChildren, ReactNode } from 'react';
+import { type PropsWithChildren, type ReactNode, useEffect } from 'react';
 
 import { externalUrls } from '../../externalUrls';
 import type { FetchQueryResult } from '../../store/types';
-import {
-  getFetchErrorCode,
-  getFetchErrorData,
-} from '../../store/utils/parse-errors';
+import { getFetchErrorData } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
 import { ExternalLink } from '../link/external-link';
 
@@ -24,6 +21,30 @@ export default function AsyncResource({
   errorContent,
   nonFailureErrorCodes: nonErrorCodes,
 }: AnotherAsyncResourceProps) {
+  const { code, message, action } = asyncState?.error
+    ? getFetchErrorData(asyncState.error)
+    : {};
+
+  useEffect(() => {
+    if (action !== 'refresh_msal_auth') {
+      return;
+    }
+
+    const pastRefresh = parseInt(
+      window.localStorage.getItem('msal_last_refresh') ?? '0'
+    );
+    if (Date.now() - pastRefresh < 60_000) {
+      console.warn(
+        'Skipping MSAL refresh, last refresh was less than 60 seconds ago'
+      );
+      return;
+    }
+
+    console.info('Refreshing MSAL authentication');
+    window.localStorage.setItem('msal_last_refresh', Date.now().toString());
+    window.location.reload();
+  }, [action]);
+
   if (!asyncState || asyncState.isLoading) {
     return (
       <UseContentOrDefault
@@ -37,40 +58,35 @@ export default function AsyncResource({
     );
   }
 
-  if (
-    asyncState.error &&
-    !nonErrorCodes?.includes(getFetchErrorCode(asyncState.error) || '')
-  ) {
-    const { code, message } = getFetchErrorData(asyncState.error);
-
-    return (
-      <UseContentOrDefault
-        content={errorContent}
-        defaultContent={
-          <Alert type="danger">
-            <Typography variant="h4">That didn't work 😞</Typography>
-            <div className="grid grid--gap-small">
-              <div>
-                <Typography variant="caption">Error message:</Typography>
-                <samp className="word-break">
-                  {[code, message].filter((x) => !!x).join(': ')}
-                </samp>
-              </div>
-              <Typography>
-                You may want to refresh the page. If the problem persists, get
-                in touch on our Slack{' '}
-                <ExternalLink href={externalUrls.slackRadixSupport}>
-                  support channel
-                </ExternalLink>
-              </Typography>
-            </div>
-          </Alert>
-        }
-      />
-    );
+  if (!asyncState.isError || nonErrorCodes?.includes(code ?? '')) {
+    return children;
   }
 
-  return children;
+  return (
+    <UseContentOrDefault
+      content={errorContent}
+      defaultContent={
+        <Alert type="danger">
+          <Typography variant="h4">That didn't work 😞</Typography>
+          <div className="grid grid--gap-small">
+            <div>
+              <Typography variant="caption">Error message:</Typography>
+              <samp className="word-break">
+                {[code, message].filter((x) => !!x).join(': ')}
+              </samp>
+            </div>
+            <Typography>
+              You may want to refresh the page. If the problem persists, get in
+              touch on our Slack{' '}
+              <ExternalLink href={externalUrls.slackRadixSupport}>
+                support channel
+              </ExternalLink>
+            </Typography>
+          </div>
+        </Alert>
+      }
+    />
+  );
 }
 
 type LoadingComponentProps = {

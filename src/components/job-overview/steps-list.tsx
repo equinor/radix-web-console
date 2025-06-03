@@ -8,6 +8,7 @@ import {
   radio_button_unselected,
   record,
 } from '@equinor/eds-icons';
+import React from 'react';
 import type { FunctionComponent } from 'react';
 import type { Step } from '../../store/radix-api';
 import { PipelineStep } from '../../utils/pipeline';
@@ -137,20 +138,14 @@ export const StepsList: FunctionComponent<{
         )}
         {subPipelineSteps.length > 0 &&
           subPipelineSteps.map((groupedSteps) => (
-            <>
-              <div
-                key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
-                className="steps-list__step"
-              >
-                <div
-                  key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
-                  className="grid steps-list__divider"
-                >
+            <React.Fragment
+              key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
+            >
+              <div className="steps-list__step">
+                <div className="grid steps-list__divider">
                   <Icon className="step__icon" data={lightbulb} />
                 </div>
-                <Typography
-                  key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}
-                >
+                <Typography>
                   {'Sub-Pipeline'} / {groupedSteps.environment}
                 </Typography>
               </div>
@@ -173,7 +168,7 @@ export const StepsList: FunctionComponent<{
                   />
                 </div>
               ))}
-            </>
+            </React.Fragment>
           ))}
       </div>
     </>
