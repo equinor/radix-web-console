@@ -1,9 +1,9 @@
-import { ConfigureGithubDeploykey } from './configure-github-deploykey';
-import { ConfigureGithubWebhook } from './configure-github-webhook';
+import { ConfigureDeployKey } from './configure-deploy-key';
+import { ConfigureGitHubWebhook } from './configure-git-hub-webhook';
 
 export default (
   <div className="o-layout-single">
-    <ConfigureGithubDeploykey
+    <ConfigureDeployKey
       app={{
         adGroups: ['Group 1', 'Group 2'],
         adUsers: ['User 1', 'user 2'],
@@ -19,7 +19,7 @@ export default (
         radixConfigFullName: 'radixconfig.yaml',
       }}
     />
-    <ConfigureGithubWebhook
+    <ConfigureGitHubWebhook
       appName={'a-name-thing'}
       repository={'https://some/path/to/a/repo'}
       sharedSecret={crypto.randomUUID()}

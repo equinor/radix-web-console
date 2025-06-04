@@ -11,20 +11,20 @@ import { ExternalLink } from '../link/external-link';
 
 interface Props {
   app: ApplicationRegistration;
-  secrets?: DeployKeyAndSecret;
+  deployKey?: DeployKeyAndSecret;
 }
 
-export const ConfigureGithubDeploykey = ({ app, secrets }: Props) => {
+export const ConfigureDeployKey = ({ app, deployKey }: Props) => {
   return (
     <div className="grid grid--gap-medium">
       <Typography>This allows Radix to clone the repository.</Typography>
       <div className="grid grid--gap-medium o-body-text">
         <List variant="numbered">
           <List.Item>
-            {secrets?.publicDeployKey ? (
+            {deployKey?.publicDeployKey ? (
               <section className="deploy-key">
                 Copy this key:
-                <Code copy>{secrets?.publicDeployKey}</Code>
+                <Code copy>{deployKey?.publicDeployKey}</Code>
               </section>
             ) : (
               <>

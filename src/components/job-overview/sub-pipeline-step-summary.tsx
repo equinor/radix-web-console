@@ -6,7 +6,7 @@ import { routes } from '../../routes';
 import type { Step } from '../../store/radix-api';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
 import { routeWithParams } from '../../utils/string';
-import { RadixJobConditionBadge } from '../status-badges';
+import { RadixJobSubPipelineStepConditionBadge } from '../status-badges/radix-job-subpipeline-step-condition-badge';
 import { RelativeToNow } from '../time/relative-to-now';
 
 const SubPipelineStepDuration: FunctionComponent<
@@ -51,7 +51,9 @@ export const SubPipelineStepSummary: FunctionComponent<{
         {step.subPipelineTaskStep?.taskName} / {step.subPipelineTaskStep?.name}
       </Typography>
 
-      <RadixJobConditionBadge status={step.status ?? 'Waiting'} />
+      <RadixJobSubPipelineStepConditionBadge
+        status={step.subPipelineTaskStep?.status ?? 'Waiting'}
+      />
     </div>
 
     <div className="step-summary__time">

@@ -25,9 +25,10 @@ import {
 import { ExternalLink } from '../link/external-link';
 import { RadixConfigFileLink } from '../link/radix-config-file-link';
 import './style.css';
-import { ConfigureGithubDeploykey } from '../configure-application-github/configure-github-deploykey';
-import { ConfigureGithubWebhook } from '../configure-application-github/configure-github-webhook';
-import { RegenerateSecretsScrim } from '../configure-application-github/regenerate-secrets-scrim';
+import { ConfigureDeployKey } from '../configure-application-github/configure-deploy-key';
+import { ConfigureGitHubWebhook } from '../configure-application-github/configure-git-hub-webhook';
+import { RegenerateDeployKeyScrim } from '../configure-application-github/regenerate-deploy-key-scrim';
+import { RegenerateSharedSecretScrim } from '../configure-application-github/regenerate-shared-secret-scrim';
 
 function getConfigBranch(configBranch?: string): string {
   return configBranch || 'master';
@@ -99,11 +100,11 @@ export function PageConfiguration({ appName }: { appName: string }) {
                       </Accordion.HeaderTitle>
                     </Accordion.Header>
                     <Accordion.Panel>
-                      <ConfigureGithubDeploykey
-                        secrets={secrets}
+                      <ConfigureDeployKey
+                        deployKey={secrets}
                         app={registration}
                       />
-                      <RegenerateSecretsScrim
+                      <RegenerateDeployKeyScrim
                         appName={registration.name}
                         refetchSecrets={refetchSecrets}
                       />
@@ -119,10 +120,14 @@ export function PageConfiguration({ appName }: { appName: string }) {
                       </Accordion.HeaderTitle>
                     </Accordion.Header>
                     <Accordion.Panel>
-                      <ConfigureGithubWebhook
+                      <ConfigureGitHubWebhook
                         appName={registration.name}
                         repository={registration.repository}
                         sharedSecret={secrets?.sharedSecret}
+                      />
+                      <RegenerateSharedSecretScrim
+                        appName={registration.name}
+                        refetchSecrets={refetchSecrets}
                       />
                     </Accordion.Panel>
                   </Accordion.Item>

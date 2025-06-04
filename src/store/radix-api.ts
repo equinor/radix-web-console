@@ -1123,7 +1123,21 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/regenerate-deploy-key`,
         method: 'POST',
-        body: queryArg.regenerateDeployKeyAndSecretData,
+        body: queryArg.regenerateDeployKeyData,
+        headers: {
+          'Impersonate-User': queryArg['Impersonate-User'],
+          'Impersonate-Group': queryArg['Impersonate-Group'],
+        },
+      }),
+    }),
+    regenerateSharedSecret: build.mutation<
+      RegenerateSharedSecretApiResponse,
+      RegenerateSharedSecretApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/regenerate-shared-secret`,
+        method: 'POST',
+        body: queryArg.regenerateSharedSecretData,
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -2413,7 +2427,18 @@ export type RegenerateDeployKeyApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   'Impersonate-Group'?: string;
   /** Regenerate deploy key and secret data */
-  regenerateDeployKeyAndSecretData: RegenerateDeployKeyAndSecretData;
+  regenerateDeployKeyData: RegenerateDeployKeyData;
+};
+export type RegenerateSharedSecretApiResponse = unknown;
+export type RegenerateSharedSecretApiArg = {
+  /** name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  'Impersonate-User'?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  'Impersonate-Group'?: string;
+  /** Regenerate shared secret and secret data */
+  regenerateSharedSecretData: RegenerateSharedSecretData;
 };
 export type ResetManuallyScaledComponentsInApplicationApiResponse = unknown;
 export type ResetManuallyScaledComponentsInApplicationApiArg = {
@@ -3378,6 +3403,28 @@ export type SubPipelineTaskStep = {
   pipelineName: string;
   /** PipelineRunName of the task */
   pipelineRunName: string;
+  /** Status of the step */
+  status?:
+    | 'Starting'
+    | 'Started'
+    | 'Running'
+    | 'Succeeded'
+    | 'Failed'
+    | 'Waiting'
+    | 'ToBeRetried'
+    | 'TaskRunCancelled'
+    | 'TaskRunTimeout'
+    | 'ResolvingTaskRef'
+    | 'ResolvingStepActionRef'
+    | 'TaskRunImagePullFailed'
+    | 'TaskRunResultLargerThanAllowedLimit'
+    | 'TaskRunStopSidecarFailed'
+    | 'InvalidParamValue'
+    | 'TaskRunResolutionFailed'
+    | 'TaskRunValidationFailedTaskValidationFailed'
+    | 'ResourceVerificationFailed'
+    | 'FailureIgnored'
+    | 'Error';
   /** TaskName of the task */
   taskName: string;
 };
@@ -3735,9 +3782,11 @@ export type ImageHubSecret = {
   /** Username for connecting to private image hub */
   username: string;
 };
-export type RegenerateDeployKeyAndSecretData = {
+export type RegenerateDeployKeyData = {
   /** PrivateKey of the deploy key */
   privateKey?: string;
+};
+export type RegenerateSharedSecretData = {
   /** SharedSecret of the shared secret */
   sharedSecret?: string;
 };
@@ -3833,6 +3882,7 @@ export const {
   useGetPrivateImageHubsQuery,
   useUpdatePrivateImageHubsSecretValueMutation,
   useRegenerateDeployKeyMutation,
+  useRegenerateSharedSecretMutation,
   useResetManuallyScaledComponentsInApplicationMutation,
   useRestartApplicationMutation,
   useStartApplicationMutation,
