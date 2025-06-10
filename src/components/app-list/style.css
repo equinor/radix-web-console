@@ -7,10 +7,14 @@
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   align-items: center;
 }
+.app-list__buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
 .app-list .app-list--section {
   align-items: center;
 }
-
 .app-list__list {
   display: grid;
   grid-gap: var(--eds_spacing_medium);
@@ -38,5 +42,9 @@
 }
 
 .action--justify-end {
+  justify-self: end;
+}
+.feedback-button {
+  max-width: 10rem;
   justify-self: end;
 }
