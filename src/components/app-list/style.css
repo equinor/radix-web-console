@@ -9,8 +9,8 @@
 }
 .app-list__buttons {
   display: flex;
-  justify-content: flex-end; /* Align elements to the right */
-  gap: 8px; /* Reduce spacing between elements */
+  justify-content: flex-end;
+  gap: 8px;
 }
 .app-list .app-list--section {
   align-items: center;
