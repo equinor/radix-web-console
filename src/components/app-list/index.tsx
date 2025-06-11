@@ -124,7 +124,17 @@ export default function AppList() {
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
         <Typography variant="body_short_bold">Favourites</Typography>
-        <CreateApplication />
+        <div className="app-list__buttons">
+          <CreateApplication />
+          <Button
+            className="feedback-button"
+            href={'https://github.com/equinor/radix/issues'}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Give us feedback
+          </Button>
+        </div>
       </div>
       <div className="app-list">
         {favouriteNames?.length > 0 ? (
