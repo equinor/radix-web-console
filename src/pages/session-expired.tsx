@@ -1,9 +1,9 @@
-import { Button, Typography } from "@equinor/eds-core-react";
+import { Button, Typography } from '@equinor/eds-core-react';
 
 export default function SessionExpired() {
   const handleReauth = () => {
     sessionStorage.clear();
-    window.location.href = "/applications";
+    window.location.href = '/applications';
   };
 
   return (
@@ -28,11 +28,7 @@ export default function SessionExpired() {
       <Typography style={{ marginTop: 16, marginBottom: 32 }}>
         Your session has expired. Please re-authenticate to continue.
       </Typography>
-      <Button
-        type="button"
-        color="primary"
-        onClick={handleReauth}
-      >
+      <Button type="button" color="primary" onClick={handleReauth}>
         Re-authenticate
       </Button>
     </div>
