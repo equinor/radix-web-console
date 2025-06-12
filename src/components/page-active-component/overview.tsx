@@ -52,11 +52,6 @@ export const Overview = ({
     { pollingInterval: slowPollingInterval }
   );
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-  useEffect(() => {
-    console.log('hello world');
-  }, [appName]);
-
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
