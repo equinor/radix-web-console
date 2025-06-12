@@ -22,6 +22,7 @@ export const routes = {
   authLogout: '/logout',
 
   about: '/about',
+  sessionExpired: '/session-expired',
 
   appsSearch: '/applications/_search',
 

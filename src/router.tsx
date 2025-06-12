@@ -28,6 +28,7 @@ import * as PageScheduledBatch from './components/page-scheduled-batch';
 import * as PageScheduledJob from './components/page-scheduled-job';
 import * as PageStep from './components/page-step';
 import * as PipelineRunTaskStep from './components/pipeline-run-task-step';
+import SessionExpired from './pages/session-expired';
 
 /**
  * Radix Web Console page router
@@ -69,6 +70,11 @@ export const router = createBrowserRouter([
             Component: PageAbout.default,
           },
         ],
+      },
+      {
+        // SESSION EXPIRED
+        path: routes.sessionExpired,
+        element: <SessionExpired />,
       },
       {
         // APPLICATIONS

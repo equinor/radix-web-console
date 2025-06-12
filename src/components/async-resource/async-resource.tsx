@@ -1,7 +1,9 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react';
 import { type PropsWithChildren, type ReactNode, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { externalUrls } from '../../externalUrls';
+import { routes } from '../../routes';
 import type { FetchQueryResult } from '../../store/types';
 import { getFetchErrorData } from '../../store/utils/parse-errors';
 import { Alert } from '../alert';
@@ -25,25 +27,15 @@ export default function AsyncResource({
     ? getFetchErrorData(asyncState.error)
     : {};
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (action !== 'refresh_msal_auth') {
       return;
     }
 
-    const pastRefresh = parseInt(
-      window.localStorage.getItem('msal_last_refresh') ?? '0'
-    );
-    if (Date.now() - pastRefresh < 60_000) {
-      console.warn(
-        'Skipping MSAL refresh, last refresh was less than 60 seconds ago'
-      );
-      return;
-    }
-
-    console.info('Refreshing MSAL authentication');
-    window.localStorage.setItem('msal_last_refresh', Date.now().toString());
-    window.location.reload();
-  }, [action]);
+    navigate(routes.sessionExpired, { replace: true });
+  }, [action, navigate]);
 
   if (!asyncState || asyncState.isLoading) {
     return (
