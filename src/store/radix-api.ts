@@ -2663,6 +2663,7 @@ export type ReplicaSummary = {
     | 'JobManager'
     | 'JobManagerAux'
     | 'OAuth2'
+    | 'OAuth2Redis'
     | 'Undefined';
 };
 export type AuxiliaryResourceDeployment = {
@@ -2670,10 +2671,16 @@ export type AuxiliaryResourceDeployment = {
   replicaList?: ReplicaSummary[];
   /** Status of the auxiliary resource's deployment */
   status: 'Stopped' | 'Consistent' | 'Reconciling';
+  /** Name of the auxiliary resource's deployment */
+  type?: 'oauth' | 'oauth-redis' | '""';
 };
 export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
+  /** Deployments describes the underlying Kubernetes deployments for the resource */
+  deployments?: AuxiliaryResourceDeployment[];
   identity?: Identity;
+  /** SessionStoreType type of session store */
+  sessionStoreType?: 'cookie' | 'redis' | 'systemManaged' | '""';
 };
 export type Port = {
   /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */
