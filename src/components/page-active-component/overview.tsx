@@ -13,7 +13,6 @@ import { ComponentStatusBadge } from '../status-badges';
 import { DefaultAlias } from './default-alias';
 import './style.css';
 import { Typography } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
 import { slowPollingInterval } from '../../store/defaults';
 import { IngressAllowList } from '../component/ingress-allow-list';
 import { ExternalLink } from '../link/external-link';
