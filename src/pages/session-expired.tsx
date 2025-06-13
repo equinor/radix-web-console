@@ -19,13 +19,6 @@ export default function SessionExpired() {
       }}
     >
       <HomeIcon />
-      {/* <img
-        src="/src/components/home-icon/logos/logo-radix.svg"
-        alt="Radix Logo"
-        width={80}
-        height={80}
-        style={{ marginBottom: 32 }}
-      /> */}
       <Typography variant="h1">Session expired</Typography>
       <Typography style={{ marginTop: 16, marginBottom: 32 }}>
         Your session has expired. Please re-authenticate to continue.
