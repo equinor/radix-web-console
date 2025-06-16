@@ -1,5 +1,6 @@
 import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import type { OAuth2AuxiliaryResource } from '../../store/radix-api';
+import { getOAuthServiceTitle } from '../../utils/oauth';
 import { getOAuthReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 import { ComponentStatusBadge } from '../status-badges';
@@ -40,7 +41,7 @@ export const OAuthService = ({
                     variant="h5"
                     as="span"
                   >
-                    {deployment.type === 'oauth-redis' ? 'Redis' : 'Proxy'}
+                    {getOAuthServiceTitle(deployment.type)}
                   </Typography>
                   <div className="oauth-service-form__title">
                     <div className="grid grid--gap-small grid--auto-columns">
