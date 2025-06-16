@@ -35,8 +35,7 @@ export function PageOAuthAuxiliaryReplica({
     { skip: !appName || !envName, pollingInterval }
   );
   const cleanedType = type && type.length > 0 ? type : 'oauth';
-  const oauthServiceTitle =
-    cleanedType === 'oauth-redis' ? 'OAuth2 Redis' : 'OAuth2 Proxy';
+  const oauthServiceTitle = cleanedType === 'oauth-redis' ? 'Redis' : 'Proxy';
   const pollLogsState = useGetOAuthPodLogQuery(
     {
       appName,
@@ -77,7 +76,7 @@ export function PageOAuthAuxiliaryReplica({
             }),
           },
           {
-            label: oauthServiceTitle,
+            label: `OAuth2 ${oauthServiceTitle}`,
           },
           { label: smallReplicaName(replicaName) },
         ]}
@@ -105,7 +104,9 @@ export function PageOAuthAuxiliaryReplica({
             }
             title={
               <>
-                <Typography>{oauthServiceTitle}</Typography>
+                <Typography>
+                  OAuth2 service <strong>{oauthServiceTitle}</strong>
+                </Typography>
                 <Typography>
                   Replica <strong>{smallReplicaName(replicaName)}</strong>,
                   component <strong>{componentName}</strong>
