@@ -29,7 +29,6 @@ const store = configureStore({
       logStoreApi.middleware,
       radixStoreApi.middleware,
       scanStoreApi.middleware,
-      scanStoreApi.middleware,
       serviceNowStoreApi.middleware,
       msGraphStoreApi.middleware,
       uptimeApi.middleware,
