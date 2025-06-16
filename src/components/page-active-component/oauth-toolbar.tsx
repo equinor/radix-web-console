@@ -10,6 +10,7 @@ type Props = {
   appName: string;
   envName: string;
   componentName: string;
+  type?: 'oauth' | 'oauth-redis' | '""';
   oauth2?: OAuth2AuxiliaryResource;
   refetch: () => unknown;
 };
@@ -17,12 +18,13 @@ export function OAuthToolbar({
   appName,
   envName,
   componentName,
+  type,
   oauth2,
   refetch,
 }: Props) {
   const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation();
   const startRefetch = useDurationInterval(refetch);
-
+  const cleanedType = type && type.length > 0 ? type : 'oauth';
   const isRestartEnabled =
     oauth2?.deployment?.status !== 'Stopped' || isLoading;
 
@@ -31,7 +33,12 @@ export function OAuthToolbar({
 
   const onRestart = handlePromiseWithToast(
     async () => {
-      await trigger({ appName, envName, componentName }).unwrap();
+      await trigger({
+        appName,
+        envName,
+        componentName,
+        type: cleanedType,
+      }).unwrap();
       startRefetch();
     },
     'Restarting OAuth2 Service',
@@ -47,7 +54,7 @@ export function OAuthToolbar({
           disabled={!isRestartEnabled}
           variant="outlined"
         >
-          Restart
+          Restart {cleanedType === 'oauth-redis' ? 'Redis' : 'Proxy'}
         </Button>
       </div>
     </div>

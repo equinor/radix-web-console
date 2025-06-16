@@ -52,6 +52,7 @@ export const OAuthService = ({
                         appName={appName}
                         envName={envName}
                         componentName={componentName}
+                        type={deployment.type}
                         oauth2={oauth2}
                         refetch={refetch}
                       />
@@ -70,7 +71,8 @@ export const OAuthService = ({
                             appName,
                             envName,
                             componentName,
-                            name
+                            name,
+                            deployment.type
                           )
                         }
                       />

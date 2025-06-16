@@ -132,6 +132,23 @@ export function getActiveJobComponentUrl(
   });
 }
 
+export function getOAuthReplicaUrl(
+  appName: string,
+  envName: string,
+  componentName: string,
+  replicaName: string,
+  type?: 'oauth' | 'oauth-redis' | '""'
+): string {
+  const cleanedType = type && type.length > 0 ? type : 'oauth';
+  return routeWithParams(routes.appOAuthAuxiliaryReplica, {
+    appName,
+    envName,
+    componentName,
+    replicaName,
+    type: cleanedType,
+  });
+}
+
 export function getReplicaUrl(
   appName: string,
   envName: string,
@@ -139,20 +156,6 @@ export function getReplicaUrl(
   replicaName: string
 ): string {
   return routeWithParams(routes.appReplica, {
-    appName,
-    envName,
-    componentName,
-    replicaName,
-  });
-}
-
-export function getOAuthReplicaUrl(
-  appName: string,
-  envName: string,
-  componentName: string,
-  replicaName: string
-): string {
-  return routeWithParams(routes.appOAuthAuxiliaryReplica, {
     appName,
     envName,
     componentName,

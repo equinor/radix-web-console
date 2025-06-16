@@ -314,6 +314,7 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                                     />
                                   </Table.Cell>
                                   <Table.Cell>
+                                    {/*TODO: Add OAuth2 replicas*/}
                                     <ReplicaLinks
                                       replicaList={
                                         x.oauth2.deployment.replicaList
