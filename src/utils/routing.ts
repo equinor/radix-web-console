@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { routeWithParams } from './string';
 
 import { routes } from '../routes';
+import { getValidatedOAuthType } from './oauth';
 
 /** Mark specific keys of an object optional */
 type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &
@@ -139,13 +140,12 @@ export function getOAuthReplicaUrl(
   replicaName: string,
   type?: 'oauth' | 'oauth-redis' | '""'
 ): string {
-  const cleanedType = type && type.length > 0 ? type : 'oauth';
   return routeWithParams(routes.appOAuthAuxiliaryReplica, {
     appName,
     envName,
     componentName,
     replicaName,
-    type: cleanedType,
+    type: getValidatedOAuthType(type),
   });
 }
 

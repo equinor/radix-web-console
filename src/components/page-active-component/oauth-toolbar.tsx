@@ -4,6 +4,7 @@ import {
   type OAuth2AuxiliaryResource,
   useRestartOAuthAuxiliaryResourceMutation,
 } from '../../store/radix-api';
+import { getOAuthServiceTitle, getValidatedOAuthType } from '../../utils/oauth';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 type Props = {
@@ -24,7 +25,6 @@ export function OAuthToolbar({
 }: Props) {
   const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation();
   const startRefetch = useDurationInterval(refetch);
-  const cleanedType = type && type.length > 0 ? type : 'oauth';
   const isRestartEnabled =
     oauth2?.deployment?.status !== 'Stopped' || isLoading;
 
@@ -37,7 +37,7 @@ export function OAuthToolbar({
         appName,
         envName,
         componentName,
-        type: cleanedType,
+        type: getValidatedOAuthType(type),
       }).unwrap();
       startRefetch();
     },
@@ -54,7 +54,7 @@ export function OAuthToolbar({
           disabled={!isRestartEnabled}
           variant="outlined"
         >
-          Restart {cleanedType === 'oauth-redis' ? 'Redis' : 'Proxy'}
+          Restart {getOAuthServiceTitle(type)}
         </Button>
       </div>
     </div>

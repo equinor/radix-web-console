@@ -7,6 +7,7 @@ import {
   useGetEnvironmentQuery,
   useGetOAuthPodLogQuery,
 } from '../../store/radix-api';
+import { getOAuthServiceTitle, getValidatedOAuthType } from '../../utils/oauth';
 import { withRouteParams } from '../../utils/router';
 import { getEnvsUrl } from '../../utils/routing';
 import { routeWithParams, smallReplicaName } from '../../utils/string';
@@ -19,7 +20,7 @@ interface Props {
   appName: string;
   envName: string;
   componentName: string;
-  type?: 'oauth' | 'oauth-redis' | '';
+  type?: 'oauth' | 'oauth-redis' | '""';
   replicaName: string;
 }
 
@@ -34,14 +35,12 @@ export function PageOAuthAuxiliaryReplica({
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
   );
-  const cleanedType = type && type.length > 0 ? type : 'oauth';
-  const oauthServiceTitle = cleanedType === 'oauth-redis' ? 'Redis' : 'Proxy';
   const pollLogsState = useGetOAuthPodLogQuery(
     {
       appName,
       envName,
       componentName,
-      type: cleanedType,
+      type: getValidatedOAuthType(type),
       podName: replicaName,
       lines: '1000',
     },
@@ -76,7 +75,7 @@ export function PageOAuthAuxiliaryReplica({
             }),
           },
           {
-            label: `OAuth2 ${oauthServiceTitle}`,
+            label: `OAuth2 ${getOAuthServiceTitle(type)}`,
           },
           { label: smallReplicaName(replicaName) },
         ]}
@@ -94,7 +93,7 @@ export function PageOAuthAuxiliaryReplica({
                     appName,
                     envName,
                     componentName,
-                    type: cleanedType,
+                    type: getValidatedOAuthType(type),
                     podName: replicaName,
                     file: 'true',
                   },
@@ -105,7 +104,7 @@ export function PageOAuthAuxiliaryReplica({
             title={
               <>
                 <Typography>
-                  OAuth2 service <strong>{oauthServiceTitle}</strong>
+                  OAuth2 Service <strong>{getOAuthServiceTitle(type)}</strong>
                 </Typography>
                 <Typography>
                   Replica <strong>{smallReplicaName(replicaName)}</strong>,
