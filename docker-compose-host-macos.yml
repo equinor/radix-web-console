@@ -31,7 +31,7 @@ services:
       test: "exit 0"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.27-alpine
+    image: nginxinc/nginx-unprivileged:1.27-alpine3.21
     container_name: radix-proxy_container
     read_only: true
     depends_on:
@@ -65,7 +65,7 @@ services:
       - "8080:8080"
 
   auth:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.7.1
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.9.0
     container_name: radix-auth_container
     read_only: true
     environment:

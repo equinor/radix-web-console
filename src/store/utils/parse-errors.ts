@@ -19,6 +19,7 @@ export function getFetchErrorData(error: ManagedErrors): {
   code?: number;
   message: string;
   error: string;
+  action?: undefined|"refresh_msal_auth"
 } {
   if (typeof error === "string") {
     return {
@@ -45,6 +46,23 @@ export function getFetchErrorData(error: ManagedErrors): {
     }
   }
 
+  if (IsMSALError(error)) {
+    if (error.message.includes('refresh_token_expired')) {
+      return {
+        code: undefined,
+        message: 'Session expired. Please login again.',
+        error: error.name,
+        action: "refresh_msal_auth"
+      }
+    }
+
+    return {
+      code: undefined,
+      message: error.message || 'Authentication required. Please login again.',
+      error: error.name,
+    }
+  }
+
   if (IsRadixHttpError(error)) {
     return {
       code: error.status,
@@ -61,7 +79,6 @@ export function getFetchErrorData(error: ManagedErrors): {
       message: "failed to fetch data: " + getStatusPhrase(code)
     }
   }
-
 
   console.warn("unkown error received: ", error)
   // This might be SerialziedError, or something unknown
@@ -100,6 +117,22 @@ function IsRadixHttpError(e: any): e is RadixHttpError {
   if (typeof e.data !== "object" || e.data == null) return false;
 
   if ("error" in e.data && "message" in e.data && "type" in e.data) return true;
+
+  return false;
+}
+
+type MSAALError = {
+  name: "InteractionRequiredAuthError" | "AuthError";
+  message: string;
+}
+function IsMSALError(e: any): e is MSAALError {
+  if (typeof e !== "object" || e == null) return false;
+  if (!('name' in e) || typeof e.name !== "string") return false;
+  if (!('message' in e) || typeof e.message !== "string") return false;
+
+  if (e.name == "InteractionRequiredAuthError" || e.name == "AuthError") {
+    return true;
+  }
 
   return false;
 }

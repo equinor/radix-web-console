@@ -38,12 +38,13 @@ function isDecember(date: Date): boolean {
   return date.getMonth() === 11;
 }
 
-// biome-ignore lint/complexity/noBannedTypes: ignore {} props
-export class HomeIcon extends Component<{}, { svgLogo?: string }> {
+export class HomeIcon extends Component<
+  { style?: React.CSSProperties },
+  { svgLogo?: string }
+> {
   private isLoaded: boolean;
 
-  // biome-ignore lint/complexity/noBannedTypes: ignore {} props
-  constructor(props: {}) {
+  constructor(props: { style?: React.CSSProperties }) {
     super(props);
     this.state = {};
     this.isLoaded = true;
@@ -77,6 +78,7 @@ export class HomeIcon extends Component<{}, { svgLogo?: string }> {
         className={clsx('home-icon', {
           'home-icon--401': isAprilFirst(new Date()),
         })}
+        style={this.props.style}
         src={this.state.svgLogo}
       />
     );
