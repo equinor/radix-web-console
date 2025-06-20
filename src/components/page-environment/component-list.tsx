@@ -305,52 +305,44 @@ export const ComponentList: FunctionComponent<ComponentListProps> = ({
                             <>
                               {hasComponentOAuth2Service(x) && (
                                 <>
-                                  {x.oauth2.deployments
-                                    ?.filter(
-                                      (deployment) =>
-                                        deployment.status !== 'Consistent'
-                                    )
-                                    ?.map((deployment) => (
-                                      <Table.Row key={deployment.type}>
-                                        <Table.Cell />
-                                        <Table.Cell>
-                                          <div className="grid grid--gap-x-small grid--auto-columns grid--align-center">
-                                            <Icon
-                                              data={security}
-                                              color="gray"
-                                            />
-                                            <Typography>
-                                              OAuth2{' '}
-                                              {getOAuthServiceTitle(
-                                                deployment.type
-                                              )}
-                                            </Typography>
-                                          </div>
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          <ComponentStatusBadge
-                                            status={deployment.status}
-                                          />
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          {/*TODO: Add OAuth2 replicas*/}
-                                          <ReplicaLinks
-                                            replicaList={deployment.replicaList}
-                                            urlFunc={(r: ReplicaSummary) =>
-                                              getOAuthReplicaUrl(
-                                                appName,
-                                                envName,
-                                                x.name,
-                                                r.name,
-                                                deployment.type
-                                              )
-                                            }
-                                          />
-                                        </Table.Cell>
-                                        <Table.Cell />
-                                        <Table.Cell />
-                                      </Table.Row>
-                                    ))}
+                                  {x.oauth2.deployments?.map((deployment) => (
+                                    <Table.Row key={deployment.type}>
+                                      <Table.Cell />
+                                      <Table.Cell>
+                                        <div className="grid grid--gap-x-small grid--auto-columns grid--align-center">
+                                          <Icon data={security} color="gray" />
+                                          <Typography>
+                                            OAuth2{' '}
+                                            {getOAuthServiceTitle(
+                                              deployment.type
+                                            )}
+                                          </Typography>
+                                        </div>
+                                      </Table.Cell>
+                                      <Table.Cell>
+                                        <ComponentStatusBadge
+                                          status={deployment.status}
+                                        />
+                                      </Table.Cell>
+                                      <Table.Cell>
+                                        {/*TODO: Add OAuth2 replicas*/}
+                                        <ReplicaLinks
+                                          replicaList={deployment.replicaList}
+                                          urlFunc={(r: ReplicaSummary) =>
+                                            getOAuthReplicaUrl(
+                                              appName,
+                                              envName,
+                                              x.name,
+                                              r.name,
+                                              deployment.type
+                                            )
+                                          }
+                                        />
+                                      </Table.Cell>
+                                      <Table.Cell />
+                                      <Table.Cell />
+                                    </Table.Row>
+                                  ))}
                                 </>
                               )}
                             </>
