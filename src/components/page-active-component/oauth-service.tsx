@@ -34,7 +34,7 @@ export const OAuthService = ({
         <form className="grid grid--gap-medium">
           <List>
             {oauth2.deployments?.map((deployment) => (
-              <List.Item key={deployment.type}>
+              <List.Item key={deployment.type} className="oauth-list-item">
                 <div>
                   <Typography
                     className="whitespace-nowrap"

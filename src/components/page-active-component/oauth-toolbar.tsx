@@ -50,6 +50,7 @@ export function OAuthToolbar({
         {restartInProgress && <CircularProgress size={32} />}
 
         <Button
+          className="oauth-toolbar__restart-btn"
           onClick={onRestart}
           disabled={!isRestartEnabled}
           variant="outlined"

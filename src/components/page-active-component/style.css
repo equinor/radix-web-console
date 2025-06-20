@@ -3,6 +3,7 @@
   grid-template-columns: minmax(0%, 100%);
   grid-auto-flow: column;
   align-items: center;
+  margin-bottom: 10px;
 }
 .o-indent-list.secrets {
   width: fit-content;
@@ -33,4 +34,13 @@
   column-gap: 16px;
   grid-template-columns: repeat(2, auto);
   justify-content: end;
+}
+
+li.oauth-list-item:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.oauth-toolbar__restart-btn {
+  margin-bottom: 16px;
+  padding: initial;
 }
