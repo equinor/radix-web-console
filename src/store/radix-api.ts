@@ -377,7 +377,7 @@ const injectedRtkApi = api.injectEndpoints({
       GetOAuthPodLogApiArg
     >({
       query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/oauth/replicas/${queryArg.podName}/logs`,
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg['type']}/replicas/${queryArg.podName}/logs`,
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
           'Impersonate-Group': queryArg['Impersonate-Group'],
@@ -394,7 +394,7 @@ const injectedRtkApi = api.injectEndpoints({
       RestartOAuthAuxiliaryResourceApiArg
     >({
       query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/oauth/restart`,
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg['type']}/restart`,
         method: 'POST',
         headers: {
           'Impersonate-User': queryArg['Impersonate-User'],
@@ -1554,6 +1554,8 @@ export type GetOAuthPodLogApiArg = {
   envName: string;
   /** Name of component */
   componentName: string;
+  /** Type of auxiliary resource (oauth|oauth-redis) */
+  type: string;
   /** Name of pod */
   podName: string;
   /** Get log only from sinceTime (example 2020-03-18T07:20:41+00:00) */
@@ -1575,6 +1577,8 @@ export type RestartOAuthAuxiliaryResourceApiArg = {
   envName: string;
   /** Name of component */
   componentName: string;
+  /** Type of auxiliary resource (oauth|oauth-redis) */
+  type: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   'Impersonate-User'?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -2663,6 +2667,7 @@ export type ReplicaSummary = {
     | 'JobManager'
     | 'JobManagerAux'
     | 'OAuth2'
+    | 'OAuth2Redis'
     | 'Undefined';
 };
 export type AuxiliaryResourceDeployment = {
@@ -2670,10 +2675,16 @@ export type AuxiliaryResourceDeployment = {
   replicaList?: ReplicaSummary[];
   /** Status of the auxiliary resource's deployment */
   status: 'Stopped' | 'Consistent' | 'Reconciling';
+  /** Name of the auxiliary resource's deployment */
+  type?: 'oauth' | 'oauth-redis' | '""';
 };
 export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
+  /** Deployments describes the underlying Kubernetes deployments for the resource */
+  deployments?: AuxiliaryResourceDeployment[];
   identity?: Identity;
+  /** SessionStoreType type of session store */
+  sessionStoreType?: 'cookie' | 'redis' | 'systemManaged' | '""';
 };
 export type Port = {
   /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */

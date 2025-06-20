@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import { routeWithParams } from './string';
 
 import { routes } from '../routes';
+import { getValidatedOAuthType } from './oauth';
 
 /** Mark specific keys of an object optional */
 type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &
@@ -132,6 +133,22 @@ export function getActiveJobComponentUrl(
   });
 }
 
+export function getOAuthReplicaUrl(
+  appName: string,
+  envName: string,
+  componentName: string,
+  replicaName: string,
+  type?: 'oauth' | 'oauth-redis' | '""'
+): string {
+  return routeWithParams(routes.appOAuthAuxiliaryReplica, {
+    appName,
+    envName,
+    componentName,
+    replicaName,
+    type: getValidatedOAuthType(type),
+  });
+}
+
 export function getReplicaUrl(
   appName: string,
   envName: string,
@@ -139,20 +156,6 @@ export function getReplicaUrl(
   replicaName: string
 ): string {
   return routeWithParams(routes.appReplica, {
-    appName,
-    envName,
-    componentName,
-    replicaName,
-  });
-}
-
-export function getOAuthReplicaUrl(
-  appName: string,
-  envName: string,
-  componentName: string,
-  replicaName: string
-): string {
-  return routeWithParams(routes.appOAuthAuxiliaryReplica, {
     appName,
     envName,
     componentName,

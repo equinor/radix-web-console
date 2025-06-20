@@ -4,12 +4,14 @@ import {
   type OAuth2AuxiliaryResource,
   useRestartOAuthAuxiliaryResourceMutation,
 } from '../../store/radix-api';
+import { getOAuthServiceTitle, getValidatedOAuthType } from '../../utils/oauth';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 
 type Props = {
   appName: string;
   envName: string;
   componentName: string;
+  type?: 'oauth' | 'oauth-redis' | '""';
   oauth2?: OAuth2AuxiliaryResource;
   refetch: () => unknown;
 };
@@ -17,12 +19,12 @@ export function OAuthToolbar({
   appName,
   envName,
   componentName,
+  type,
   oauth2,
   refetch,
 }: Props) {
   const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation();
   const startRefetch = useDurationInterval(refetch);
-
   const isRestartEnabled =
     oauth2?.deployment?.status !== 'Stopped' || isLoading;
 
@@ -31,7 +33,12 @@ export function OAuthToolbar({
 
   const onRestart = handlePromiseWithToast(
     async () => {
-      await trigger({ appName, envName, componentName }).unwrap();
+      await trigger({
+        appName,
+        envName,
+        componentName,
+        type: getValidatedOAuthType(type),
+      }).unwrap();
       startRefetch();
     },
     'Restarting OAuth2 Service',
@@ -43,11 +50,12 @@ export function OAuthToolbar({
         {restartInProgress && <CircularProgress size={32} />}
 
         <Button
+          className="oauth-toolbar__restart-btn"
           onClick={onRestart}
           disabled={!isRestartEnabled}
           variant="outlined"
         >
-          Restart
+          Restart {getOAuthServiceTitle(type)}
         </Button>
       </div>
     </div>
