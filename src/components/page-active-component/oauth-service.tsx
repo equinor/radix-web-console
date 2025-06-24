@@ -1,5 +1,6 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
+import { Accordion, List, Typography } from '@equinor/eds-core-react';
 import type { OAuth2AuxiliaryResource } from '../../store/radix-api';
+import { getOAuthServiceTitle } from '../../utils/oauth';
 import { getOAuthReplicaUrl } from '../../utils/routing';
 import { ReplicaList } from '../replica-list';
 import { ComponentStatusBadge } from '../status-badges';
@@ -12,6 +13,7 @@ type Props = {
   oauth2: OAuth2AuxiliaryResource;
   refetch: () => unknown;
 };
+
 export const OAuthService = ({
   appName,
   envName,
@@ -30,37 +32,59 @@ export const OAuthService = ({
       </Accordion.Header>
       <Accordion.Panel>
         <form className="grid grid--gap-medium">
-          <div className="oauth-service-form__title">
-            <div className="grid grid--gap-small grid--auto-columns">
-              <Typography>Status</Typography>
-              <ComponentStatusBadge status={oauth2.deployment.status} />
-            </div>
-            <span>
-              <OAuthToolbar
-                appName={appName}
-                envName={envName}
-                componentName={componentName}
-                oauth2={oauth2}
-                refetch={refetch}
-              />
-            </span>
-          </div>
-          <div className="grid">
-            {oauth2.deployment.replicaList &&
-            oauth2.deployment.replicaList.length > 0 ? (
-              <ReplicaList
-                appName={appName}
-                envName={envName}
-                compName={componentName}
-                replicaList={oauth2.deployment.replicaList}
-                replicaUrlFunc={(name) =>
-                  getOAuthReplicaUrl(appName, envName, componentName, name)
-                }
-              />
-            ) : (
-              <Typography>This resource has no replicas</Typography>
-            )}
-          </div>
+          <List>
+            {oauth2.deployments?.map((deployment) => (
+              <List.Item key={deployment.type} className="oauth-list-item">
+                <div>
+                  <Typography
+                    className="whitespace-nowrap"
+                    variant="h5"
+                    as="span"
+                  >
+                    {getOAuthServiceTitle(deployment.type)}
+                  </Typography>
+                  <div className="oauth-service-form__title">
+                    <div className="grid grid--gap-small grid--auto-columns">
+                      <Typography>Status</Typography>
+                      <ComponentStatusBadge status={deployment.status} />
+                    </div>
+                    <span>
+                      <OAuthToolbar
+                        appName={appName}
+                        envName={envName}
+                        componentName={componentName}
+                        type={deployment.type}
+                        oauth2={oauth2}
+                        refetch={refetch}
+                      />
+                    </span>
+                  </div>
+                  <div className="grid">
+                    {deployment.replicaList &&
+                    deployment.replicaList.length > 0 ? (
+                      <ReplicaList
+                        appName={appName}
+                        envName={envName}
+                        compName={componentName}
+                        replicaList={deployment.replicaList}
+                        replicaUrlFunc={(name) =>
+                          getOAuthReplicaUrl(
+                            appName,
+                            envName,
+                            componentName,
+                            name,
+                            deployment.type
+                          )
+                        }
+                      />
+                    ) : (
+                      <Typography>This resource has no replicas</Typography>
+                    )}
+                  </div>
+                </div>
+              </List.Item>
+            ))}
+          </List>
         </form>
       </Accordion.Panel>
     </Accordion.Item>
