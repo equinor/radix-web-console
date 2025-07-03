@@ -92,6 +92,7 @@ const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
   if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas');
   if (trigger.type == 'azure-servicebus')
     unitFn = pluraliser('message', 'messages');
+  if (trigger.type == 'azure-eventhub') unitFn = pluraliser('event', 'events');
 
   return (
     <>
