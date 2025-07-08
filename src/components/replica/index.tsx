@@ -78,8 +78,13 @@ const ContainerDuration = ({ started, ended }: ContainerDurationProps) => {
 type ReplicaStateProps = {
   restartCount: ReplicaSummary['restartCount'];
   statusMessage: ReplicaSummary['statusMessage'];
+  exitCode: ReplicaSummary['exitCode'];
 };
-const ReplicaState = ({ restartCount, statusMessage }: ReplicaStateProps) => (
+const ReplicaState = ({
+  restartCount,
+  statusMessage,
+  exitCode,
+}: ReplicaStateProps) => (
   <>
     {restartCount && restartCount > 0 && (
       <div>
@@ -87,6 +92,11 @@ const ReplicaState = ({ restartCount, statusMessage }: ReplicaStateProps) => (
           Restarted <strong>{restartCount} times</strong>
         </Typography>
       </div>
+    )}
+    {exitCode != undefined && exitCode != 0 && (
+      <Typography>
+        Exit code <strong>{exitCode}</strong>
+      </Typography>
     )}
 
     {statusMessage && (
@@ -155,6 +165,7 @@ const Overview = ({
           <ReplicaState
             restartCount={replica.restartCount}
             statusMessage={replica.statusMessage}
+            exitCode={replica.exitCode}
           />
         )}
       </section>
