@@ -45,7 +45,11 @@ import {
   sortCompareDate,
   sortCompareString,
 } from '../../../utils/sort-utils';
-import { smallScheduledJobName } from '../../../utils/string';
+import {
+  routeWithParams,
+  smallDeploymentName,
+  smallScheduledJobName,
+} from '../../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 import { ReplicaImage } from '../../replica-image';
 import { ScrimPopup } from '../../scrim-popup';
@@ -54,6 +58,7 @@ import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 
 import '../style.css';
+import { routes } from '../../../routes';
 
 function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running';
@@ -175,6 +180,7 @@ export const ScheduledJobList: FunctionComponent<{
                       <TableSortIcon direction={dateSort} />
                     </Table.Cell>
                     <Table.Cell>Duration</Table.Cell>
+                    <Table.Cell>Deployment</Table.Cell>
                     <Table.Cell />
                   </Table.Row>
                 </Table.Head>
@@ -247,6 +253,20 @@ export const ScheduledJobList: FunctionComponent<{
                               start={job.created}
                               end={job.ended ? new Date(job.ended) : new Date()}
                             />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Typography
+                              className="deployment-summary__link"
+                              as={Link}
+                              to={routeWithParams(routes.appDeployment, {
+                                appName: appName,
+                                deploymentName: job.deploymentName,
+                              })}
+                              link
+                              token={{ textDecoration: 'none' }}
+                            >
+                              {smallDeploymentName(job.deploymentName)}
+                            </Typography>
                           </Table.Cell>
                           <Table.Cell width="1">
                             <ScrimPopup
