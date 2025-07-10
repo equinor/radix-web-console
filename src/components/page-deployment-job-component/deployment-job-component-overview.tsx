@@ -48,7 +48,11 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
       <AsyncResource asyncState={deploymentState}>
         {deployment && component && (
           <>
-            <Overview component={component} deployment={deployment} />
+            <Overview
+              appName={appName}
+              component={component}
+              deployment={deployment}
+            />
             <div>
               <ComponentSecrets component={component} />
             </div>
