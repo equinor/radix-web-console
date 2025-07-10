@@ -110,6 +110,7 @@ export const PageScheduledJob: FunctionComponent<{
           <>
             <ScheduledJobOverview
               job={job}
+              appName={appName}
               jobComponentName={jobComponentName}
             />
             {jobReplicas?.length > 0 && (

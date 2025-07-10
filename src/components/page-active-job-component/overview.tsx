@@ -2,6 +2,7 @@ import { Typography } from '@equinor/eds-core-react';
 import type { Component, Deployment } from '../../store/radix-api';
 import { ComponentIdentity } from '../component/component-identity';
 import { ComponentPorts } from '../component/component-ports';
+import { GitCommitTags } from '../component/git-commit-tags';
 import { JobSchedulerDetails } from '../component/scheduled-job/job-scheduler-details';
 import { DockerImage } from '../docker-image';
 import { ResourceRequirements } from '../resource-requirements';
@@ -22,6 +23,19 @@ export const Overview = ({ component, deployment }: Props) => (
         <Typography>
           Image <DockerImage path={component.image} />
         </Typography>
+        {component.commitID && (
+          <Typography>
+            From{' '}
+            {deployment?.gitCommitHash !== component.commitID
+              ? 'past deployment '
+              : ''}
+            <GitCommitTags
+              commitID={component.commitID}
+              gitTags={component.gitTags}
+              repository={deployment?.repository ?? ''}
+            />
+          </Typography>
+        )}
         {component && deployment && (
           <ComponentIdentity component={component} deployment={deployment} />
         )}

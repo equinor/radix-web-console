@@ -81,6 +81,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
                 <DeploymentJobComponentList
                   appName={appName}
                   deploymentName={deploymentName}
+                  deployment={deployment}
                   components={componentMap?.job ?? []}
                 />
               </div>
