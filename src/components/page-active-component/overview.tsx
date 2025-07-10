@@ -14,6 +14,7 @@ import { DefaultAlias } from './default-alias';
 import './style.css';
 import { Typography } from '@equinor/eds-core-react';
 import { slowPollingInterval } from '../../store/defaults';
+import { GitCommitTags } from '../component/git-commit-tags';
 import { IngressAllowList } from '../component/ingress-allow-list';
 import { ExternalLink } from '../link/external-link';
 import { ResourceRequirements } from '../resource-requirements';
@@ -62,6 +63,19 @@ export const Overview = ({
           <Typography>
             Image <DockerImage path={component.image} />
           </Typography>
+          {component.commitID && (
+            <Typography>
+              From{' '}
+              {deployment?.gitCommitHash !== component.commitID
+                ? 'past deployment '
+                : ''}
+              <GitCommitTags
+                commitID={component.commitID}
+                gitTags={component.gitTags}
+                repository={deployment?.repository ?? ''}
+              />
+            </Typography>
+          )}
           {component && deployment && (
             <ComponentIdentity component={component} deployment={deployment} />
           )}
