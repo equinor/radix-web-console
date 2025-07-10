@@ -1,9 +1,9 @@
-import { Progress, Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react';
 import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
 import { useGetDeploymentQuery } from '../../store/radix-api';
 import { routeWithParams, smallDeploymentName } from '../../utils/string';
-import { GitCommitTags } from './git-commit-tags';
+import { ComponentDeploymentGitHubAttributes } from './component-deployment-github-attributes';
 
 interface ComponentDeploymentProps {
   appName: string;
@@ -42,27 +42,10 @@ export const ComponentDeployment = ({
           {smallDeploymentName(deploymentName)}
         </Typography>
       </Typography>
-      {deployComponent ? (
-        <>
-          {deployComponent.commitID && (
-            <Typography>
-              From{' '}
-              {deployment?.gitCommitHash !== deployComponent.commitID
-                ? 'past deployment '
-                : ''}
-              <GitCommitTags
-                commitID={deployComponent.commitID}
-                gitTags={deployComponent.gitTags}
-                repository={deployment?.repository ?? ''}
-              />
-            </Typography>
-          )}
-        </>
-      ) : (
-        <Typography>
-          From <Progress.Circular size={16} />
-        </Typography>
-      )}
+      <ComponentDeploymentGitHubAttributes
+        deployComponent={deployComponent}
+        deployment={deployment}
+      />
     </>
   );
 };

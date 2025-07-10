@@ -106,7 +106,11 @@ export const ActiveJobComponentOverview = ({
                 {restartInProgress && <CircularProgress size={32} />}
               </div>
             </div>
-            <Overview component={component} deployment={deployment} />
+            <Overview
+              appName={appName}
+              component={component}
+              deployment={deployment}
+            />
 
             <div className="grid grid--gap-large">
               {scheduledJobs && (
