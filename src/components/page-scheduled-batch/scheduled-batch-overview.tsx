@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import type { ScheduledBatchSummary } from '../../store/radix-api';
 import { smallScheduledBatchName } from '../../utils/string';
+import { ComponentDeployment } from '../component/component-deployment';
 import { BatchJobStatuses } from '../component/scheduled-job/batch-job-statuses';
 import { ProgressStatusBadge } from '../status-badges';
 import { Duration } from '../time/duration';
@@ -40,10 +41,12 @@ const ScheduledBatchDuration = ({ started, finished }: Props) => {
 };
 
 type ScheduledBatchOverviewProps = {
+  appName: string;
   batch: ScheduledBatchSummary;
   jobComponentName: string;
 };
 export const ScheduledBatchOverview = ({
+  appName,
   batch,
   jobComponentName,
 }: ScheduledBatchOverviewProps) => (
@@ -53,6 +56,9 @@ export const ScheduledBatchOverview = ({
       <div className="grid grid--gap-medium grid--overview-columns">
         <div className="grid grid--gap-medium">
           <Typography as="span">
+            Job component <strong>{jobComponentName}</strong>
+          </Typography>
+          <Typography as="span">
             Batch name <strong>{smallScheduledBatchName(batch.name)}</strong>
           </Typography>
           {batch.batchId && (
@@ -60,9 +66,11 @@ export const ScheduledBatchOverview = ({
               Batch ID <strong>{batch.batchId}</strong>
             </Typography>
           )}
-          <Typography as="span">
-            Job component <strong>{jobComponentName}</strong>
-          </Typography>
+          <ComponentDeployment
+            appName={appName}
+            componentName={jobComponentName}
+            deploymentName={batch.deploymentName}
+          />
           {batch.status && (
             <Typography as="span" className="status-title">
               Batch status <ProgressStatusBadge status={batch.status} />
