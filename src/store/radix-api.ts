@@ -2821,6 +2821,8 @@ export type ApplicationRegistration = {
   adGroups: string[];
   /** AdUsers the users/service-principals that should be able to access the application */
   adUsers: string[];
+  /** AppID the unique application ID, which is a ULID */
+  appId: string;
   /** ConfigBranch information */
   configBranch: string;
   /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
@@ -2843,8 +2845,6 @@ export type ApplicationRegistration = {
   repository: string;
   /** SharedSecret the shared secret of the webhook */
   sharedSecret: string;
-  /** WBS information */
-  wbs?: string;
 };
 export type ApplicationRegistrationUpsertResponse = {
   applicationRegistration?: ApplicationRegistration;
@@ -3323,6 +3323,10 @@ export type ScheduledJobSummary = {
     | 'Completed';
   /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
+  /** Variable names map to values specified for this job. */
+  variables?: {
+    [key: string]: string;
+  };
 };
 export type ScheduledBatchSummary = {
   /** Defines a user defined ID of the batch. */

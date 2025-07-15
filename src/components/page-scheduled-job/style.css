@@ -4,3 +4,9 @@
   gap: var(--eds_spacing_medium);
   margin-bottom: var(--eds_spacing_medium);
 }
+.env-vars-table__header-name {
+  width: 80%;
+}
+.env-vars-table__item-value {
+  min-width: 40.5rem;
+}

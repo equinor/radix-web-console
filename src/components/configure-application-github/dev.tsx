@@ -5,6 +5,7 @@ export default (
   <div className="o-layout-single">
     <ConfigureDeployKey
       app={{
+        appId: 'a-app-id',
         adGroups: ['Group 1', 'Group 2'],
         adUsers: ['User 1', 'user 2'],
         readerAdGroups: ['Reader 1', 'Reader 2'],
@@ -15,7 +16,6 @@ export default (
         configBranch: 'configBranch',
         creator: 'creator',
         owner: 'owner',
-        wbs: 'wbs123',
         radixConfigFullName: 'radixconfig.yaml',
       }}
     />
