@@ -19,6 +19,7 @@ import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { JobReplica } from './job-replica';
 import { ScheduledJobOverview } from './scheduled-job-overview';
+import { EnvironmentVariableTable } from './environment-variable-table';
 
 import './style.css';
 
@@ -113,6 +114,9 @@ export const PageScheduledJob: FunctionComponent<{
               appName={appName}
               jobComponentName={jobComponentName}
             />
+            {job.variables && (
+              <EnvironmentVariableTable values={job.variables} />
+            )}
             {jobReplicas?.length > 0 && (
               <>
                 <div className="grid grid--gap-medium">

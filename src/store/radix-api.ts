@@ -2642,10 +2642,6 @@ export type ReplicaSummary = {
   image?: string;
   /** ImageID of the container's image. */
   imageId?: string;
-  /** The name of container image that is specified in PodSpec.
-    More info: https://kubernetes.io/docs/concepts/containers/images.
-    +optional */
-  imageInSpec?: string;
   /** Pod name */
   name: string;
   /** The index of the pod in the re-starts */
