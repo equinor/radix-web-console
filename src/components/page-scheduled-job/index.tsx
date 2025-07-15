@@ -17,9 +17,9 @@ import {
 } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
+import { EnvironmentVariableTable } from './environment-variable-table';
 import { JobReplica } from './job-replica';
 import { ScheduledJobOverview } from './scheduled-job-overview';
-import { EnvironmentVariableTable } from './environment-variable-table';
 
 import './style.css';
 
