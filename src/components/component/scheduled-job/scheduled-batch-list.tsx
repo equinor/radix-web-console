@@ -33,7 +33,11 @@ import {
   sortCompareDate,
   sortCompareString,
 } from '../../../utils/sort-utils';
-import { smallScheduledBatchName } from '../../../utils/string';
+import {
+  routeWithParams,
+  smallDeploymentName,
+  smallScheduledBatchName,
+} from '../../../utils/string';
 import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
 import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
@@ -43,6 +47,7 @@ import { BatchJobStatuses } from './batch-job-statuses';
 
 import './style.css';
 import useLocalStorage from '../../../effects/use-local-storage';
+import { routes } from '../../../routes';
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running';
@@ -142,6 +147,7 @@ export function ScheduledBatchList({
                       <TableSortIcon direction={dateSort} />
                     </Table.Cell>
                     <Table.Cell>Duration</Table.Cell>
+                    <Table.Cell>Deployment</Table.Cell>
                     <Table.Cell />
                   </Table.Row>
                 </Table.Head>
@@ -211,6 +217,20 @@ export function ScheduledBatchList({
                                 batch.ended ? new Date(batch.ended) : new Date()
                               }
                             />
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Typography
+                              className="deployment-summary__link"
+                              as={Link}
+                              to={routeWithParams(routes.appDeployment, {
+                                appName: appName,
+                                deploymentName: batch.deploymentName,
+                              })}
+                              link
+                              token={{ textDecoration: 'none' }}
+                            >
+                              {smallDeploymentName(batch.deploymentName)}
+                            </Typography>
                           </Table.Cell>
                           <Table.Cell width="1">
                             <ScrimPopup
