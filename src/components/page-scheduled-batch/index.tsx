@@ -56,6 +56,7 @@ export function PageScheduledBatch({
       <AsyncResource asyncState={scheduledBatchState}>
         {batch && (
           <ScheduledBatchOverview
+            appName={appName}
             batch={batch}
             jobComponentName={jobComponentName}
           />

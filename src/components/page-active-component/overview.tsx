@@ -14,6 +14,8 @@ import { DefaultAlias } from './default-alias';
 import './style.css';
 import { Typography } from '@equinor/eds-core-react';
 import { slowPollingInterval } from '../../store/defaults';
+import { ComponentDeploymentGitHubAttributes } from '../component/component-deployment-github-attributes';
+import { DeploymentRef } from '../component/deployment-ref';
 import { IngressAllowList } from '../component/ingress-allow-list';
 import { ExternalLink } from '../link/external-link';
 import { ResourceRequirements } from '../resource-requirements';
@@ -62,6 +64,14 @@ export const Overview = ({
           <Typography>
             Image <DockerImage path={component.image} />
           </Typography>
+          <DeploymentRef
+            appName={appName}
+            deploymentName={deployment?.name ?? ''}
+          />
+          <ComponentDeploymentGitHubAttributes
+            deployComponent={component}
+            deployment={deployment}
+          />
           {component && deployment && (
             <ComponentIdentity component={component} deployment={deployment} />
           )}
