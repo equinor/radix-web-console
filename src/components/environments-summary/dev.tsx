@@ -93,6 +93,7 @@ export default (
               useBuildCache: false,
               name: 'any-name',
               registration: {
+                appId: '',
                 adGroups: [],
                 adUsers: [],
                 configBranch: '',

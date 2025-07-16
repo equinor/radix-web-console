@@ -7,6 +7,7 @@ import {
   smallScheduledJobName,
 } from '../../utils/string';
 import { Code } from '../code';
+import { CommandAndArgs } from '../component/command-and-args';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 import { RadixJobConditionBadge } from '../status-badges';
@@ -94,6 +95,7 @@ export const ScheduledJobOverview: FunctionComponent<{
           <Typography>
             Job component <strong>{jobComponentName}</strong>
           </Typography>
+          <CommandAndArgs command={job.command} args={job.args} />
         </div>
         <div className="grid grid--gap-medium">
           <>

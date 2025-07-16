@@ -2821,6 +2821,8 @@ export type ApplicationRegistration = {
   adGroups: string[];
   /** AdUsers the users/service-principals that should be able to access the application */
   adUsers: string[];
+  /** AppID the unique application ID, which is a ULID */
+  appId: string;
   /** ConfigBranch information */
   configBranch: string;
   /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
@@ -2843,8 +2845,6 @@ export type ApplicationRegistration = {
   repository: string;
   /** SharedSecret the shared secret of the webhook */
   sharedSecret: string;
-  /** WBS information */
-  wbs?: string;
 };
 export type ApplicationRegistrationUpsertResponse = {
   applicationRegistration?: ApplicationRegistration;
@@ -3278,10 +3278,14 @@ export type ScheduledJobSummary = {
   /** Timestamp of the job restart, if applied.
     +optional */
   Restart?: string;
+  /** Args to the entrypoint specified for the job. */
+  args?: string[];
   /** BackoffLimit Amount of retries due to a logical error in configuration etc. */
   backoffLimit: number;
   /** BatchName Batch name, if any */
   batchName?: string;
+  /** Command is the entrypoint array specified for the job. Not executed within a shell. */
+  command?: string[];
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the job */
@@ -3323,6 +3327,10 @@ export type ScheduledJobSummary = {
     | 'Completed';
   /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
+  /** Variable names map to values specified for this job. */
+  variables?: {
+    [key: string]: string;
+  };
 };
 export type ScheduledBatchSummary = {
   /** Defines a user defined ID of the batch. */
