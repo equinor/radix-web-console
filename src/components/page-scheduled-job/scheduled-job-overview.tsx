@@ -7,8 +7,8 @@ import {
   smallScheduledJobName,
 } from '../../utils/string';
 import { Code } from '../code';
-import { ComponentDeployment } from '../component/component-deployment';
 import { CommandAndArgs } from '../component/command-and-args';
+import { ComponentDeployment } from '../component/component-deployment';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
 import { RadixJobConditionBadge } from '../status-badges';
