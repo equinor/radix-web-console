@@ -5,7 +5,7 @@ export default (
   <div className="o-layout-single">
     <ConfigureDeployKey
       app={{
-        appId: 'app-id',
+        appId: 'a-app-id',
         adGroups: ['Group 1', 'Group 2'],
         adUsers: ['User 1', 'user 2'],
         readerAdGroups: ['Reader 1', 'Reader 2'],
