@@ -7,6 +7,7 @@ import {
   smallScheduledJobName,
 } from '../../utils/string';
 import { Code } from '../code';
+import { CommandAndArgs } from '../component/command-and-args';
 import { ComponentDeployment } from '../component/component-deployment';
 import { ResourceRequirements } from '../resource-requirements';
 import { Runtime } from '../runtime';
@@ -102,6 +103,7 @@ export const ScheduledJobOverview: FunctionComponent<{
               componentName={jobComponentName}
               deploymentName={job.deploymentName}
             />
+            <CommandAndArgs command={job.command} args={job.args} />
           </div>
           <div className="grid grid--gap-medium">
             <>
