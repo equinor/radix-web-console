@@ -3278,10 +3278,14 @@ export type ScheduledJobSummary = {
   /** Timestamp of the job restart, if applied.
     +optional */
   Restart?: string;
+  /** Args to the entrypoint specified for the job. */
+  args?: string[];
   /** BackoffLimit Amount of retries due to a logical error in configuration etc. */
   backoffLimit: number;
   /** BatchName Batch name, if any */
   batchName?: string;
+  /** Command is the entrypoint array specified for the job. Not executed within a shell. */
+  command?: string[];
   /** Created timestamp */
   created?: string;
   /** DeploymentName name of RadixDeployment for the job */
