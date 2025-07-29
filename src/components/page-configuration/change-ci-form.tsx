@@ -34,7 +34,7 @@ export const ChangeConfigurationItemForm = ({
       appName,
       applicationRegistrationPatchRequest: {
         applicationRegistrationPatch: {
-          configurationItem: newCI!.id, //Button is disabled if newCI is not set
+          configurationItem: newCI!.appId!.toString(), //Button is disabled if newCI is not set, appID is always defined in db
         },
       },
     }).unwrap();

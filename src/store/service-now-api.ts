@@ -41,6 +41,8 @@ export type GetApplicationApiArg = {
   appId: string;
 };
 export type Application = {
+  /** AppId is the Configuration Item of application */
+  appId?: number;
   /** Description of the application */
   description?: string;
   /** Id of application
@@ -48,9 +50,8 @@ export type Application = {
   id: string;
   /** Name of application */
   name: string;
-  /** Number of application
-    Maps to u_number in ServiceNow */
-  number: string;
+  /** Deprecated: Number of application, use appId instead */
+  number: number;
   /** ProductOwner of the application */
   productOwner?: string;
   /** Technical contact persons of the application */
