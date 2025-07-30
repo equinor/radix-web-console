@@ -69,7 +69,7 @@ export function AppConfigConfigurationItem({
     {
       appId: Number(configurationItem),
     },
-    { skip: Number.isFinite(configurationItem) }
+    { skip: !Number.isFinite(configurationItem) }
   );
 
   const containerRef = useRef<HTMLDivElement>();
