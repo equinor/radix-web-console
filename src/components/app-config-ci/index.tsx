@@ -67,7 +67,7 @@ export function AppConfigConfigurationItem({
 
   const { data: currentCI, ...currentCIState } = useGetApplicationQuery(
     {
-      appId: configurationItem!,
+      appId: Number(configurationItem),
     },
     { skip: !configurationItem }
   );
