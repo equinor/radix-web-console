@@ -69,7 +69,7 @@ export function AppConfigConfigurationItem({
     {
       appId: Number(configurationItem),
     },
-    { skip: Number(configurationItem) > 0 }
+    { skip: !configurationItem || Number(configurationItem) <= 0 }
   );
 
   const containerRef = useRef<HTMLDivElement>();
