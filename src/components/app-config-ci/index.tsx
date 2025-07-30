@@ -49,7 +49,7 @@ export interface Props {
   name?: string;
   configurationItemChangeCallback?: OnConfigurationItemChangeCallback;
   disabled?: boolean;
-  configurationItem?: string;
+  configurationItem?: number;
 }
 export function AppConfigConfigurationItem({
   configurationItem,
@@ -67,9 +67,9 @@ export function AppConfigConfigurationItem({
 
   const { data: currentCI, ...currentCIState } = useGetApplicationQuery(
     {
-      appId: configurationItem!,
+      appId: Number(configurationItem),
     },
-    { skip: !configurationItem }
+    { skip: !Number.isFinite(configurationItem) }
   );
 
   const containerRef = useRef<HTMLDivElement>();
