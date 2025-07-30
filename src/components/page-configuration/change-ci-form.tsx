@@ -76,7 +76,9 @@ export const ChangeConfigurationItemForm = ({
                 <Button
                   color="danger"
                   type="submit"
-                  disabled={!newCI || newCI?.id === configurationItem}
+                  disabled={
+                    !newCI || newCI?.appId === Number(configurationItem)
+                  }
                 >
                   Change configuration item
                 </Button>
