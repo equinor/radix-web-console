@@ -155,7 +155,7 @@ export function CreateApplicationForm({
           />
           <AppConfigConfigurationItem
             name="configurationItem"
-            configurationItem={registration?.configurationItem}
+            configurationItem={Number(registration?.configurationItem)}
           />
           <AppConfigAdGroups
             name="adGroups"

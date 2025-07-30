@@ -63,7 +63,7 @@ export const ChangeConfigurationItemForm = ({
               </div>
             )}
             <AppConfigConfigurationItem
-              configurationItem={configurationItem}
+              configurationItem={Number(configurationItem)}
               configurationItemChangeCallback={setNewCI}
               disabled={isLoading}
             />
