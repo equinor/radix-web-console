@@ -34,7 +34,7 @@ export const ChangeConfigurationItemForm = ({
       appName,
       applicationRegistrationPatchRequest: {
         applicationRegistrationPatch: {
-          configurationItem: newCI!.appId!.toString(), //Button is disabled if newCI is not set, appID is always defined in db
+          configurationItem: newCI!.appId.toString(), //Button is disabled if newCI is not set
         },
       },
     }).unwrap();
@@ -63,7 +63,7 @@ export const ChangeConfigurationItemForm = ({
               </div>
             )}
             <AppConfigConfigurationItem
-              configurationItem={configurationItem}
+              configurationItem={Number(configurationItem)}
               configurationItemChangeCallback={setNewCI}
               disabled={isLoading}
             />
@@ -76,7 +76,9 @@ export const ChangeConfigurationItemForm = ({
                 <Button
                   color="danger"
                   type="submit"
-                  disabled={!newCI || newCI?.id === configurationItem}
+                  disabled={
+                    !newCI || newCI?.appId === Number(configurationItem)
+                  }
                 >
                   Change configuration item
                 </Button>
