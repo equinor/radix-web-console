@@ -57,9 +57,9 @@ export const ConfigurationItemPopover = ({
             </div>
             <div>
               <Typography group="input" variant="label">
-                Product Owner
+                Business Solution Owner
               </Typography>
-              <Typography>{configurationItem.productOwner || 'N/A'}</Typography>
+              <Typography>{configurationItem.businessSolutionOwner || 'N/A'}</Typography>
             </div>
             <div>
               <Typography group="input" variant="label">
