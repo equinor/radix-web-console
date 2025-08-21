@@ -18,7 +18,7 @@ import { SecretUpdatedBadge } from '../status-badges/secret-updated-badge';
 
 export const SecretForm: FunctionComponent<{
   secret: Secret | BuildSecret | ImageHubSecret;
-  updated: string;
+  updated?: string;
   secretName: string;
   overview?: ReactNode;
   disableForm?: boolean;
