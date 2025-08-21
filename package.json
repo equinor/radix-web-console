@@ -54,7 +54,7 @@
     "styled-components": "^6.1.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.9.4",
+    "@biomejs/biome": "2.0.6",
     "@remix-run/web-fetch": "^4.4.2",
     "@rtk-query/codegen-openapi": "^1.2.0",
     "@testing-library/react": "^16.0.1",
@@ -76,7 +76,14 @@
     "vitest": "^3.0.5"
   },
   "jest": {
-    "transformIgnorePatterns": ["node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"]
+    "transformIgnorePatterns": [
+      "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
+    ]
   },
-  "browserslist": [">1%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">1%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

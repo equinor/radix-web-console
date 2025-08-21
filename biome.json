@@ -1,18 +1,21 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "files": {
-    "ignore": [
-      ".vscode/",
-      "src/style/hex-to-hsl.js",
-      "build/",
-      "dist/",
-      "src/store/*.ts",
-      ".idea",
-      "src/utils/config/index.ts",
-      ".git"
+    "includes": [
+      "src/**",
+      "scripts/**",
+      "biome.json",
+      "tsconfig.node.json",
+      "tsconfig.json",
+      "vitest.config.ts",
+      "!src/style/hex-to-hsl.js",
+      "!src/store/radix-api.ts",
+      "!src/store/radix-api.ts",
+      "!src/store/service-now-api.ts",
+      "!src/store/scan-api.ts",
+      "!src/store/cost-api.ts",
+      "!src/store/uptime-api.ts"
     ]
   },
   "formatter": {
@@ -46,7 +49,15 @@
         "noUselessElse": "off",
         "useNumberNamespace": "off",
         "noNonNullAssertion": "off",
-        "noParameterAssign": "off"
+        "noParameterAssign": "off",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noInferrableTypes": "error",
+        "noDescendingSpecificity": "off"
       },
       "suspicious": {
         "noArrayIndexKey": "off",
@@ -58,7 +69,8 @@
       },
       "a11y": {
         "noRedundantRoles": "off",
-        "useKeyWithClickEvents": "off"
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off"
       }
     }
   }

@@ -1,3 +1,4 @@
+/** biome-ignore-all lint/suspicious/noTemplateCurlyInString: These are replaced by envsubst at runtime */
 window.injectEnv = {
   RADIX_CLUSTER_BASE: '${RADIX_DNS_ZONE}',
   RADIX_CLUSTERNAME: '${RADIX_CLUSTERNAME}',
