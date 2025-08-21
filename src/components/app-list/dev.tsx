@@ -1,8 +1,5 @@
 import { Typography } from '@equinor/eds-core-react';
 import { Server } from 'miragejs';
-
-import AppList from '.';
-
 import type { ComponentProps } from 'react';
 import type {
   GetSearchApplicationsApiArg,
@@ -13,6 +10,7 @@ import type {
   GetApplicationVulnerabilitySummariesApiArg,
   GetApplicationVulnerabilitySummariesApiResponse,
 } from '../../store/scan-api';
+import AppList from '.';
 
 const testApps: ShowApplicationsApiResponse = [
   {

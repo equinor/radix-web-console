@@ -1,16 +1,14 @@
 import { Table, Typography } from '@equinor/eds-core-react';
 import { type FunctionComponent, useEffect, useState } from 'react';
-
-import { JobSummaryTableRow } from './job-summary-table-row';
-
 import type { JobSummary } from '../../store/radix-api';
 import {
-  type SortDirection,
   dataSorter,
+  type SortDirection,
   sortCompareDate,
   sortCompareString,
 } from '../../utils/sort-utils';
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
+import { JobSummaryTableRow } from './job-summary-table-row';
 
 import './style.css';
 

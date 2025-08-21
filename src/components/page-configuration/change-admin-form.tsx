@@ -4,9 +4,8 @@ import {
   CircularProgress,
   Typography,
 } from '@equinor/eds-core-react';
-import { type FormEvent, useState } from 'react';
-
 import { difference } from 'lodash-es';
+import { type FormEvent, useState } from 'react';
 import {
   type ApplicationRegistration,
   useModifyRegistrationDetailsMutation,

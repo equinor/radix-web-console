@@ -7,6 +7,7 @@ import {
   useGetEnvironmentQuery,
 } from '../../store/radix-api';
 import { getEnvsUrl } from '../../utils/routing';
+import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
@@ -18,8 +19,6 @@ import { ExternalDNSAccordion } from './external-dns';
 import { HorizontalScalingSummary } from './horizontal-scaling-summary';
 import { OAuthService } from './oauth-service';
 import { Overview } from './overview';
-
-import { routeWithParams } from '../../utils/string';
 import './style.css';
 import useLocalStorage from '../../effects/use-local-storage';
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils';

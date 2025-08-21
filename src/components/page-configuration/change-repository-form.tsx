@@ -8,10 +8,6 @@ import {
   Typography,
 } from '@equinor/eds-core-react';
 import { type ChangeEvent, type FormEvent, useState } from 'react';
-
-import imageDeployKey from '../configure-application-github/deploy-key02.png';
-import imageWebhook from '../configure-application-github/webhook01.png';
-
 import { pollingInterval } from '../../store/defaults';
 import {
   useGetDeployKeyAndSecretQuery,
@@ -23,6 +19,8 @@ import { Alert } from '../alert';
 import AsyncResource from '../async-resource/async-resource';
 import { Code } from '../code';
 import { CompactCopyButton } from '../compact-copy-button';
+import imageDeployKey from '../configure-application-github/deploy-key02.png';
+import imageWebhook from '../configure-application-github/webhook01.png';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ExternalLink } from '../link/external-link';
 

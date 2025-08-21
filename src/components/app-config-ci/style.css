@@ -2,14 +2,14 @@
   color: var(--eds_text_static_icons__tertiary);
 }
 .configuration-item-select > .label {
-  font-size: 0.750rem;
+  font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.333em;
   margin: 0 var(--eds_spacing_small);
   color: currentColor;
 }
 .configuration-item-select > .helpertext {
-  font-size: 0.750rem;
+  font-size: 0.75rem;
   font-weight: 500;
   line-height: 1.333em;
   letter-spacing: 0.013rem;

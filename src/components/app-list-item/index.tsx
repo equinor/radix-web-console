@@ -20,8 +20,8 @@ import {
 } from '../../store/radix-api';
 import {
   type ApplicationVulnerabilities,
-  type Vulnerability,
   useGetApplicationVulnerabilitySummariesQuery,
+  type Vulnerability,
 } from '../../store/scan-api';
 import { filterFields } from '../../utils/filter-fields';
 import { routeWithParams } from '../../utils/string';
@@ -32,12 +32,12 @@ import {
   EnvironmentVulnerabilityIndicator,
 } from '../environments-summary/environment-card-status';
 import {
-  EnvironmentStatus,
-  type VulnerabilitySummary,
   aggregateComponentEnvironmentStatus,
   aggregateComponentReplicaEnvironmentStatus,
   aggregateVulnerabilitySummaries,
+  EnvironmentStatus,
   environmentVulnerabilitySummarizer,
+  type VulnerabilitySummary,
 } from '../environments-summary/environment-status-utils';
 
 import './style.css';

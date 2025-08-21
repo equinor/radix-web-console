@@ -2,11 +2,9 @@ import type React from 'react';
 import { Component } from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-
-import store from '../store/store';
-
 import { LazyLoadFallback } from '../components/lazy-load-fallback';
 import { routes } from '../routes';
+import store from '../store/store';
 
 type DefaultModuleImport = { default: React.JSX.Element };
 

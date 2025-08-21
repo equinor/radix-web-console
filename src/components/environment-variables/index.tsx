@@ -8,12 +8,6 @@ import {
 import { edit, restore_page, save } from '@equinor/eds-icons';
 import { isNil, isString } from 'lodash-es';
 import { useCallback, useEffect, useState } from 'react';
-
-import {
-  EnvironmentVariableTable,
-  type FormattedEnvVar,
-} from './environment-variable-table';
-
 import {
   type Component,
   type EnvVar,
@@ -24,6 +18,10 @@ import { getFetchErrorMessage } from '../../store/utils/parse-errors';
 import AsyncResource from '../async-resource/async-resource';
 import { errorToast } from '../global-top-nav/styled-toaster';
 import { HomeIcon } from '../home-icon';
+import {
+  EnvironmentVariableTable,
+  type FormattedEnvVar,
+} from './environment-variable-table';
 
 import './style.css';
 

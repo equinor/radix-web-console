@@ -1,11 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, time } from '@equinor/eds-icons';
+import type { BuildSecret } from '../../store/radix-api';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
 } from './status-badge-template';
-
-import type { BuildSecret } from '../../store/radix-api';
 
 type RequiredStatus = Required<BuildSecret>['status'];
 const BadgeTemplates = {

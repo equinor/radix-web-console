@@ -1,4 +1,6 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
+import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
+import clsx from 'clsx';
 import { upperFirst } from 'lodash-es';
 import {
   Fragment,
@@ -9,9 +11,6 @@ import {
   useState,
 } from 'react';
 import { Link } from 'react-router-dom';
-
-import { chevron_down, chevron_up, security } from '@equinor/eds-icons';
-import clsx from 'clsx';
 import {
   type Component,
   type Environment,

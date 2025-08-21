@@ -1,6 +1,5 @@
-import { isEventObsolete, isEventResolved, isWarningEvent } from '.';
-
 import type { Event } from '../../store/radix-api';
+import { isEventObsolete, isEventResolved, isWarningEvent } from '.';
 
 const templateObject: Readonly<Event> = Object.freeze({
   type: '',

@@ -1,6 +1,3 @@
-import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
-import { Overview } from './overview';
-
 import { Button, CircularProgress } from '@equinor/eds-core-react';
 import useLocalStorage from '../../effects/use-local-storage';
 import { routes } from '../../routes';
@@ -21,6 +18,8 @@ import { ActiveComponentSecrets } from '../component/secrets/active-component-se
 import { EnvironmentVariables } from '../environment-variables';
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ComponentReplicaList } from '../page-active-component/component-replica-list';
+import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
+import { Overview } from './overview';
 
 type Props = {
   appName: string;
@@ -32,10 +31,7 @@ export const ActiveJobComponentOverview = ({
   envName,
   jobComponentName,
 }: Props) => {
-  const {
-    data: environment,
-    ...envState
-  } = useGetEnvironmentQuery(
+  const { data: environment, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
   );

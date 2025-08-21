@@ -1,7 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
-import { useEffect, useState } from 'react';
-
 import { addMinutes } from 'date-fns';
+import { useEffect, useState } from 'react';
 import { pollingInterval } from '../../store/defaults';
 import {
   type ModelsContainer,

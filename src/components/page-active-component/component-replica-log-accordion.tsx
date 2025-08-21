@@ -8,23 +8,22 @@ import {
 } from '@equinor/eds-core-react';
 import { chevron_down, chevron_up, download, invert } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
-import { Fragment, useCallback, useMemo, useState } from 'react';
-
 import { addMinutes } from 'date-fns';
+import { Fragment, useCallback, useMemo, useState } from 'react';
 import { pollingInterval } from '../../store/defaults';
 import {
+  logApi,
   type ModelsContainer,
   type ModelsReplica,
-  logApi,
   useGetComponentInventoryQuery,
 } from '../../store/log-api';
 import {
-  type SortDirection,
   dataSorter,
+  type SortDirection,
   sortCompareDate,
 } from '../../utils/sort-utils';
 import { smallGithubCommitHash, smallReplicaName } from '../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
 import AsyncResource from '../async-resource/async-resource';
 import { downloadLog } from '../code/log-helper';
 import { Duration } from '../time/duration';

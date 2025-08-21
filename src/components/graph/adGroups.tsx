@@ -2,10 +2,10 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { computer, group, person } from '@equinor/eds-icons';
 import {
   type CSSObjectWithLabel,
+  components,
   type MultiValue,
   type MultiValueGenericProps,
   type OptionsOrGroups,
-  components,
 } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { useDebounce } from '../../effects/use-debounce';

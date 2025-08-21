@@ -1,21 +1,19 @@
 import { Icon, Table, Typography } from '@equinor/eds-core-react';
 import { send } from '@equinor/eds-icons';
 import { type FunctionComponent, useEffect, useState } from 'react';
-
-import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
-
 import { pollingInterval } from '../../store/defaults';
 import {
   type DeploymentSummary,
   useGetApplicationQuery,
 } from '../../store/radix-api';
 import {
-  type SortDirection,
   dataSorter,
+  type SortDirection,
   sortCompareDate,
   sortCompareString,
 } from '../../utils/sort-utils';
-import { TableSortIcon, getNewSortDir } from '../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
+import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
 
 import './style.css';
 

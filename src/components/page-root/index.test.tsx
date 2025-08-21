@@ -1,10 +1,8 @@
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
-
-import { PageRouter } from '.';
-
 import { router } from '../../router';
 import store from '../../store/store';
+import { PageRouter } from '.';
 
 it('renders without crashing', () => {
   render(

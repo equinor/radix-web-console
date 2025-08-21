@@ -1,15 +1,15 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import {
-  type IconData,
   build_wrench,
   github,
+  type IconData,
   lightbulb,
   pressure,
   radio_button_unselected,
   record,
 } from '@equinor/eds-icons';
-import React from 'react';
 import type { FunctionComponent } from 'react';
+import React from 'react';
 import type { Step } from '../../store/radix-api';
 import { PipelineStep } from '../../utils/pipeline';
 import { sortCompareDate } from '../../utils/sort-utils';
