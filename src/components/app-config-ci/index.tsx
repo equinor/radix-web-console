@@ -116,7 +116,7 @@ export function AppConfigConfigurationItem({
         loadOptions={onLoad}
         onChange={onChange}
         getOptionLabel={({ name }) => name}
-        getOptionValue={({ appId }) => String(appId)}
+        getOptionValue={({ appId }) => appId ? String(appId) : ''}
         closeMenuOnSelect={false}
         value={selectedCI}
         defaultValue={currentCI}
