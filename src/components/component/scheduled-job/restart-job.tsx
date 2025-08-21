@@ -77,7 +77,7 @@ export function RestartJob({
       }).unwrap();
       infoToast(`Job '${smallJobName}' successfully restarted.`);
       onSuccess?.();
-    } catch (e) {
+    } catch (_) {
       errorToast(`Error restarting job '${smallJobName}'`);
     } finally {
       onDone();

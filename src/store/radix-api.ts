@@ -1,4 +1,4 @@
-import { radixStoreApi as api } from './configs/index';
+import { radixStoreApi as api } from "./configs/index";
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
     showApplications: build.query<
@@ -8,8 +8,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: { sshRepo: queryArg.sshRepo },
       }),
@@ -20,11 +20,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.applicationRegistrationRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -35,8 +35,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/_search`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           apps: queryArg.apps,
@@ -52,11 +52,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/_search`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.applicationsSearchRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -67,8 +67,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -78,11 +78,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.applicationRegistrationRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -92,10 +92,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -105,11 +105,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: queryArg.applicationRegistrationPatchRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -120,8 +120,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/alerting`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -131,11 +131,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/alerting`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.updateAlertingConfig,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -145,10 +145,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/alerting/disable`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -158,10 +158,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/alerting/enable`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -172,8 +172,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/buildsecrets`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -183,11 +183,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/buildsecrets/${queryArg.secretName}`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.secretParameters,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -198,8 +198,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deploy-key-and-secret`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -210,8 +210,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deploykey-valid`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -222,8 +222,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deployments`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: { environment: queryArg.environment, latest: queryArg.latest },
       }),
@@ -232,8 +232,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deployments/${queryArg.deploymentName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -241,8 +241,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deployments/${queryArg.deploymentName}/components`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -250,8 +250,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deployments/${queryArg.deploymentName}/components/${queryArg.componentName}/replicas/${queryArg.podName}/logs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           sinceTime: queryArg.sinceTime,
@@ -268,8 +268,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -280,8 +280,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -291,10 +291,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -304,10 +304,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}`,
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -318,8 +318,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -329,11 +329,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.updateAlertingConfig,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -343,10 +343,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting/disable`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -356,10 +356,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting/enable`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -377,10 +377,10 @@ const injectedRtkApi = api.injectEndpoints({
       GetOAuthPodLogApiArg
     >({
       query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg['type']}/replicas/${queryArg.podName}/logs`,
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg["type"]}/replicas/${queryArg.podName}/logs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           sinceTime: queryArg.sinceTime,
@@ -394,11 +394,11 @@ const injectedRtkApi = api.injectEndpoints({
       RestartOAuthAuxiliaryResourceApiArg
     >({
       query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg['type']}/restart`,
-        method: 'POST',
+        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg["type"]}/restart`,
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -406,19 +406,19 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/envvars`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     changeEnvVar: build.mutation<ChangeEnvVarApiResponse, ChangeEnvVarApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/envvars`,
-        method: 'PATCH',
+        method: "PATCH",
         body: queryArg.body,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -428,11 +428,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/externaldns/${queryArg.fqdn}/tls`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.updateExternalDnsTlsRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -440,8 +440,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/replicas/${queryArg.podName}/logs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           sinceTime: queryArg.sinceTime,
@@ -457,10 +457,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/reset-scale`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -470,10 +470,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/restart`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -483,10 +483,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/scale/${queryArg.replicas}`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -497,8 +497,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/secrets/azure/keyvault/${queryArg.azureKeyVaultName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: { secretName: queryArg.secretName },
       }),
@@ -509,11 +509,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/secrets/${queryArg.secretName}`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.secretParameters,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -523,10 +523,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/start`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -536,10 +536,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -550,8 +550,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/deployments`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: { latest: queryArg.latest },
       }),
@@ -563,8 +563,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -575,8 +575,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events/components/${queryArg.componentName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -587,8 +587,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events/components/${queryArg.componentName}/replicas/${queryArg.podName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -598,10 +598,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -609,8 +609,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -620,10 +620,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -631,49 +631,49 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/${queryArg.batchName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     deleteBatch: build.mutation<DeleteBatchApiResponse, DeleteBatchApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/${queryArg.batchName}`,
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     copyBatch: build.mutation<CopyBatchApiResponse, CopyBatchApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/${queryArg.batchName}/copy`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.scheduledBatchRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     restartBatch: build.mutation<RestartBatchApiResponse, RestartBatchApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/${queryArg.batchName}/restart`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     stopBatch: build.mutation<StopBatchApiResponse, StopBatchApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/${queryArg.batchName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -684,8 +684,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/deployments`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -693,18 +693,18 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     stopAllJobs: build.mutation<StopAllJobsApiResponse, StopAllJobsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -712,29 +712,29 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     deleteJob: build.mutation<DeleteJobApiResponse, DeleteJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}`,
-        method: 'DELETE',
+        method: "DELETE",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     copyJob: build.mutation<CopyJobApiResponse, CopyJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}/copy`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.scheduledJobRequest,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -742,28 +742,28 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}/payload`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     restartJob: build.mutation<RestartJobApiResponse, RestartJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}/restart`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
     stopJob: build.mutation<StopJobApiResponse, StopJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/jobs/${queryArg.jobName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -771,8 +771,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/scheduledjobs/${queryArg.scheduledJobName}/logs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           replicaName: queryArg.replicaName,
@@ -788,10 +788,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -801,10 +801,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/reset-scale`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -814,10 +814,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/restart`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -827,10 +827,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/start`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -840,10 +840,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -854,8 +854,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/utilization`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -866,8 +866,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -878,8 +878,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -890,8 +890,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/logs/${queryArg.stepName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           sinceTime: queryArg.sinceTime,
@@ -907,8 +907,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -919,8 +919,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -931,8 +931,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -943,8 +943,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks/${queryArg.taskName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -955,8 +955,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks/${queryArg.taskName}/logs/${queryArg.stepName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
         params: {
           sinceTime: queryArg.sinceTime,
@@ -972,8 +972,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks/${queryArg.taskName}/step/${queryArg.stepName}`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -984,8 +984,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks/${queryArg.taskName}/steps`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -995,10 +995,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/rerun`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1008,10 +1008,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1026,11 +1026,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/apply-config`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.pipelineParametersApplyConfig,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1040,11 +1040,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/build`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.pipelineParametersBuild,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1054,11 +1054,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/build-deploy`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.pipelineParametersBuild,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1068,11 +1068,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/deploy`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.pipelineParametersDeploy,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1082,11 +1082,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/promote`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.pipelineParametersPromote,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1097,8 +1097,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/privateimagehubs`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1108,11 +1108,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/privateimagehubs/${queryArg.serverName}`,
-        method: 'PUT',
+        method: "PUT",
         body: queryArg.secretParameters,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1122,11 +1122,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/regenerate-deploy-key`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.regenerateDeployKeyData,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1136,11 +1136,11 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/regenerate-shared-secret`,
-        method: 'POST',
+        method: "POST",
         body: queryArg.regenerateSharedSecretData,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1150,10 +1150,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/reset-scale`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1163,10 +1163,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/restart`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1176,10 +1176,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/start`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1189,10 +1189,10 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/stop`,
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1203,8 +1203,8 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/utilization`,
         headers: {
-          'Impersonate-User': queryArg['Impersonate-User'],
-          'Impersonate-Group': queryArg['Impersonate-Group'],
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
         },
       }),
     }),
@@ -1218,17 +1218,17 @@ export type ShowApplicationsApiArg = {
   /** ssh repo to identify Radix application if exists */
   sshRepo?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RegisterApplicationApiResponse =
   /** status 200 Application registration operation details */ ApplicationRegistrationUpsertResponse;
 export type RegisterApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Request for an Application to register */
   applicationRegistrationRequest: ApplicationRegistrationRequest;
 };
@@ -1242,17 +1242,17 @@ export type GetSearchApplicationsApiArg = {
   /** true to include ActiveComponents in Environments */
   includeEnvironmentActiveComponents?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type SearchApplicationsApiResponse =
   /** status 200 Successful operation */ ApplicationSummary[];
 export type SearchApplicationsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** List of application names to search for */
   applicationsSearchRequest: ApplicationsSearchRequest;
 };
@@ -1262,9 +1262,9 @@ export type GetApplicationApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ChangeRegistrationDetailsApiResponse =
   /** status 200 Change registration operation result */ ApplicationRegistrationUpsertResponse;
@@ -1272,9 +1272,9 @@ export type ChangeRegistrationDetailsApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** request for Application to change */
   applicationRegistrationRequest: ApplicationRegistrationRequest;
 };
@@ -1283,9 +1283,9 @@ export type DeleteApplicationApiArg = {
   /** name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ModifyRegistrationDetailsApiResponse =
   /** status 200 Modifying registration operation details */ ApplicationRegistrationUpsertResponse;
@@ -1293,9 +1293,9 @@ export type ModifyRegistrationDetailsApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Request for Application to patch */
   applicationRegistrationPatchRequest: ApplicationRegistrationPatchRequest;
 };
@@ -1305,9 +1305,9 @@ export type GetApplicationAlertingConfigApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type UpdateApplicationAlertingConfigApiResponse =
   /** status 200 Successful alerts config update */ AlertingConfig;
@@ -1315,9 +1315,9 @@ export type UpdateApplicationAlertingConfigApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Alerts configuration */
   updateAlertingConfig: UpdateAlertingConfig;
 };
@@ -1327,9 +1327,9 @@ export type DisableApplicationAlertingApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type EnableApplicationAlertingApiResponse =
   /** status 200 Successful enable alerting */ AlertingConfig;
@@ -1337,9 +1337,9 @@ export type EnableApplicationAlertingApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetBuildSecretsApiResponse =
   /** status 200 Successful operation */ BuildSecret[];
@@ -1347,9 +1347,9 @@ export type GetBuildSecretsApiArg = {
   /** name of Radix application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type UpdateBuildSecretsSecretValueApiResponse = unknown;
 export type UpdateBuildSecretsSecretValueApiArg = {
@@ -1358,9 +1358,9 @@ export type UpdateBuildSecretsSecretValueApiArg = {
   /** name of secret */
   secretName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** New secret value */
   secretParameters: SecretParameters;
 };
@@ -1370,18 +1370,18 @@ export type GetDeployKeyAndSecretApiArg = {
   /** name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type IsDeployKeyValidApiResponse = unknown;
 export type IsDeployKeyValidApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetDeploymentsApiResponse =
   /** status 200 Successful operation */ DeploymentSummary[];
@@ -1393,9 +1393,9 @@ export type GetDeploymentsApiArg = {
   /** indicator to allow only listing latest */
   latest?: boolean;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetDeploymentApiResponse =
   /** status 200 Successful get deployment */ Deployment;
@@ -1405,9 +1405,9 @@ export type GetDeploymentApiArg = {
   /** name of deployment */
   deploymentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ComponentsApiResponse = /** status 200 pod log */ Component[];
 export type ComponentsApiArg = {
@@ -1416,9 +1416,9 @@ export type ComponentsApiArg = {
   /** Name of deployment */
   deploymentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type LogApiResponse = /** status 200 pod log */ string;
 export type LogApiArg = {
@@ -1439,9 +1439,9 @@ export type LogApiArg = {
   /** Get previous container log if true */
   previous?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetEnvironmentSummaryApiResponse =
   /** status 200 Successful operation */ EnvironmentSummary[];
@@ -1449,9 +1449,9 @@ export type GetEnvironmentSummaryApiArg = {
   /** name of Radix application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetEnvironmentApiResponse =
   /** status 200 Successful get environment */ Environment;
@@ -1461,9 +1461,9 @@ export type GetEnvironmentApiArg = {
   /** name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type CreateEnvironmentApiResponse = unknown;
 export type CreateEnvironmentApiArg = {
@@ -1472,9 +1472,9 @@ export type CreateEnvironmentApiArg = {
   /** name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type DeleteEnvironmentApiResponse = unknown;
 export type DeleteEnvironmentApiArg = {
@@ -1483,9 +1483,9 @@ export type DeleteEnvironmentApiArg = {
   /** name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetEnvironmentAlertingConfigApiResponse =
   /** status 200 Successful get alerts config */ AlertingConfig;
@@ -1495,9 +1495,9 @@ export type GetEnvironmentAlertingConfigApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type UpdateEnvironmentAlertingConfigApiResponse =
   /** status 200 Successful alerts config update */ AlertingConfig;
@@ -1507,9 +1507,9 @@ export type UpdateEnvironmentAlertingConfigApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Alerts configuration */
   updateAlertingConfig: UpdateAlertingConfig;
 };
@@ -1521,9 +1521,9 @@ export type DisableEnvironmentAlertingApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type EnableEnvironmentAlertingApiResponse =
   /** status 200 Successful enable alerting */ AlertingConfig;
@@ -1533,9 +1533,9 @@ export type EnableEnvironmentAlertingApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetBuildStatusApiResponse = unknown;
 export type GetBuildStatusApiArg = {
@@ -1544,7 +1544,7 @@ export type GetBuildStatusApiArg = {
   /** name of the environment */
   envName: string;
   /** Type of pipeline job to get status for. */
-  pipeline?: 'build-deploy' | 'deploy' | 'promote';
+  pipeline?: "build-deploy" | "deploy" | "promote";
 };
 export type GetOAuthPodLogApiResponse = /** status 200 pod log */ string;
 export type GetOAuthPodLogApiArg = {
@@ -1565,9 +1565,9 @@ export type GetOAuthPodLogApiArg = {
   /** Get log as a file if true */
   file?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RestartOAuthAuxiliaryResourceApiResponse = unknown;
 export type RestartOAuthAuxiliaryResourceApiArg = {
@@ -1580,9 +1580,9 @@ export type RestartOAuthAuxiliaryResourceApiArg = {
   /** Type of auxiliary resource (oauth|oauth-redis) */
   type: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type EnvVarsApiResponse =
   /** status 200 environment variables */ EnvVar[];
@@ -1594,9 +1594,9 @@ export type EnvVarsApiArg = {
   /** Name of component */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ChangeEnvVarApiResponse = unknown;
 export type ChangeEnvVarApiArg = {
@@ -1607,9 +1607,9 @@ export type ChangeEnvVarApiArg = {
   /** environment component of Radix application */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Environment variables new values and metadata */
   body: EnvVarParameter[];
 };
@@ -1624,9 +1624,9 @@ export type UpdateComponentExternalDnsTlsApiArg = {
   /** FQDN to be updated */
   fqdn: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** New TLS private key and certificate */
   updateExternalDnsTlsRequest: UpdateExternalDnsTlsRequest;
 };
@@ -1649,9 +1649,9 @@ export type ReplicaLogApiArg = {
   /** Get previous container log if true */
   previous?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ResetScaledComponentApiResponse = unknown;
 export type ResetScaledComponentApiArg = {
@@ -1662,9 +1662,9 @@ export type ResetScaledComponentApiArg = {
   /** Name of component */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RestartComponentApiResponse = unknown;
 export type RestartComponentApiArg = {
@@ -1675,9 +1675,9 @@ export type RestartComponentApiArg = {
   /** Name of component */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ScaleComponentApiResponse = unknown;
 export type ScaleComponentApiArg = {
@@ -1690,9 +1690,9 @@ export type ScaleComponentApiArg = {
   /** New desired number of replicas */
   replicas: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetAzureKeyVaultSecretVersionsApiResponse =
   /** status 200 Successful operation */ AzureKeyVaultSecretVersion[];
@@ -1708,9 +1708,9 @@ export type GetAzureKeyVaultSecretVersionsApiArg = {
   /** secret (or key, cert) name in Azure Key vault */
   secretName?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ChangeComponentSecretApiResponse = unknown;
 export type ChangeComponentSecretApiArg = {
@@ -1723,9 +1723,9 @@ export type ChangeComponentSecretApiArg = {
   /** environment component secret name to be updated */
   secretName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** New secret value */
   secretParameters: SecretParameters;
 };
@@ -1738,9 +1738,9 @@ export type StartComponentApiArg = {
   /** Name of component */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopComponentApiResponse = unknown;
 export type StopComponentApiArg = {
@@ -1751,9 +1751,9 @@ export type StopComponentApiArg = {
   /** Name of component */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetApplicationEnvironmentDeploymentsApiResponse =
   /** status 200 Successful operation */ DeploymentSummary[];
@@ -1765,9 +1765,9 @@ export type GetApplicationEnvironmentDeploymentsApiArg = {
   /** indicator to allow only listing the latest */
   latest?: boolean;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetEnvironmentEventsApiResponse =
   /** status 200 Successful get environment events */ Event[];
@@ -1777,9 +1777,9 @@ export type GetEnvironmentEventsApiArg = {
   /** name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetComponentEventsApiResponse =
   /** status 200 Successful get environment events */ Event[];
@@ -1791,9 +1791,9 @@ export type GetComponentEventsApiArg = {
   /** Name of component */
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetReplicaEventsApiResponse =
   /** status 200 Successful get environment events */ Event[];
@@ -1807,9 +1807,9 @@ export type GetReplicaEventsApiArg = {
   /** Name of pod */
   podName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopAllBatchesAndJobsForEnvironmentApiResponse = unknown;
 export type StopAllBatchesAndJobsForEnvironmentApiArg = {
@@ -1818,9 +1818,9 @@ export type StopAllBatchesAndJobsForEnvironmentApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetBatchesApiResponse =
   /** status 200 scheduled batches */ ScheduledBatchSummary[];
@@ -1832,9 +1832,9 @@ export type GetBatchesApiArg = {
   /** Name of job-component */
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopAllBatchesApiResponse = unknown;
 export type StopAllBatchesApiArg = {
@@ -1845,9 +1845,9 @@ export type StopAllBatchesApiArg = {
   /** Name of job-component */
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetBatchApiResponse =
   /** status 200 scheduled batch */ ScheduledBatchSummary;
@@ -1861,9 +1861,9 @@ export type GetBatchApiArg = {
   /** Name of batch */
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type DeleteBatchApiResponse = unknown;
 export type DeleteBatchApiArg = {
@@ -1876,9 +1876,9 @@ export type DeleteBatchApiArg = {
   /** Name of batch */
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type CopyBatchApiResponse =
   /** status 200 Success */ ScheduledBatchSummary;
@@ -1892,9 +1892,9 @@ export type CopyBatchApiArg = {
   /** Name of batch to be copied */
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Request for creating a scheduled batch */
   scheduledBatchRequest: ScheduledBatchRequest;
 };
@@ -1909,9 +1909,9 @@ export type RestartBatchApiArg = {
   /** Name of batch */
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopBatchApiResponse = unknown;
 export type StopBatchApiArg = {
@@ -1924,9 +1924,9 @@ export type StopBatchApiArg = {
   /** Name of batch */
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetJobComponentDeploymentsApiResponse =
   /** status 200 Radix deployments */ DeploymentItem[];
@@ -1938,9 +1938,9 @@ export type GetJobComponentDeploymentsApiArg = {
   /** Name of job-component */
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetJobsApiResponse =
   /** status 200 scheduled jobs */ ScheduledJobSummary[];
@@ -1952,9 +1952,9 @@ export type GetJobsApiArg = {
   /** Name of job-component */
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopAllJobsApiResponse = unknown;
 export type StopAllJobsApiArg = {
@@ -1965,9 +1965,9 @@ export type StopAllJobsApiArg = {
   /** Name of job-component */
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetJobApiResponse =
   /** status 200 scheduled job */ ScheduledJobSummary;
@@ -1981,9 +1981,9 @@ export type GetJobApiArg = {
   /** Name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type DeleteJobApiResponse = unknown;
 export type DeleteJobApiArg = {
@@ -1996,9 +1996,9 @@ export type DeleteJobApiArg = {
   /** Name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type CopyJobApiResponse = /** status 200 Success */ ScheduledJobSummary;
 export type CopyJobApiArg = {
@@ -2011,9 +2011,9 @@ export type CopyJobApiArg = {
   /** Name of job to be copied */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Request for creating a scheduled job */
   scheduledJobRequest: ScheduledJobRequest;
 };
@@ -2029,9 +2029,9 @@ export type GetJobPayloadApiArg = {
   /** Name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RestartJobApiResponse = unknown;
 export type RestartJobApiArg = {
@@ -2044,9 +2044,9 @@ export type RestartJobApiArg = {
   /** Name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopJobApiResponse = unknown;
 export type StopJobApiArg = {
@@ -2059,9 +2059,9 @@ export type StopJobApiArg = {
   /** Name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type JobLogApiResponse = /** status 200 scheduled job log */ string;
 export type JobLogApiArg = {
@@ -2082,9 +2082,9 @@ export type JobLogApiArg = {
   /** Get log as a file if true */
   file?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopAllBatchesAndJobsForJobComponentApiResponse = unknown;
 export type StopAllBatchesAndJobsForJobComponentApiArg = {
@@ -2095,9 +2095,9 @@ export type StopAllBatchesAndJobsForJobComponentApiArg = {
   /** Name of job-component */
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ResetManuallyScaledComponentsInEnvironmentApiResponse = unknown;
 export type ResetManuallyScaledComponentsInEnvironmentApiArg = {
@@ -2106,9 +2106,9 @@ export type ResetManuallyScaledComponentsInEnvironmentApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RestartEnvironmentApiResponse = unknown;
 export type RestartEnvironmentApiArg = {
@@ -2117,9 +2117,9 @@ export type RestartEnvironmentApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StartEnvironmentApiResponse = unknown;
 export type StartEnvironmentApiArg = {
@@ -2128,9 +2128,9 @@ export type StartEnvironmentApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopEnvironmentApiResponse = unknown;
 export type StopEnvironmentApiArg = {
@@ -2139,9 +2139,9 @@ export type StopEnvironmentApiArg = {
   /** Name of environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetEnvironmentResourcesUtilizationApiResponse =
   /** status 200 Successful trigger pipeline */ ReplicaResourcesUtilizationResponse;
@@ -2151,9 +2151,9 @@ export type GetEnvironmentResourcesUtilizationApiArg = {
   /** Name of the application environment */
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetApplicationJobsApiResponse =
   /** status 200 Successful operation */ JobSummary[];
@@ -2161,9 +2161,9 @@ export type GetApplicationJobsApiArg = {
   /** name of Radix application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetApplicationJobApiResponse =
   /** status 200 Successful get job */ Job;
@@ -2173,9 +2173,9 @@ export type GetApplicationJobApiArg = {
   /** name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetPipelineJobStepLogsApiResponse =
   /** status 200 Job step log */ string;
@@ -2193,9 +2193,9 @@ export type GetPipelineJobStepLogsApiArg = {
   /** Get log as a file if true */
   file?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunsApiResponse =
   /** status 200 List of PipelineRun-s */ PipelineRun[];
@@ -2205,9 +2205,9 @@ export type GetTektonPipelineRunsApiArg = {
   /** Name of pipeline job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunApiResponse =
   /** status 200 List of Pipeline Runs */ PipelineRun;
@@ -2219,9 +2219,9 @@ export type GetTektonPipelineRunApiArg = {
   /** Name of pipeline run */
   pipelineRunName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTasksApiResponse =
   /** status 200 List of Pipeline Run Tasks */ PipelineRunTask[];
@@ -2233,9 +2233,9 @@ export type GetTektonPipelineRunTasksApiArg = {
   /** Name of pipeline run */
   pipelineRunName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskApiResponse =
   /** status 200 Pipeline Run Task */ PipelineRunTask;
@@ -2249,9 +2249,9 @@ export type GetTektonPipelineRunTaskApiArg = {
   /** Name of pipeline run task */
   taskName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskStepLogsApiResponse =
   /** status 200 Task step log */ string;
@@ -2273,9 +2273,9 @@ export type GetTektonPipelineRunTaskStepLogsApiArg = {
   /** Get log as a file if true */
   file?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskStepApiResponse =
   /** status 200 List of Pipeline Run Task Steps */ Step;
@@ -2291,9 +2291,9 @@ export type GetTektonPipelineRunTaskStepApiArg = {
   /** Name of pipeline run task step */
   stepName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskStepsApiResponse =
   /** status 200 List of Pipeline Run Task Steps */ PipelineRunTaskStep[];
@@ -2307,9 +2307,9 @@ export type GetTektonPipelineRunTaskStepsApiArg = {
   /** Name of pipeline run task */
   taskName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RerunApplicationJobApiResponse = unknown;
 export type RerunApplicationJobApiArg = {
@@ -2318,9 +2318,9 @@ export type RerunApplicationJobApiArg = {
   /** name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopApplicationJobApiResponse = unknown;
 export type StopApplicationJobApiArg = {
@@ -2329,9 +2329,9 @@ export type StopApplicationJobApiArg = {
   /** name of job */
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type ListPipelinesApiResponse =
   /** status 200 Successful operation */ string[];
@@ -2345,9 +2345,9 @@ export type TriggerPipelineApplyConfigApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersApplyConfig: PipelineParametersApplyConfig;
 };
@@ -2357,9 +2357,9 @@ export type TriggerPipelineBuildApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersBuild: PipelineParametersBuild;
 };
@@ -2369,9 +2369,9 @@ export type TriggerPipelineBuildDeployApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersBuild: PipelineParametersBuild;
 };
@@ -2381,9 +2381,9 @@ export type TriggerPipelineDeployApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersDeploy: PipelineParametersDeploy;
 };
@@ -2393,9 +2393,9 @@ export type TriggerPipelinePromoteApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersPromote: PipelineParametersPromote;
 };
@@ -2405,9 +2405,9 @@ export type GetPrivateImageHubsApiArg = {
   /** name of Radix application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type UpdatePrivateImageHubsSecretValueApiResponse = unknown;
 export type UpdatePrivateImageHubsSecretValueApiArg = {
@@ -2416,9 +2416,9 @@ export type UpdatePrivateImageHubsSecretValueApiArg = {
   /** server name to update */
   serverName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** New secret value */
   secretParameters: SecretParameters;
 };
@@ -2427,9 +2427,9 @@ export type RegenerateDeployKeyApiArg = {
   /** name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Regenerate deploy key and secret data */
   regenerateDeployKeyData: RegenerateDeployKeyData;
 };
@@ -2438,9 +2438,9 @@ export type RegenerateSharedSecretApiArg = {
   /** name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
   /** Regenerate shared secret and secret data */
   regenerateSharedSecretData: RegenerateSharedSecretData;
 };
@@ -2449,36 +2449,36 @@ export type ResetManuallyScaledComponentsInApplicationApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type RestartApplicationApiResponse = unknown;
 export type RestartApplicationApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StartApplicationApiResponse = unknown;
 export type StartApplicationApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type StopApplicationApiResponse = unknown;
 export type StopApplicationApiArg = {
   /** Name of application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type GetApplicationResourcesUtilizationApiResponse =
   /** status 200 Successful trigger pipeline */ ReplicaResourcesUtilizationResponse;
@@ -2486,9 +2486,9 @@ export type GetApplicationResourcesUtilizationApiArg = {
   /** Name of the application */
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  'Impersonate-User'?: string;
+  "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  'Impersonate-Group'?: string;
+  "Impersonate-Group"?: string;
 };
 export type TlsAutomation = {
   /** Message is a human readable description of the reason for the status */
@@ -2497,7 +2497,7 @@ export type TlsAutomation = {
     Pending TLSAutomationPending  Certificate automation request pending
     Success TLSAutomationSuccess  Certificate automation request succeeded
     Failed TLSAutomationFailed  Certificate automation request failed */
-  status: 'Pending' | 'Success' | 'Failed';
+  status: "Pending" | "Success" | "Failed";
 };
 export type X509Certificate = {
   /** DNSNames defines list of Subject Alternate Names in the certificate */
@@ -2520,7 +2520,7 @@ export type Tls = {
     Pending TLSStatusPending  TLS certificate and private key not set
     Consistent TLSStatusConsistent  TLS certificate and private key is valid
     Invalid TLSStatusInvalid  TLS certificate and private key is invalid */
-  status: 'Pending' | 'Consistent' | 'Invalid';
+  status: "Pending" | "Consistent" | "Invalid";
   /** StatusMessages contains a list of messages related to Status */
   statusMessages?: string[];
   /** UseAutomation describes if TLS certificate is automatically issued using automation (ACME) */
@@ -2612,14 +2612,14 @@ export type ReplicaStatus = {
     Stopped Stopped  Stopped container
     Succeeded Succeeded  Succeeded all containers in the pod have voluntarily terminated */
   status:
-    | 'Pending'
-    | 'Failed'
-    | 'Failing'
-    | 'Running'
-    | 'Terminated'
-    | 'Starting'
-    | 'Stopped'
-    | 'Succeeded';
+    | "Pending"
+    | "Failed"
+    | "Failing"
+    | "Running"
+    | "Terminated"
+    | "Starting"
+    | "Stopped"
+    | "Succeeded";
 };
 export type Resources = {
   cpu?: string;
@@ -2662,21 +2662,21 @@ export type ReplicaSummary = {
     OAuth2 = Replica of a Radix OAuth2 component
     Undefined = Replica without defined type - to be extended */
   type?:
-    | 'ComponentReplica'
-    | 'ScheduledJobReplica'
-    | 'JobManager'
-    | 'JobManagerAux'
-    | 'OAuth2'
-    | 'OAuth2Redis'
-    | 'Undefined';
+    | "ComponentReplica"
+    | "ScheduledJobReplica"
+    | "JobManager"
+    | "JobManagerAux"
+    | "OAuth2"
+    | "OAuth2Redis"
+    | "Undefined";
 };
 export type AuxiliaryResourceDeployment = {
   /** Running replicas of the auxiliary resource's deployment */
   replicaList?: ReplicaSummary[];
   /** Status of the auxiliary resource's deployment */
-  status: 'Stopped' | 'Consistent' | 'Reconciling';
+  status: "Stopped" | "Consistent" | "Reconciling";
   /** Name of the auxiliary resource's deployment */
-  type?: 'oauth' | 'oauth-redis' | '""';
+  type?: "oauth" | "oauth-redis" | '""';
 };
 export type OAuth2AuxiliaryResource = {
   deployment: AuxiliaryResourceDeployment;
@@ -2684,7 +2684,7 @@ export type OAuth2AuxiliaryResource = {
   deployments?: AuxiliaryResourceDeployment[];
   identity?: Identity;
   /** SessionStoreType type of session store */
-  sessionStoreType?: 'cookie' | 'redis' | 'systemManaged' | '""';
+  sessionStoreType?: "cookie" | "redis" | "systemManaged" | '""';
 };
 export type Port = {
   /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */
@@ -2735,9 +2735,9 @@ export type Component = {
   /** SkipDeployment The component should not be deployed, but used existing */
   skipDeployment?: boolean;
   /** Status of the component */
-  status?: 'Stopped' | 'Consistent' | 'Reconciling' | 'Restarting' | 'Outdated';
+  status?: "Stopped" | "Consistent" | "Reconciling" | "Restarting" | "Outdated";
   /** Type of component */
-  type: 'component' | 'job';
+  type: "component" | "job";
   /** Variable names map to values. From radixconfig.yaml */
   variables?: {
     [key: string]: string;
@@ -2767,7 +2767,7 @@ export type JobSummary = {
     <empty> - either branch or tag
     
     required false */
-  gitRefType?: 'branch' | 'tag' | '""';
+  gitRefType?: "branch" | "tag" | '""';
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
@@ -2777,7 +2777,7 @@ export type JobSummary = {
   /** OverrideUseBuildCache override default or configured build cache option */
   overrideUseBuildCache?: boolean | null;
   /** Name of the pipeline */
-  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy' | 'apply-config';
+  pipeline?: "build" | "build-deploy" | "promote" | "deploy" | "apply-config";
   /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
   /** Environment name, from which the Radix deployment is promoted */
@@ -2790,14 +2790,14 @@ export type JobSummary = {
   started?: string;
   /** Status of the job */
   status?:
-    | 'Queued'
-    | 'Waiting'
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'Stopped'
-    | 'Stopping'
-    | 'StoppedNoChanges';
+    | "Queued"
+    | "Waiting"
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "Stopped"
+    | "Stopping"
+    | "StoppedNoChanges";
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api - usertoken.upn */
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
@@ -2909,7 +2909,7 @@ export type ComponentSummary = {
   /** SkipDeployment The component should not be deployed, but used existing */
   skipDeployment?: boolean;
   /** Type of component */
-  type: 'component' | 'job';
+  type: "component" | "job";
 };
 export type DeploymentSummary = {
   /** ActiveFrom Timestamp when the deployment starts (or created) */
@@ -2936,18 +2936,18 @@ export type DeploymentSummary = {
     <empty> - either branch or tag
     
     required false */
-  gitRefType?: 'branch' | 'tag' | '""';
+  gitRefType?: "branch" | "tag" | '""';
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
   name: string;
   /** Type of pipeline job */
   pipelineJobType?:
-    | 'build'
-    | 'build-deploy'
-    | 'promote'
-    | 'deploy'
-    | 'apply-config';
+    | "build"
+    | "build-deploy"
+    | "promote"
+    | "deploy"
+    | "apply-config";
   /** Name of the environment the deployment was promoted from
     Applies only for pipeline jobs of type 'promote' */
   promotedFromEnvironment?: string;
@@ -2968,7 +2968,7 @@ export type EnvironmentSummary = {
     Pending = Environment exists in Radix config, but not in cluster
     Consistent = Environment exists in Radix config and in cluster
     Orphan = Environment does not exist in Radix config, but exists in cluster */
-  status?: 'Pending' | 'Consistent' | 'Orphan';
+  status?: "Pending" | "Consistent" | "Orphan";
 };
 export type Application = {
   appAlias?: ApplicationAlias;
@@ -3083,9 +3083,9 @@ export type BuildSecret = {
   /** Status of the secret
     Pending = Secret value is not set
     Consistent = Secret value is set */
-  status?: 'Pending' | 'Consistent';
+  status?: "Pending" | "Consistent";
   /** Updated when the secret was last changed */
-  updated?: any;
+  updated?: string;
 };
 export type SecretParameters = {
   /** Name the unique name of the Radix application deployment */
@@ -3120,7 +3120,7 @@ export type Deployment = {
     <empty> - either branch or tag
     
     required false */
-  gitRefType?: 'branch' | 'tag' | '""';
+  gitRefType?: "branch" | "tag" | '""';
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
@@ -3151,7 +3151,7 @@ export type Secret = {
     Pending = Secret exists in Radix config, but not in cluster
     Consistent = Secret exists in Radix config and in cluster
     NotAvailable = Secret is available in external secret configuration but not in cluster */
-  status?: 'Pending' | 'Consistent' | 'NotAvailable';
+  status?: "Pending" | "Consistent" | "NotAvailable";
   /** Type of the secret
     generic SecretTypeGeneric
     azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
@@ -3161,13 +3161,13 @@ export type Secret = {
     client-cert-auth SecretTypeClientCertificateAuth
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
-    | 'generic'
-    | 'azure-blob-fuse-volume'
-    | 'csi-azure-blob-volume'
-    | 'csi-azure-key-vault-creds'
-    | 'csi-azure-key-vault-item'
-    | 'client-cert-auth'
-    | 'oauth2-proxy';
+    | "generic"
+    | "azure-blob-fuse-volume"
+    | "csi-azure-blob-volume"
+    | "csi-azure-key-vault-creds"
+    | "csi-azure-key-vault-item"
+    | "client-cert-auth"
+    | "oauth2-proxy";
   /** Updated timestamp of the last change */
   updated?: any;
 };
@@ -3185,7 +3185,7 @@ export type Environment = {
     Pending = Environment exists in Radix config, but not in cluster
     Consistent = Environment exists in Radix config and in cluster
     Orphan = Environment does not exist in Radix config, but exists in cluster */
-  status?: 'Pending' | 'Consistent' | 'Orphan';
+  status?: "Pending" | "Consistent" | "Orphan";
 };
 export type EnvVarMetadata = {
   /** Value of the environment variable in radixconfig.yaml */
@@ -3317,14 +3317,14 @@ export type ScheduledJobSummary = {
     Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
     Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
   status:
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'Waiting'
-    | 'Stopping'
-    | 'Stopped'
-    | 'Active'
-    | 'Completed';
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "Waiting"
+    | "Stopping"
+    | "Stopped"
+    | "Active"
+    | "Completed";
   /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
   /** Variable names map to values specified for this job. */
@@ -3357,14 +3357,14 @@ export type ScheduledBatchSummary = {
     Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
     Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
   status:
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'Waiting'
-    | 'Stopping'
-    | 'Stopped'
-    | 'Active'
-    | 'Completed';
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "Waiting"
+    | "Stopping"
+    | "Stopped"
+    | "Active"
+    | "Completed";
   /** TotalJobCount count of jobs, requested to be scheduled by a batch */
   totalJobCount: number;
 };
@@ -3424,26 +3424,26 @@ export type SubPipelineTaskStep = {
   pipelineRunName: string;
   /** Status of the step */
   status?:
-    | 'Starting'
-    | 'Started'
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'Waiting'
-    | 'ToBeRetried'
-    | 'TaskRunCancelled'
-    | 'TaskRunTimeout'
-    | 'ResolvingTaskRef'
-    | 'ResolvingStepActionRef'
-    | 'TaskRunImagePullFailed'
-    | 'TaskRunResultLargerThanAllowedLimit'
-    | 'TaskRunStopSidecarFailed'
-    | 'InvalidParamValue'
-    | 'TaskRunResolutionFailed'
-    | 'TaskRunValidationFailedTaskValidationFailed'
-    | 'ResourceVerificationFailed'
-    | 'FailureIgnored'
-    | 'Error';
+    | "Starting"
+    | "Started"
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "Waiting"
+    | "ToBeRetried"
+    | "TaskRunCancelled"
+    | "TaskRunTimeout"
+    | "ResolvingTaskRef"
+    | "ResolvingStepActionRef"
+    | "TaskRunImagePullFailed"
+    | "TaskRunResultLargerThanAllowedLimit"
+    | "TaskRunStopSidecarFailed"
+    | "InvalidParamValue"
+    | "TaskRunResolutionFailed"
+    | "TaskRunValidationFailedTaskValidationFailed"
+    | "ResourceVerificationFailed"
+    | "FailureIgnored"
+    | "Error";
   /** TaskName of the task */
   taskName: string;
 };
@@ -3458,13 +3458,13 @@ export type Step = {
   started?: string;
   /** Status of the step */
   status?:
-    | 'Queued'
-    | 'Waiting'
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'Stopped'
-    | 'StoppedNoChanges';
+    | "Queued"
+    | "Waiting"
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "Stopped"
+    | "StoppedNoChanges";
   subPipelineTaskStep?: SubPipelineTaskStep;
 };
 export type Job = {
@@ -3494,7 +3494,7 @@ export type Job = {
     <empty> - either branch or tag
     
     required false */
-  gitRefType?: 'branch' | 'tag' | '""';
+  gitRefType?: "branch" | "tag" | '""';
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
@@ -3504,7 +3504,7 @@ export type Job = {
   /** OverrideUseBuildCache override default or configured build cache option */
   overrideUseBuildCache?: boolean | null;
   /** Name of the pipeline */
-  pipeline?: 'build' | 'build-deploy' | 'promote' | 'deploy' | 'apply-config';
+  pipeline?: "build" | "build-deploy" | "promote" | "deploy" | "apply-config";
   /** RadixDeployment name, which is promoted */
   promotedFromDeployment?: string;
   /** PromotedFromEnvironment the name of the environment that was promoted from */
@@ -3519,14 +3519,14 @@ export type Job = {
   started?: string;
   /** Status of the job */
   status?:
-    | 'Queued'
-    | 'Waiting'
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'Stopped'
-    | 'Stopping'
-    | 'StoppedNoChanges';
+    | "Queued"
+    | "Waiting"
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "Stopped"
+    | "Stopping"
+    | "StoppedNoChanges";
   /** Array of steps */
   steps?: Step[];
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api = usertoken.upn */
@@ -3567,22 +3567,22 @@ export type PipelineRun = {
     ResourceVerificationFailed TaskRunReasonResourceVerificationFailed  TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
     FailureIgnored TaskRunReasonFailureIgnored  TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
   status?:
-    | 'Started'
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'ToBeRetried'
-    | 'TaskRunCancelled'
-    | 'TaskRunTimeout'
-    | 'TaskRunImagePullFailed'
-    | 'TaskRunResultLargerThanAllowedLimit'
-    | 'TaskRunStopSidecarFailed'
-    | 'InvalidParamValue'
-    | 'TaskRunResolutionFailed'
-    | 'TaskRunValidationFailed'
-    | 'TaskValidationFailed'
-    | 'ResourceVerificationFailed'
-    | 'FailureIgnored';
+    | "Started"
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "ToBeRetried"
+    | "TaskRunCancelled"
+    | "TaskRunTimeout"
+    | "TaskRunImagePullFailed"
+    | "TaskRunResultLargerThanAllowedLimit"
+    | "TaskRunStopSidecarFailed"
+    | "InvalidParamValue"
+    | "TaskRunResolutionFailed"
+    | "TaskRunValidationFailed"
+    | "TaskValidationFailed"
+    | "ResourceVerificationFailed"
+    | "FailureIgnored";
   /** StatusMessage of the task */
   statusMessage?: string;
 };
@@ -3634,39 +3634,39 @@ export type PipelineRunTask = {
     CELEvaluationFailed PipelineRunReasonCELEvaluationFailed  ReasonCELEvaluationFailed indicates the pipeline fails the CEL evaluation
     InvalidParamValue PipelineRunReasonInvalidParamValue  PipelineRunReasonInvalidParamValue indicates that the PipelineRun Param input value is not allowed. */
   status?:
-    | 'Started'
-    | 'Running'
-    | 'Succeeded'
-    | 'Completed'
-    | 'Failed'
-    | 'Cancelled'
-    | 'PipelineRunPending'
-    | 'PipelineRunTimeout'
-    | 'PipelineRunStopping'
-    | 'CancelledRunningFinally'
-    | 'StoppedRunningFinally'
-    | 'CouldntGetPipeline'
-    | 'InvalidPipelineResourceBindings'
-    | 'InvalidWorkspaceBindings'
-    | 'InvalidTaskRunSpecs'
-    | 'ParameterTypeMismatch'
-    | 'ObjectParameterMissKeys'
-    | 'ParamArrayIndexingInvalid'
-    | 'CouldntGetTask'
-    | 'ParameterMissing'
-    | 'PipelineValidationFailed'
-    | 'CouldntGetPipelineResult'
-    | 'PipelineInvalidGraph'
-    | 'PipelineRunCouldntCancel'
-    | 'PipelineRunCouldntTimeOut'
-    | 'InvalidMatrixParameterTypes'
-    | 'InvalidTaskResultReference'
-    | 'RequiredWorkspaceMarkedOptional'
-    | 'ResolvingPipelineRef'
-    | 'ResourceVerificationFailed'
-    | 'CreateRunFailed'
-    | 'CELEvaluationFailed'
-    | 'InvalidParamValue';
+    | "Started"
+    | "Running"
+    | "Succeeded"
+    | "Completed"
+    | "Failed"
+    | "Cancelled"
+    | "PipelineRunPending"
+    | "PipelineRunTimeout"
+    | "PipelineRunStopping"
+    | "CancelledRunningFinally"
+    | "StoppedRunningFinally"
+    | "CouldntGetPipeline"
+    | "InvalidPipelineResourceBindings"
+    | "InvalidWorkspaceBindings"
+    | "InvalidTaskRunSpecs"
+    | "ParameterTypeMismatch"
+    | "ObjectParameterMissKeys"
+    | "ParamArrayIndexingInvalid"
+    | "CouldntGetTask"
+    | "ParameterMissing"
+    | "PipelineValidationFailed"
+    | "CouldntGetPipelineResult"
+    | "PipelineInvalidGraph"
+    | "PipelineRunCouldntCancel"
+    | "PipelineRunCouldntTimeOut"
+    | "InvalidMatrixParameterTypes"
+    | "InvalidTaskResultReference"
+    | "RequiredWorkspaceMarkedOptional"
+    | "ResolvingPipelineRef"
+    | "ResourceVerificationFailed"
+    | "CreateRunFailed"
+    | "CELEvaluationFailed"
+    | "InvalidParamValue";
   /** StatusMessage of the task */
   statusMessage?: string;
 };
@@ -3695,22 +3695,22 @@ export type PipelineRunTaskStep = {
     ResourceVerificationFailed TaskRunReasonResourceVerificationFailed  TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
     FailureIgnored TaskRunReasonFailureIgnored  TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
   status?:
-    | 'Started'
-    | 'Running'
-    | 'Succeeded'
-    | 'Failed'
-    | 'ToBeRetried'
-    | 'TaskRunCancelled'
-    | 'TaskRunTimeout'
-    | 'TaskRunImagePullFailed'
-    | 'TaskRunResultLargerThanAllowedLimit'
-    | 'TaskRunStopSidecarFailed'
-    | 'InvalidParamValue'
-    | 'TaskRunResolutionFailed'
-    | 'TaskRunValidationFailed'
-    | 'TaskValidationFailed'
-    | 'ResourceVerificationFailed'
-    | 'FailureIgnored';
+    | "Started"
+    | "Running"
+    | "Succeeded"
+    | "Failed"
+    | "ToBeRetried"
+    | "TaskRunCancelled"
+    | "TaskRunTimeout"
+    | "TaskRunImagePullFailed"
+    | "TaskRunResultLargerThanAllowedLimit"
+    | "TaskRunStopSidecarFailed"
+    | "InvalidParamValue"
+    | "TaskRunResolutionFailed"
+    | "TaskRunValidationFailed"
+    | "TaskValidationFailed"
+    | "ResourceVerificationFailed"
+    | "FailureIgnored";
   /** StatusMessage of the task */
   statusMessage?: string;
 };
@@ -3739,7 +3739,7 @@ export type PipelineParametersBuild = {
     <empty> - either branch or tag
     
     required false */
-  gitRefType?: 'branch' | 'tag' | '""';
+  gitRefType?: "branch" | "tag" | '""';
   /** ImageName of the component, without repository name and image-tag */
   imageName?: string;
   /** ImageRepository of the component, without image name and image-tag */
@@ -3795,9 +3795,9 @@ export type ImageHubSecret = {
   /** Status of the secret
     Pending = Secret value is not set
     Consistent = Secret value is set */
-  status?: 'Pending' | 'Consistent';
+  status?: "Pending" | "Consistent";
   /** Updated when the secret was last changed */
-  updated?: any;
+  updated?: string;
   /** Username for connecting to private image hub */
   username: string;
 };

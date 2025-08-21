@@ -34,7 +34,6 @@ export const ActiveJobComponentOverview = ({
 }: Props) => {
   const {
     data: environment,
-    refetch,
     ...envState
   } = useGetEnvironmentQuery(
     { appName, envName },

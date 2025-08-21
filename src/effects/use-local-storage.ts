@@ -14,7 +14,7 @@ export default function useLocalStorage<T>(
         return testContent?.(data) === false ? defaultValue : data;
       }
       return defaultValue; // Fallback to the default value if no data in localStorage
-    } catch (error) {
+    } catch (_) {
       return defaultValue; // Fallback to the default value if JSON.parse fails
     }
   }

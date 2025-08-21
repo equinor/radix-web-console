@@ -80,7 +80,7 @@ class IntegrationComponent extends Component<
         return await import(/* @vite-ignore */ path).then(
           (module: IntegrationType) => module
         );
-      } catch (err) {
+      } catch (_) {
         /* empty */
       }
     }

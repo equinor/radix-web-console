@@ -46,7 +46,7 @@ class DevComponent extends Component<
         return await import(/* @vite-ignore */ path).then(
           (module: DefaultModuleImport) => module
         );
-      } catch (err) {
+      } catch (_) {
         /* empty */
       }
     }
