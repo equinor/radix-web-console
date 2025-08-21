@@ -1,16 +1,14 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react';
 import { check_circle_outlined, info_circle, stop } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';
-
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
-
 import type {
   AuxiliaryResourceDeployment,
   Component,
 } from '../../store/radix-api';
+import {
+  StatusBadgeTemplate,
+  type StatusBadgeTemplateProps,
+} from './status-badge-template';
 
 type ComponentStatus = Required<
   AuxiliaryResourceDeployment | Component

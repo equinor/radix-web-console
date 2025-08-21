@@ -1,6 +1,6 @@
 import { Divider } from '@equinor/eds-core-react';
-import { EnvironmentsSummary } from '.';
 import type { EnvironmentSummary } from '../../store/radix-api';
+import { EnvironmentsSummary } from '.';
 import {
   EnvironmentCardLayout,
   type EnvironmentCardLayoutProps,

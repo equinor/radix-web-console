@@ -8,8 +8,8 @@ import {
 
 import type { Secret } from '../../../store/radix-api';
 import {
-  type SortDirection,
   dataSorter,
+  type SortDirection,
   sortCompareString,
 } from '../../../utils/sort-utils';
 import { ScrimPopup } from '../../scrim-popup';

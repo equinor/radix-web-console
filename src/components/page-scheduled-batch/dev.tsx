@@ -1,8 +1,6 @@
 import { Response, Server } from 'miragejs';
-
-import { PageScheduledBatch } from './index';
-
 import type { ScheduledBatchSummary } from '../../store/radix-api';
+import { PageScheduledBatch } from './index';
 
 const testData: Array<
   Parameters<typeof PageScheduledBatch>[0] & {

@@ -1,10 +1,9 @@
-import { DeploymentOverview } from './deployment-overview';
-
 import { Server } from 'miragejs';
 import type {
   Deployment,
   GetDeploymentApiResponse,
 } from '../../store/radix-api';
+import { DeploymentOverview } from './deployment-overview';
 
 const testData: Array<
   Parameters<typeof DeploymentOverview>[0] & { deployment: Deployment }

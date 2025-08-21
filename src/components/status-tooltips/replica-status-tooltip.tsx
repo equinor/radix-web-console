@@ -6,13 +6,11 @@ import {
   stop,
   time,
 } from '@equinor/eds-icons';
-
+import type { ReplicaStatus } from '../../store/radix-api';
 import {
   StatusTooltipTemplate,
   type StatusTooltipTemplateProps,
 } from './status-tooltip-template';
-
-import type { ReplicaStatus } from '../../store/radix-api';
 
 const TooltipTemplates = {
   Pending: { title: 'Pending', icon: <Icon data={time} /> },

@@ -1,8 +1,7 @@
 import { Typography } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
 import { radixApi } from '../../store/radix-api';
 import { withRouteParams } from '../../utils/router';

@@ -8,16 +8,14 @@ import {
   traffic_light,
 } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';
-
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
-
 import type {
   ScheduledBatchSummary,
   ScheduledJobSummary,
 } from '../../store/radix-api';
+import {
+  StatusBadgeTemplate,
+  type StatusBadgeTemplateProps,
+} from './status-badge-template';
 
 type JobSchedulerProgressStatus =
   | ScheduledBatchSummary['status']

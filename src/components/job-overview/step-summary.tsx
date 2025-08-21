@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { routes } from '../../routes';
 import type { Step } from '../../store/radix-api';
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
-import { PipelineStep, getPipelineStepDescription } from '../../utils/pipeline';
+import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline';
 import { routeWithParams } from '../../utils/string';
 import { RadixJobConditionBadge } from '../status-badges';
 import { RelativeToNow } from '../time/relative-to-now';

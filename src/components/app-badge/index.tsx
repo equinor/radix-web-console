@@ -1,4 +1,4 @@
-import { type JdenticonConfig, configure, toSvg } from 'jdenticon';
+import { configure, type JdenticonConfig, toSvg } from 'jdenticon';
 import './style.css';
 
 type AppBadgeProps = {

@@ -1,5 +1,5 @@
-import { debounce } from 'lodash-es';
 import type { DebouncedFunc } from 'lodash-es';
+import { debounce } from 'lodash-es';
 import { useEffect, useMemo, useRef } from 'react';
 
 // Picked up from https://www.developerway.com/posts/debouncing-in-react

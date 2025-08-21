@@ -2,10 +2,10 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { computer, group, person } from '@equinor/eds-icons';
 import {
   type CSSObjectWithLabel,
+  components,
   type MultiValue,
   type MultiValueGenericProps,
   type OptionsOrGroups,
-  components,
 } from 'react-select';
 import AsyncSelect from 'react-select/async';
 import { useDebounce } from '../../effects/use-debounce';
@@ -18,6 +18,7 @@ import {
 } from '../../store/ms-graph-api';
 import AsyncResource from '../async-resource/async-resource';
 import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
+import { warningToast } from '../global-top-nav/styled-toaster';
 
 export type HandleAdGroupsChangeCB = (value: MultiValue<AdGroupItem>) => void;
 export type AdGroupItem = EntraItem & {
@@ -87,24 +88,30 @@ export function ADGroups({
       Promise.all([
         searchGroups({ displayName, limit: 10 }).unwrap(),
         searchServicePrincipals({ displayName, limit: 10 }).unwrap(),
-      ]).then(([groups, servicePrincipals]) => {
-        callback([
-          {
-            label: 'Groups',
-            options: groups.value.map<AdGroupItem>((item) => ({
-              ...item,
-              type: 'Group',
-            })),
-          },
-          {
-            label: 'Service Principals',
-            options: servicePrincipals.value.map<AdGroupItem>((item) => ({
-              ...item,
-              type: 'ServicePrincipal',
-            })),
-          },
-        ]);
-      });
+      ])
+        .then(([groups, servicePrincipals]) => {
+          callback([
+            {
+              label: 'Groups',
+              options: groups.value.map<AdGroupItem>((item) => ({
+                ...item,
+                type: 'Group',
+              })),
+            },
+            {
+              label: 'Service Principals',
+              options: servicePrincipals.value.map<AdGroupItem>((item) => ({
+                ...item,
+                type: 'ServicePrincipal',
+              })),
+            },
+          ]);
+        })
+        .catch((err) => {
+          console.warn(err);
+          warningToast('Error fetching AD groups');
+          callback([]);
+        });
     },
     500
   );

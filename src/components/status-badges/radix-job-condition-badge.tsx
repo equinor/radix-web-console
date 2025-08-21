@@ -6,18 +6,16 @@ import {
   time,
   traffic_light,
 } from '@equinor/eds-icons';
-
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
-
 import type {
   JobSummary,
   ScheduledBatchSummary,
   ScheduledJobSummary,
   Step,
 } from '../../store/radix-api';
+import {
+  StatusBadgeTemplate,
+  type StatusBadgeTemplateProps,
+} from './status-badge-template';
 
 type JobSummaryStatus =
   | Required<Step>['status']

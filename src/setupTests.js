@@ -1,5 +1,5 @@
 import { randomBytes } from 'node:crypto';
-import { Request, Response, fetch } from '@remix-run/web-fetch';
+import { fetch, Request, Response } from '@remix-run/web-fetch';
 
 Object.defineProperties(global, {
   // Built-in lib.dom.d.ts expects `fetch(Request | string, ...)` but the web

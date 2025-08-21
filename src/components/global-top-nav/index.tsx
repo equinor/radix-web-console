@@ -9,18 +9,16 @@ import { close, info_circle, menu } from '@equinor/eds-icons';
 import { clsx } from 'clsx';
 import {
   type FunctionComponent,
-  type PropsWithChildren,
   forwardRef,
+  type PropsWithChildren,
   useState,
 } from 'react';
-
-import { StyledToastContainer } from './styled-toaster';
-
 import { clusterBases } from '../../clusterBases';
 import { externalUrls } from '../../externalUrls';
 import { routes } from '../../routes';
 import { configVariables } from '../../utils/config';
 import { HomeLogo } from '../home-logo';
+import { StyledToastContainer } from './styled-toaster';
 
 import './style.css';
 import { Link } from 'react-router-dom';

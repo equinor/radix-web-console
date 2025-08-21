@@ -1,18 +1,16 @@
 import { Button, Icon } from '@equinor/eds-core-react';
 import { add } from '@equinor/eds-icons';
 import { Link } from 'react-router-dom';
-import { withRouteParams } from '../../utils/router';
-
-import ApplicationAlerting from './application-alerting';
-
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import { useGetApplicationJobsQuery } from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
 import { routeWithParams } from '../../utils/string';
 import AsyncResource from '../async-resource/async-resource';
 import { Breadcrumb } from '../breadcrumb';
 import { DocumentTitle } from '../document-title';
 import { JobsList } from '../jobs-list';
+import ApplicationAlerting from './application-alerting';
 
 import './style.css';
 

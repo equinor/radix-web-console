@@ -2,12 +2,10 @@ import { QueryStatus } from '@reduxjs/toolkit/query';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
-
-import AppList from '.';
-
 import * as radixApi from '../../store/radix-api';
 import store from '../../store/store';
 import type { FetchQueryHookResult } from '../../store/types';
+import AppList from '.';
 
 const noop = () => void 0;
 

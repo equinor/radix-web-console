@@ -1,9 +1,6 @@
 import { Divider } from '@equinor/eds-core-react';
 import { useState } from 'react';
-import type {
-  ApplicationRegistration,
-  DeployKeyAndSecret,
-} from '../../store/radix-api';
+import type { DeployKeyAndSecret } from '../../store/radix-api';
 import { CreateApplicationScrim } from './create-application-scrim';
 
 export default (
@@ -27,10 +24,7 @@ function TestComponent() {
     <CreateApplicationScrim
       secrets={secrets}
       onRefreshApps={() => console.log('Refresh apps...')}
-      onCreateApplication={async (
-        data: ApplicationRegistration,
-        ackWarnings
-      ) => {
+      onCreateApplication={async (_, ackWarnings) => {
         if (!ackWarnings)
           return [
             'This is a warning, you should acknowledge it before continuing',

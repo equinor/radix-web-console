@@ -1,11 +1,4 @@
-import { Navigate, createBrowserRouter } from 'react-router-dom';
-
-import { routes } from './routes';
-
-/** Page Layouts */
-import * as PageLayoutApplication from './pages/page-application';
-import * as PageLayoutRoot from './pages/page-root';
-
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import * as PageApplication from './components/app-overview';
 /** Pages */
 import * as PageAbout from './components/page-about';
@@ -28,7 +21,11 @@ import * as PageScheduledBatch from './components/page-scheduled-batch';
 import * as PageScheduledJob from './components/page-scheduled-job';
 import * as PageStep from './components/page-step';
 import * as PipelineRunTaskStep from './components/pipeline-run-task-step';
+/** Page Layouts */
+import * as PageLayoutApplication from './pages/page-application';
+import * as PageLayoutRoot from './pages/page-root';
 import SessionExpired from './pages/session-expired';
+import { routes } from './routes';
 
 /**
  * Radix Web Console page router

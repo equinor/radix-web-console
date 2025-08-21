@@ -44,6 +44,8 @@ export function CreateApplicationForm({
     setError(undefined);
     setWarnings([]);
     try {
+      ev.preventDefault();
+
       const data = new FormData(ev.currentTarget);
       const applicationRegistration: Partial<ApplicationRegistration> = {
         name: sanitizeName(data.get('name')?.toString() ?? ''),

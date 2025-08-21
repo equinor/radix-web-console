@@ -1,7 +1,6 @@
-import EnvironmentOverview from './environment-overview';
-
 import { withRouteParams } from '../../utils/router';
 import { DocumentTitle } from '../document-title';
+import EnvironmentOverview from './environment-overview';
 
 type Props = {
   appName: string;
