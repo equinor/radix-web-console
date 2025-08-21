@@ -25,4 +25,8 @@ async function fetchRoot(): Promise<React.JSX.Element> {
 
 // @ts-expect-error root element exists
 const root = createRoot(document.getElementById('root'));
-(async () => root.render(await fetchRoot()))();
+fetchRoot()
+  .then((el) => root.render(el))
+  .catch((error) => {
+    console.error('Error rendering root:', error);
+  });

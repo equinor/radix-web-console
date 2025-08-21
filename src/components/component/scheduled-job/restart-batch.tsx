@@ -59,8 +59,9 @@ export function RestartBatch({
 
       infoToast(`Batch '${smallBatchName}' successfully copied.`);
       onSuccess?.();
-    } catch (_) {
+    } catch (e) {
       errorToast(`Error copying batch '${smallBatchName}'`);
+      console.warn(e);
     } finally {
       onDone?.();
     }
