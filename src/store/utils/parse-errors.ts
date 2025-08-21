@@ -137,10 +137,9 @@ function IsMSALError(e: unknown): e is MSAALError {
   return false;
 }
 
-function IsRTKQueryError(e: object): e is FetchBaseQueryError {
-  if (!isFetchBaseQueryError(e)) return false;
-
+function IsRTKQueryError(e: unknown): e is FetchBaseQueryError {
   return (
+    isFetchBaseQueryError(e) ||
     IsFetchError(e) ||
     IsParsingError(e) ||
     IsTimeoutError(e) ||
@@ -152,7 +151,9 @@ type BaseQueryError = FetchBaseQueryError & {
   status: number;
   data: unknown;
 };
-function isFetchBaseQueryError(e: object): e is BaseQueryError {
+function isFetchBaseQueryError(e: unknown): e is BaseQueryError {
+  if (!e || typeof e !== 'object') return false;
+
   return 'status' in e && typeof e.status === 'number';
 }
 
@@ -162,17 +163,17 @@ type FetchError = FetchBaseQueryError & {
   data: string;
   error: string;
 };
-function IsFetchError(e: FetchBaseQueryError): e is FetchError {
+function IsFetchError(e: unknown): e is FetchError {
+  if (!e || typeof e !== 'object') return false;
   if (!('status' in e)) return false;
 
   if (!('originalStatus' in e) || typeof e.originalStatus !== 'number')
     return false;
 
-  if (typeof e.data !== 'string') return false;
+  if (!('data' in e) || typeof e.data !== 'string') return false;
 
-  if (typeof e.error !== 'string') return false;
+  if (!('error' in e) || typeof e.error !== 'string') return false;
 
-  // @ts-expect-error I want to check it anyway :)
   return e.status === 'FETCH_ERROR';
 }
 
@@ -182,15 +183,16 @@ type ParsingError = FetchBaseQueryError & {
   data: string;
   error: string;
 };
-function IsParsingError(e: FetchBaseQueryError): e is ParsingError {
+function IsParsingError(e: unknown): e is ParsingError {
+  if (!e || typeof e !== 'object') return false;
   if (!('status' in e)) return false;
 
   if (!('originalStatus' in e) || typeof e.originalStatus !== 'number')
     return false;
 
-  if (typeof e.data !== 'string') return false;
+  if (!('data' in e) || typeof e.data !== 'string') return false;
 
-  if (typeof e.error !== 'string') return false;
+  if (!('error' in e) || typeof e.error !== 'string') return false;
 
   return e.status === 'PARSING_ERROR';
 }
@@ -201,17 +203,17 @@ type TimeoutError = FetchBaseQueryError & {
   data: string;
   error: string;
 };
-function IsTimeoutError(e: FetchBaseQueryError): e is TimeoutError {
+function IsTimeoutError(e: unknown): e is TimeoutError {
+  if (!e || typeof e !== 'object') return false;
   if (!('status' in e)) return false;
 
   if (!('originalStatus' in e) || typeof e.originalStatus !== 'number')
     return false;
 
-  if (typeof e.data !== 'string') return false;
+  if (!('data' in e) || typeof e.data !== 'string') return false;
 
-  if (typeof e.error !== 'string') return false;
+  if (!('error' in e) || typeof e.error !== 'string') return false;
 
-  // @ts-expect-error I want to check it anyway :)
   return e.status === 'TIMEOUT_ERROR';
 }
 
@@ -221,7 +223,9 @@ type CustomError = FetchBaseQueryError & {
   data: string;
   error: string;
 };
-function IsCustomError(e: FetchBaseQueryError): e is CustomError {
+function IsCustomError(e: unknown): e is CustomError {
+  if (!e || typeof e !== 'object') return false;
+
   if (!('status' in e)) return false;
 
   if (!('error' in e) || typeof e.error !== 'string') return false;
