@@ -22,12 +22,6 @@ import {
   useState,
 } from 'react';
 import { Link } from 'react-router-dom';
-
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './payload';
-import { RestartJob } from './restart-job';
-
 import {
   type ReplicaSummary,
   type ScheduledJobSummary,
@@ -40,8 +34,8 @@ import {
   getScheduledJobUrl,
 } from '../../../utils/routing';
 import {
-  type SortDirection,
   dataSorter,
+  type SortDirection,
   sortCompareDate,
   sortCompareString,
 } from '../../../utils/sort-utils';
@@ -50,12 +44,16 @@ import {
   smallDeploymentName,
   smallScheduledJobName,
 } from '../../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils';
 import { ReplicaImage } from '../../replica-image';
 import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
+import { Payload } from './payload';
+import { RestartJob } from './restart-job';
 
 import '../style.css';
 import { routes } from '../../../routes';

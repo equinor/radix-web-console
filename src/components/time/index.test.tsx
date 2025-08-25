@@ -4,6 +4,7 @@ import { expect } from 'vitest';
 import { Duration } from './duration';
 import { DurationToNow } from './duration-to-now';
 import { RelativeToNow } from './relative-to-now';
+
 vi.setSystemTime(new Date('Tue May 29 12:47:20 2018 +0200'));
 
 const Times = [

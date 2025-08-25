@@ -1,10 +1,10 @@
 import { Button, Icon, Tooltip, Typography } from '@equinor/eds-core-react';
 import {
-  type IconData,
   desktop_mac,
   engineering,
   external_link,
   first_page,
+  type IconData,
   last_page,
   send,
   settings,

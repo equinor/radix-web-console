@@ -11,7 +11,7 @@
 }
 
 .o-inline-list--spacing > li {
-  margin-right: .5em;
+  margin-right: 0.5em;
 }
 
 .o-inline-list--spacing > li:last-child {

@@ -1,11 +1,6 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react';
 import { github, trending_up } from '@equinor/eds-icons';
 import { Link } from 'react-router-dom';
-
-import { ComponentList } from './component-list';
-import EnvironmentAlerting from './environment-alerting';
-import EnvironmentToolbar from './environment-toolbar';
-
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
 import {
@@ -33,6 +28,9 @@ import { DeploymentsList } from '../deployments-list';
 import { EventsList } from '../events-list';
 import { GitTagLinks } from '../git-tags/git-tag-links';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ComponentList } from './component-list';
+import EnvironmentAlerting from './environment-alerting';
+import EnvironmentToolbar from './environment-toolbar';
 
 import './style.css';
 import useLocalStorage from '../../effects/use-local-storage';

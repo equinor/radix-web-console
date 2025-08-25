@@ -1,10 +1,8 @@
 import { Divider } from '@equinor/eds-core-react';
 import { Response, Server } from 'miragejs';
 import { Fragment } from 'react';
-
-import { JobOverview } from '.';
-
 import type { Job } from '../../store/radix-api';
+import { JobOverview } from '.';
 
 const testData: Array<Job> = [
   {

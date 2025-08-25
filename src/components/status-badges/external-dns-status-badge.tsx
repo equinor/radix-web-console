@@ -1,12 +1,10 @@
 import { Icon } from '@equinor/eds-core-react';
 import { check, error_outlined, time } from '@equinor/eds-icons';
-
+import type { Tls } from '../../store/radix-api';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
 } from './status-badge-template';
-
-import type { Tls } from '../../store/radix-api';
 
 type Status = Tls['status'];
 

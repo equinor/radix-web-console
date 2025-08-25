@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import type {
   Attributes,
   ComponentType,
@@ -5,8 +6,6 @@ import type {
   FunctionComponent,
 } from 'react';
 import { type LoaderFunctionArgs, useLoaderData } from 'react-router';
-
-import type * as React from 'react';
 import { useParams } from 'react-router-dom';
 import type { RouteParams } from '../routes';
 

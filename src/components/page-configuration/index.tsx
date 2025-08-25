@@ -1,4 +1,18 @@
 import { Accordion, Typography } from '@equinor/eds-core-react';
+import { routes } from '../../routes';
+import { pollingInterval } from '../../store/defaults';
+import {
+  type ApplicationRegistration,
+  radixApi,
+  useGetDeployKeyAndSecretQuery,
+} from '../../store/radix-api';
+import { withRouteParams } from '../../utils/router';
+import { routeWithParams } from '../../utils/string';
+import AsyncResource from '../async-resource/async-resource';
+import { Breadcrumb } from '../breadcrumb';
+import { DocumentTitle } from '../document-title';
+import { ExternalLink } from '../link/external-link';
+import { RadixConfigFileLink } from '../link/radix-config-file-link';
 import { BuildSecretsAccordion } from './build-secrets-accordion';
 import ChangeAdminForm from './change-admin-form';
 import { ChangeConfigurationItemForm } from './change-ci-form';
@@ -8,22 +22,6 @@ import { ChangeRepositoryForm } from './change-repository-form';
 import DeleteApplicationForm from './delete-application-form';
 import { ImageHubsAccordion } from './image-hubs-accordion';
 import { Overview } from './overview';
-
-import { routes } from '../../routes';
-import { withRouteParams } from '../../utils/router';
-import { routeWithParams } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DocumentTitle } from '../document-title';
-
-import { pollingInterval } from '../../store/defaults';
-import {
-  type ApplicationRegistration,
-  radixApi,
-  useGetDeployKeyAndSecretQuery,
-} from '../../store/radix-api';
-import { ExternalLink } from '../link/external-link';
-import { RadixConfigFileLink } from '../link/radix-config-file-link';
 import './style.css';
 import { ConfigureDeployKey } from '../configure-application-github/configure-deploy-key';
 import { ConfigureGitHubWebhook } from '../configure-application-github/configure-git-hub-webhook';

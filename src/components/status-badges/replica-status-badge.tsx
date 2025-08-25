@@ -6,13 +6,11 @@ import {
   stop,
   time,
 } from '@equinor/eds-icons';
-
+import type { ReplicaSummary } from '../../store/radix-api';
 import {
   StatusBadgeTemplate,
   type StatusBadgeTemplateProps,
 } from './status-badge-template';
-
-import type { ReplicaSummary } from '../../store/radix-api';
 
 type Status = Required<ReplicaSummary>['replicaStatus']['status'];
 

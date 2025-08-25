@@ -1,7 +1,6 @@
-
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { RootState } from '../store';
 import { configVariables } from '../../utils/config';
+import type { RootState } from '../store';
 
 /** Override for text/plain response handler */
 const responseHandler = (response: Response) => {
@@ -13,25 +12,33 @@ const responseHandler = (response: Response) => {
 
 export const costStoreApi = createApi({
   reducerPath: 'costApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/cost-api', redirect: "error" }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/cost-api', redirect: 'error' }),
   endpoints: () => ({}),
 });
 
 export const logStoreApi = createApi({
   reducerPath: 'logApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/log-api', responseHandler, redirect: "error" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/log-api',
+    responseHandler,
+    redirect: 'error',
+  }),
   endpoints: () => ({}),
 });
 
 export const radixStoreApi = createApi({
   reducerPath: 'radixApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api/v1', responseHandler, redirect: "error" }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/api/v1',
+    responseHandler,
+    redirect: 'error',
+  }),
   endpoints: () => ({}),
 });
 
 export const scanStoreApi = createApi({
   reducerPath: 'scanApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/scan-api', redirect: "error" }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/scan-api', redirect: 'error' }),
   endpoints: () => ({}),
 });
 
@@ -39,7 +46,7 @@ export const serviceNowStoreApi = createApi({
   reducerPath: 'serviceNowApi',
   baseQuery: fetchBaseQuery({
     baseUrl: configVariables.SERVICENOW_PROXY_BASEURL,
-    redirect: "error",
+    redirect: 'error',
     prepareHeaders: async (headers, { getState }) => {
       const state = getState() as RootState;
 
@@ -63,6 +70,6 @@ export const msGraphStoreApi = createApi({
 
 export const uptimeApi = createApi({
   reducerPath: 'uptimeAPi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/uptime', redirect: "error" }),
+  baseQuery: fetchBaseQuery({ baseUrl: '/uptime', redirect: 'error' }),
   endpoints: () => ({}),
 });

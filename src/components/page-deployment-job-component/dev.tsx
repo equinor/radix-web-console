@@ -1,13 +1,11 @@
 import { Server } from 'miragejs';
-
-import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
-
 import type {
   ChangeEnvVarApiResponse,
   Deployment,
   EnvVarsApiResponse,
   GetDeploymentApiResponse,
 } from '../../store/radix-api';
+import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
 
 const testData: Array<
   Parameters<typeof DeploymentJobComponentOverview>[0] & {

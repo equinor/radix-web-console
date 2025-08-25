@@ -1,8 +1,8 @@
 import { Icon, type IconProps } from '@equinor/eds-core-react';
 import {
-  type IconData,
   chevron_down,
   chevron_up,
+  type IconData,
   unfold_more,
 } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';

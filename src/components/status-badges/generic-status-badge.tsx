@@ -1,9 +1,9 @@
 import { type ChipProps, Icon } from '@equinor/eds-core-react';
 import {
-  type IconData,
   blocked,
   check,
   error_outlined,
+  type IconData,
   run,
   timer,
   traffic_light,

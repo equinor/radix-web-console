@@ -1,10 +1,8 @@
 import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react';
 import { settings } from '@equinor/eds-icons';
 import type { FunctionComponent } from 'react';
-
-import { EventSummary } from './event-summary';
-
 import type { Event } from '../../store/radix-api';
+import { EventSummary } from './event-summary';
 
 import './style.css';
 

@@ -1,6 +1,6 @@
 import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
-import { type IconData, external_link } from '@equinor/eds-icons';
-import { type PropsWithChildren, forwardRef } from 'react';
+import { external_link, type IconData } from '@equinor/eds-icons';
+import { forwardRef, type PropsWithChildren } from 'react';
 
 type ToolTipWrapperProps = { toolTip?: string };
 

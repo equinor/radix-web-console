@@ -22,7 +22,7 @@ export default (
       gridGap: '0.25em',
     }}
   >
-    {labels.map((label, i) =>
+    {labels.map((label) =>
       types.map((type) => (
         <StatusPopover
           icon={<Icon data={check} />}

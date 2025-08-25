@@ -7,8 +7,6 @@ import {
 } from '@equinor/eds-core-react';
 import { github } from '@equinor/eds-icons';
 import { Link } from 'react-router-dom';
-import { EnvironmentIngress } from './environment-ingress';
-
 import { routes } from '../../routes';
 import { pollingInterval, slowPollingInterval } from '../../store/defaults';
 import {
@@ -25,6 +23,7 @@ import {
 } from '../../store/scan-api';
 import { routeWithParams } from '../../utils/string';
 import { GitTagLinks } from '../git-tags/git-tag-links';
+import { EnvironmentIngress } from './environment-ingress';
 
 import './style.css';
 import {

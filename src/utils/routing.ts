@@ -1,15 +1,13 @@
 import {
   type ComponentClass,
+  createElement,
   type FunctionComponent,
   type ReactElement,
-  createElement,
 } from 'react';
 import { useParams } from 'react-router-dom';
-
-import { routeWithParams } from './string';
-
 import { routes } from '../routes';
 import { getValidatedOAuthType } from './oauth';
+import { routeWithParams } from './string';
 
 /** Mark specific keys of an object optional */
 type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &

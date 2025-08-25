@@ -2,14 +2,12 @@ import { Icon, Typography } from '@equinor/eds-core-react';
 import { debounce } from 'lodash-es';
 import { type MutableRefObject, useRef, useState } from 'react';
 import {
+  components,
   type IndicatorsContainerProps,
   type PropsValue,
-  components,
 } from 'react-select';
-
-import { ConfigurationItemPopover } from './ci-popover';
-
 import { Alert } from '../alert';
+import { ConfigurationItemPopover } from './ci-popover';
 
 import './style.css';
 import { info_circle } from '@equinor/eds-icons';
@@ -116,7 +114,7 @@ export function AppConfigConfigurationItem({
         loadOptions={onLoad}
         onChange={onChange}
         getOptionLabel={({ name }) => name}
-        getOptionValue={({ id }) => id}
+        getOptionValue={({ appId }) => (appId ? String(appId) : '')}
         closeMenuOnSelect={false}
         value={selectedCI}
         defaultValue={currentCI}

@@ -1,13 +1,11 @@
 import { Divider, Typography } from '@equinor/eds-core-react';
 import { Server } from 'miragejs';
 import { Fragment } from 'react';
-
-import { SecretOverview } from './secret-overview';
-
 import type {
   GetEnvironmentApiArg,
   GetEnvironmentApiResponse,
 } from '../../../store/radix-api';
+import { SecretOverview } from './secret-overview';
 
 const testData: Array<GetEnvironmentApiResponse> = [
   {

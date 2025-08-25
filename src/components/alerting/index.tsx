@@ -1,12 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react';
 import { info_circle } from '@equinor/eds-icons';
 import { useState } from 'react';
-
-import { AlertingActions } from './alerting-actions';
-import { AlertingConfigStatus } from './alerting-overview';
-import { buildEditConfig } from './buildEditConfig';
-import { type ChangedReceivers, UpdateSlackReceivers } from './edit-alerting';
-
 import { externalUrls } from '../../externalUrls';
 import type {
   AlertingConfig,
@@ -14,6 +8,10 @@ import type {
 } from '../../store/radix-api';
 import { Alert } from '../alert';
 import { ExternalLink } from '../link/external-link';
+import { AlertingActions } from './alerting-actions';
+import { AlertingConfigStatus } from './alerting-overview';
+import { buildEditConfig } from './buildEditConfig';
+import { type ChangedReceivers, UpdateSlackReceivers } from './edit-alerting';
 
 interface Props {
   isSaving: boolean;

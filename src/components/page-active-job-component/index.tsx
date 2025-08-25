@@ -1,7 +1,6 @@
-import { ActiveJobComponentOverview } from './active-job-component-overview';
-
 import { withRouteParams } from '../../utils/router';
 import { DocumentTitle } from '../document-title';
+import { ActiveJobComponentOverview } from './active-job-component-overview';
 
 type Props = {
   appName: string;

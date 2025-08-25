@@ -5,13 +5,12 @@ import {
   InteractionType,
   PublicClientApplication,
 } from '@azure/msal-browser';
+import { MsalProvider } from '@azure/msal-react';
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser';
 import { type PropsWithChildren, useEffect, useMemo } from 'react';
-
-import { MsalProvider } from '@azure/msal-react';
 import { useDispatch } from 'react-redux';
 import { setAccount, setProvider } from '../../store/msal/reducer';
-import { msGraphConfig, msalConfig, serviceNowApiConfig } from './config';
+import { msalConfig, msGraphConfig, serviceNowApiConfig } from './config';
 
 export type MsalContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider;

@@ -15,11 +15,6 @@ import {
 import { clsx } from 'clsx';
 import { Fragment, useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { RestartBatch } from './restart-batch';
-
 import {
   type ScheduledBatchSummary,
   useDeleteBatchMutation,
@@ -28,8 +23,8 @@ import {
 import { promiseHandler } from '../../../utils/promise-handler';
 import { getScheduledBatchUrl } from '../../../utils/routing';
 import {
-  type SortDirection,
   dataSorter,
+  type SortDirection,
   sortCompareDate,
   sortCompareString,
 } from '../../../utils/sort-utils';
@@ -38,12 +33,15 @@ import {
   smallDeploymentName,
   smallScheduledBatchName,
 } from '../../../utils/string';
-import { TableSortIcon, getNewSortDir } from '../../../utils/table-sort-utils';
+import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils';
 import { ScrimPopup } from '../../scrim-popup';
 import { ProgressStatusBadge } from '../../status-badges';
 import { Duration } from '../../time/duration';
 import { RelativeToNow } from '../../time/relative-to-now';
 import { BatchJobStatuses } from './batch-job-statuses';
+import { JobContextMenu } from './job-context-menu';
+import { JobDeploymentLink } from './job-deployment-link';
+import { RestartBatch } from './restart-batch';
 
 import './style.css';
 import useLocalStorage from '../../../effects/use-local-storage';

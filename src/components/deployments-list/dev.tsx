@@ -1,6 +1,5 @@
-import { DeploymentsList } from '.';
-
 import type { DeploymentSummary } from '../../store/radix-api';
+import { DeploymentsList } from '.';
 
 const deployments: Array<DeploymentSummary> = [
   {

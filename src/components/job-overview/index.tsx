@@ -6,10 +6,6 @@ import {
 } from '@equinor/eds-core-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import { ComponentList } from './component-list';
-import { StepsList } from './steps-list';
-
 import { useInterval } from '../../effects/use-interval';
 import { routes } from '../../routes';
 import { pollingInterval } from '../../store/defaults';
@@ -32,6 +28,8 @@ import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
 import { ScrimPopup } from '../scrim-popup';
 import { Duration } from '../time/duration';
 import { RelativeToNow } from '../time/relative-to-now';
+import { ComponentList } from './component-list';
+import { StepsList } from './steps-list';
 
 import './style.css';
 

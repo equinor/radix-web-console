@@ -31,7 +31,7 @@ const store = configureStore({
       scanStoreApi.middleware,
       serviceNowStoreApi.middleware,
       msGraphStoreApi.middleware,
-      uptimeApi.middleware,
+      uptimeApi.middleware
     ),
   devTools: true,
 });

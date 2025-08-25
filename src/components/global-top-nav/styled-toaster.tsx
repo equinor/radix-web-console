@@ -19,7 +19,7 @@ export const StyledToastContainer: FunctionComponent = () => (
   </div>
 );
 
-export function styledToaster<T>(
+export function styledToaster(
   content: string,
   options: {
     type: TypeOptions;

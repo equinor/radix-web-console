@@ -41,7 +41,7 @@
 .chart-timeline .chart-tooltip {
   font-size: 1rem;
   font-weight: 500;
-  line-height: 1.500em;
+  line-height: 1.5em;
   width: max-content;
   padding: var(--eds_spacing_small);
 }
