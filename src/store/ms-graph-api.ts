@@ -1,51 +1,51 @@
-import { Client, GraphError } from '@microsoft/microsoft-graph-client';
-import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
-import type { RootState } from '../store/store';
-import { msGraphStoreApi as api } from './configs/index';
+import { Client, GraphError } from '@microsoft/microsoft-graph-client'
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
+import type { RootState } from '../store/store'
+import { msGraphStoreApi as api } from './configs/index'
 
 function isRootState(state: unknown): state is RootState {
   if (!state || typeof state !== 'object') {
-    return false;
+    return false
   }
 
   if (!('auth' in state) || !state.auth || typeof state.auth !== 'object') {
-    return false;
+    return false
   }
 
   if (!('provider' in state.auth)) {
-    return false;
+    return false
   }
 
-  return !!state?.auth?.provider !== undefined;
+  return !!state?.auth?.provider !== undefined
 }
 
-let graphClient: Client | undefined;
+let graphClient: Client | undefined
 function ensureClient(state: unknown) {
   if (graphClient) {
-    return graphClient;
+    return graphClient
   }
 
   if (!isRootState(state)) {
-    throw new Error('Unknown state!');
+    throw new Error('Unknown state!')
   }
 
   if (!state.auth.provider) {
-    throw new Error('MS Graph Provider not ready');
+    throw new Error('MS Graph Provider not ready')
   }
 
   graphClient = Client.initWithMiddleware({
     authProvider: state.auth.provider.graphAuthProvider,
-  });
-  return graphClient;
+  })
+  return graphClient
 }
 
 function parseGraphError(e: unknown): FetchBaseQueryError {
   if (e instanceof GraphError) {
-    return { data: e.body, status: e.statusCode };
+    return { data: e.body, status: e.statusCode }
   }
 
   // @ts-expect-error not sure what e is in this case
-  return { error: e, status: 'CUSTOM_ERROR' };
+  return { error: e, status: 'CUSTOM_ERROR' }
 }
 
 const injectedRtkApi = api.injectEndpoints({
@@ -53,14 +53,11 @@ const injectedRtkApi = api.injectEndpoints({
     getAdGroup: build.query<EntraItem, GetAdGroupArg>({
       queryFn: async ({ id }, { getState }) => {
         try {
-          const group: EntraItem = await ensureClient(getState())
-            .api(`/groups/${id}`)
-            .select('displayName,id')
-            .get();
+          const group: EntraItem = await ensureClient(getState()).api(`/groups/${id}`).select('displayName,id').get()
 
-          return { data: group };
+          return { data: group }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
@@ -74,23 +71,23 @@ const injectedRtkApi = api.injectEndpoints({
                 error: 'We can fetch maximum 15 items at a time',
                 status: 'CUSTOM_ERROR',
               },
-            };
+            }
           }
 
           if (ids.length === 0) {
-            return { data: [] };
+            return { data: [] }
           }
 
-          const idFilter = ids.map((s) => `'${s}'`).join(',');
+          const idFilter = ids.map((s) => `'${s}'`).join(',')
           const response: SearchResponse = await ensureClient(getState())
             .api('/groups')
             .select('displayName,id')
             .filter(`id in (${idFilter})`)
-            .get();
+            .get()
 
-          return { data: response.value };
+          return { data: response.value }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
@@ -105,23 +102,23 @@ const injectedRtkApi = api.injectEndpoints({
                 error: 'We can fetch maximum 15 items at a time',
                 status: 'CUSTOM_ERROR',
               },
-            };
+            }
           }
 
           if (ids.length === 0) {
-            return { data: [] };
+            return { data: [] }
           }
 
-          const idFilter = ids.map((s) => `'${s}'`).join(',');
+          const idFilter = ids.map((s) => `'${s}'`).join(',')
           const response: SearchResponse = await ensureClient(getState())
             .api('/servicePrincipals')
             .select('displayName,id,appId')
             .filter(`id in (${idFilter})`)
-            .get();
+            .get()
 
-          return { data: response.value };
+          return { data: response.value }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
@@ -135,23 +132,23 @@ const injectedRtkApi = api.injectEndpoints({
                 error: 'We can fetch maximum 15 items at a time',
                 status: 'CUSTOM_ERROR',
               },
-            };
+            }
           }
 
           if (ids.length === 0) {
-            return { data: [] };
+            return { data: [] }
           }
 
-          const idFilter = ids.map((s) => `'${s}'`).join(',');
+          const idFilter = ids.map((s) => `'${s}'`).join(',')
           const response: SearchResponse = await ensureClient(getState())
             .api('/applications')
             .select('displayName,id,appId')
             .filter(`id in (${idFilter})`)
-            .get();
+            .get()
 
-          return { data: response.value };
+          return { data: response.value }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
@@ -162,15 +159,13 @@ const injectedRtkApi = api.injectEndpoints({
           const groups: SearchResponse = await ensureClient(getState())
             .api('/groups')
             .select('displayName,id')
-            .filter(
-              displayName ? `startswith(displayName,'${displayName}')` : ''
-            )
+            .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
             .top(limit)
-            .get();
+            .get()
 
-          return { data: groups };
+          return { data: groups }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
@@ -181,15 +176,13 @@ const injectedRtkApi = api.injectEndpoints({
           const groups: SearchResponse = await ensureClient(getState())
             .api('/servicePrincipals')
             .select('displayName,id,appId')
-            .filter(
-              displayName ? `startswith(displayName,'${displayName}')` : ''
-            )
+            .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
             .top(limit)
-            .get();
+            .get()
 
-          return { data: groups };
+          return { data: groups }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
@@ -200,22 +193,20 @@ const injectedRtkApi = api.injectEndpoints({
           const groups: SearchResponse = await ensureClient(getState())
             .api('/applications')
             .select('displayName,id,appId')
-            .filter(
-              displayName ? `startswith(displayName,'${displayName}')` : ''
-            )
+            .filter(displayName ? `startswith(displayName,'${displayName}')` : '')
             .top(limit)
-            .get();
+            .get()
 
-          return { data: groups };
+          return { data: groups }
         } catch (e) {
-          return { error: parseGraphError(e) };
+          return { error: parseGraphError(e) }
         }
       },
     }),
   }),
-});
+})
 
-export { injectedRtkApi as msGraphApi };
+export { injectedRtkApi as msGraphApi }
 export const {
   useGetAdGroupsQuery,
   useGetAdApplicationQuery,
@@ -225,28 +216,28 @@ export const {
   useSearchAdApplicationsQuery,
   useLazySearchAdGroupsQuery,
   useLazySearchAdServicePrincipalsQuery,
-} = injectedRtkApi;
+} = injectedRtkApi
 
 type GetAdGroupArg = {
-  id: string;
-};
+  id: string
+}
 
 export type EntraItem = {
-  displayName: string;
-  id: string;
-  appId?: string;
-};
+  displayName: string
+  id: string
+  appId?: string
+}
 type GetEntraArg = {
-  ids: string[];
-};
-type GetEntraResponse = EntraItem[];
+  ids: string[]
+}
+type GetEntraResponse = EntraItem[]
 
 type SearchEntraArgs = {
-  displayName: string;
-  limit: number;
-};
+  displayName: string
+  limit: number
+}
 export type SearchResponse = {
-  '@odata.context'?: string;
-  '@odata.nextLink'?: string;
-  value: Array<EntraItem>;
-};
+  '@odata.context'?: string
+  '@odata.nextLink'?: string
+  value: Array<EntraItem>
+}

@@ -1,13 +1,13 @@
-import { Icon } from '@equinor/eds-core-react';
-import { github } from '@equinor/eds-icons';
-import { CommitHash } from '../commit-hash';
-import { GitTagLinks } from '../git-tags/git-tag-links';
+import { Icon } from '@equinor/eds-core-react'
+import { github } from '@equinor/eds-icons'
+import { CommitHash } from '../commit-hash'
+import { GitTagLinks } from '../git-tags/git-tag-links'
 
 type Props = {
-  commitID?: string;
-  gitTags?: string;
-  repository?: string;
-};
+  commitID?: string
+  gitTags?: string
+  repository?: string
+}
 
 export const GitCommitTags = ({ commitID, gitTags, repository }: Props) => {
   return (
@@ -21,14 +21,10 @@ export const GitCommitTags = ({ commitID, gitTags, repository }: Props) => {
       {gitTags && (
         <>
           {' tags '}
-          {repository ? (
-            <GitTagLinks gitTags={gitTags} repository={repository} />
-          ) : (
-            <>{gitTags}</>
-          )}
+          {repository ? <GitTagLinks gitTags={gitTags} repository={repository} /> : <>{gitTags}</>}
           {!commitID && <Icon data={github} size={18} />}
         </>
       )}
     </>
-  );
-};
+  )
+}

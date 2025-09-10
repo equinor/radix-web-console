@@ -1,23 +1,22 @@
-import { Accordion, Table, Typography } from '@equinor/eds-core-react';
-import useLocalStorage from '../../effects/use-local-storage';
+import { Accordion, Table, Typography } from '@equinor/eds-core-react'
+import useLocalStorage from '../../effects/use-local-storage'
 
-import './style.css';
+import './style.css'
 
 type Props = {
   values: {
-    [key: string]: string;
-  };
-};
+    [key: string]: string
+  }
+}
 export const EnvironmentVariableTable = ({ values }: Props) => {
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
-    useLocalStorage<boolean>('batchJobEnvVarsListExpanded', true);
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
+    'batchJobEnvVarsListExpanded',
+    true
+  )
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item
-        isExpanded={isEnvVarsListExpanded}
-        onExpandedChange={setIsEnvVarsListExpanded}
-      >
+      <Accordion.Item isExpanded={isEnvVarsListExpanded} onExpandedChange={setIsEnvVarsListExpanded}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -29,9 +28,7 @@ export const EnvironmentVariableTable = ({ values }: Props) => {
           <Table className="env-vars-table">
             <Table.Head className="whitespace-nowrap">
               <Table.Row>
-                <Table.Cell className="env-vars-table__header-name">
-                  Name
-                </Table.Cell>
+                <Table.Cell className="env-vars-table__header-name">Name</Table.Cell>
                 <Table.Cell>Value</Table.Cell>
               </Table.Row>
             </Table.Head>
@@ -50,5 +47,5 @@ export const EnvironmentVariableTable = ({ values }: Props) => {
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}

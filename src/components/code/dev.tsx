@@ -1,4 +1,4 @@
-import { Code, type CodeProps } from '.';
+import { Code, type CodeProps } from '.'
 
 const testdata: Array<CodeProps & { text: string }> = [
   {
@@ -17,7 +17,7 @@ const testdata: Array<CodeProps & { text: string }> = [
     download: true,
   },
   { text: 'A short code example', copy: true, download: true },
-];
+]
 
 export default (
   <div className="grid grid--gap-small">
@@ -36,4 +36,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

@@ -1,5 +1,5 @@
-import { ConfigureDeployKey } from './configure-deploy-key';
-import { ConfigureGitHubWebhook } from './configure-git-hub-webhook';
+import { ConfigureDeployKey } from './configure-deploy-key'
+import { ConfigureGitHubWebhook } from './configure-git-hub-webhook'
 
 export default (
   <div className="o-layout-single">
@@ -25,4 +25,4 @@ export default (
       sharedSecret={crypto.randomUUID()}
     />
   </div>
-);
+)

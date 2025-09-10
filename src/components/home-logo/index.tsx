@@ -1,9 +1,9 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
+import { Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
 
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import { HomeIcon } from '../home-icon';
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import { HomeIcon } from '../home-icon'
 
 export const HomeLogo: FunctionComponent = () => (
   <Typography
@@ -17,4 +17,4 @@ export const HomeLogo: FunctionComponent = () => (
   >
     <HomeIcon /> Omnia Radix
   </Typography>
-);
+)

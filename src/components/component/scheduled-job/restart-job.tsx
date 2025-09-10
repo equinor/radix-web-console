@@ -1,26 +1,22 @@
-import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { Button, List, Radio, Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
 
-import { formatDateTime } from '../../../utils/datetime';
-import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
+import { formatDateTime } from '../../../utils/datetime'
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster'
 
-import './style.css';
-import { pollingInterval } from '../../../store/defaults';
-import {
-  useCopyJobMutation,
-  useGetJobComponentDeploymentsQuery,
-  useRestartJobMutation,
-} from '../../../store/radix-api';
+import './style.css'
+import { pollingInterval } from '../../../store/defaults'
+import { useCopyJobMutation, useGetJobComponentDeploymentsQuery, useRestartJobMutation } from '../../../store/radix-api'
 
 interface Props {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  deploymentName: string;
-  jobName: string;
-  smallJobName: string;
-  onSuccess?: () => void;
-  onDone: () => void;
+  appName: string
+  envName: string
+  jobComponentName: string
+  deploymentName: string
+  jobName: string
+  smallJobName: string
+  onSuccess?: () => void
+  onDone: () => void
 }
 
 export function RestartJob({
@@ -40,12 +36,12 @@ export function RestartJob({
       jobComponentName,
     },
     { pollingInterval }
-  );
-  const [restartJob] = useRestartJobMutation();
-  const [copyJob] = useCopyJobMutation();
-  const jobDeployment = deployments?.find((d) => d.name === deploymentName);
-  const activeDeployment = deployments?.find((d) => !d.activeTo);
-  const [shouldRestart, setShouldRestart] = useState(true);
+  )
+  const [restartJob] = useRestartJobMutation()
+  const [copyJob] = useCopyJobMutation()
+  const jobDeployment = deployments?.find((d) => d.name === deploymentName)
+  const activeDeployment = deployments?.find((d) => !d.activeTo)
+  const [shouldRestart, setShouldRestart] = useState(true)
 
   async function onCopyJob(activeDeploymentName: string) {
     try {
@@ -57,13 +53,13 @@ export function RestartJob({
         scheduledJobRequest: {
           deploymentName: activeDeploymentName,
         },
-      }).unwrap();
-      infoToast(`Job '${smallJobName}' successfully copied.`);
-      onSuccess?.();
+      }).unwrap()
+      infoToast(`Job '${smallJobName}' successfully copied.`)
+      onSuccess?.()
     } catch {
-      errorToast(`Error copying job '${smallJobName}'`);
+      errorToast(`Error copying job '${smallJobName}'`)
     } finally {
-      onDone();
+      onDone()
     }
   }
 
@@ -74,19 +70,19 @@ export function RestartJob({
         envName,
         jobComponentName,
         jobName,
-      }).unwrap();
-      infoToast(`Job '${smallJobName}' successfully restarted.`);
-      onSuccess?.();
+      }).unwrap()
+      infoToast(`Job '${smallJobName}' successfully restarted.`)
+      onSuccess?.()
     } catch (e) {
-      errorToast(`Error restarting job '${smallJobName}'`);
-      console.warn(e);
+      errorToast(`Error restarting job '${smallJobName}'`)
+      console.warn(e)
     } finally {
-      onDone();
+      onDone()
     }
-  };
+  }
 
   if (!jobDeployment) {
-    return null;
+    return null
   }
 
   return (
@@ -103,9 +99,8 @@ export function RestartJob({
               />
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography>
-                  Restart with current job deployment {jobDeployment.name}{' '}
-                  (active between {formatDateTime(jobDeployment.activeFrom)} and{' '}
-                  {formatDateTime(jobDeployment.activeTo)}).
+                  Restart with current job deployment {jobDeployment.name} (active between{' '}
+                  {formatDateTime(jobDeployment.activeFrom)} and {formatDateTime(jobDeployment.activeTo)}).
                 </Typography>
                 <Typography>
                   Existing job <strong>{jobName}</strong> <br />
@@ -124,8 +119,8 @@ export function RestartJob({
               />
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography className="restart-job-deployment-option">
-                  Create new job with deployment {activeDeployment.name} (active
-                  from {formatDateTime(activeDeployment.activeFrom)}
+                  Create new job with deployment {activeDeployment.name} (active from{' '}
+                  {formatDateTime(activeDeployment.activeFrom)}
                   ).
                 </Typography>
               </div>
@@ -135,8 +130,7 @@ export function RestartJob({
       ) : (
         <>
           <Typography className="restart-job-deployment-item">
-            The job deployment <strong>{jobDeployment.name}</strong> is{' '}
-            <strong>active</strong> (from:{' '}
+            The job deployment <strong>{jobDeployment.name}</strong> is <strong>active</strong> (from:{' '}
             {formatDateTime(jobDeployment.activeFrom)})
           </Typography>
           <Typography className="restart-job-deployment-item">
@@ -150,9 +144,7 @@ export function RestartJob({
           <Button
             disabled={isLoading || (!shouldRestart && !activeDeployment)}
             onClick={() => {
-              shouldRestart
-                ? onRestartJob()
-                : onCopyJob(activeDeployment!.name); //Button will be disabled if activeDeployment is undefined
+              shouldRestart ? onRestartJob() : onCopyJob(activeDeployment!.name) //Button will be disabled if activeDeployment is undefined
             }}
           >
             Restart
@@ -161,5 +153,5 @@ export function RestartJob({
         </Button.Group>
       </div>
     </div>
-  );
+  )
 }

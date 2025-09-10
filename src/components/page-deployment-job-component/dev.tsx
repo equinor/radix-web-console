@@ -1,15 +1,15 @@
-import { Server } from 'miragejs';
+import { Server } from 'miragejs'
 import type {
   ChangeEnvVarApiResponse,
   Deployment,
   EnvVarsApiResponse,
   GetDeploymentApiResponse,
-} from '../../store/radix-api';
-import { DeploymentJobComponentOverview } from './deployment-job-component-overview';
+} from '../../store/radix-api'
+import { DeploymentJobComponentOverview } from './deployment-job-component-overview'
 
 const testData: Array<
   Parameters<typeof DeploymentJobComponentOverview>[0] & {
-    deployment: Deployment;
+    deployment: Deployment
   }
 > = [
   {
@@ -41,8 +41,7 @@ const testData: Array<
           variables: {
             ASPNETCORE_URLS: 'http://*:5005',
             RADIX_APP: 'radix-job-demo',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'api-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'api-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-26',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'api',
@@ -52,8 +51,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '',
             RADIX_PORTS: '(5005)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'api-radix-job-demo-qa.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'api-radix-job-demo-qa.dev.radix.equinor.com',
           },
         },
         {
@@ -81,22 +79,19 @@ const testData: Array<
             OAUTH2_PROXY_COOKIE_REFRESH: '60m',
             OAUTH2_PROXY_EMAIL_DOMAINS: '*',
             OAUTH2_PROXY_HTTP_ADDRESS: 'http://:8000',
-            OAUTH2_PROXY_OIDC_ISSUER_URL:
-              'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
+            OAUTH2_PROXY_OIDC_ISSUER_URL: 'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
             OAUTH2_PROXY_PASS_ACCESS_TOKEN: 'true',
             OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: 'true',
             OAUTH2_PROXY_PASS_BASIC_AUTH: 'false',
             OAUTH2_PROXY_PASS_USER_HEADERS: 'false',
             OAUTH2_PROXY_PROVIDER: 'oidc',
             OAUTH2_PROXY_REDIS_CONNECTION_URL: 'redis://auth-state:6379',
-            OAUTH2_PROXY_SCOPE:
-              'openid email https://graph.microsoft.com/user.read',
+            OAUTH2_PROXY_SCOPE: 'openid email https://graph.microsoft.com/user.read',
             OAUTH2_PROXY_SESSION_STORE_TYPE: 'redis',
             OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: 'true',
             OAUTH2_PROXY_UPSTREAMS: 'http://server:5005',
             RADIX_APP: 'radix-job-demo',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'auth-proxy-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'auth-proxy-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-26',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'auth-proxy',
@@ -106,8 +101,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '',
             RADIX_PORTS: '(8000)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'auth-proxy-radix-job-demo-qa.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'auth-proxy-radix-job-demo-qa.dev.radix.equinor.com',
           },
         },
         {
@@ -246,8 +240,7 @@ const testData: Array<
           variables: {
             ASPNETCORE_URLS: 'http://*:5005',
             RADIX_APP: 'radix-job-demo',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'api-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'api-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-26',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'api',
@@ -257,8 +250,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '',
             RADIX_PORTS: '(5005)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'api-radix-job-demo-qa.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'api-radix-job-demo-qa.dev.radix.equinor.com',
           },
         },
         {
@@ -286,22 +278,19 @@ const testData: Array<
             OAUTH2_PROXY_COOKIE_REFRESH: '60m',
             OAUTH2_PROXY_EMAIL_DOMAINS: '*',
             OAUTH2_PROXY_HTTP_ADDRESS: 'http://:8000',
-            OAUTH2_PROXY_OIDC_ISSUER_URL:
-              'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
+            OAUTH2_PROXY_OIDC_ISSUER_URL: 'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
             OAUTH2_PROXY_PASS_ACCESS_TOKEN: 'true',
             OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: 'true',
             OAUTH2_PROXY_PASS_BASIC_AUTH: 'false',
             OAUTH2_PROXY_PASS_USER_HEADERS: 'false',
             OAUTH2_PROXY_PROVIDER: 'oidc',
             OAUTH2_PROXY_REDIS_CONNECTION_URL: 'redis://auth-state:6379',
-            OAUTH2_PROXY_SCOPE:
-              'openid email https://graph.microsoft.com/user.read',
+            OAUTH2_PROXY_SCOPE: 'openid email https://graph.microsoft.com/user.read',
             OAUTH2_PROXY_SESSION_STORE_TYPE: 'redis',
             OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: 'true',
             OAUTH2_PROXY_UPSTREAMS: 'http://server:5005',
             RADIX_APP: 'radix-job-demo',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'auth-proxy-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'auth-proxy-radix-job-demo-qa.weekly-26.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-26',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'auth-proxy',
@@ -311,8 +300,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '',
             RADIX_PORTS: '(8000)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'auth-proxy-radix-job-demo-qa.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'auth-proxy-radix-job-demo-qa.dev.radix.equinor.com',
           },
         },
         {
@@ -418,7 +406,7 @@ const testData: Array<
       ],
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -428,23 +416,23 @@ new Server({
       this.get<GetDeploymentApiResponse>(
         `/api/v1/applications/:appName/deployments/${deploymentName}`,
         () => deployment
-      );
-    });
+      )
+    })
 
     // Mock response for EnvVars
     this.get<EnvVarsApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => []
-    );
+    )
 
     // Mock response for ChangeEnvVar
     // @ts-expect-error no idea what this should be
     this.patch<ChangeEnvVarApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => void 0
-    );
+    )
   },
-});
+})
 
 export default (
   <div
@@ -455,11 +443,8 @@ export default (
   >
     <div className="grid grid--gap-large" style={{ margin: '0 auto' }}>
       {testData.map(({ appName, deploymentName, jobComponentName }) => (
-        <DeploymentJobComponentOverview
-          key={deploymentName}
-          {...{ appName, deploymentName, jobComponentName }}
-        />
+        <DeploymentJobComponentOverview key={deploymentName} {...{ appName, deploymentName, jobComponentName }} />
       ))}
     </div>
   </div>
-);
+)

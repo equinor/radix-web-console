@@ -1,31 +1,31 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import * as PageApplication from './components/app-overview';
+import { createBrowserRouter, Navigate } from 'react-router-dom'
+import * as PageApplication from './components/app-overview'
 /** Pages */
-import * as PageAbout from './components/page-about';
-import * as PageActiveComponent from './components/page-active-component';
-import * as PageActiveJobComponent from './components/page-active-job-component';
-import * as PageApplications from './components/page-applications';
-import * as PageConfiguration from './components/page-configuration';
-import * as PageDeployment from './components/page-deployment';
-import * as PageDeploymentComponent from './components/page-deployment-component';
-import * as PageDeploymentJobComponent from './components/page-deployment-job-component';
-import * as PageDeployments from './components/page-deployments';
-import * as PageEnvironment from './components/page-environment';
-import * as PageEnvironments from './components/page-environments';
-import * as PageOauthReplica from './components/page-oauth-replica';
-import * as PagePipelineJob from './components/page-pipeline-job';
-import * as PagePipelineJobNew from './components/page-pipeline-job-new';
-import * as PagePipelineJobs from './components/page-pipeline-jobs';
-import * as PageReplica from './components/page-replica';
-import * as PageScheduledBatch from './components/page-scheduled-batch';
-import * as PageScheduledJob from './components/page-scheduled-job';
-import * as PageStep from './components/page-step';
-import * as PipelineRunTaskStep from './components/pipeline-run-task-step';
+import * as PageAbout from './components/page-about'
+import * as PageActiveComponent from './components/page-active-component'
+import * as PageActiveJobComponent from './components/page-active-job-component'
+import * as PageApplications from './components/page-applications'
+import * as PageConfiguration from './components/page-configuration'
+import * as PageDeployment from './components/page-deployment'
+import * as PageDeploymentComponent from './components/page-deployment-component'
+import * as PageDeploymentJobComponent from './components/page-deployment-job-component'
+import * as PageDeployments from './components/page-deployments'
+import * as PageEnvironment from './components/page-environment'
+import * as PageEnvironments from './components/page-environments'
+import * as PageOauthReplica from './components/page-oauth-replica'
+import * as PagePipelineJob from './components/page-pipeline-job'
+import * as PagePipelineJobNew from './components/page-pipeline-job-new'
+import * as PagePipelineJobs from './components/page-pipeline-jobs'
+import * as PageReplica from './components/page-replica'
+import * as PageScheduledBatch from './components/page-scheduled-batch'
+import * as PageScheduledJob from './components/page-scheduled-job'
+import * as PageStep from './components/page-step'
+import * as PipelineRunTaskStep from './components/pipeline-run-task-step'
 /** Page Layouts */
-import * as PageLayoutApplication from './pages/page-application';
-import * as PageLayoutRoot from './pages/page-root';
-import SessionExpired from './pages/session-expired';
-import { routes } from './routes';
+import * as PageLayoutApplication from './pages/page-application'
+import * as PageLayoutRoot from './pages/page-root'
+import SessionExpired from './pages/session-expired'
+import { routes } from './routes'
 
 /**
  * Radix Web Console page router
@@ -215,4 +215,4 @@ export const router = createBrowserRouter([
       },
     ],
   },
-]);
+])

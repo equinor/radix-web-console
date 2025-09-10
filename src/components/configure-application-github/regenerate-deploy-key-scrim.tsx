@@ -1,47 +1,39 @@
-import { Button, Progress, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
-import { useRegenerateDeployKeyMutation } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
+import { Button, Progress, Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
+import { useRegenerateDeployKeyMutation } from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
 
 type Props = {
-  appName: string;
-  refetchSecrets: () => Promise<unknown>;
-};
+  appName: string
+  refetchSecrets: () => Promise<unknown>
+}
 
 export function RegenerateDeployKeyScrim({ appName, refetchSecrets }: Props) {
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(false)
 
-  const [regenerateDeployKey, regenerateDeployKeyState] =
-    useRegenerateDeployKeyMutation();
+  const [regenerateDeployKey, regenerateDeployKeyState] = useRegenerateDeployKeyMutation()
 
   const onRegenerate = handlePromiseWithToast(async () => {
-    setShow(false);
+    setShow(false)
     await regenerateDeployKey({
       appName,
       regenerateDeployKeyData: {},
-    }).unwrap();
-    await refetchSecrets();
-  });
+    }).unwrap()
+    await refetchSecrets()
+  })
 
   return (
     <>
-      <ScrimPopup
-        title={'Warning'}
-        open={!!show}
-        onClose={() => setShow(false)}
-        isDismissable
-      >
+      <ScrimPopup title={'Warning'} open={!!show} onClose={() => setShow(false)} isDismissable>
         <div className="grid grid--gap-medium grid--auto-columns regenerate-content">
           <div className="regenerate-options">
             <Typography>
               Do you want to <strong>regenerate</strong> deploy key?
             </Typography>
-            <Typography>
-              New deploy key need to be put to the GitHub repository settings
-            </Typography>
+            <Typography>New deploy key need to be put to the GitHub repository settings</Typography>
           </div>
 
           <Button.Group>
@@ -68,14 +60,12 @@ export function RegenerateDeployKeyScrim({ appName, refetchSecrets }: Props) {
             </>
           ) : (
             <div>
-              <Typography variant="h5">
-                Regularly regenerate deploy key
-              </Typography>
+              <Typography variant="h5">Regularly regenerate deploy key</Typography>
               <Button onClick={() => setShow(true)}>Regenerate</Button>
             </div>
           )}
         </div>
       </div>
     </>
-  );
+  )
 }

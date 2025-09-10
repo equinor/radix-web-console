@@ -1,11 +1,11 @@
-import { Button, Typography } from '@equinor/eds-core-react';
-import { HomeIcon } from '../components/home-icon';
+import { Button, Typography } from '@equinor/eds-core-react'
+import { HomeIcon } from '../components/home-icon'
 
 export default function SessionExpired() {
   const handleReauth = () => {
-    sessionStorage.clear();
-    window.location.href = '/applications';
-  };
+    sessionStorage.clear()
+    window.location.href = '/applications'
+  }
 
   return (
     <div
@@ -27,5 +27,5 @@ export default function SessionExpired() {
         Re-authenticate
       </Button>
     </div>
-  );
+  )
 }

@@ -1,38 +1,30 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
+import { Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
 
-import {
-  type ApplicationCost,
-  useGetFutureCostQuery,
-} from '../../store/cost-api';
-import { formatDateTimeYear } from '../../utils/datetime';
-import AsyncResource from '../async-resource/async-resource';
+import { type ApplicationCost, useGetFutureCostQuery } from '../../store/cost-api'
+import { formatDateTimeYear } from '../../utils/datetime'
+import AsyncResource from '../async-resource/async-resource'
 
-import '../application-cost/style.css';
+import '../application-cost/style.css'
 
 function getCostEstimate({ cost, currency }: ApplicationCost): string {
-  return !Number.isNaN(cost) ? `${cost.toFixed()} ${currency}` : 'No data';
+  return !Number.isNaN(cost) ? `${cost.toFixed()} ${currency}` : 'No data'
 }
 
 function getPeriod(): string {
-  const today = new Date();
-  const nextMonth = new Date(today);
-  nextMonth.setDate(nextMonth.getDate() + 30);
+  const today = new Date()
+  const nextMonth = new Date(today)
+  nextMonth.setDate(nextMonth.getDate() + 30)
 
-  return `${formatDateTimeYear(today)} - ${formatDateTimeYear(nextMonth)}`;
+  return `${formatDateTimeYear(today)} - ${formatDateTimeYear(nextMonth)}`
 }
 
 export interface FutureApplicationCostProps {
-  appName: string;
+  appName: string
 }
 
-export const FutureApplicationCost: FunctionComponent<
-  FutureApplicationCostProps
-> = ({ appName }) => {
-  const { data: cost, ...state } = useGetFutureCostQuery(
-    { appName },
-    { skip: !appName }
-  );
+export const FutureApplicationCost: FunctionComponent<FutureApplicationCostProps> = ({ appName }) => {
+  const { data: cost, ...state } = useGetFutureCostQuery({ appName }, { skip: !appName })
 
   return (
     <div className="grid grid--gap-medium">
@@ -59,5 +51,5 @@ export const FutureApplicationCost: FunctionComponent<
         )}
       </AsyncResource>
     </div>
-  );
-};
+  )
+}

@@ -1,23 +1,20 @@
-import { Typography } from '@equinor/eds-core-react';
-import { isNil } from 'lodash-es';
-import type { FunctionComponent } from 'react';
-import type { ScheduledJobSummary } from '../../store/radix-api';
-import {
-  smallScheduledBatchName,
-  smallScheduledJobName,
-} from '../../utils/string';
-import { Code } from '../code';
-import { CommandAndArgs } from '../component/command-and-args';
-import { ComponentDeployment } from '../component/component-deployment';
-import { ResourceRequirements } from '../resource-requirements';
-import { Runtime } from '../runtime';
-import { RadixJobConditionBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+import { Typography } from '@equinor/eds-core-react'
+import { isNil } from 'lodash-es'
+import type { FunctionComponent } from 'react'
+import type { ScheduledJobSummary } from '../../store/radix-api'
+import { smallScheduledBatchName, smallScheduledJobName } from '../../utils/string'
+import { Code } from '../code'
+import { CommandAndArgs } from '../component/command-and-args'
+import { ComponentDeployment } from '../component/component-deployment'
+import { ResourceRequirements } from '../resource-requirements'
+import { Runtime } from '../runtime'
+import { RadixJobConditionBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 const ScheduledJobDuration: FunctionComponent<{
-  started: string;
-  finished?: string;
+  started: string
+  finished?: string
 }> = ({ started, finished }) => {
   return (
     <>
@@ -44,12 +41,14 @@ const ScheduledJobDuration: FunctionComponent<{
         </>
       )}
     </>
-  );
-};
+  )
+}
 
-const ScheduledJobState: FunctionComponent<
-  Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>
-> = ({ failedCount, message, status }) => (
+const ScheduledJobState: FunctionComponent<Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>> = ({
+  failedCount,
+  message,
+  status,
+}) => (
   <>
     {!Number.isNaN(failedCount) && failedCount > 0 && (
       <div>
@@ -68,12 +67,12 @@ const ScheduledJobState: FunctionComponent<
       </>
     )}
   </>
-);
+)
 
 export const ScheduledJobOverview: FunctionComponent<{
-  job: ScheduledJobSummary;
-  jobComponentName: string;
-  appName: string;
+  job: ScheduledJobSummary
+  jobComponentName: string
+  appName: string
 }> = ({ job, jobComponentName, appName }) => {
   return (
     <>
@@ -86,8 +85,7 @@ export const ScheduledJobOverview: FunctionComponent<{
             </Typography>
             {job.batchName && (
               <Typography>
-                Batch name{' '}
-                <strong>{smallScheduledBatchName(job.batchName)}</strong>
+                Batch name <strong>{smallScheduledBatchName(job.batchName)}</strong>
               </Typography>
             )}
             <Typography>
@@ -113,12 +111,7 @@ export const ScheduledJobOverview: FunctionComponent<{
                   <RelativeToNow time={job.created} />
                 </strong>
               </Typography>
-              {job.started && (
-                <ScheduledJobDuration
-                  started={job.started}
-                  finished={job.ended}
-                />
-              )}
+              {job.started && <ScheduledJobDuration started={job.started} finished={job.ended} />}
             </>
           </div>
           <div className="grid grid--gap-medium">
@@ -130,19 +123,13 @@ export const ScheduledJobOverview: FunctionComponent<{
             <Typography>
               Time Limit{' '}
               <strong>
-                {!isNil(job.timeLimitSeconds) ? (
-                  <Duration start={0} end={job.timeLimitSeconds * 1000} />
-                ) : (
-                  'Not set'
-                )}
+                {!isNil(job.timeLimitSeconds) ? <Duration start={0} end={job.timeLimitSeconds * 1000} /> : 'Not set'}
               </strong>
             </Typography>
           </div>
         </div>
       </section>
-      <section className="grid grid--gap-medium">
-        {job.status && <ScheduledJobState {...job} />}
-      </section>
+      <section className="grid grid--gap-medium">{job.status && <ScheduledJobState {...job} />}</section>
     </>
-  );
-};
+  )
+}

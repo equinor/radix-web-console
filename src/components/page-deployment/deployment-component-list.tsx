@@ -1,22 +1,18 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import type { Component, Deployment } from '../../store/radix-api';
-import { routeWithParams } from '../../utils/string';
-import { GitCommitTags } from '../component/git-commit-tags';
-import { DockerImage } from '../docker-image';
+import { List, Typography } from '@equinor/eds-core-react'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import type { Component, Deployment } from '../../store/radix-api'
+import { routeWithParams } from '../../utils/string'
+import { GitCommitTags } from '../component/git-commit-tags'
+import { DockerImage } from '../docker-image'
 
 type Props = {
-  appName: string;
-  deployment: Deployment;
-  components?: Array<Component>;
-};
+  appName: string
+  deployment: Deployment
+  components?: Array<Component>
+}
 
-export const DeploymentComponentList = ({
-  appName,
-  deployment,
-  components,
-}: Props) => (
+export const DeploymentComponentList = ({ appName, deployment, components }: Props) => (
   <>
     {components && (
       <>
@@ -36,8 +32,7 @@ export const DeploymentComponentList = ({
                 {component.name}
               </Typography>{' '}
               image <DockerImage path={component.image} />
-              {(component.skipDeployment ||
-                component.commitID !== deployment.gitCommitHash) && (
+              {(component.skipDeployment || component.commitID !== deployment.gitCommitHash) && (
                 <>
                   <> from past deployment</>
                   <GitCommitTags
@@ -53,4 +48,4 @@ export const DeploymentComponentList = ({
       </>
     )}
   </>
-);
+)

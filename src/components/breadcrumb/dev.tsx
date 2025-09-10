@@ -1,4 +1,4 @@
-import { Breadcrumb, type BreadcrumbProps } from './index';
+import { Breadcrumb, type BreadcrumbProps } from './index'
 
 const data: Array<BreadcrumbProps> = [
   {
@@ -17,12 +17,9 @@ const data: Array<BreadcrumbProps> = [
     ],
   },
   {
-    links: [
-      { label: 'Applications', to: '/applications' },
-      { label: 'radix-api' },
-    ],
+    links: [{ label: 'Applications', to: '/applications' }, { label: 'radix-api' }],
   },
-];
+]
 
 export default (
   <div
@@ -39,4 +36,4 @@ export default (
       <Breadcrumb links={x.links} key={i} />
     ))}
   </div>
-);
+)

@@ -1,21 +1,17 @@
-import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
-import type { DnsAlias, DnsExternalAlias } from '../../store/radix-api';
-import { DNSAlias } from './dns_alias';
+import { Accordion, List, Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
+import type { DnsAlias, DnsExternalAlias } from '../../store/radix-api'
+import { DNSAlias } from './dns_alias'
 
-import './style.css';
+import './style.css'
 
 export interface DefaultAppAliasProps {
-  appName: string;
-  dnsAliases?: DnsAlias[] | DnsExternalAlias[];
-  title: string;
+  appName: string
+  dnsAliases?: DnsAlias[] | DnsExternalAlias[]
+  title: string
 }
 
-export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
-  appName,
-  dnsAliases,
-  title,
-}) => (
+export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({ appName, dnsAliases, title }) => (
   <>
     {dnsAliases && dnsAliases.length > 0 && (
       <div className="grid grid--gap-small">
@@ -59,4 +55,4 @@ export const DNSAliases: FunctionComponent<DefaultAppAliasProps> = ({
       </div>
     )}
   </>
-);
+)

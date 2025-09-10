@@ -1,16 +1,10 @@
-import { Icon } from '@equinor/eds-core-react';
-import { check } from '@equinor/eds-icons';
-import { StatusPopover, type StatusPopoverType } from './status-popover';
+import { Icon } from '@equinor/eds-core-react'
+import { check } from '@equinor/eds-icons'
+import { StatusPopover, type StatusPopoverType } from './status-popover'
 
-const types = [
-  'success',
-  'warning',
-  'danger',
-  'none',
-  'default',
-] satisfies StatusPopoverType[];
+const types = ['success', 'warning', 'danger', 'none', 'default'] satisfies StatusPopoverType[]
 
-const labels = ['short', undefined, 'two words'];
+const labels = ['short', undefined, 'two words']
 
 export default (
   <div
@@ -24,16 +18,10 @@ export default (
   >
     {labels.map((label) =>
       types.map((type) => (
-        <StatusPopover
-          icon={<Icon data={check} />}
-          title={type}
-          key={label + type}
-          label={label}
-          type={type}
-        >
+        <StatusPopover icon={<Icon data={check} />} title={type} key={label + type} label={label} type={type}>
           {label}
         </StatusPopover>
       ))
     )}
   </div>
-);
+)

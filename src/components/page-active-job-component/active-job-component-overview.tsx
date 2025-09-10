@@ -1,67 +1,59 @@
-import { Button, CircularProgress } from '@equinor/eds-core-react';
-import useLocalStorage from '../../effects/use-local-storage';
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
+import { Button, CircularProgress } from '@equinor/eds-core-react'
+import useLocalStorage from '../../effects/use-local-storage'
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
 import {
   useGetBatchesQuery,
   useGetEnvironmentQuery,
   useGetJobsQuery,
   useRestartComponentMutation,
-} from '../../store/radix-api';
-import { getEnvsUrl } from '../../utils/routing';
-import { routeWithParams } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { ScheduledBatchList } from '../component/scheduled-job/scheduled-batch-list';
-import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
-import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
-import { EnvironmentVariables } from '../environment-variables';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ComponentReplicaList } from '../page-active-component/component-replica-list';
-import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details';
-import { Overview } from './overview';
+} from '../../store/radix-api'
+import { getEnvsUrl } from '../../utils/routing'
+import { routeWithParams } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { ScheduledBatchList } from '../component/scheduled-job/scheduled-batch-list'
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list'
+import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets'
+import { EnvironmentVariables } from '../environment-variables'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ComponentReplicaList } from '../page-active-component/component-replica-list'
+import { JobComponentVulnerabilityDetails } from './job-component-vulnerability-details'
+import { Overview } from './overview'
 
 type Props = {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-};
-export const ActiveJobComponentOverview = ({
-  appName,
-  envName,
-  jobComponentName,
-}: Props) => {
+  appName: string
+  envName: string
+  jobComponentName: string
+}
+export const ActiveJobComponentOverview = ({ appName, envName, jobComponentName }: Props) => {
   const { data: environment, ...envState } = useGetEnvironmentQuery(
     { appName, envName },
     { skip: !appName || !envName, pollingInterval }
-  );
+  )
   const { data: scheduledJobs, refetch: refetchJobs } = useGetJobsQuery(
     { appName, envName, jobComponentName },
     { skip: !appName || !envName || !jobComponentName, pollingInterval }
-  );
-  const { data: scheduledBatches, refetch: refetchBatches } =
-    useGetBatchesQuery(
-      { appName, envName, jobComponentName },
-      {
-        skip: !appName || !envName || !jobComponentName,
-        pollingInterval,
-      }
-    );
+  )
+  const { data: scheduledBatches, refetch: refetchBatches } = useGetBatchesQuery(
+    { appName, envName, jobComponentName },
+    {
+      skip: !appName || !envName || !jobComponentName,
+      pollingInterval,
+    }
+  )
 
-  const deployment = environment?.activeDeployment;
-  const component = deployment?.components?.find(
-    ({ name }) => name === jobComponentName
-  );
-  const [restartTrigger, restartState] = useRestartComponentMutation();
-  const isStopped = component?.status === 'Stopped';
+  const deployment = environment?.activeDeployment
+  const component = deployment?.components?.find(({ name }) => name === jobComponentName)
+  const [restartTrigger, restartState] = useRestartComponentMutation()
+  const isStopped = component?.status === 'Stopped'
   const restartInProgress =
-    restartState.isLoading ||
-    component?.status === 'Reconciling' ||
-    component?.status === 'Restarting';
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
-    useLocalStorage<boolean>('activeJobComponentEnvVarsListExpanded', true);
-  const [isSingleJobListExpanded, setIsSingleJobListExpanded] =
-    useLocalStorage<boolean>('singleJobListExpanded', false);
+    restartState.isLoading || component?.status === 'Reconciling' || component?.status === 'Restarting'
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
+    'activeJobComponentEnvVarsListExpanded',
+    true
+  )
+  const [isSingleJobListExpanded, setIsSingleJobListExpanded] = useLocalStorage<boolean>('singleJobListExpanded', false)
 
   return (
     <>
@@ -101,11 +93,7 @@ export const ActiveJobComponentOverview = ({
                 {restartInProgress && <CircularProgress size={32} />}
               </div>
             </div>
-            <Overview
-              appName={appName}
-              component={component}
-              deployment={deployment}
-            />
+            <Overview appName={appName} component={component} deployment={deployment} />
 
             <div className="grid grid--gap-large">
               {scheduledJobs && (
@@ -140,11 +128,7 @@ export const ActiveJobComponentOverview = ({
                 replicaList={component.replicaList}
               />
 
-              <JobComponentVulnerabilityDetails
-                appName={appName}
-                envName={envName}
-                componentName={jobComponentName}
-              />
+              <JobComponentVulnerabilityDetails appName={appName} envName={envName} componentName={jobComponentName} />
 
               <ActiveComponentSecrets
                 appName={appName}
@@ -166,5 +150,5 @@ export const ActiveJobComponentOverview = ({
         )}
       </AsyncResource>
     </>
-  );
-};
+  )
+}

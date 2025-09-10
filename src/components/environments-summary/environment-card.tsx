@@ -1,14 +1,8 @@
-import {
-  Chip,
-  CircularProgress,
-  Divider,
-  Icon,
-  Typography,
-} from '@equinor/eds-core-react';
-import { github } from '@equinor/eds-icons';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import { pollingInterval, slowPollingInterval } from '../../store/defaults';
+import { Chip, CircularProgress, Divider, Icon, Typography } from '@equinor/eds-core-react'
+import { github } from '@equinor/eds-icons'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import { pollingInterval, slowPollingInterval } from '../../store/defaults'
 import {
   type Component,
   type DeploymentSummary,
@@ -16,85 +10,67 @@ import {
   type ReplicaResourcesUtilizationResponse,
   useComponentsQuery,
   useGetApplicationResourcesUtilizationQuery,
-} from '../../store/radix-api';
-import {
-  type EnvironmentVulnerabilities,
-  useGetEnvironmentVulnerabilitySummaryQuery,
-} from '../../store/scan-api';
-import { routeWithParams } from '../../utils/string';
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { EnvironmentIngress } from './environment-ingress';
+} from '../../store/radix-api'
+import { type EnvironmentVulnerabilities, useGetEnvironmentVulnerabilitySummaryQuery } from '../../store/scan-api'
+import { routeWithParams } from '../../utils/string'
+import { GitTagLinks } from '../git-tags/git-tag-links'
+import { EnvironmentIngress } from './environment-ingress'
 
-import './style.css';
-import {
-  Severity,
-  UtilizationPopover,
-} from '../utilization-popover/utilization-popover';
-import { DeploymentDetails } from './deployment-details';
-import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers';
+import './style.css'
+import { Severity, UtilizationPopover } from '../utilization-popover/utilization-popover'
+import { DeploymentDetails } from './deployment-details'
+import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers'
 
 type EnvironmentCardProps = {
-  appName: string;
-  env: EnvironmentSummary;
-  repository?: string;
-};
-export const EnvironmentCard = ({
-  appName,
-  env,
-  repository,
-}: EnvironmentCardProps) => {
-  const deployment = env.activeDeployment;
+  appName: string
+  env: EnvironmentSummary
+  repository?: string
+}
+export const EnvironmentCard = ({ appName, env, repository }: EnvironmentCardProps) => {
+  const deployment = env.activeDeployment
 
-  const { data: envScan, isLoading: isEnvScanLoading } =
-    useGetEnvironmentVulnerabilitySummaryQuery(
-      { appName, envName: env.name },
-      { pollingInterval: 0 }
-    );
+  const { data: envScan, isLoading: isEnvScanLoading } = useGetEnvironmentVulnerabilitySummaryQuery(
+    { appName, envName: env.name },
+    { pollingInterval: 0 }
+  )
 
-  const { data: components, isLoading: isComponentsLoading } =
-    useComponentsQuery(
-      {
-        appName,
-        deploymentName: deployment?.name!,
-      },
-      { pollingInterval, skip: !deployment?.name }
-    );
+  const { data: components, isLoading: isComponentsLoading } = useComponentsQuery(
+    {
+      appName,
+      deploymentName: deployment?.name!,
+    },
+    { pollingInterval, skip: !deployment?.name }
+  )
 
-  const { data: utilization, isLoading: isUtilizationLoading } =
-    useGetApplicationResourcesUtilizationQuery(
-      { appName },
-      { pollingInterval: slowPollingInterval }
-    );
+  const { data: utilization, isLoading: isUtilizationLoading } = useGetApplicationResourcesUtilizationQuery(
+    { appName },
+    { pollingInterval: slowPollingInterval }
+  )
 
   return (
     <EnvironmentCardLayout
       appName={appName}
       env={env}
       deployment={deployment}
-      isLoading={
-        isComponentsLoading || isUtilizationLoading || isEnvScanLoading
-      }
+      isLoading={isComponentsLoading || isUtilizationLoading || isEnvScanLoading}
       envScan={envScan}
       components={components}
       repository={repository}
       utilization={utilization}
     />
-  );
-};
+  )
+}
 
 export type EnvironmentCardLayoutProps = {
-  appName: string;
-  isLoading: boolean;
-  components?: Component[];
-  repository?: string;
-  env: Pick<
-    EnvironmentSummary,
-    'name' | 'status' | 'branchMapping' | 'activeDeployment'
-  >;
-  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags'>;
-  envScan?: EnvironmentVulnerabilities;
-  utilization?: ReplicaResourcesUtilizationResponse;
-};
+  appName: string
+  isLoading: boolean
+  components?: Component[]
+  repository?: string
+  env: Pick<EnvironmentSummary, 'name' | 'status' | 'branchMapping' | 'activeDeployment'>
+  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags'>
+  envScan?: EnvironmentVulnerabilities
+  utilization?: ReplicaResourcesUtilizationResponse
+}
 
 export const EnvironmentCardLayout = ({
   appName,
@@ -146,20 +122,12 @@ export const EnvironmentCardLayout = ({
       <Divider variant="small" />
       <div className="env_card_content grid grid--gap-medium">
         {env.status === 'Orphan' && (
-          <Typography
-            group="ui"
-            variant="chip__badge"
-            token={{ fontStyle: 'italic' }}
-          >
+          <Typography group="ui" variant="chip__badge" token={{ fontStyle: 'italic' }}>
             Orphan environment
           </Typography>
         )}
 
-        <EnvironmentIngress
-          components={components}
-          appName={appName}
-          envName={env.name}
-        />
+        <EnvironmentIngress components={components} appName={appName} envName={env.name} />
 
         <DeploymentDetails appName={appName} deployment={deployment} />
 
@@ -177,14 +145,11 @@ export const EnvironmentCardLayout = ({
           {deployment?.gitTags && (
             <div className="env_card_tags grid grid--gap-x-small grid--auto-columns">
               <Icon data={github} size={18} />
-              <GitTagLinks
-                gitTags={deployment.gitTags}
-                repository={repository}
-              />
+              <GitTagLinks gitTags={deployment.gitTags} repository={repository} />
             </div>
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

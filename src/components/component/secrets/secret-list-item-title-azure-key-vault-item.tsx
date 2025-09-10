@@ -1,37 +1,29 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { stop } from '@equinor/eds-icons';
-import { useState } from 'react';
+import { Icon, Table, Typography } from '@equinor/eds-core-react'
+import { stop } from '@equinor/eds-icons'
+import { useState } from 'react'
 import {
   type AzureKeyVaultSecretVersion,
   type Secret,
   useGetAzureKeyVaultSecretVersionsQuery,
-} from '../../../store/radix-api';
-import {
-  smallReplicaName,
-  smallScheduledBatchName,
-  smallScheduledJobName,
-} from '../../../utils/string';
-import { ScrimPopup } from '../../scrim-popup';
-import { Duration } from '../../time/duration';
+} from '../../../store/radix-api'
+import { smallReplicaName, smallScheduledBatchName, smallScheduledJobName } from '../../../utils/string'
+import { ScrimPopup } from '../../scrim-popup'
+import { Duration } from '../../time/duration'
 
-import '../style.css';
+import '../style.css'
 
-function consumerSecretName(
-  replicaName: string,
-  batchName?: string,
-  jobName?: string
-): string {
+function consumerSecretName(replicaName: string, batchName?: string, jobName?: string): string {
   if (batchName && batchName.length > 0) {
     // show only first secret-version entry for pods of this batch
-    return `batch: ${smallScheduledBatchName(batchName)}`;
+    return `batch: ${smallScheduledBatchName(batchName)}`
   }
   if (jobName && jobName.length > 0) {
-    return `job: ${smallScheduledJobName(jobName)}`;
+    return `job: ${smallScheduledJobName(jobName)}`
   }
   if (replicaName.toLowerCase() === 'new jobs') {
-    return 'New job';
+    return 'New job'
   }
-  return `replica: ${smallReplicaName(replicaName)}`;
+  return `replica: ${smallReplicaName(replicaName)}`
 }
 
 const ConsumerSecretCreated = ({
@@ -43,25 +35,25 @@ const ConsumerSecretCreated = ({
   jobName,
 }: AzureKeyVaultSecretVersion) => {
   if (batchName && batchName.length > 0) {
-    return <Duration start={batchCreated} end={new Date()} />;
+    return <Duration start={batchCreated} end={new Date()} />
   }
   if (jobName && jobName.length > 0) {
-    return <Duration start={jobCreated} end={new Date()} />;
+    return <Duration start={jobCreated} end={new Date()} />
   }
   if (replicaName.toLowerCase() === 'new jobs') {
-    return <></>;
+    return <></>
   }
-  return <Duration start={new Date(replicaCreated)} end={new Date()} />;
-};
+  return <Duration start={new Date(replicaCreated)} end={new Date()} />
+}
 
 type AzureKeyVaultItemProps = {
-  appName: string;
-  envName: string;
-  componentName: string;
-  title: string;
-  scrimTitle?: string;
-  secret: Pick<Secret, 'resource' | 'id'>;
-};
+  appName: string
+  envName: string
+  componentName: string
+  title: string
+  scrimTitle?: string
+  secret: Pick<Secret, 'resource' | 'id'>
+}
 export const SecretListItemTitleAzureKeyVaultItem = ({
   appName,
   envName,
@@ -70,8 +62,8 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
   scrimTitle,
   secret,
 }: AzureKeyVaultItemProps) => {
-  const [visibleScrim, setVisibleScrim] = useState(false);
-  const [pollingInterval, setPollingInterval] = useState(0);
+  const [visibleScrim, setVisibleScrim] = useState(false)
+  const [pollingInterval, setPollingInterval] = useState(0)
 
   const { data, refetch } = useGetAzureKeyVaultSecretVersionsQuery(
     {
@@ -82,24 +74,16 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
       secretName: secret.id,
     },
     {
-      skip:
-        !appName ||
-        !envName ||
-        !componentName ||
-        !secret.resource ||
-        !secret.id,
+      skip: !appName || !envName || !componentName || !secret.resource || !secret.id,
       pollingInterval,
     }
-  );
+  )
 
   const filteredData = (data || []).filter(
     ({ batchName, version }, i, arr) =>
       // avoid showing duplicate secrets for job pods with same batchName and version
-      !batchName ||
-      arr.findIndex(
-        (y) => y.batchName === batchName && y.version === version
-      ) === i
-  );
+      !batchName || arr.findIndex((y) => y.batchName === batchName && y.version === version) === i
+  )
 
   return (
     <>
@@ -108,9 +92,9 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
         as="span"
         token={{ textDecoration: 'none' }}
         onClick={() => {
-          setVisibleScrim(true);
-          setPollingInterval(8000);
-          refetch();
+          setVisibleScrim(true)
+          setPollingInterval(8000)
+          refetch()
         }}
       >
         {title}
@@ -120,8 +104,8 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
         title={scrimTitle ?? `${secret.resource}: ${secret.id}`}
         open={visibleScrim}
         onClose={() => {
-          setVisibleScrim(false);
-          setPollingInterval(0);
+          setVisibleScrim(false)
+          setPollingInterval(0)
         }}
         isDismissable
       >
@@ -140,13 +124,7 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
                   <Table.Row key={i}>
                     <Table.Cell>{x.version}</Table.Cell>
                     <Table.Cell>
-                      <Typography as="span">
-                        {consumerSecretName(
-                          x.replicaName,
-                          x.batchName,
-                          x.jobName
-                        )}
-                      </Typography>
+                      <Typography as="span">{consumerSecretName(x.replicaName, x.batchName, x.jobName)}</Typography>
                     </Table.Cell>
                     <Table.Cell>
                       <ConsumerSecretCreated {...x} />
@@ -164,5 +142,5 @@ export const SecretListItemTitleAzureKeyVaultItem = ({
         </div>
       </ScrimPopup>
     </>
-  );
-};
+  )
+}

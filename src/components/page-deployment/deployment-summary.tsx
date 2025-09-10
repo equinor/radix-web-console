@@ -1,39 +1,36 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { github } from '@equinor/eds-icons';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import type { Deployment } from '../../store/radix-api';
-import { routeWithParams, smallJobName } from '../../utils/string';
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { github } from '@equinor/eds-icons'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import type { Deployment } from '../../store/radix-api'
+import { routeWithParams, smallJobName } from '../../utils/string'
+import { GitTagLinks } from '../git-tags/git-tag-links'
+import { RelativeToNow } from '../time/relative-to-now'
 
-import './style.css';
-import { CommitHash } from '../commit-hash';
+import './style.css'
+import { CommitHash } from '../commit-hash'
 
 type Props = {
-  appName: string;
-  deployment: Deployment;
-};
+  appName: string
+  deployment: Deployment
+}
 
 function getBuildCacheStatus(deployment: Deployment | undefined): string {
   if (!deployment || deployment.useBuildKit !== true) {
-    return '';
+    return ''
   }
-  const statuses = [];
+  const statuses = []
   if (deployment.refreshBuildCache === true) {
-    statuses.push('refreshed');
+    statuses.push('refreshed')
   }
   statuses.push(
-    typeof deployment.useBuildCache !== 'boolean' ||
-      deployment.useBuildCache === true
-      ? 'used'
-      : 'not used'
-  );
-  return statuses.join(', ');
+    typeof deployment.useBuildCache !== 'boolean' || deployment.useBuildCache === true ? 'used' : 'not used'
+  )
+  return statuses.join(', ')
 }
 
 export const DeploymentSummary = ({ appName, deployment }: Props) => {
-  const buildCacheStatus = getBuildCacheStatus(deployment);
+  const buildCacheStatus = getBuildCacheStatus(deployment)
   return (
     <div className="grid grid--gap-medium">
       <Typography variant="h4">Overview</Typography>
@@ -62,9 +59,7 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
           <Typography>
             Active from{' '}
             <strong>
-              <RelativeToNow
-                time={deployment.activeFrom && new Date(deployment.activeFrom)}
-              />
+              <RelativeToNow time={deployment.activeFrom && new Date(deployment.activeFrom)} />
             </strong>
           </Typography>
 
@@ -79,17 +74,13 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
           {typeof deployment.useBuildKit === 'boolean' && (
             <>
               <Typography>
-                Build Kit{' '}
-                <strong>
-                  {deployment.useBuildKit === true ? 'used' : 'not used'}
-                </strong>
+                Build Kit <strong>{deployment.useBuildKit === true ? 'used' : 'not used'}</strong>
               </Typography>
-              {deployment.useBuildKit === true &&
-                buildCacheStatus.length > 0 && (
-                  <Typography>
-                    Build Cache <strong>{buildCacheStatus}</strong>
-                  </Typography>
-                )}
+              {deployment.useBuildKit === true && buildCacheStatus.length > 0 && (
+                <Typography>
+                  Build Cache <strong>{buildCacheStatus}</strong>
+                </Typography>
+              )}
             </>
           )}
           {(deployment.gitRef || deployment.gitCommitHash) && (
@@ -97,17 +88,13 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
               Built from{' '}
               {deployment.gitRef && (
                 <>
-                  {deployment.gitRefType ?? 'branch'}{' '}
-                  <strong>{deployment.gitRef}</strong>
+                  {deployment.gitRefType ?? 'branch'} <strong>{deployment.gitRef}</strong>
                 </>
               )}
               {deployment.gitCommitHash && (
                 <>
                   {' commit '}
-                  <CommitHash
-                    repo={deployment.repository}
-                    commit={deployment.gitCommitHash}
-                  />
+                  <CommitHash repo={deployment.repository} commit={deployment.gitCommitHash} />
                 </>
               )}
             </Typography>
@@ -134,15 +121,12 @@ export const DeploymentSummary = ({ appName, deployment }: Props) => {
           {deployment.gitTags && (
             <div className="deploy-summary_tags grid grid--gap-x-small grid--auto-columns">
               <Typography>Tags</Typography>
-              <GitTagLinks
-                gitTags={deployment.gitTags}
-                repository={deployment.repository}
-              />
+              <GitTagLinks gitTags={deployment.gitTags} repository={deployment.repository} />
               <Icon data={github} size={24} />
             </div>
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

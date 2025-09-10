@@ -1,17 +1,15 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { ScheduledJobSummary } from '../../store/radix-api';
-import { pluraliser } from '../../utils/string';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+import { Typography } from '@equinor/eds-core-react'
+import type { ScheduledJobSummary } from '../../store/radix-api'
+import { pluraliser } from '../../utils/string'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
-const timesPluraliser = pluraliser('time', 'times');
+const timesPluraliser = pluraliser('time', 'times')
 
 type Props = {
-  job: ScheduledJobSummary;
-};
-export const ScheduleJobDuration = ({
-  job: { created, started, ended, failedCount },
-}: Props) => (
+  job: ScheduledJobSummary
+}
+export const ScheduleJobDuration = ({ job: { created, started, ended, failedCount } }: Props) => (
   <>
     <Typography>
       Created{' '}
@@ -48,4 +46,4 @@ export const ScheduleJobDuration = ({
       </Typography>
     )}
   </>
-);
+)

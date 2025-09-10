@@ -1,13 +1,8 @@
-import { Server } from 'miragejs';
-import type {
-  Deployment,
-  GetDeploymentApiResponse,
-} from '../../store/radix-api';
-import { DeploymentOverview } from './deployment-overview';
+import { Server } from 'miragejs'
+import type { Deployment, GetDeploymentApiResponse } from '../../store/radix-api'
+import { DeploymentOverview } from './deployment-overview'
 
-const testData: Array<
-  Parameters<typeof DeploymentOverview>[0] & { deployment: Deployment }
-> = [
+const testData: Array<Parameters<typeof DeploymentOverview>[0] & { deployment: Deployment }> = [
   {
     appName: 'my-app-1',
     deploymentName: 'qa-qkpww-kipvksuj',
@@ -37,10 +32,7 @@ const testData: Array<
               replicaStatus: { status: 'Pending' },
             },
           ],
-          secrets: [
-            'server-storage1-csiazurecreds-accountkey',
-            'server-storage1-csiazurecreds-accountname',
-          ],
+          secrets: ['server-storage1-csiazurecreds-accountkey', 'server-storage1-csiazurecreds-accountname'],
           variables: {
             ASPNETCORE_URLS: 'http://*:5005',
             COMPUTE_IMAGE_PATH: '/app/computeimages',
@@ -67,15 +59,13 @@ const testData: Array<
             {
               name: 'auth-proxy-79db7d5668-nsz8c',
               created: '2021-07-27T06:22:59.000Z',
-              statusMessage:
-                "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
+              statusMessage: "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
               replicaStatus: { status: 'Failed' },
             },
             {
               name: 'auth-proxy-85f5f8474c-5n972',
               created: '2021-07-27T06:23:00.000Z',
-              statusMessage:
-                "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
+              statusMessage: "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
               replicaStatus: { status: 'Failed' },
             },
           ],
@@ -89,8 +79,7 @@ const testData: Array<
             OAUTH2_PROXY_COOKIE_REFRESH: '60m',
             OAUTH2_PROXY_EMAIL_DOMAINS: '*',
             OAUTH2_PROXY_HTTP_ADDRESS: 'http://:8000',
-            OAUTH2_PROXY_OIDC_ISSUER_URL:
-              'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
+            OAUTH2_PROXY_OIDC_ISSUER_URL: 'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
             OAUTH2_PROXY_PASS_ACCESS_TOKEN: 'true',
             OAUTH2_PROXY_PASS_USER_HEADERS: 'false',
             OAUTH2_PROXY_PROVIDER: 'oidc',
@@ -99,8 +88,7 @@ const testData: Array<
             OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: 'true',
             OAUTH2_PROXY_UPSTREAMS: 'http://server:5005',
             RADIX_APP: 'my-app-1',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'auth-proxy-my-app-qa.weekly-30.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'auth-proxy-my-app-qa.weekly-30.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-30',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'auth-proxy',
@@ -110,8 +98,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '',
             RADIX_PORTS: '(8000)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'auth-proxy-my-app-qa.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'auth-proxy-my-app-qa.dev.radix.equinor.com',
           },
         },
         {
@@ -208,10 +195,7 @@ const testData: Array<
               replicaStatus: { status: 'Pending' },
             },
           ],
-          secrets: [
-            'server-storage1-csiazurecreds-accountkey',
-            'server-storage1-csiazurecreds-accountname',
-          ],
+          secrets: ['server-storage1-csiazurecreds-accountkey', 'server-storage1-csiazurecreds-accountname'],
           variables: {
             ASPNETCORE_URLS: 'http://*:5005',
             COMPUTE_IMAGE_PATH: '/app/computeimages',
@@ -238,15 +222,13 @@ const testData: Array<
             {
               name: 'auth-proxy-79db7d5668-nsz8c',
               created: '2021-07-27T06:22:59.000Z',
-              statusMessage:
-                "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
+              statusMessage: "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
               replicaStatus: { status: 'Failed' },
             },
             {
               name: 'auth-proxy-85f5f8474c-5n972',
               created: '2021-07-27T06:23:00.000Z',
-              statusMessage:
-                "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
+              statusMessage: "couldn't find key OAUTH2_PROXY_CLIENT_SECRET in Secret my-app-qa/auth-proxy-gcufgtth",
               replicaStatus: { status: 'Failed' },
             },
           ],
@@ -260,8 +242,7 @@ const testData: Array<
             OAUTH2_PROXY_COOKIE_REFRESH: '60m',
             OAUTH2_PROXY_EMAIL_DOMAINS: '*',
             OAUTH2_PROXY_HTTP_ADDRESS: 'http://:8000',
-            OAUTH2_PROXY_OIDC_ISSUER_URL:
-              'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
+            OAUTH2_PROXY_OIDC_ISSUER_URL: 'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0',
             OAUTH2_PROXY_PASS_ACCESS_TOKEN: 'true',
             OAUTH2_PROXY_PASS_USER_HEADERS: 'false',
             OAUTH2_PROXY_PROVIDER: 'oidc',
@@ -270,8 +251,7 @@ const testData: Array<
             OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: 'true',
             OAUTH2_PROXY_UPSTREAMS: 'http://server:5005',
             RADIX_APP: 'my-app-2',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'auth-proxy-my-app-qa.weekly-30.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'auth-proxy-my-app-qa.weekly-30.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-30',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'auth-proxy',
@@ -281,8 +261,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '',
             RADIX_PORTS: '(8000)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'auth-proxy-my-app-qa.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'auth-proxy-my-app-qa.dev.radix.equinor.com',
           },
         },
         {
@@ -316,7 +295,7 @@ const testData: Array<
       ],
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -326,10 +305,10 @@ new Server({
       this.get<GetDeploymentApiResponse>(
         `/api/v1/applications/:appName/deployments/${deploymentName}`,
         () => deployment
-      );
-    });
+      )
+    })
   },
-});
+})
 
 export default (
   <div
@@ -354,4 +333,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

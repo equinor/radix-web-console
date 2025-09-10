@@ -1,6 +1,6 @@
-import type { ComponentProps } from 'react';
-import type { ExternalDns } from '../../store/radix-api';
-import { ExternalDNSList } from '.';
+import type { ComponentProps } from 'react'
+import type { ExternalDns } from '../../store/radix-api'
+import { ExternalDNSList } from '.'
 
 const testData: Array<ComponentProps<typeof ExternalDNSList>> = [
   {
@@ -90,7 +90,7 @@ const testData: Array<ComponentProps<typeof ExternalDNSList>> = [
       },
     ],
   },
-];
+]
 
 export default (
   <>
@@ -109,4 +109,4 @@ export default (
       </div>
     ))}
   </>
-);
+)

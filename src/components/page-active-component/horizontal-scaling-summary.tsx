@@ -1,15 +1,15 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-import { isNil } from 'lodash-es';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import { isNil } from 'lodash-es'
 import type {
   HorizontalScalingSummary as HorizontalScalingSummaryModel,
   HorizontalScalingSummaryTriggerStatus,
-} from '../../store/radix-api';
-import { pluraliser } from '../../utils/string';
-import { Alert } from '../alert';
+} from '../../store/radix-api'
+import { pluraliser } from '../../utils/string'
+import { Alert } from '../alert'
 
 type Props = {
-  summary: HorizontalScalingSummaryModel;
-};
+  summary: HorizontalScalingSummaryModel
+}
 
 export const HorizontalScalingSummary = ({ summary }: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
@@ -71,39 +71,31 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
             )}
 
             {summary.triggers.map((trigger, i) => (
-              <TriggerStatus
-                key={(trigger.name ?? trigger.type ?? 'unknown') + i}
-                trigger={trigger}
-              />
+              <TriggerStatus key={(trigger.name ?? trigger.type ?? 'unknown') + i} trigger={trigger} />
             ))}
           </dl>
         </div>
       </Accordion.Panel>
     </Accordion.Item>
   </Accordion>
-);
+)
 
 type TriggerStatusProps = {
-  trigger: HorizontalScalingSummaryTriggerStatus;
-};
+  trigger: HorizontalScalingSummaryTriggerStatus
+}
 const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
-  let unitFn = pluraliser('%', '%');
+  let unitFn = pluraliser('%', '%')
 
-  if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas');
-  if (trigger.type == 'azure-servicebus')
-    unitFn = pluraliser('message', 'messages');
-  if (trigger.type == 'azure-eventhub') unitFn = pluraliser('event', 'events');
+  if (trigger.type == 'cron') unitFn = pluraliser('replica', 'replicas')
+  if (trigger.type == 'azure-servicebus') unitFn = pluraliser('message', 'messages')
+  if (trigger.type == 'azure-eventhub') unitFn = pluraliser('event', 'events')
 
   return (
     <>
       <Typography as="dt">{trigger.name}:</Typography>
       <Typography as="dd">
-        <strong>
-          {trigger.currentUtilization
-            ? unitFn(Number(trigger.currentUtilization))
-            : '-'}
-        </strong>{' '}
-        of <strong>{unitFn(Number(trigger.targetUtilization))} </strong>
+        <strong>{trigger.currentUtilization ? unitFn(Number(trigger.currentUtilization)) : '-'}</strong> of{' '}
+        <strong>{unitFn(Number(trigger.targetUtilization))} </strong>
         target utilization
         {trigger.error && (
           <>
@@ -113,5 +105,5 @@ const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
         )}
       </Typography>
     </>
-  );
-};
+  )
+}

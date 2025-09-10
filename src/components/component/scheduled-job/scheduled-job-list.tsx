@@ -1,90 +1,56 @@
-import {
-  Accordion,
-  Icon,
-  Menu,
-  Table,
-  Typography,
-} from '@equinor/eds-core-react';
-import {
-  apps,
-  chevron_down,
-  chevron_up,
-  delete_to_trash,
-  replay,
-  stop,
-} from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import {
-  Fragment,
-  type FunctionComponent,
-  useCallback,
-  useMemo,
-  useState,
-} from 'react';
-import { Link } from 'react-router-dom';
+import { Accordion, Icon, Menu, Table, Typography } from '@equinor/eds-core-react'
+import { apps, chevron_down, chevron_up, delete_to_trash, replay, stop } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import { Fragment, type FunctionComponent, useCallback, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   type ReplicaSummary,
   type ScheduledJobSummary,
   useDeleteJobMutation,
   useStopJobMutation,
-} from '../../../store/radix-api';
-import { promiseHandler } from '../../../utils/promise-handler';
-import {
-  getScheduledBatchJobUrl,
-  getScheduledJobUrl,
-} from '../../../utils/routing';
-import {
-  dataSorter,
-  type SortDirection,
-  sortCompareDate,
-  sortCompareString,
-} from '../../../utils/sort-utils';
-import {
-  routeWithParams,
-  smallDeploymentName,
-  smallScheduledJobName,
-} from '../../../utils/string';
-import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils';
-import { ReplicaImage } from '../../replica-image';
-import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
-import { Duration } from '../../time/duration';
-import { RelativeToNow } from '../../time/relative-to-now';
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { Payload } from './payload';
-import { RestartJob } from './restart-job';
+} from '../../../store/radix-api'
+import { promiseHandler } from '../../../utils/promise-handler'
+import { getScheduledBatchJobUrl, getScheduledJobUrl } from '../../../utils/routing'
+import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../../utils/sort-utils'
+import { routeWithParams, smallDeploymentName, smallScheduledJobName } from '../../../utils/string'
+import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils'
+import { ReplicaImage } from '../../replica-image'
+import { ScrimPopup } from '../../scrim-popup'
+import { ProgressStatusBadge } from '../../status-badges'
+import { Duration } from '../../time/duration'
+import { RelativeToNow } from '../../time/relative-to-now'
+import { JobContextMenu } from './job-context-menu'
+import { JobDeploymentLink } from './job-deployment-link'
+import { Payload } from './payload'
+import { RestartJob } from './restart-job'
 
-import '../style.css';
-import { routes } from '../../../routes';
+import '../style.css'
+import { routes } from '../../../routes'
 
 function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
-  return status === 'Waiting' || status === 'Running';
+  return status === 'Waiting' || status === 'Running'
 }
 
 const JobReplicaInfo: FunctionComponent<{
-  replicaList?: Array<ReplicaSummary>;
+  replicaList?: Array<ReplicaSummary>
 }> = ({ replicaList }) =>
   replicaList && replicaList.length > 0 ? (
     <ReplicaImage replica={replicaList[0]} />
   ) : (
-    <Typography>
-      Unable to get image tag and digest. The container for this job no longer
-      exists.
-    </Typography>
-  );
+    <Typography>Unable to get image tag and digest. The container for this job no longer exists.</Typography>
+  )
 
 export const ScheduledJobList: FunctionComponent<{
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  batchName?: string;
-  totalJobCount: number;
-  scheduledJobList?: Array<ScheduledJobSummary>;
-  isDeletable?: boolean; // set if jobs can be deleted
-  fetchJobs?: () => void;
-  isExpanded?: boolean;
-  onExpanded?: (isExpanded: boolean) => void;
+  appName: string
+  envName: string
+  jobComponentName: string
+  batchName?: string
+  totalJobCount: number
+  scheduledJobList?: Array<ScheduledJobSummary>
+  isDeletable?: boolean // set if jobs can be deleted
+  fetchJobs?: () => void
+  isExpanded?: boolean
+  onExpanded?: (isExpanded: boolean) => void
 }> = ({
   appName,
   envName,
@@ -97,49 +63,33 @@ export const ScheduledJobList: FunctionComponent<{
   isExpanded,
   onExpanded,
 }) => {
-  const [deleteJob] = useDeleteJobMutation();
-  const [stopJob] = useStopJobMutation();
-  const [dateSort, setDateSort] = useState<SortDirection>(undefined);
-  const [statusSort, setStatusSort] = useState<SortDirection>(undefined);
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<
-    Record<string, boolean>
-  >({});
-  const [visibleRestartScrims, setVisibleRestartScrims] = useState<
-    Record<string, boolean>
-  >({});
+  const [deleteJob] = useDeleteJobMutation()
+  const [stopJob] = useStopJobMutation()
+  const [dateSort, setDateSort] = useState<SortDirection>(undefined)
+  const [statusSort, setStatusSort] = useState<SortDirection>(undefined)
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
+  const [visiblePayloadScrims, setVisiblePayloadScrims] = useState<Record<string, boolean>>({})
+  const [visibleRestartScrims, setVisibleRestartScrims] = useState<Record<string, boolean>>({})
 
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
-  const setVisiblePayloadScrim = useCallback<
-    (id: string, visible: boolean) => void
-  >(
+  )
+  const setVisiblePayloadScrim = useCallback<(id: string, visible: boolean) => void>(
     (id, visible) => setVisiblePayloadScrims((x) => ({ ...x, [id]: visible })),
     []
-  );
-  const setVisibleRestartScrim = useCallback<
-    (id: string, visible: boolean) => void
-  >(
+  )
+  const setVisibleRestartScrim = useCallback<(id: string, visible: boolean) => void>(
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
-  );
+  )
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledJobList, [
-      (x, y) =>
-        sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
-      (x, y) =>
-        sortCompareString(
-          x.status,
-          y.status,
-          statusSort,
-          false,
-          () => !!statusSort
-        ),
-    ]);
-  }, [dateSort, scheduledJobList, statusSort]);
+      (x, y) => sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
+      (x, y) => sortCompareString(x.status, y.status, statusSort, false, () => !!statusSort),
+    ])
+  }, [dateSort, scheduledJobList, statusSort])
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -161,19 +111,11 @@ export const ScheduledJobList: FunctionComponent<{
                     <Table.Cell />
                     <Table.Cell>Name</Table.Cell>
                     <Table.Cell>Job ID</Table.Cell>
-                    <Table.Cell
-                      sort="none"
-                      onClick={() =>
-                        setStatusSort(getNewSortDir(statusSort, true))
-                      }
-                    >
+                    <Table.Cell sort="none" onClick={() => setStatusSort(getNewSortDir(statusSort, true))}>
                       Status
                       <TableSortIcon direction={statusSort} />
                     </Table.Cell>
-                    <Table.Cell
-                      sort="none"
-                      onClick={() => setDateSort(getNewSortDir(dateSort, true))}
-                    >
+                    <Table.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort, true))}>
                       Created
                       <TableSortIcon direction={dateSort} />
                     </Table.Cell>
@@ -196,15 +138,8 @@ export const ScheduledJobList: FunctionComponent<{
                             'border-bottom-transparent': expanded,
                           })}
                         >
-                          <Table.Cell
-                            className={'fitwidth padding-right-0'}
-                            variant="icon"
-                          >
-                            <Typography
-                              link
-                              as="span"
-                              onClick={() => expandRow(job.name)}
-                            >
+                          <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
+                            <Typography link as="span" onClick={() => expandRow(job.name)}>
                               <Icon
                                 size={24}
                                 data={expanded ? chevron_up : chevron_down}
@@ -219,19 +154,8 @@ export const ScheduledJobList: FunctionComponent<{
                               as={Link}
                               to={
                                 batchName
-                                  ? getScheduledBatchJobUrl(
-                                      appName,
-                                      envName,
-                                      jobComponentName,
-                                      batchName,
-                                      job.name
-                                    )
-                                  : getScheduledJobUrl(
-                                      appName,
-                                      envName,
-                                      jobComponentName,
-                                      job.name
-                                    )
+                                  ? getScheduledBatchJobUrl(appName, envName, jobComponentName, batchName, job.name)
+                                  : getScheduledJobUrl(appName, envName, jobComponentName, job.name)
                               }
                               link
                               token={{ textDecoration: 'none' }}
@@ -247,10 +171,7 @@ export const ScheduledJobList: FunctionComponent<{
                             <RelativeToNow time={job.created} capitalize />
                           </Table.Cell>
                           <Table.Cell className="whitespace-nowrap">
-                            <Duration
-                              start={job.created}
-                              end={job.ended ? new Date(job.ended) : new Date()}
-                            />
+                            <Duration start={job.created} end={job.ended ? new Date(job.ended) : new Date()} />
                           </Table.Cell>
                           <Table.Cell>
                             <Typography
@@ -270,9 +191,7 @@ export const ScheduledJobList: FunctionComponent<{
                             <ScrimPopup
                               title={`Payload for job: ${job.name}`}
                               open={!!visiblePayloadScrims[job.name]}
-                              onClose={() =>
-                                setVisiblePayloadScrim(job.name, false)
-                              }
+                              onClose={() => setVisiblePayloadScrim(job.name, false)}
                               isDismissable
                             >
                               <Payload
@@ -285,9 +204,7 @@ export const ScheduledJobList: FunctionComponent<{
                             <ScrimPopup
                               title={`Restart job ${smallJobName}`}
                               open={!!visibleRestartScrims[job.name]}
-                              onClose={() =>
-                                setVisibleRestartScrim(job.name, false)
-                              }
+                              onClose={() => setVisibleRestartScrim(job.name, false)}
                               isDismissable
                             >
                               <RestartJob
@@ -298,21 +215,14 @@ export const ScheduledJobList: FunctionComponent<{
                                 jobName={job.name}
                                 smallJobName={smallJobName}
                                 onSuccess={refreshJobs}
-                                onDone={() =>
-                                  setVisibleRestartScrim(job.name, false)
-                                }
+                                onDone={() => setVisibleRestartScrim(job.name, false)}
                               />
                             </ScrimPopup>
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
                                   key={0}
-                                  onClick={() =>
-                                    setVisiblePayloadScrim(
-                                      job.name,
-                                      !visiblePayloadScrims[job.name]
-                                    )
-                                  }
+                                  onClick={() => setVisiblePayloadScrim(job.name, !visiblePayloadScrims[job.name])}
                                 >
                                   <Icon data={apps} /> Payload
                                 </Menu.Item>,
@@ -336,12 +246,7 @@ export const ScheduledJobList: FunctionComponent<{
                                 </Menu.Item>,
                                 <Menu.Item
                                   key={2}
-                                  onClick={() =>
-                                    setVisibleRestartScrim(
-                                      job.name,
-                                      !visibleRestartScrims[job.name]
-                                    )
-                                  }
+                                  onClick={() => setVisibleRestartScrim(job.name, !visibleRestartScrims[job.name])}
                                 >
                                   <Icon data={replay} /> Restart
                                 </Menu.Item>,
@@ -381,9 +286,7 @@ export const ScheduledJobList: FunctionComponent<{
                                     deploymentName={job.deploymentName}
                                   />
                                 ) : (
-                                  <JobReplicaInfo
-                                    replicaList={job.replicaList}
-                                  />
+                                  <JobReplicaInfo replicaList={job.replicaList} />
                                 )}
                               </div>
                             </Table.Cell>
@@ -400,5 +303,5 @@ export const ScheduledJobList: FunctionComponent<{
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}

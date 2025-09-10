@@ -1,10 +1,8 @@
-import { Response, Server } from 'miragejs';
-import type { ScheduledJobSummary } from '../../store/radix-api';
-import { PageScheduledJob } from '.';
+import { Response, Server } from 'miragejs'
+import type { ScheduledJobSummary } from '../../store/radix-api'
+import { PageScheduledJob } from '.'
 
-const testData: Array<
-  Parameters<typeof PageScheduledJob>[0] & { jobData: ScheduledJobSummary }
-> = [
+const testData: Array<Parameters<typeof PageScheduledJob>[0] & { jobData: ScheduledJobSummary }> = [
   {
     appName: 'succeeded-app',
     envName: 'succeeded-env',
@@ -59,7 +57,7 @@ const testData: Array<
       deploymentName: 'unknown-deployment',
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -69,38 +67,32 @@ new Server({
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/jobs/${scheduledJobName}`,
         () => jobData
-      );
-    });
+      )
+    })
 
     // Mock response for logs
     this.get(
       '/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/scheduledjobs/:scheduledJobName/logs',
       (_, { params: { scheduledJobName } }) =>
-        scheduledJobName !== 'no-job'
-          ? `fake log data for job ${scheduledJobName}`
-          : new Response(404)
-    );
+        scheduledJobName !== 'no-job' ? `fake log data for job ${scheduledJobName}` : new Response(404)
+    )
   },
-});
+})
 
 export default (
   <>
-    {testData.map(
-      ({ appName, envName, jobComponentName, scheduledJobName }, i) => (
-        <div
-          key={i}
-          className="grid grid--gap-medium"
-          style={{
-            backgroundColor: 'var(--eds_ui_background__default)',
-            marginBottom: 'var(--eds_spacing_x_large)',
-            padding: 'var(--eds_spacing_medium)',
-          }}
-        >
-          <PageScheduledJob
-            {...{ appName, envName, jobComponentName, scheduledJobName }}
-          />
-        </div>
-      )
-    )}
+    {testData.map(({ appName, envName, jobComponentName, scheduledJobName }, i) => (
+      <div
+        key={i}
+        className="grid grid--gap-medium"
+        style={{
+          backgroundColor: 'var(--eds_ui_background__default)',
+          marginBottom: 'var(--eds_spacing_x_large)',
+          padding: 'var(--eds_spacing_medium)',
+        }}
+      >
+        <PageScheduledJob {...{ appName, envName, jobComponentName, scheduledJobName }} />
+      </div>
+    ))}
   </>
-);
+)

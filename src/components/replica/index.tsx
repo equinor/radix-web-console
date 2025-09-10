@@ -1,30 +1,30 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-import type React from 'react';
-import { useEffect, useState } from 'react';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import type React from 'react'
+import { useEffect, useState } from 'react'
 
-import { useInterval } from '../../effects/use-interval';
-import type { ReplicaSummary } from '../../store/radix-api';
-import type { FetchQueryResult } from '../../store/types';
-import { smallReplicaName } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Code } from '../code';
-import { ReplicaImage } from '../replica-image';
-import { ResourceRequirements } from '../resource-requirements';
-import { ReplicaStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+import { useInterval } from '../../effects/use-interval'
+import type { ReplicaSummary } from '../../store/radix-api'
+import type { FetchQueryResult } from '../../store/types'
+import { smallReplicaName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Code } from '../code'
+import { ReplicaImage } from '../replica-image'
+import { ResourceRequirements } from '../resource-requirements'
+import { ReplicaStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 interface ReplicaElements {
-  title?: React.JSX.Element;
-  duration?: React.JSX.Element;
-  status?: React.JSX.Element;
-  state?: React.JSX.Element;
+  title?: React.JSX.Element
+  duration?: React.JSX.Element
+  status?: React.JSX.Element
+  state?: React.JSX.Element
 }
 
-type ReplicaDurationProps = { created: number | string | Date; ended?: Date };
+type ReplicaDurationProps = { created: number | string | Date; ended?: Date }
 const ReplicaDuration = ({ created: started, ended }: ReplicaDurationProps) => {
-  const [now, setNow] = useState(new Date());
-  useInterval(() => setNow(new Date()), 1000);
+  const [now, setNow] = useState(new Date())
+  useInterval(() => setNow(new Date()), 1000)
 
   return (
     <>
@@ -49,13 +49,13 @@ const ReplicaDuration = ({ created: started, ended }: ReplicaDurationProps) => {
         </strong>
       </Typography>
     </>
-  );
-};
+  )
+}
 
-type ContainerDurationProps = { started: number | string | Date; ended?: Date };
+type ContainerDurationProps = { started: number | string | Date; ended?: Date }
 const ContainerDuration = ({ started, ended }: ContainerDurationProps) => {
-  useInterval(() => setNow(new Date()), 1000);
-  const [now, setNow] = useState(new Date());
+  useInterval(() => setNow(new Date()), 1000)
+  const [now, setNow] = useState(new Date())
 
   return (
     <>
@@ -72,19 +72,15 @@ const ContainerDuration = ({ started, ended }: ContainerDurationProps) => {
         </strong>
       </Typography>
     </>
-  );
-};
+  )
+}
 
 type ReplicaStateProps = {
-  restartCount: ReplicaSummary['restartCount'];
-  statusMessage: ReplicaSummary['statusMessage'];
-  exitCode: ReplicaSummary['exitCode'];
-};
-const ReplicaState = ({
-  restartCount,
-  statusMessage,
-  exitCode,
-}: ReplicaStateProps) => (
+  restartCount: ReplicaSummary['restartCount']
+  statusMessage: ReplicaSummary['statusMessage']
+  exitCode: ReplicaSummary['exitCode']
+}
+const ReplicaState = ({ restartCount, statusMessage, exitCode }: ReplicaStateProps) => (
   <>
     {restartCount && restartCount > 0 && (
       <div>
@@ -106,16 +102,10 @@ const ReplicaState = ({
       </>
     )}
   </>
-);
+)
 
-type OverviewProps = { replica: ReplicaSummary } & ReplicaElements;
-const Overview = ({
-  replica,
-  title,
-  duration,
-  status,
-  state,
-}: OverviewProps) => {
+type OverviewProps = { replica: ReplicaSummary } & ReplicaElements
+const Overview = ({ replica, title, duration, status, state }: OverviewProps) => {
   return (
     <>
       <section className="grid grid--gap-medium overview">
@@ -127,36 +117,26 @@ const Overview = ({
               </Typography>
             )}
             <ReplicaImage replica={replica} />
-            {status || (
-              <ReplicaStatusBadge
-                status={replica.replicaStatus?.status ?? 'Pending'}
-              />
-            )}
+            {status || <ReplicaStatusBadge status={replica.replicaStatus?.status ?? 'Pending'} />}
           </div>
           <div className="grid grid--gap-medium">
             {duration || (
               <>
                 <ReplicaDuration
                   created={replica.created}
-                  ended={
-                    replica.endTime ? new Date(replica.endTime) : undefined
-                  }
+                  ended={replica.endTime ? new Date(replica.endTime) : undefined}
                 />
                 {replica.containerStarted && (
                   <ContainerDuration
                     started={new Date(replica.containerStarted)}
-                    ended={
-                      replica.endTime ? new Date(replica.endTime) : undefined
-                    }
+                    ended={replica.endTime ? new Date(replica.endTime) : undefined}
                   />
                 )}
               </>
             )}
           </div>
           <div className="grid grid--gap-medium">
-            {replica.resources && (
-              <ResourceRequirements resources={replica.resources} />
-            )}
+            {replica.resources && <ResourceRequirements resources={replica.resources} />}
           </div>
         </div>
       </section>
@@ -170,23 +150,17 @@ const Overview = ({
         )}
       </section>
     </>
-  );
-};
+  )
+}
 
 type RepliceLogProps = {
-  isCollapsibleLog?: boolean;
-  isLogExpanded?: boolean;
-  downloadCb?: () => unknown;
-  log?: string;
-  logState?: FetchQueryResult<string>;
-};
-const ReplicaLog = ({
-  isCollapsibleLog,
-  isLogExpanded,
-  downloadCb,
-  log,
-  logState,
-}: RepliceLogProps) => (
+  isCollapsibleLog?: boolean
+  isLogExpanded?: boolean
+  downloadCb?: () => unknown
+  log?: string
+  logState?: FetchQueryResult<string>
+}
+const ReplicaLog = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState }: RepliceLogProps) => (
   <>
     {isCollapsibleLog ? (
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -211,20 +185,20 @@ const ReplicaLog = ({
       </Code>
     )}
   </>
-);
+)
 
 type ReplicaProps = {
-  header?: string;
-  replica: ReplicaSummary;
-  logState?: FetchQueryResult<string>;
-  getLog?: () => Promise<string>;
-  isCollapsibleOverview?: boolean;
-  isCollapsibleLog?: boolean;
-  downloadCb: () => unknown;
-  downloadHistoryCb?: () => unknown;
-  isLogExpanded?: boolean;
-  getHistoryLog?: () => Promise<unknown>;
-} & ReplicaElements;
+  header?: string
+  replica: ReplicaSummary
+  logState?: FetchQueryResult<string>
+  getLog?: () => Promise<string>
+  isCollapsibleOverview?: boolean
+  isCollapsibleLog?: boolean
+  downloadCb: () => unknown
+  downloadHistoryCb?: () => unknown
+  isLogExpanded?: boolean
+  getHistoryLog?: () => Promise<unknown>
+} & ReplicaElements
 export const Replica = ({
   header,
   logState,
@@ -238,24 +212,24 @@ export const Replica = ({
   replica,
   ...rest
 }: ReplicaProps) => {
-  const [log, setLog] = useState('');
-  const [historyLog, setHistoryLog] = useState('');
+  const [log, setLog] = useState('')
+  const [historyLog, setHistoryLog] = useState('')
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data) {
-      return;
+      return
     }
-    getLog?.().then(setLog);
-  }, [replica, logState?.data]);
+    getLog?.().then(setLog)
+  }, [replica, logState?.data])
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: unknown ignore
   useEffect(() => {
     if (logState?.data || log) {
-      return;
+      return
     }
-    getHistoryLog?.().then((data: unknown) => setHistoryLog(data as string));
-  }, [replica, logState?.data]);
+    getHistoryLog?.().then((data: unknown) => setHistoryLog(data as string))
+  }, [replica, logState?.data])
 
   return (
     <>
@@ -283,10 +257,7 @@ export const Replica = ({
 
       <section>
         {logState?.data ? (
-          <AsyncResource
-            asyncState={logState}
-            errorContent={'No log or replica'}
-          >
+          <AsyncResource asyncState={logState} errorContent={'No log or replica'}>
             <ReplicaLog
               isCollapsibleLog={isCollapsibleLog}
               isLogExpanded={isLogExpanded}
@@ -306,5 +277,5 @@ export const Replica = ({
         )}
       </section>
     </>
-  );
-};
+  )
+}

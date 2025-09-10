@@ -1,9 +1,9 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
-import type { Runtime as RuntimeModel } from '../../store/radix-api';
+import { Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
+import type { Runtime as RuntimeModel } from '../../store/radix-api'
 
 export interface RuntimeProps {
-  runtime: RuntimeModel;
+  runtime: RuntimeModel
 }
 
 export const Runtime: FunctionComponent<RuntimeProps> = ({ runtime }) => (
@@ -19,4 +19,4 @@ export const Runtime: FunctionComponent<RuntimeProps> = ({ runtime }) => (
       </Typography>
     )}
   </>
-);
+)

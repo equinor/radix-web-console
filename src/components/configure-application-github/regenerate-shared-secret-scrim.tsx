@@ -1,53 +1,41 @@
-import { Button, Progress, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
-import { useRegenerateSharedSecretMutation } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
+import { Button, Progress, Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
+import { useRegenerateSharedSecretMutation } from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
 
 type Props = {
-  appName: string;
-  refetchSecrets: () => Promise<unknown>;
-};
+  appName: string
+  refetchSecrets: () => Promise<unknown>
+}
 
-export function RegenerateSharedSecretScrim({
-  appName,
-  refetchSecrets,
-}: Props) {
-  const [show, setShow] = useState(false);
+export function RegenerateSharedSecretScrim({ appName, refetchSecrets }: Props) {
+  const [show, setShow] = useState(false)
 
-  const [regenerateSecrets, regenerateSecretState] =
-    useRegenerateSharedSecretMutation();
+  const [regenerateSecrets, regenerateSecretState] = useRegenerateSharedSecretMutation()
 
   const onRegenerate = handlePromiseWithToast(async () => {
-    setShow(false);
+    setShow(false)
     await regenerateSecrets({
       appName,
       regenerateSharedSecretData: {
         sharedSecret: crypto.randomUUID(),
       },
-    }).unwrap();
-    await refetchSecrets();
-  });
+    }).unwrap()
+    await refetchSecrets()
+  })
 
   return (
     <>
-      <ScrimPopup
-        title={'Warning'}
-        open={!!show}
-        onClose={() => setShow(false)}
-        isDismissable
-      >
+      <ScrimPopup title={'Warning'} open={!!show} onClose={() => setShow(false)} isDismissable>
         <div className="grid grid--gap-medium grid--auto-columns regenerate-content">
           <div className="regenerate-options">
             <Typography>
               Do you want to <strong>regenerate</strong> webhook secret?
             </Typography>
-            <Typography>
-              New webhook secret need to be put to the GitHub repository
-              settings
-            </Typography>
+            <Typography>New webhook secret need to be put to the GitHub repository settings</Typography>
           </div>
 
           <Button.Group>
@@ -74,14 +62,12 @@ export function RegenerateSharedSecretScrim({
             </>
           ) : (
             <div>
-              <Typography variant="h5">
-                Regularly regenerate webhook secret
-              </Typography>
+              <Typography variant="h5">Regularly regenerate webhook secret</Typography>
               <Button onClick={() => setShow(true)}>Regenerate</Button>
             </div>
           )}
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,21 +1,17 @@
-import { Table, Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
+import { Table, Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
 
-import { configVariables } from '../../utils/config';
+import { configVariables } from '../../utils/config'
 
 const ConfigVariableTableCell: FunctionComponent<{
-  value: string[] | unknown;
+  value: string[] | unknown
 }> = ({ value }) => (
   <Table.Cell>
     <pre>
-      <Typography>
-        {Array.isArray(value)
-          ? value.join('\n')
-          : JSON.stringify(value, null, 2)}
-      </Typography>
+      <Typography>{Array.isArray(value) ? value.join('\n') : JSON.stringify(value, null, 2)}</Typography>
     </pre>
   </Table.Cell>
-);
+)
 
 export const ConfigList: FunctionComponent = () => (
   <div className="grid grid--table-overflow">
@@ -43,4 +39,4 @@ export const ConfigList: FunctionComponent = () => (
       </Table.Body>
     </Table>
   </div>
-);
+)

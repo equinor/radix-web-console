@@ -1,26 +1,26 @@
-import { Button, List, Radio, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
+import { Button, List, Radio, Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
 
-import { formatDateTime } from '../../../utils/datetime';
-import { errorToast, infoToast } from '../../global-top-nav/styled-toaster';
+import { formatDateTime } from '../../../utils/datetime'
+import { errorToast, infoToast } from '../../global-top-nav/styled-toaster'
 
-import './style.css';
-import { pollingInterval } from '../../../store/defaults';
+import './style.css'
+import { pollingInterval } from '../../../store/defaults'
 import {
   useCopyBatchMutation,
   useGetJobComponentDeploymentsQuery,
   useRestartBatchMutation,
-} from '../../../store/radix-api';
+} from '../../../store/radix-api'
 
 interface Props {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  deploymentName: string;
-  batchName: string;
-  smallBatchName: string;
-  onSuccess?: () => unknown;
-  onDone?: () => unknown;
+  appName: string
+  envName: string
+  jobComponentName: string
+  deploymentName: string
+  batchName: string
+  smallBatchName: string
+  onSuccess?: () => unknown
+  onDone?: () => unknown
 }
 
 export function RestartBatch({
@@ -40,12 +40,12 @@ export function RestartBatch({
       jobComponentName,
     },
     { pollingInterval }
-  );
-  const [copyBatch] = useCopyBatchMutation();
-  const [restartBatch] = useRestartBatchMutation();
-  const batchDeployment = deployments?.find((d) => d.name === deploymentName);
-  const activeDeployment = deployments?.find((d) => !d.activeTo);
-  const [shouldRestart, setShouldRestart] = useState(true);
+  )
+  const [copyBatch] = useCopyBatchMutation()
+  const [restartBatch] = useRestartBatchMutation()
+  const batchDeployment = deployments?.find((d) => d.name === deploymentName)
+  const activeDeployment = deployments?.find((d) => !d.activeTo)
+  const [shouldRestart, setShouldRestart] = useState(true)
 
   async function onCopyBatch(activeDeploymentName: string) {
     try {
@@ -55,15 +55,15 @@ export function RestartBatch({
         batchName,
         jobComponentName,
         scheduledBatchRequest: { deploymentName: activeDeploymentName },
-      }).unwrap();
+      }).unwrap()
 
-      infoToast(`Batch '${smallBatchName}' successfully copied.`);
-      onSuccess?.();
+      infoToast(`Batch '${smallBatchName}' successfully copied.`)
+      onSuccess?.()
     } catch (e) {
-      errorToast(`Error copying batch '${smallBatchName}'`);
-      console.warn(e);
+      errorToast(`Error copying batch '${smallBatchName}'`)
+      console.warn(e)
     } finally {
-      onDone?.();
+      onDone?.()
     }
   }
 
@@ -74,18 +74,18 @@ export function RestartBatch({
         envName,
         jobComponentName,
         batchName,
-      }).unwrap();
-      infoToast(`Batch '${smallBatchName}' successfully restarted.`);
-      onSuccess?.();
+      }).unwrap()
+      infoToast(`Batch '${smallBatchName}' successfully restarted.`)
+      onSuccess?.()
     } catch (_) {
-      errorToast(`Error restarting batch '${smallBatchName}'`);
+      errorToast(`Error restarting batch '${smallBatchName}'`)
     } finally {
-      onDone?.();
+      onDone?.()
     }
   }
 
   if (!batchDeployment) {
-    return null;
+    return null
   }
 
   return (
@@ -102,9 +102,8 @@ export function RestartBatch({
               />
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography>
-                  Restart with current batch deployment {batchDeployment.name}{' '}
-                  (active between {formatDateTime(batchDeployment.activeFrom)}{' '}
-                  and {formatDateTime(batchDeployment.activeTo)}).
+                  Restart with current batch deployment {batchDeployment.name} (active between{' '}
+                  {formatDateTime(batchDeployment.activeFrom)} and {formatDateTime(batchDeployment.activeTo)}).
                 </Typography>
                 <Typography>
                   Existing batch jobs <strong>{batchName}</strong> <br />
@@ -123,8 +122,8 @@ export function RestartBatch({
               />
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography className="restart-job-deployment-option">
-                  Create new batch with deployment {activeDeployment.name}{' '}
-                  (active from {formatDateTime(activeDeployment.activeFrom)}
+                  Create new batch with deployment {activeDeployment.name} (active from{' '}
+                  {formatDateTime(activeDeployment.activeFrom)}
                   ).
                 </Typography>
               </div>
@@ -134,8 +133,7 @@ export function RestartBatch({
       ) : (
         <>
           <Typography className="restart-job-deployment-item">
-            The batch deployment <strong>{batchDeployment.name}</strong> is{' '}
-            <strong>active</strong> (from:{' '}
+            The batch deployment <strong>{batchDeployment.name}</strong> is <strong>active</strong> (from:{' '}
             {formatDateTime(batchDeployment.activeFrom)})
           </Typography>
           <Typography className="restart-job-deployment-item">
@@ -149,9 +147,7 @@ export function RestartBatch({
           <Button
             disabled={isLoading || (!shouldRestart && !activeDeployment)}
             onClick={() => {
-              shouldRestart
-                ? onRestartBatch()
-                : onCopyBatch(activeDeployment!.name);
+              shouldRestart ? onRestartBatch() : onCopyBatch(activeDeployment!.name)
             }}
           >
             Restart
@@ -160,5 +156,5 @@ export function RestartBatch({
         </Button.Group>
       </div>
     </div>
-  );
+  )
 }
