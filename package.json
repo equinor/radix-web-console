@@ -35,6 +35,8 @@
     "@equinor/eds-icons": "^0.22.0",
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@reduxjs/toolkit": "^2.2.7",
+    "@xterm/addon-fit": "^0.10.0",
+    "@xterm/xterm": "^5.5.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "http-status-codes": "^2.3.0",
@@ -50,9 +52,7 @@
     "react-select": "^5.8.1",
     "react-toastify": "^10.0.5",
     "sanitize.css": "^13.0.0",
-    "strip-ansi": "^7.1.0",
-    "styled-components": "^6.1.13",
-    "xterm": "^5.3.0"
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.6",
@@ -73,7 +73,6 @@
     "ts-node": "^10.9.2",
     "typescript": "~5.6.2",
     "vite": "^6.0.9",
-    "vite-plugin-checker": "^0.8.0",
     "vitest": "^3.0.5"
   },
   "jest": {

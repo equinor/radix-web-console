@@ -1,55 +1,79 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react'
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons'
+import { Terminal } from '@xterm/xterm'
 import { clsx } from 'clsx'
-import { type FunctionComponent, type UIEvent, useEffect, useRef, useState } from 'react'
-
-import stripAnsi from 'strip-ansi'
-import { copyToClipboard, copyToTextFile } from '../../utils/string'
+import { type FunctionComponent, useEffect, useRef } from 'react'
+import '@xterm/xterm/css/xterm.css'
+import { FitAddon } from '@xterm/addon-fit'
+import { copyToClipboard } from '../../utils/string'
 
 import './style.css'
 
 export type CodeProps = {
-  autoscroll?: boolean
   copy?: boolean
-  download?: boolean
   downloadCb?: () => unknown
   filename?: string
+  content?: EventSource
   resizable?: boolean
 }
 
-function scrollToBottom(elementRef: Element): void {
-  // HACK elementRef.scrollHeight is incorrect when called directly
-  // the callback in setTimeout is scheduled as a task to run after
-  // PageCreateApplication has rendered DOM... it seems
-  setTimeout(() => elementRef.scrollTo(0, elementRef.scrollHeight), 0)
-}
-
 export const Code: FunctionComponent<CodeProps & { children: string }> = ({
-  autoscroll,
   copy,
-  download,
   downloadCb,
-  filename = 'undefined',
-  resizable,
   children,
+  content,
+  resizable,
 }) => {
-  const [scrollOffsetFromBottom, setScrollOffsetFromBottom] = useState(0)
   const containerRef = useRef<HTMLDivElement>(null)
-
-  function handleScroll(ev: UIEvent<HTMLDivElement>) {
-    const tg = ev.target as Element
-    setScrollOffsetFromBottom(tg.scrollHeight - tg.scrollTop - tg.clientHeight)
-  }
+  const terminalRef = useRef<Terminal>()
 
   useEffect(() => {
-    if (containerRef.current && autoscroll && scrollOffsetFromBottom === 0) {
-      scrollToBottom(containerRef.current)
+    if (!containerRef.current) return
+
+    const fitAddon = new FitAddon()
+    terminalRef.current = new Terminal({
+      cursorBlink: true,
+      fontFamily: 'var(--eds_typography_font-family_monospace)',
+      fontSize: 14,
+      lineHeight: 1.8,
+      convertEol: true,
+      disableStdin: true,
+      theme: {},
+    })
+    terminalRef.current.loadAddon(fitAddon)
+    terminalRef.current.open(containerRef.current)
+    terminalRef.current.write('hello world\r\n')
+
+    const observer = new ResizeObserver(() => {
+      // biome-ignore lint/suspicious/noFocusedTests: false positive
+      fitAddon.fit()
+    })
+    observer.observe(containerRef.current)
+
+    return () => {
+      terminalRef.current?.dispose()
+      observer.disconnect()
     }
-  })
+  }, [])
+
+  useEffect(() => {
+    if (!terminalRef.current || !content) return
+
+    content.onmessage = (event) => {
+      terminalRef.current?.write(event.data)
+    }
+  }, [content])
+
+  useEffect(() => {
+    if (!terminalRef.current || !children) return
+
+    terminalRef.current.clear()
+    terminalRef.current.write(children)
+  }, [children])
 
   return (
     <div className="code">
-      {(copy || download) && (
+      {(copy || downloadCb) && (
         <div className="code__toolbar">
           <Button.Group>
             {copy && (
@@ -57,17 +81,15 @@ export const Code: FunctionComponent<CodeProps & { children: string }> = ({
                 <Icon data={copyIcon} /> Copy
               </Button>
             )}
-            {download && (
-              <Button variant="ghost" onClick={() => (downloadCb ? downloadCb() : copyToTextFile(filename, children))}>
+            {downloadCb && (
+              <Button variant="ghost" onClick={() => downloadCb()}>
                 <Icon data={downloadIcon} /> Download
               </Button>
             )}
           </Button.Group>
         </div>
       )}
-      <Card className={clsx('code__card', { resizable: resizable })} ref={containerRef} onScroll={handleScroll}>
-        {stripAnsi(children)}
-      </Card>
+      <Card className={clsx('code__card', { resizable: resizable })} ref={containerRef} />
     </div>
   )
 }

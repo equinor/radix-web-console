@@ -173,14 +173,14 @@ const ReplicaLog = ({ isCollapsibleLog, isLogExpanded, downloadCb, log, logState
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <Code copy autoscroll resizable download downloadCb={downloadCb}>
+            <Code copy resizable downloadCb={downloadCb}>
               {(log || logState?.data) ?? ''}
             </Code>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
     ) : (
-      <Code copy autoscroll resizable download downloadCb={downloadCb}>
+      <Code copy resizable downloadCb={downloadCb}>
         {(log || logState?.data) ?? ''}
       </Code>
     )}

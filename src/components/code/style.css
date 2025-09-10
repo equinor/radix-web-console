@@ -18,9 +18,10 @@
   overflow-y: auto;
   cursor: auto;
   background-color: black;
-  padding: var(--eds_spacing_small) var(--eds_spacing_medium_small);
   overflow-wrap: anywhere;
+  grid-gap: 0;
 }
+
 .code > .code__card.resizable {
   resize: both;
 }
@@ -28,4 +29,10 @@
 .code > .code__card.resizable[style*="width"] {
   max-height: unset;
   min-width: unset;
+}
+
+.code > .code__card > .terminal {
+  padding: var(--eds_spacing_small) var(--eds_spacing_medium_small);
+  width: 100%;
+  height: 100%;
 }

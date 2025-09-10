@@ -1,8 +1,10 @@
 import { Typography } from '@equinor/eds-core-react'
+import { useCallback, useEffect } from 'react'
 import useLocalStorage from '../../effects/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery, useReplicaLogQuery } from '../../store/radix-api'
+import { useReplicaLogStream } from '../../store/use-log'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
@@ -29,7 +31,17 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
       pollingInterval: 5000,
     }
   )
+
+  const msgHandler = useCallback((msg: string, isError: boolean) => {
+    if (isError) {
+      console.error(msg)
+    } else {
+      console.log(msg)
+    }
+  }, [])
+
   const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery()
+  useReplicaLogStream(appName, envName, componentName, replicaName, 5, msgHandler)
 
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)

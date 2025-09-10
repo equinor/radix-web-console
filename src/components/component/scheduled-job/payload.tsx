@@ -23,7 +23,7 @@ export const Payload = ({ appName, envName, jobComponentName, jobName }: Payload
 
   return (
     <div className="payload-content">
-      <Code copy autoscroll resizable>
+      <Code copy resizable>
         {data ?? ''}
       </Code>
     </div>
