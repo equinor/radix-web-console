@@ -1,34 +1,25 @@
-import type { FunctionComponent } from 'react';
-import { logApi } from '../../store/log-api';
-import { type ReplicaSummary, radixApi } from '../../store/radix-api';
-import type { FetchQueryResult } from '../../store/types';
-import { downloadLog } from '../code/log-helper';
-import { Replica } from '../replica';
+import type { FunctionComponent } from 'react'
+import { logApi } from '../../store/log-api'
+import { type ReplicaSummary, radixApi } from '../../store/radix-api'
+import type { FetchQueryResult } from '../../store/types'
+import { downloadLog } from '../code/log-helper'
+import { Replica } from '../replica'
 
-import './style.css';
-import { Accordion, Typography } from '@equinor/eds-core-react';
+import './style.css'
+import { Accordion, Typography } from '@equinor/eds-core-react'
 
 export const JobReplica: FunctionComponent<{
-  header?: string;
-  appName: string;
-  jobComponentName: string;
-  envName: string;
-  scheduledJobName: string;
-  replica: ReplicaSummary;
-  logState?: FetchQueryResult<string>;
-  isExpanded?: boolean;
-}> = ({
-  header,
-  appName,
-  envName,
-  jobComponentName,
-  scheduledJobName,
-  replica,
-  logState,
-  isExpanded,
-}) => {
-  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery();
-  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery();
+  header?: string
+  appName: string
+  jobComponentName: string
+  envName: string
+  scheduledJobName: string
+  replica: ReplicaSummary
+  logState?: FetchQueryResult<string>
+  isExpanded?: boolean
+}> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, logState, isExpanded }) => {
+  const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
+  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
   return (
     <div className="grid grid--gap-medium">
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -65,7 +56,7 @@ export const JobReplica: FunctionComponent<{
                   jobName: scheduledJobName,
                   replicaName: replica.name,
                   tail: 1000,
-                }).unwrap();
+                }).unwrap()
               }}
               downloadHistoryCb={() =>
                 downloadLog(
@@ -86,5 +77,5 @@ export const JobReplica: FunctionComponent<{
         </Accordion.Item>
       </Accordion>
     </div>
-  );
-};
+  )
+}

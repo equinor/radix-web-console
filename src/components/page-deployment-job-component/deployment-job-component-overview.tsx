@@ -1,29 +1,29 @@
-import type { FunctionComponent } from 'react';
-import useLocalStorage from '../../effects/use-local-storage';
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
-import { useGetDeploymentQuery } from '../../store/radix-api';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { ComponentSecrets } from '../component/component-secrets';
-import { EnvironmentVariables } from '../environment-variables';
-import { Overview } from '../page-active-job-component/overview';
+import type { FunctionComponent } from 'react'
+import useLocalStorage from '../../effects/use-local-storage'
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetDeploymentQuery } from '../../store/radix-api'
+import { routeWithParams, smallDeploymentName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { ComponentSecrets } from '../component/component-secrets'
+import { EnvironmentVariables } from '../environment-variables'
+import { Overview } from '../page-active-job-component/overview'
 
 export const DeploymentJobComponentOverview: FunctionComponent<{
-  appName: string;
-  deploymentName: string;
-  jobComponentName: string;
+  appName: string
+  deploymentName: string
+  jobComponentName: string
 }> = ({ appName, deploymentName, jobComponentName }) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
-  );
-  const component = deployment?.components?.find(
-    ({ name }) => name === jobComponentName
-  );
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
-    useLocalStorage<boolean>('deploymentJobComponentEnvVarsListExpanded', true);
+  )
+  const component = deployment?.components?.find(({ name }) => name === jobComponentName)
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
+    'deploymentJobComponentEnvVarsListExpanded',
+    true
+  )
 
   return (
     <>
@@ -48,11 +48,7 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
       <AsyncResource asyncState={deploymentState}>
         {deployment && component && (
           <>
-            <Overview
-              appName={appName}
-              component={component}
-              deployment={deployment}
-            />
+            <Overview appName={appName} component={component} deployment={deployment} />
             <div>
               <ComponentSecrets component={component} />
             </div>
@@ -72,5 +68,5 @@ export const DeploymentJobComponentOverview: FunctionComponent<{
         )}
       </AsyncResource>
     </>
-  );
-};
+  )
+}

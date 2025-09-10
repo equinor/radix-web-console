@@ -1,5 +1,5 @@
-import { clusterBases } from './clusterBases';
-import { extractCweNumber } from './utils/cwe';
+import { clusterBases } from './clusterBases'
+import { extractCweNumber } from './utils/cwe'
 
 // biome-ignore format: long lines
 export const externalUrls = {

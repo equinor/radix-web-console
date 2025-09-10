@@ -1,14 +1,12 @@
-import type { FunctionComponent } from 'react';
-import { ExternalLink } from '../link/external-link';
+import type { FunctionComponent } from 'react'
+import { ExternalLink } from '../link/external-link'
 
 export interface EnvironmentComponentProps {
-  url: string;
+  url: string
 }
 
-export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({
-  url,
-}) => (
+export const DNSAlias: FunctionComponent<EnvironmentComponentProps> = ({ url }) => (
   <>
     <ExternalLink href={`https://${url}`}>{url}</ExternalLink>
   </>
-);
+)

@@ -1,11 +1,8 @@
-import { Divider, Typography } from '@equinor/eds-core-react';
-import { Server } from 'miragejs';
-import { Fragment } from 'react';
-import type {
-  GetEnvironmentApiArg,
-  GetEnvironmentApiResponse,
-} from '../../../store/radix-api';
-import { SecretOverview } from './secret-overview';
+import { Divider, Typography } from '@equinor/eds-core-react'
+import { Server } from 'miragejs'
+import { Fragment } from 'react'
+import type { GetEnvironmentApiArg, GetEnvironmentApiResponse } from '../../../store/radix-api'
+import { SecretOverview } from './secret-overview'
 
 const testData: Array<GetEnvironmentApiResponse> = [
   {
@@ -36,7 +33,7 @@ const testData: Array<GetEnvironmentApiResponse> = [
       { name: 'ellipsis', status: 'NotAvailable', component: 'component_2' },
     ],
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -45,20 +42,17 @@ new Server({
     this.get(
       '/api/v1/applications/:appName/environments/:envName',
       (_, request): GetEnvironmentApiResponse =>
-        testData.find(
-          ({ name }) =>
-            name === (request.params as GetEnvironmentApiArg).envName
-        )!
-    );
+        testData.find(({ name }) => name === (request.params as GetEnvironmentApiArg).envName)!
+    )
 
     // Mock response for ChangeComponentSecret
     this.put(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/secrets/:secretName',
       // @ts-expect-error no idea what it should do
       () => undefined
-    );
+    )
   },
-});
+})
 
 export default (
   <div
@@ -87,4 +81,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

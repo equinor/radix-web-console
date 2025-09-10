@@ -1,13 +1,13 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { check_circle_outlined, warning_outlined } from '@equinor/eds-icons';
-import { Fragment, type FunctionComponent } from 'react';
-import type { AlertingConfig } from '../../store/radix-api';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { check_circle_outlined, warning_outlined } from '@equinor/eds-icons'
+import { Fragment, type FunctionComponent } from 'react'
+import type { AlertingConfig } from '../../store/radix-api'
 
 export const AlertingConfigStatus: FunctionComponent<{
-  config: AlertingConfig;
+  config: AlertingConfig
 }> = ({ config }) => {
   if (!config.enabled || !config.ready) {
-    return null;
+    return null
   }
 
   return (
@@ -23,13 +23,12 @@ export const AlertingConfigStatus: FunctionComponent<{
             <div className="alerting-status alerting-status--warning">
               <Icon data={warning_outlined} />
               <Typography>
-                Missing required Slack webhook URL. Radix cannot send alerts
-                until the webhook is configured.
+                Missing required Slack webhook URL. Radix cannot send alerts until the webhook is configured.
               </Typography>
             </div>
           )}
         </Fragment>
       ))}
     </>
-  );
-};
+  )
+}

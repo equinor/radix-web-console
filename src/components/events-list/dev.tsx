@@ -1,4 +1,4 @@
-import { EventsList, type EventsListProps } from '.';
+import { EventsList, type EventsListProps } from '.'
 
 const testData: Array<EventsListProps> = [
   {
@@ -13,8 +13,7 @@ const testData: Array<EventsListProps> = [
         },
         type: 'Warning',
         reason: 'Unhealthy',
-        message:
-          "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
+        message: "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
       },
       {
         lastTimestamp: '2020-12-22T14:38:36Z',
@@ -38,8 +37,7 @@ const testData: Array<EventsListProps> = [
         },
         type: 'Warning',
         reason: 'Unhealthy',
-        message:
-          "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
+        message: "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
       },
       {
         lastTimestamp: '2019-12-22T14:38:36Z',
@@ -48,8 +46,7 @@ const testData: Array<EventsListProps> = [
         involvedObjectName: 'echo-87533fd976-jcvrt',
         type: 'Warning',
         reason: 'Unhealthy',
-        message:
-          "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
+        message: "'Readiness probe failed: dial tcp 10.40.1.5:3003: connect: connection refused'",
       },
       {
         lastTimestamp: '2019-12-22T14:38:36Z',
@@ -88,7 +85,7 @@ const testData: Array<EventsListProps> = [
     isExpanded: false,
     events: [],
   },
-];
+]
 
 export default (
   <div
@@ -113,4 +110,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

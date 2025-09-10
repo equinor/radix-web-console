@@ -1,63 +1,38 @@
-import {
-  Accordion,
-  Icon,
-  Menu,
-  Table,
-  Typography,
-} from '@equinor/eds-core-react';
-import {
-  chevron_down,
-  chevron_up,
-  delete_to_trash,
-  replay,
-  stop,
-} from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import { Fragment, useCallback, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  type ScheduledBatchSummary,
-  useDeleteBatchMutation,
-  useStopBatchMutation,
-} from '../../../store/radix-api';
-import { promiseHandler } from '../../../utils/promise-handler';
-import { getScheduledBatchUrl } from '../../../utils/routing';
-import {
-  dataSorter,
-  type SortDirection,
-  sortCompareDate,
-  sortCompareString,
-} from '../../../utils/sort-utils';
-import {
-  routeWithParams,
-  smallDeploymentName,
-  smallScheduledBatchName,
-} from '../../../utils/string';
-import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils';
-import { ScrimPopup } from '../../scrim-popup';
-import { ProgressStatusBadge } from '../../status-badges';
-import { Duration } from '../../time/duration';
-import { RelativeToNow } from '../../time/relative-to-now';
-import { BatchJobStatuses } from './batch-job-statuses';
-import { JobContextMenu } from './job-context-menu';
-import { JobDeploymentLink } from './job-deployment-link';
-import { RestartBatch } from './restart-batch';
+import { Accordion, Icon, Menu, Table, Typography } from '@equinor/eds-core-react'
+import { chevron_down, chevron_up, delete_to_trash, replay, stop } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import { Fragment, useCallback, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { type ScheduledBatchSummary, useDeleteBatchMutation, useStopBatchMutation } from '../../../store/radix-api'
+import { promiseHandler } from '../../../utils/promise-handler'
+import { getScheduledBatchUrl } from '../../../utils/routing'
+import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../../utils/sort-utils'
+import { routeWithParams, smallDeploymentName, smallScheduledBatchName } from '../../../utils/string'
+import { getNewSortDir, TableSortIcon } from '../../../utils/table-sort-utils'
+import { ScrimPopup } from '../../scrim-popup'
+import { ProgressStatusBadge } from '../../status-badges'
+import { Duration } from '../../time/duration'
+import { RelativeToNow } from '../../time/relative-to-now'
+import { BatchJobStatuses } from './batch-job-statuses'
+import { JobContextMenu } from './job-context-menu'
+import { JobDeploymentLink } from './job-deployment-link'
+import { RestartBatch } from './restart-batch'
 
-import './style.css';
-import useLocalStorage from '../../../effects/use-local-storage';
-import { routes } from '../../../routes';
+import './style.css'
+import useLocalStorage from '../../../effects/use-local-storage'
+import { routes } from '../../../routes'
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
-  return status === 'Waiting' || status === 'Running';
+  return status === 'Waiting' || status === 'Running'
 }
 
 type Props = {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  scheduledBatchList?: Array<ScheduledBatchSummary>;
-  fetchBatches?: () => unknown;
-};
+  appName: string
+  envName: string
+  jobComponentName: string
+  scheduledBatchList?: Array<ScheduledBatchSummary>
+  fetchBatches?: () => unknown
+}
 
 export function ScheduledBatchList({
   appName,
@@ -66,51 +41,33 @@ export function ScheduledBatchList({
   scheduledBatchList,
   fetchBatches: refreshBatches,
 }: Props) {
-  const [deleteBatch] = useDeleteBatchMutation();
-  const [stopBatch] = useStopBatchMutation();
-  const [dateSort, setDateSort] = useState<SortDirection>();
-  const [statusSort, setStatusSort] = useState<SortDirection>();
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const [visibleRestartScrims, setVisibleRestartScrims] = useState<
-    Record<string, boolean>
-  >({});
+  const [deleteBatch] = useDeleteBatchMutation()
+  const [stopBatch] = useStopBatchMutation()
+  const [dateSort, setDateSort] = useState<SortDirection>()
+  const [statusSort, setStatusSort] = useState<SortDirection>()
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
+  const [visibleRestartScrims, setVisibleRestartScrims] = useState<Record<string, boolean>>({})
 
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
-  const setVisibleRestartScrim = useCallback<
-    (id: string, visible: boolean) => void
-  >(
+  )
+  const setVisibleRestartScrim = useCallback<(id: string, visible: boolean) => void>(
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
-  );
-  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>(
-    'batchJobListExpanded',
-    false
-  );
+  )
+  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>('batchJobListExpanded', false)
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledBatchList, [
-      (x, y) =>
-        sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
-      (x, y) =>
-        sortCompareString(
-          x.status,
-          y.status,
-          statusSort,
-          false,
-          () => !!statusSort
-        ),
-    ]);
-  }, [dateSort, scheduledBatchList, statusSort]);
+      (x, y) => sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
+      (x, y) => sortCompareString(x.status, y.status, statusSort, false, () => !!statusSort),
+    ])
+  }, [dateSort, scheduledBatchList, statusSort])
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
-      <Accordion.Item
-        isExpanded={isExpanded}
-        onExpandedChange={(expanded) => setIsExpanded(expanded)}
-      >
+      <Accordion.Item isExpanded={isExpanded} onExpandedChange={(expanded) => setIsExpanded(expanded)}>
         <Accordion.Header>
           <Accordion.HeaderTitle>
             <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -127,20 +84,12 @@ export function ScheduledBatchList({
                     <Table.Cell />
                     <Table.Cell>Name</Table.Cell>
                     <Table.Cell>Batch ID</Table.Cell>
-                    <Table.Cell
-                      sort="none"
-                      onClick={() =>
-                        setStatusSort(getNewSortDir(statusSort, true))
-                      }
-                    >
+                    <Table.Cell sort="none" onClick={() => setStatusSort(getNewSortDir(statusSort, true))}>
                       Status
                       <TableSortIcon direction={statusSort} />
                     </Table.Cell>
                     <Table.Cell>Job statuses</Table.Cell>
-                    <Table.Cell
-                      sort="none"
-                      onClick={() => setDateSort(getNewSortDir(dateSort, true))}
-                    >
+                    <Table.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort, true))}>
                       Created
                       <TableSortIcon direction={dateSort} />
                     </Table.Cell>
@@ -163,16 +112,9 @@ export function ScheduledBatchList({
                             'border-bottom-transparent': expanded,
                           })}
                         >
-                          <Table.Cell
-                            className={'fitwidth padding-right-0'}
-                            variant="icon"
-                          >
+                          <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
                             {batch.deploymentName && (
-                              <Typography
-                                link
-                                as="span"
-                                onClick={() => expandRow(batch.name)}
-                              >
+                              <Typography link as="span" onClick={() => expandRow(batch.name)}>
                                 <Icon
                                   size={24}
                                   data={expanded ? chevron_up : chevron_down}
@@ -186,12 +128,7 @@ export function ScheduledBatchList({
                             <Typography
                               className="scheduled-job__link"
                               as={Link}
-                              to={getScheduledBatchUrl(
-                                appName,
-                                envName,
-                                jobComponentName,
-                                batch.name
-                              )}
+                              to={getScheduledBatchUrl(appName, envName, jobComponentName, batch.name)}
                               link
                               token={{ textDecoration: 'none' }}
                             >
@@ -209,12 +146,7 @@ export function ScheduledBatchList({
                             <RelativeToNow time={batch.created} capitalize />
                           </Table.Cell>
                           <Table.Cell>
-                            <Duration
-                              start={batch.created}
-                              end={
-                                batch.ended ? new Date(batch.ended) : new Date()
-                              }
-                            />
+                            <Duration start={batch.created} end={batch.ended ? new Date(batch.ended) : new Date()} />
                           </Table.Cell>
                           <Table.Cell>
                             <Typography
@@ -234,9 +166,7 @@ export function ScheduledBatchList({
                             <ScrimPopup
                               title={`Restart batch ${smallBatchName}`}
                               open={!!visibleRestartScrims[batch.name]}
-                              onClose={() =>
-                                setVisibleRestartScrim(batch.name, false)
-                              }
+                              onClose={() => setVisibleRestartScrim(batch.name, false)}
                               isDismissable
                             >
                               <RestartBatch
@@ -247,9 +177,7 @@ export function ScheduledBatchList({
                                 batchName={batch.name}
                                 smallBatchName={smallBatchName}
                                 onSuccess={refreshBatches}
-                                onDone={() =>
-                                  setVisibleRestartScrim(batch.name, false)
-                                }
+                                onDone={() => setVisibleRestartScrim(batch.name, false)}
                               />
                             </ScrimPopup>
                             <JobContextMenu
@@ -274,12 +202,7 @@ export function ScheduledBatchList({
                                 </Menu.Item>,
                                 <Menu.Item
                                   key={1}
-                                  onClick={() =>
-                                    setVisibleRestartScrim(
-                                      batch.name,
-                                      !visibleRestartScrims[batch.name]
-                                    )
-                                  }
+                                  onClick={() => setVisibleRestartScrim(batch.name, !visibleRestartScrims[batch.name])}
                                 >
                                   <Icon data={replay} /> Restart
                                 </Menu.Item>,
@@ -330,5 +253,5 @@ export function ScheduledBatchList({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
+  )
 }

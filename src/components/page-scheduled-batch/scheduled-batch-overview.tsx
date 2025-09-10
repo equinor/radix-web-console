@@ -1,16 +1,16 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { ScheduledBatchSummary } from '../../store/radix-api';
-import { smallScheduledBatchName } from '../../utils/string';
-import { ComponentDeployment } from '../component/component-deployment';
-import { BatchJobStatuses } from '../component/scheduled-job/batch-job-statuses';
-import { ProgressStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+import { Typography } from '@equinor/eds-core-react'
+import type { ScheduledBatchSummary } from '../../store/radix-api'
+import { smallScheduledBatchName } from '../../utils/string'
+import { ComponentDeployment } from '../component/component-deployment'
+import { BatchJobStatuses } from '../component/scheduled-job/batch-job-statuses'
+import { ProgressStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
 type Props = {
-  started: string;
-  finished?: string;
-};
+  started: string
+  finished?: string
+}
 const ScheduledBatchDuration = ({ started, finished }: Props) => {
   return (
     <>
@@ -37,19 +37,15 @@ const ScheduledBatchDuration = ({ started, finished }: Props) => {
         </>
       )}
     </>
-  );
-};
+  )
+}
 
 type ScheduledBatchOverviewProps = {
-  appName: string;
-  batch: ScheduledBatchSummary;
-  jobComponentName: string;
-};
-export const ScheduledBatchOverview = ({
-  appName,
-  batch,
-  jobComponentName,
-}: ScheduledBatchOverviewProps) => (
+  appName: string
+  batch: ScheduledBatchSummary
+  jobComponentName: string
+}
+export const ScheduledBatchOverview = ({ appName, batch, jobComponentName }: ScheduledBatchOverviewProps) => (
   <>
     <Typography variant="h4">Overview</Typography>
     <section className="grid grid--gap-medium overview">
@@ -89,15 +85,10 @@ export const ScheduledBatchOverview = ({
                 <RelativeToNow time={batch.created} />
               </strong>
             </Typography>
-            {batch.started && (
-              <ScheduledBatchDuration
-                started={batch.started}
-                finished={batch.ended}
-              />
-            )}
+            {batch.started && <ScheduledBatchDuration started={batch.started} finished={batch.ended} />}
           </>
         </div>
       </div>
     </section>
   </>
-);
+)

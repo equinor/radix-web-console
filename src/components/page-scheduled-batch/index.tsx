@@ -1,35 +1,30 @@
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
-import { useGetBatchQuery } from '../../store/radix-api';
-import { withRouteParams } from '../../utils/router';
-import { getEnvsUrl } from '../../utils/routing';
-import { routeWithParams, smallScheduledBatchName } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
-import { ScheduledBatchOverview } from './scheduled-batch-overview';
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetBatchQuery } from '../../store/radix-api'
+import { withRouteParams } from '../../utils/router'
+import { getEnvsUrl } from '../../utils/routing'
+import { routeWithParams, smallScheduledBatchName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list'
+import { ScheduledBatchOverview } from './scheduled-batch-overview'
 
-import './style.css';
+import './style.css'
 
 type Props = {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  scheduledBatchName: string;
-};
-export function PageScheduledBatch({
-  appName,
-  envName,
-  jobComponentName,
-  scheduledBatchName,
-}: Props) {
+  appName: string
+  envName: string
+  jobComponentName: string
+  scheduledBatchName: string
+}
+export function PageScheduledBatch({ appName, envName, jobComponentName, scheduledBatchName }: Props) {
   const { data: batch, ...scheduledBatchState } = useGetBatchQuery(
     { appName, envName, jobComponentName, batchName: scheduledBatchName },
     {
       skip: !appName || !envName || !jobComponentName || !scheduledBatchName,
       pollingInterval: pollingInterval,
     }
-  );
+  )
 
   return (
     <main className="grid grid--gap-medium">
@@ -54,13 +49,7 @@ export function PageScheduledBatch({
       />
 
       <AsyncResource asyncState={scheduledBatchState}>
-        {batch && (
-          <ScheduledBatchOverview
-            appName={appName}
-            batch={batch}
-            jobComponentName={jobComponentName}
-          />
-        )}
+        {batch && <ScheduledBatchOverview appName={appName} batch={batch} jobComponentName={jobComponentName} />}
       </AsyncResource>
 
       {batch?.jobList && (
@@ -77,7 +66,7 @@ export function PageScheduledBatch({
         </div>
       )}
     </main>
-  );
+  )
 }
 
-export default withRouteParams(PageScheduledBatch);
+export default withRouteParams(PageScheduledBatch)

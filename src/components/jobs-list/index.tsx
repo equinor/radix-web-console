@@ -1,56 +1,33 @@
-import { Table, Typography } from '@equinor/eds-core-react';
-import { type FunctionComponent, useEffect, useState } from 'react';
-import type { JobSummary } from '../../store/radix-api';
-import {
-  dataSorter,
-  type SortDirection,
-  sortCompareDate,
-  sortCompareString,
-} from '../../utils/sort-utils';
-import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
-import { JobSummaryTableRow } from './job-summary-table-row';
+import { Table, Typography } from '@equinor/eds-core-react'
+import { type FunctionComponent, useEffect, useState } from 'react'
+import type { JobSummary } from '../../store/radix-api'
+import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
+import { JobSummaryTableRow } from './job-summary-table-row'
 
-import './style.css';
+import './style.css'
 
 export interface JobsListProps {
-  appName: string;
-  jobs?: Readonly<Array<JobSummary>>;
-  limit?: number;
+  appName: string
+  jobs?: Readonly<Array<JobSummary>>
+  limit?: number
 }
 
-export const JobsList: FunctionComponent<JobsListProps> = ({
-  appName,
-  jobs,
-  limit,
-}) => {
-  const [sortedData, setSortedData] = useState([...(jobs ?? [])]);
+export const JobsList: FunctionComponent<JobsListProps> = ({ appName, jobs, limit }) => {
+  const [sortedData, setSortedData] = useState([...(jobs ?? [])])
 
-  const [dateSort, setDateSort] = useState<SortDirection>('descending');
-  const [envSort, setEnvSort] = useState<SortDirection>();
-  const [pipelineSort, setPipelineSort] = useState<SortDirection>();
+  const [dateSort, setDateSort] = useState<SortDirection>('descending')
+  const [envSort, setEnvSort] = useState<SortDirection>()
+  const [pipelineSort, setPipelineSort] = useState<SortDirection>()
   useEffect(() => {
     setSortedData(
       dataSorter(jobs?.slice(0, limit || jobs.length), [
         (x, y) => sortCompareDate(x.created, y.created, dateSort),
-        (x, y) =>
-          sortCompareString(
-            x.pipeline,
-            y.pipeline,
-            pipelineSort,
-            false,
-            () => !!pipelineSort
-          ),
-        (x, y) =>
-          sortCompareString(
-            x.environments?.[0],
-            y.environments?.[0],
-            envSort,
-            false,
-            () => !!envSort
-          ),
+        (x, y) => sortCompareString(x.pipeline, y.pipeline, pipelineSort, false, () => !!pipelineSort),
+        (x, y) => sortCompareString(x.environments?.[0], y.environments?.[0], envSort, false, () => !!envSort),
       ])
-    );
-  }, [dateSort, envSort, jobs, limit, pipelineSort]);
+    )
+  }, [dateSort, envSort, jobs, limit, pipelineSort])
 
   return (
     <span className="grid grid--gap-small">
@@ -62,27 +39,16 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
               <Table.Row>
                 <Table.Cell>ID</Table.Cell>
                 <Table.Cell>Name</Table.Cell>
-                <Table.Cell
-                  sort="none"
-                  onClick={() => setDateSort(getNewSortDir(dateSort))}
-                >
+                <Table.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort))}>
                   Date/Time
                   <TableSortIcon direction={dateSort} />
                 </Table.Cell>
-                <Table.Cell
-                  sort="none"
-                  onClick={() => setEnvSort(getNewSortDir(envSort, true))}
-                >
+                <Table.Cell sort="none" onClick={() => setEnvSort(getNewSortDir(envSort, true))}>
                   Environment
                   <TableSortIcon direction={envSort} />
                 </Table.Cell>
                 <Table.Cell>Status</Table.Cell>
-                <Table.Cell
-                  sort="none"
-                  onClick={() =>
-                    setPipelineSort(getNewSortDir(pipelineSort, true))
-                  }
-                >
+                <Table.Cell sort="none" onClick={() => setPipelineSort(getNewSortDir(pipelineSort, true))}>
                   Pipeline
                   <TableSortIcon direction={pipelineSort} />
                 </Table.Cell>
@@ -102,5 +68,5 @@ export const JobsList: FunctionComponent<JobsListProps> = ({
         </span>
       )}
     </span>
-  );
-};
+  )
+}

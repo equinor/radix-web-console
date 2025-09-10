@@ -1,53 +1,39 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { debounce } from 'lodash-es';
-import { type MutableRefObject, useRef, useState } from 'react';
-import {
-  components,
-  type IndicatorsContainerProps,
-  type PropsValue,
-} from 'react-select';
-import { Alert } from '../alert';
-import { ConfigurationItemPopover } from './ci-popover';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { debounce } from 'lodash-es'
+import { type MutableRefObject, useRef, useState } from 'react'
+import { components, type IndicatorsContainerProps, type PropsValue } from 'react-select'
+import { Alert } from '../alert'
+import { ConfigurationItemPopover } from './ci-popover'
 
-import './style.css';
-import { info_circle } from '@equinor/eds-icons';
-import AsyncSelect from 'react-select/async';
+import './style.css'
+import { info_circle } from '@equinor/eds-icons'
+import AsyncSelect from 'react-select/async'
 import {
   type Application,
   type GetApplicationsApiResponse,
   serviceNowApi,
   useGetApplicationQuery,
-} from '../../store/service-now-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
+} from '../../store/service-now-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 
-export type OnConfigurationItemChangeCallback = (
-  ci: Application | null
-) => void;
-type GetApplicationsFunction = ReturnType<
-  typeof serviceNowApi.endpoints.getApplications.useLazyQuery
->[0];
+export type OnConfigurationItemChangeCallback = (ci: Application | null) => void
+type GetApplicationsFunction = ReturnType<typeof serviceNowApi.endpoints.getApplications.useLazyQuery>[0]
 
 const loadOptions = debounce(
-  (
-    callback: (options: GetApplicationsApiResponse) => void,
-    getApplications: GetApplicationsFunction,
-    name: string
-  ) => filterOptions(getApplications, name).then(callback),
+  (callback: (options: GetApplicationsApiResponse) => void, getApplications: GetApplicationsFunction, name: string) =>
+    filterOptions(getApplications, name).then(callback),
   500
-);
+)
 
-async function filterOptions(
-  getApplications: GetApplicationsFunction,
-  inputValue: string
-) {
-  return await getApplications({ name: inputValue, limit: 10 }).unwrap();
+async function filterOptions(getApplications: GetApplicationsFunction, inputValue: string) {
+  return await getApplications({ name: inputValue, limit: 10 }).unwrap()
 }
 
 export interface Props {
-  name?: string;
-  configurationItemChangeCallback?: OnConfigurationItemChangeCallback;
-  disabled?: boolean;
-  configurationItem?: number;
+  name?: string
+  configurationItemChangeCallback?: OnConfigurationItemChangeCallback
+  disabled?: boolean
+  configurationItem?: number
 }
 export function AppConfigConfigurationItem({
   configurationItem,
@@ -55,46 +41,40 @@ export function AppConfigConfigurationItem({
   disabled,
   name = 'ConfigurationItem',
 }: Props) {
-  const [selectedCI, setSelectedCI] = useState<Application | null | undefined>(
-    undefined
-  );
-  const [popoverCI, setPopoverCI] = useState<Application | null>(null);
-  const [popoverOpen, setPopoverOpen] = useState(false);
-  const [getApplications] =
-    serviceNowApi.endpoints.getApplications.useLazyQuery();
+  const [selectedCI, setSelectedCI] = useState<Application | null | undefined>(undefined)
+  const [popoverCI, setPopoverCI] = useState<Application | null>(null)
+  const [popoverOpen, setPopoverOpen] = useState(false)
+  const [getApplications] = serviceNowApi.endpoints.getApplications.useLazyQuery()
 
   const { data: currentCI, ...currentCIState } = useGetApplicationQuery(
     {
       appId: Number(configurationItem),
     },
     { skip: !Number.isFinite(configurationItem) }
-  );
+  )
 
-  const containerRef = useRef<HTMLDivElement>();
+  const containerRef = useRef<HTMLDivElement>()
 
   function onChange(newValue: Application | null): void {
-    configurationItemChangeCallback?.(newValue);
-    setSelectedCI(newValue);
-    setPopoverOpen(false);
+    configurationItemChangeCallback?.(newValue)
+    setSelectedCI(newValue)
+    setPopoverOpen(false)
   }
 
-  const onLoad = (
-    inputValue: string | null,
-    callback: (apps: Application[]) => unknown
-  ) => {
+  const onLoad = (inputValue: string | null, callback: (apps: Application[]) => unknown) => {
     if (inputValue == null || inputValue.length < 3) {
-      callback([]);
-      return;
+      callback([])
+      return
     }
 
-    loadOptions(callback, getApplications, inputValue);
-  };
+    loadOptions(callback, getApplications, inputValue)
+  }
   const onInfoIconClick = (ci: Application) => {
-    setPopoverCI(ci);
-    setPopoverOpen(!popoverOpen);
-  };
+    setPopoverCI(ci)
+    setPopoverOpen(!popoverOpen)
+  }
 
-  if (currentCIState.isLoading) return <h1>loading...</h1>;
+  if (currentCIState.isLoading) return <h1>loading...</h1>
 
   return (
     <div className="configuration-item-select">
@@ -108,9 +88,7 @@ export function AppConfigConfigurationItem({
         containerRef={containerRef}
         name={name}
         menuPosition="fixed"
-        closeMenuOnScroll={({ target }: Event) =>
-          !(target as HTMLElement)?.parentElement?.className?.match(/menu/)
-        }
+        closeMenuOnScroll={({ target }: Event) => !(target as HTMLElement)?.parentElement?.className?.match(/menu/)}
         loadOptions={onLoad}
         onChange={onChange}
         getOptionLabel={({ name }) => name}
@@ -122,16 +100,13 @@ export function AppConfigConfigurationItem({
         isDisabled={disabled}
       />
       <Typography className="helpertext" group="input" variant="text">
-        Application from Business Applications Inventory (type 3 characters to
-        search)
+        Application from Business Applications Inventory (type 3 characters to search)
       </Typography>
 
       {currentCIState.isError && (
         <div>
           <Alert type="danger">
-            <Typography>
-              Failed to load. {getFetchErrorMessage(currentCIState.error)}
-            </Typography>
+            <Typography>Failed to load. {getFetchErrorMessage(currentCIState.error)}</Typography>
           </Alert>
         </div>
       )}
@@ -145,15 +120,15 @@ export function AppConfigConfigurationItem({
         />
       )}
     </div>
-  );
+  )
 }
 
 type InfoIconProps = IndicatorsContainerProps<Application, false> & {
   selectProps: {
-    onInfoIconClick: (value: PropsValue<Application>) => void;
-    containerRef?: MutableRefObject<HTMLDivElement>;
-  };
-};
+    onInfoIconClick: (value: PropsValue<Application>) => void
+    containerRef?: MutableRefObject<HTMLDivElement>
+  }
+}
 
 const IndicatorsContainer = ({ children, ...props }: InfoIconProps) => (
   <components.IndicatorsContainer {...props}>
@@ -163,12 +138,12 @@ const IndicatorsContainer = ({ children, ...props }: InfoIconProps) => (
           style={{ cursor: 'pointer' }}
           data={info_circle}
           onClick={(event) => {
-            event.stopPropagation();
-            props.selectProps.onInfoIconClick(props.selectProps.value);
+            event.stopPropagation()
+            props.selectProps.onInfoIconClick(props.selectProps.value)
           }}
         />
       </div>
     )}
     {children}
   </components.IndicatorsContainer>
-);
+)

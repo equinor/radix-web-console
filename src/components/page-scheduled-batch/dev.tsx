@@ -1,10 +1,10 @@
-import { Response, Server } from 'miragejs';
-import type { ScheduledBatchSummary } from '../../store/radix-api';
-import { PageScheduledBatch } from './index';
+import { Response, Server } from 'miragejs'
+import type { ScheduledBatchSummary } from '../../store/radix-api'
+import { PageScheduledBatch } from './index'
 
 const testData: Array<
   Parameters<typeof PageScheduledBatch>[0] & {
-    batchData: ScheduledBatchSummary;
+    batchData: ScheduledBatchSummary
   }
 > = [
   {
@@ -128,7 +128,7 @@ const testData: Array<
       ],
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -138,38 +138,32 @@ new Server({
       this.get(
         `/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/batches/${scheduledBatchName}`,
         () => batchData
-      );
-    });
+      )
+    })
 
     // Mock response for logs
     this.get(
       '/api/v1/applications/:appName/environments/:envName/jobcomponents/:jobComponentName/scheduledjobs/:scheduledBatchName/logs',
       (_, { params: { scheduledBatchName } }) =>
-        scheduledBatchName !== 'no-job'
-          ? `fake log data for batch ${scheduledBatchName}`
-          : new Response(404)
-    );
+        scheduledBatchName !== 'no-job' ? `fake log data for batch ${scheduledBatchName}` : new Response(404)
+    )
   },
-});
+})
 
 export default (
   <>
-    {testData.map(
-      ({ appName, envName, jobComponentName, scheduledBatchName }, i) => (
-        <div
-          key={i}
-          className="grid grid--gap-medium"
-          style={{
-            backgroundColor: 'var(--eds_ui_background__default)',
-            marginBottom: 'var(--eds_spacing_x_large)',
-            padding: 'var(--eds_spacing_medium)',
-          }}
-        >
-          <PageScheduledBatch
-            {...{ appName, envName, jobComponentName, scheduledBatchName }}
-          />
-        </div>
-      )
-    )}
+    {testData.map(({ appName, envName, jobComponentName, scheduledBatchName }, i) => (
+      <div
+        key={i}
+        className="grid grid--gap-medium"
+        style={{
+          backgroundColor: 'var(--eds_ui_background__default)',
+          marginBottom: 'var(--eds_spacing_x_large)',
+          padding: 'var(--eds_spacing_medium)',
+        }}
+      >
+        <PageScheduledBatch {...{ appName, envName, jobComponentName, scheduledBatchName }} />
+      </div>
+    ))}
   </>
-);
+)

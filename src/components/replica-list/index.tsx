@@ -1,82 +1,60 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Icon, Table, Typography } from '@equinor/eds-core-react'
+import { chevron_down, chevron_up } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import { Fragment, useCallback, useEffect, useState } from 'react'
 
-import {
-  type ReplicaSummary,
-  useGetApplicationResourcesUtilizationQuery,
-} from '../../store/radix-api';
-import {
-  dataSorter,
-  type SortDirection,
-  sortCompareDate,
-  sortCompareString,
-} from '../../utils/sort-utils';
-import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
-import { ReplicaImage } from '../replica-image';
-import { ReplicaStatusBadge } from '../status-badges';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
+import { type ReplicaSummary, useGetApplicationResourcesUtilizationQuery } from '../../store/radix-api'
+import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
+import { ReplicaImage } from '../replica-image'
+import { ReplicaStatusBadge } from '../status-badges'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
 
-import './style.css';
-import { slowPollingInterval } from '../../store/defaults';
-import { UtilizationPopover } from '../utilization-popover/utilization-popover';
-import { ReplicaName } from './replica-name';
+import './style.css'
+import { slowPollingInterval } from '../../store/defaults'
+import { UtilizationPopover } from '../utilization-popover/utilization-popover'
+import { ReplicaName } from './replica-name'
 
 type Props = {
-  appName: string;
-  envName: string;
-  compName: string;
-  replicaList: Array<ReplicaSummary>;
-  replicaUrlFunc: (name: string) => string;
-  showUtilization?: boolean;
-};
-export const ReplicaList = ({
-  replicaList,
-  replicaUrlFunc,
-  appName,
-  envName,
-  compName,
-  showUtilization,
-}: Props) => {
-  const [sortedData, setSortedData] = useState(replicaList || []);
-  const [dateSort, setDateSort] = useState<SortDirection>();
-  const [statusSort, setStatusSort] = useState<SortDirection>();
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
-  const [lastUpdate, setLastUpdate] = useState(new Date());
+  appName: string
+  envName: string
+  compName: string
+  replicaList: Array<ReplicaSummary>
+  replicaUrlFunc: (name: string) => string
+  showUtilization?: boolean
+}
+export const ReplicaList = ({ replicaList, replicaUrlFunc, appName, envName, compName, showUtilization }: Props) => {
+  const [sortedData, setSortedData] = useState(replicaList || [])
+  const [dateSort, setDateSort] = useState<SortDirection>()
+  const [statusSort, setStatusSort] = useState<SortDirection>()
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
+  const [lastUpdate, setLastUpdate] = useState(new Date())
 
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
+  )
 
   const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
     { appName },
     { pollingInterval: slowPollingInterval }
-  );
+  )
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(replicaList): reset last update when replica list changes
   useEffect(() => {
-    setLastUpdate(new Date());
-  }, [replicaList]);
+    setLastUpdate(new Date())
+  }, [replicaList])
 
   useEffect(() => {
     setSortedData(
       dataSorter(replicaList, [
+        (x, y) => sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
         (x, y) =>
-          sortCompareDate(x.created, y.created, dateSort, () => !!dateSort),
-        (x, y) =>
-          sortCompareString(
-            x.replicaStatus?.status,
-            y.replicaStatus?.status,
-            statusSort,
-            false,
-            () => !!statusSort
-          ),
+          sortCompareString(x.replicaStatus?.status, y.replicaStatus?.status, statusSort, false, () => !!statusSort),
       ])
-    );
-  }, [dateSort, replicaList, statusSort]);
+    )
+  }, [dateSort, replicaList, statusSort])
 
   return (
     <Table>
@@ -84,17 +62,11 @@ export const ReplicaList = ({
         <Table.Row>
           <Table.Cell />
           <Table.Cell>Name</Table.Cell>
-          <Table.Cell
-            sort="none"
-            onClick={() => setStatusSort(getNewSortDir(statusSort, true))}
-          >
+          <Table.Cell sort="none" onClick={() => setStatusSort(getNewSortDir(statusSort, true))}>
             Status
             <TableSortIcon direction={statusSort} />
           </Table.Cell>
-          <Table.Cell
-            sort="none"
-            onClick={() => setDateSort(getNewSortDir(dateSort, true))}
-          >
+          <Table.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort, true))}>
             Created
             <TableSortIcon direction={dateSort} />
           </Table.Cell>
@@ -107,18 +79,9 @@ export const ReplicaList = ({
           .map((x) => ({ replica: x, expanded: !!expandedRows[x.name] }))
           .map(({ replica, expanded }) => (
             <Fragment key={replica.name}>
-              <Table.Row
-                className={clsx({ 'border-bottom-transparent': expanded })}
-              >
-                <Table.Cell
-                  className={'fitwidth padding-right-0'}
-                  variant="icon"
-                >
-                  <Typography
-                    link
-                    as="span"
-                    onClick={() => expandRow(replica.name)}
-                  >
+              <Table.Row className={clsx({ 'border-bottom-transparent': expanded })}>
+                <Table.Cell className={'fitwidth padding-right-0'} variant="icon">
+                  <Typography link as="span" onClick={() => expandRow(replica.name)}>
                     <Icon
                       size={24}
                       data={expanded ? chevron_up : chevron_down}
@@ -128,15 +91,10 @@ export const ReplicaList = ({
                   </Typography>
                 </Table.Cell>
                 <Table.Cell>
-                  <ReplicaName
-                    replica={replica}
-                    replicaUrlFunc={replicaUrlFunc}
-                  />
+                  <ReplicaName replica={replica} replicaUrlFunc={replicaUrlFunc} />
                 </Table.Cell>
                 <Table.Cell>
-                  <ReplicaStatusBadge
-                    status={replica.replicaStatus?.status ?? 'Pending'}
-                  />
+                  <ReplicaStatusBadge status={replica.replicaStatus?.status ?? 'Pending'} />
                 </Table.Cell>
                 <Table.Cell>
                   <RelativeToNow time={replica.created} />
@@ -168,5 +126,5 @@ export const ReplicaList = ({
           ))}
       </Table.Body>
     </Table>
-  );
-};
+  )
+}

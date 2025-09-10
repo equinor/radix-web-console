@@ -1,8 +1,7 @@
-import type { ConfigFile } from '@rtk-query/codegen-openapi';
+import type { ConfigFile } from '@rtk-query/codegen-openapi'
 
 const RADIX_LOG_API_SWAGGER_URL =
-  process.env.OVERRIDE_RADIX_LOG_API_SWAGGER_URL ||
-  'https://server-radix-log-api-qa.radix.equinor.com/swagger/doc.json';
+  process.env.OVERRIDE_RADIX_LOG_API_SWAGGER_URL || 'https://server-radix-log-api-qa.radix.equinor.com/swagger/doc.json'
 
 const config: ConfigFile = {
   schemaFile: RADIX_LOG_API_SWAGGER_URL,
@@ -11,6 +10,6 @@ const config: ConfigFile = {
   outputFile: '../log-api.ts',
   exportName: 'logApi',
   hooks: true,
-};
+}
 
-export default config;
+export default config

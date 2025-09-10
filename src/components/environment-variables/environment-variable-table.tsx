@@ -1,21 +1,21 @@
-import { Table, TextField, Typography } from '@equinor/eds-core-react';
-import type { ChangeEvent, ReactNode } from 'react';
-import type { EnvVar } from '../../store/radix-api';
-import './style.css';
+import { Table, TextField, Typography } from '@equinor/eds-core-react'
+import type { ChangeEvent, ReactNode } from 'react'
+import type { EnvVar } from '../../store/radix-api'
+import './style.css'
 
 export interface FormattedEnvVar {
-  value?: string;
-  original: EnvVar;
+  value?: string
+  original: EnvVar
 }
 
 type Props = {
-  values: Array<FormattedEnvVar>;
-  valuePrefix?: ReactNode;
-  isTextfieldDisabled?: boolean;
-  inEditMode?: boolean;
-  showOriginal?: boolean;
-  onValueChange?: (value: string, name: string) => void;
-};
+  values: Array<FormattedEnvVar>
+  valuePrefix?: ReactNode
+  isTextfieldDisabled?: boolean
+  inEditMode?: boolean
+  showOriginal?: boolean
+  onValueChange?: (value: string, name: string) => void
+}
 export const EnvironmentVariableTable = ({
   values,
   valuePrefix,
@@ -50,9 +50,7 @@ export const EnvironmentVariableTable = ({
                 value={value}
                 multiline
                 disabled={isTextfieldDisabled}
-                onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
-                  onValueChange(target.value, name)
-                }
+                onChange={({ target }: ChangeEvent<HTMLInputElement>) => onValueChange(target.value, name)}
               />
             )}
           </Table.Cell>
@@ -66,4 +64,4 @@ export const EnvironmentVariableTable = ({
       ))}
     </Table.Body>
   </Table>
-);
+)

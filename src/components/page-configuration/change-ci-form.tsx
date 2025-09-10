@@ -1,34 +1,25 @@
-import {
-  Accordion,
-  Button,
-  CircularProgress,
-  Typography,
-} from '@equinor/eds-core-react';
-import { type FormEvent, useState } from 'react';
+import { Accordion, Button, CircularProgress, Typography } from '@equinor/eds-core-react'
+import { type FormEvent, useState } from 'react'
 
-import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
-import type { Application } from '../../store/service-now-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { Alert } from '../alert';
-import { AppConfigConfigurationItem } from '../app-config-ci';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
+import type { Application } from '../../store/service-now-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { Alert } from '../alert'
+import { AppConfigConfigurationItem } from '../app-config-ci'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 
 interface Props {
-  appName: string;
-  configurationItem?: string;
-  refetch?: () => unknown;
+  appName: string
+  configurationItem?: string
+  refetch?: () => unknown
 }
 
-export const ChangeConfigurationItemForm = ({
-  appName,
-  configurationItem,
-  refetch,
-}: Props) => {
-  const [newCI, setNewCI] = useState<Application | null>(null);
-  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
+export const ChangeConfigurationItemForm = ({ appName, configurationItem, refetch }: Props) => {
+  const [newCI, setNewCI] = useState<Application | null>(null)
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation()
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
-    ev.preventDefault();
+    ev.preventDefault()
 
     await mutate({
       appName,
@@ -37,10 +28,10 @@ export const ChangeConfigurationItemForm = ({
           configurationItem: newCI!.appId.toString(), //Button is disabled if newCI is not set
         },
       },
-    }).unwrap();
+    }).unwrap()
 
-    await refetch?.();
-  });
+    await refetch?.()
+  })
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -55,10 +46,7 @@ export const ChangeConfigurationItemForm = ({
             {error && (
               <div>
                 <Alert type="danger">
-                  <Typography>
-                    Failed to change Configuration Item.{' '}
-                    {getFetchErrorMessage(error)}
-                  </Typography>
+                  <Typography>Failed to change Configuration Item. {getFetchErrorMessage(error)}</Typography>
                 </Alert>
               </div>
             )}
@@ -73,13 +61,7 @@ export const ChangeConfigurationItemForm = ({
                   <CircularProgress size={24} /> Updating…
                 </>
               ) : (
-                <Button
-                  color="danger"
-                  type="submit"
-                  disabled={
-                    !newCI || newCI?.appId === Number(configurationItem)
-                  }
-                >
+                <Button color="danger" type="submit" disabled={!newCI || newCI?.appId === Number(configurationItem)}>
                   Change configuration item
                 </Button>
               )}
@@ -88,5 +70,5 @@ export const ChangeConfigurationItemForm = ({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}

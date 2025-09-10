@@ -1,36 +1,30 @@
-import { Typography } from '@equinor/eds-core-react';
-import { routes } from '../../routes';
-import { useGetTektonPipelineRunTaskStepQuery } from '../../store/radix-api';
-import { withRouteParams } from '../../utils/router';
-import { routeWithParams, smallJobName } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DocumentTitle } from '../document-title';
-import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log';
-import { PipelineRunTaskStepOverview } from './step-overview';
+import { Typography } from '@equinor/eds-core-react'
+import { routes } from '../../routes'
+import { useGetTektonPipelineRunTaskStepQuery } from '../../store/radix-api'
+import { withRouteParams } from '../../utils/router'
+import { routeWithParams, smallJobName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { DocumentTitle } from '../document-title'
+import { PipelineRunTaskStepLog } from '../pipeline-run-task-step-log'
+import { PipelineRunTaskStepOverview } from './step-overview'
 
 export interface Props {
-  appName: string;
-  jobName: string;
-  pipelineRunName: string;
-  taskName: string;
-  stepName: string;
+  appName: string
+  jobName: string
+  pipelineRunName: string
+  taskName: string
+  stepName: string
 }
 
-export function PipelineRunTaskStep({
-  appName,
-  jobName,
-  pipelineRunName,
-  taskName,
-  stepName,
-}: Props) {
+export function PipelineRunTaskStep({ appName, jobName, pipelineRunName, taskName, stepName }: Props) {
   const { data: taskStep, ...stepState } = useGetTektonPipelineRunTaskStepQuery(
     { appName, jobName, pipelineRunName, taskName, stepName },
     {
       skip: !appName || !jobName || !pipelineRunName || !taskName || !stepName,
       pollingInterval: 5000,
     }
-  );
+  )
 
   return (
     <>
@@ -71,7 +65,7 @@ export function PipelineRunTaskStep({
         </>
       )}
     </>
-  );
+  )
 }
 
-export default withRouteParams(PipelineRunTaskStep);
+export default withRouteParams(PipelineRunTaskStep)

@@ -1,35 +1,30 @@
-import { Table, Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import type { DeploymentSummary } from '../../store/radix-api';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
-import { CommitHash } from '../commit-hash';
-import { GenericStatusBadge } from '../status-badges';
-import { RelativeToNow } from '../time/relative-to-now';
+import { Table, Typography } from '@equinor/eds-core-react'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import type { DeploymentSummary } from '../../store/radix-api'
+import { routeWithParams, smallDeploymentName } from '../../utils/string'
+import { CommitHash } from '../commit-hash'
+import { GenericStatusBadge } from '../status-badges'
+import { RelativeToNow } from '../time/relative-to-now'
 
 export interface DeploymentSummaryTableRowProps {
-  appName: string;
-  deployment: Readonly<DeploymentSummary>;
-  repo?: string;
-  inEnv?: boolean;
+  appName: string
+  deployment: Readonly<DeploymentSummary>
+  repo?: string
+  inEnv?: boolean
 }
 
-export const DeploymentSummaryTableRow = ({
-  appName,
-  deployment,
-  repo,
-  inEnv,
-}: DeploymentSummaryTableRowProps) => {
+export const DeploymentSummaryTableRow = ({ appName, deployment, repo, inEnv }: DeploymentSummaryTableRowProps) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName: appName,
     deploymentName: deployment.name,
-  });
+  })
   const environmentLink = routeWithParams(routes.appEnvironment, {
     appName: appName,
     envName: deployment.environment,
-  });
+  })
 
-  const commitHash = deployment.gitCommitHash || deployment.commitID;
+  const commitHash = deployment.gitCommitHash || deployment.commitID
   return (
     <Table.Row>
       <Table.Cell>
@@ -44,11 +39,7 @@ export const DeploymentSummaryTableRow = ({
         </Typography>
       </Table.Cell>
       <Table.Cell>
-        <RelativeToNow
-          time={new Date(deployment.activeFrom)}
-          titlePrefix="Start"
-          capitalize
-        />
+        <RelativeToNow time={new Date(deployment.activeFrom)} titlePrefix="Start" capitalize />
       </Table.Cell>
       {!inEnv && (
         <>
@@ -59,9 +50,7 @@ export const DeploymentSummaryTableRow = ({
           </Table.Cell>
           <Table.Cell>
             {deployment.activeTo ? (
-              <GenericStatusBadge variant="default">
-                Inactive
-              </GenericStatusBadge>
+              <GenericStatusBadge variant="default">Inactive</GenericStatusBadge>
             ) : (
               <GenericStatusBadge variant="active">Active</GenericStatusBadge>
             )}
@@ -87,5 +76,5 @@ export const DeploymentSummaryTableRow = ({
         )}
       </Table.Cell>
     </Table.Row>
-  );
-};
+  )
+}

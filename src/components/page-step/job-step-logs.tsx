@@ -1,56 +1,44 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-import { addMinutes } from 'date-fns';
-import { useEffect, useState } from 'react';
-import { pollingInterval } from '../../store/defaults';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import { addMinutes } from 'date-fns'
+import { useEffect, useState } from 'react'
+import { pollingInterval } from '../../store/defaults'
 import {
   type ModelsContainer,
   type ModelsInventoryResponse,
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
-} from '../../store/log-api';
-import {
-  radixApi,
-  useGetPipelineJobStepLogsQuery,
-} from '../../store/radix-api';
-import { getFetchErrorCode } from '../../store/utils/parse-errors';
-import AsyncResource from '../async-resource/async-resource';
-import { Code } from '../code';
-import { downloadLog } from '../code/log-helper';
+} from '../../store/log-api'
+import { radixApi, useGetPipelineJobStepLogsQuery } from '../../store/radix-api'
+import { getFetchErrorCode } from '../../store/utils/parse-errors'
+import AsyncResource from '../async-resource/async-resource'
+import { Code } from '../code'
+import { downloadLog } from '../code/log-helper'
 
-import './style.css';
+import './style.css'
 
-type BrandedContainerModel = ModelsContainer & { parentId: string };
+type BrandedContainerModel = ModelsContainer & { parentId: string }
 
 export interface StepLogsProps {
-  appName: string;
-  jobName: string;
-  stepName: string;
-  start?: string;
-  end?: string;
+  appName: string
+  jobName: string
+  stepName: string
+  start?: string
+  end?: string
 }
 
-function findContainer(
-  data: ModelsInventoryResponse,
-  stepName: string
-): BrandedContainerModel | null {
+function findContainer(data: ModelsInventoryResponse, stepName: string): BrandedContainerModel | null {
   for (const replica of data?.replicas ?? []) {
     for (const container of replica.containers ?? []) {
       if (container.name === stepName) {
-        return { ...container, parentId: replica.name };
+        return { ...container, parentId: replica.name }
       }
     }
   }
-  return null;
+  return null
 }
 
-function HistoricalLog({
-  appName,
-  jobName,
-  stepName,
-  start,
-  end,
-}: StepLogsProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
+function HistoricalLog({ appName, jobName, stepName, start, end }: StepLogsProps) {
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined
   const { container, ...state } = useGetPipelineJobInventoryQuery(
     { appName, pipelineJobName: jobName, start, end },
     {
@@ -61,40 +49,28 @@ function HistoricalLog({
         ...state,
       }),
     }
-  );
+  )
 
   return (
     <AsyncResource asyncState={state}>
       {container ? (
-        <ContainerLog
-          jobName={jobName}
-          appName={appName}
-          start={start}
-          end={end}
-          container={container}
-        />
+        <ContainerLog jobName={jobName} appName={appName} start={start} end={end} container={container} />
       ) : (
         <Typography>This replica has no log</Typography>
       )}
     </AsyncResource>
-  );
+  )
 }
 
 type ContainerLogProps = {
-  appName: string;
-  jobName: string;
-  container: BrandedContainerModel;
-  start?: string;
-  end?: string;
-};
-function ContainerLog({
-  appName,
-  container: { name, parentId, id },
-  jobName,
-  start,
-  end,
-}: ContainerLogProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined;
+  appName: string
+  jobName: string
+  container: BrandedContainerModel
+  start?: string
+  end?: string
+}
+function ContainerLog({ appName, container: { name, parentId, id }, jobName, start, end }: ContainerLogProps) {
+  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined
   const { data, ...state } = useGetPipelineJobContainerLogQuery(
     {
       appName,
@@ -105,46 +81,34 @@ function ContainerLog({
       end,
     },
     { skip: !appName || !jobName || !parentId || !id, pollingInterval }
-  );
+  )
 
   return (
     <AsyncResource asyncState={state}>
       {data ? (
-        <Code
-          copy
-          autoscroll
-          resizable
-          download
-          filename={`${jobName}_${name}.txt`}
-        >
+        <Code copy autoscroll resizable download filename={`${jobName}_${name}.txt`}>
           {data as string}
         </Code>
       ) : (
         <Typography>This replica has no log</Typography>
       )}
     </AsyncResource>
-  );
+  )
 }
 
-export function JobStepLogs({
-  appName,
-  jobName,
-  stepName,
-  start,
-  end,
-}: StepLogsProps) {
-  const [pollingInterval, setPollingInterval] = useState(5000);
-  const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery();
+export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogsProps) {
+  const [pollingInterval, setPollingInterval] = useState(5000)
+  const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
   const { data: liveLog, ...state } = useGetPipelineJobStepLogsQuery(
     { appName, jobName, stepName, lines: '1000' },
     { skip: !appName || !jobName || !stepName, pollingInterval }
-  );
+  )
 
-  const notFound = state.isError && getFetchErrorCode(state.error) === 404;
+  const notFound = state.isError && getFetchErrorCode(state.error) === 404
 
   useEffect(() => {
-    setPollingInterval(notFound || end ? 0 : 5000);
-  }, [notFound, end]);
+    setPollingInterval(notFound || end ? 0 : 5000)
+  }, [notFound, end])
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -156,13 +120,7 @@ export function JobStepLogs({
         </Accordion.Header>
         <Accordion.Panel>
           {notFound ? (
-            <HistoricalLog
-              appName={appName}
-              jobName={jobName}
-              stepName={stepName}
-              start={start}
-              end={end}
-            />
+            <HistoricalLog appName={appName} jobName={jobName} stepName={stepName} start={start} end={end} />
           ) : (
             <AsyncResource asyncState={state}>
               {liveLog ? (
@@ -173,10 +131,7 @@ export function JobStepLogs({
                   download
                   downloadCb={() =>
                     downloadLog(`${jobName}_${stepName}.txt`, () =>
-                      getLog(
-                        { appName, jobName, stepName, file: 'true' },
-                        false
-                      ).unwrap()
+                      getLog({ appName, jobName, stepName, file: 'true' }, false).unwrap()
                     )
                   }
                 >
@@ -190,5 +145,5 @@ export function JobStepLogs({
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
+  )
 }

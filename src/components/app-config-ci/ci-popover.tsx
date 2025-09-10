@@ -1,19 +1,19 @@
-import { Popover, Typography } from '@equinor/eds-core-react';
-import { useEffect } from 'react';
+import { Popover, Typography } from '@equinor/eds-core-react'
+import { useEffect } from 'react'
 
-import type { Application } from '../../store/service-now-api';
-import { configVariables } from '../../utils/config';
-import { ExternalLink } from '../link/external-link';
+import type { Application } from '../../store/service-now-api'
+import { configVariables } from '../../utils/config'
+import { ExternalLink } from '../link/external-link'
 
 export interface ConfigurationItemPopoverProps {
-  open: boolean;
-  onClose: () => unknown;
-  anchorEl?: HTMLElement;
-  configurationItem: Application;
+  open: boolean
+  onClose: () => unknown
+  anchorEl?: HTMLElement
+  configurationItem: Application
 }
 
 function urlStringForCI(id: string): string {
-  return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id));
+  return configVariables.CMDB_CI_URL.replace(/{CIID}/g, encodeURIComponent(id))
 }
 
 export const ConfigurationItemPopover = ({
@@ -22,22 +22,18 @@ export const ConfigurationItemPopover = ({
   anchorEl,
   configurationItem,
 }: ConfigurationItemPopoverProps) => {
-  const externalUrl = urlStringForCI(configurationItem.id);
+  const externalUrl = urlStringForCI(configurationItem.id)
 
   useEffect(() => {
-    const handleBodyClick = () => onClose();
-    document.body.addEventListener('click', handleBodyClick);
+    const handleBodyClick = () => onClose()
+    document.body.addEventListener('click', handleBodyClick)
     return () => {
-      document.body.removeEventListener('click', handleBodyClick);
-    };
-  }, [onClose]);
+      document.body.removeEventListener('click', handleBodyClick)
+    }
+  }, [onClose])
 
   return (
-    <Popover
-      anchorEl={anchorEl}
-      open={open}
-      onClick={(ev) => ev.stopPropagation()}
-    >
+    <Popover anchorEl={anchorEl} open={open} onClick={(ev) => ev.stopPropagation()}>
       <Popover.Content>
         {configurationItem && (
           <div className="grid grid--gap-small">
@@ -45,9 +41,7 @@ export const ConfigurationItemPopover = ({
               <Typography group="input" variant="label">
                 Name
               </Typography>
-              <ExternalLink href={externalUrl}>
-                {configurationItem.name}
-              </ExternalLink>
+              <ExternalLink href={externalUrl}>{configurationItem.name}</ExternalLink>
             </div>
             <div>
               <Typography group="input" variant="label">
@@ -59,17 +53,13 @@ export const ConfigurationItemPopover = ({
               <Typography group="input" variant="label">
                 Business Solution Owner
               </Typography>
-              <Typography>
-                {configurationItem.businessSolutionOwner || 'N/A'}
-              </Typography>
+              <Typography>{configurationItem.businessSolutionOwner || 'N/A'}</Typography>
             </div>
             <div>
               <Typography group="input" variant="label">
                 Technical Contact Persons
               </Typography>
-              <Typography>
-                {configurationItem.technicalContactPersons || 'N/A'}
-              </Typography>
+              <Typography>{configurationItem.technicalContactPersons || 'N/A'}</Typography>
             </div>
             <div>
               <Typography group="input" variant="label">
@@ -81,5 +71,5 @@ export const ConfigurationItemPopover = ({
         )}
       </Popover.Content>
     </Popover>
-  );
-};
+  )
+}

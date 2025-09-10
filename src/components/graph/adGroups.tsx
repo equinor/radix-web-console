@@ -1,63 +1,54 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { computer, group, person } from '@equinor/eds-icons';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { computer, group, person } from '@equinor/eds-icons'
 import {
   type CSSObjectWithLabel,
   components,
   type MultiValue,
   type MultiValueGenericProps,
   type OptionsOrGroups,
-} from 'react-select';
-import AsyncSelect from 'react-select/async';
-import { useDebounce } from '../../effects/use-debounce';
+} from 'react-select'
+import AsyncSelect from 'react-select/async'
+import { useDebounce } from '../../effects/use-debounce'
 import {
   type EntraItem,
   useGetAdGroupsQuery,
   useGetAdServicePrincipalQuery,
   useLazySearchAdGroupsQuery,
   useLazySearchAdServicePrincipalsQuery,
-} from '../../store/ms-graph-api';
-import AsyncResource from '../async-resource/async-resource';
-import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
-import { warningToast } from '../global-top-nav/styled-toaster';
+} from '../../store/ms-graph-api'
+import AsyncResource from '../async-resource/async-resource'
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert'
+import { warningToast } from '../global-top-nav/styled-toaster'
 
-export type HandleAdGroupsChangeCB = (value: MultiValue<AdGroupItem>) => void;
+export type HandleAdGroupsChangeCB = (value: MultiValue<AdGroupItem>) => void
 export type AdGroupItem = EntraItem & {
-  deleted?: boolean;
-  type: 'Group' | 'User' | 'ServicePrincipal' | 'Application';
-};
+  deleted?: boolean
+  type: 'Group' | 'User' | 'ServicePrincipal' | 'Application'
+}
 
 type GroupedOption = {
-  readonly label: string;
-  readonly options: readonly AdGroupItem[];
-};
+  readonly label: string
+  readonly options: readonly AdGroupItem[]
+}
 
-type CallbackType = (
-  options: OptionsOrGroups<AdGroupItem, GroupedOption>
-) => void;
+type CallbackType = (options: OptionsOrGroups<AdGroupItem, GroupedOption>) => void
 
 interface Props {
-  name?: string;
-  onChange?: HandleAdGroupsChangeCB;
-  adGroups: Array<string>;
-  adUsers: Array<string>;
-  isDisabled?: boolean;
+  name?: string
+  onChange?: HandleAdGroupsChangeCB
+  adGroups: Array<string>
+  adUsers: Array<string>
+  isDisabled?: boolean
 }
-export function ADGroups({
-  name = 'ADGroups',
-  onChange,
-  adGroups,
-  adUsers,
-  isDisabled,
-}: Props) {
+export function ADGroups({ name = 'ADGroups', onChange, adGroups, adUsers, isDisabled }: Props) {
   const { data: groupsInfo, ...state } = useGetAdGroupsQuery({
     ids: adGroups ?? [],
-  });
+  })
   const { data: spInfo, ...spState } = useGetAdServicePrincipalQuery({
     ids: adUsers ?? [],
-  });
-  const [searchServicePrincipals, spSearchState] =
-    useLazySearchAdServicePrincipalsQuery();
-  const [searchGroups, groupsSearchState] = useLazySearchAdGroupsQuery();
+  })
+  const [searchServicePrincipals, spSearchState] = useLazySearchAdServicePrincipalsQuery()
+  const [searchGroups, groupsSearchState] = useLazySearchAdGroupsQuery()
 
   const displayGroups: AdGroupItem[] = adGroups
     .map((id) => ({ id, info: groupsInfo?.find((g) => g.id === id) }))
@@ -66,7 +57,7 @@ export function ADGroups({
       displayName: g.info?.displayName ?? g.id,
       type: 'Group',
       deleted: !g.info,
-    }));
+    }))
   const displayUsers: AdGroupItem[] = adUsers
     .map((id) => ({ id, info: spInfo?.find((sp) => sp.id === id) }))
     .map((sp) => ({
@@ -74,47 +65,40 @@ export function ADGroups({
       displayName: sp.info?.displayName ?? sp.id,
       type: 'ServicePrincipal',
       deleted: !sp.info,
-    }));
+    }))
 
-  const unknownADGroups = adGroups?.filter(
-    (adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId)
-  );
-  const unknownADUsers = adUsers?.filter(
-    (adUserId) => !spInfo?.some((adUser) => adUser.id === adUserId)
-  );
+  const unknownADGroups = adGroups?.filter((adGroupId) => !groupsInfo?.some((adGroup) => adGroup.id === adGroupId))
+  const unknownADUsers = adUsers?.filter((adUserId) => !spInfo?.some((adUser) => adUser.id === adUserId))
 
-  const onSearch = useDebounce(
-    (displayName: string, callback: CallbackType) => {
-      Promise.all([
-        searchGroups({ displayName, limit: 10 }).unwrap(),
-        searchServicePrincipals({ displayName, limit: 10 }).unwrap(),
-      ])
-        .then(([groups, servicePrincipals]) => {
-          callback([
-            {
-              label: 'Groups',
-              options: groups.value.map<AdGroupItem>((item) => ({
-                ...item,
-                type: 'Group',
-              })),
-            },
-            {
-              label: 'Service Principals',
-              options: servicePrincipals.value.map<AdGroupItem>((item) => ({
-                ...item,
-                type: 'ServicePrincipal',
-              })),
-            },
-          ]);
-        })
-        .catch((err) => {
-          console.warn(err);
-          warningToast('Error fetching AD groups');
-          callback([]);
-        });
-    },
-    500
-  );
+  const onSearch = useDebounce((displayName: string, callback: CallbackType) => {
+    Promise.all([
+      searchGroups({ displayName, limit: 10 }).unwrap(),
+      searchServicePrincipals({ displayName, limit: 10 }).unwrap(),
+    ])
+      .then(([groups, servicePrincipals]) => {
+        callback([
+          {
+            label: 'Groups',
+            options: groups.value.map<AdGroupItem>((item) => ({
+              ...item,
+              type: 'Group',
+            })),
+          },
+          {
+            label: 'Service Principals',
+            options: servicePrincipals.value.map<AdGroupItem>((item) => ({
+              ...item,
+              type: 'ServicePrincipal',
+            })),
+          },
+        ])
+      })
+      .catch((err) => {
+        console.warn(err)
+        warningToast('Error fetching AD groups')
+        callback([])
+      })
+  }, 500)
 
   return (
     <AsyncResource asyncState={spState} nonFailureErrorCodes={[404]}>
@@ -124,15 +108,13 @@ export function ADGroups({
           name={name}
           menuPosition="fixed"
           closeMenuOnScroll={(e: Event) => {
-            const target = e.target as HTMLInputElement;
-            return target?.parentElement?.className
-              ? !target.parentElement.className.match(/menu/)
-              : false;
+            const target = e.target as HTMLInputElement
+            return target?.parentElement?.className ? !target.parentElement.className.match(/menu/) : false
           }}
           noOptionsMessage={() => null}
           loadOptions={(inputValue, callback) => {
-            if (inputValue.length < 3) return callback([]);
-            return onSearch(inputValue, callback);
+            if (inputValue.length < 3) return callback([])
+            return onSearch(inputValue, callback)
           }}
           isLoading={groupsSearchState.isLoading || spSearchState.isLoading}
           onChange={onChange}
@@ -147,42 +129,29 @@ export function ADGroups({
             multiValueRemove: selectValueStyle,
           }}
         />
-        <Typography
-          className="helpertext"
-          group="input"
-          variant="text"
-          token={{ color: 'currentColor' }}
-        >
+        <Typography className="helpertext" group="input" variant="text" token={{ color: 'currentColor' }}>
           Azure Active Directory (type 3 characters to search)
         </Typography>
         {(!state.isFetching && unknownADGroups?.length > 0) ||
           (!spState.isFetching && unknownADUsers?.length > 0 && (
-            <UnknownADGroupsAlert
-              unknownADGroups={unknownADGroups}
-              unknownADUsers={unknownADUsers}
-            />
+            <UnknownADGroupsAlert unknownADGroups={unknownADGroups} unknownADUsers={unknownADUsers} />
           ))}
       </AsyncResource>
     </AsyncResource>
-  );
+  )
 }
 
-function selectValueStyle(
-  base: CSSObjectWithLabel,
-  props: { data: AdGroupItem }
-) {
+function selectValueStyle(base: CSSObjectWithLabel, props: { data: AdGroupItem }) {
   if (props.data.deleted) {
-    base.backgroundColor = 'var(--eds_interactive_danger__highlight)';
+    base.backgroundColor = 'var(--eds_interactive_danger__highlight)'
   }
-  return base;
+  return base
 }
 
-const MultiValueLabel = (
-  props: MultiValueGenericProps<AdGroupItem, true, GroupedOption>
-) => {
-  let icon = computer;
-  if (props.data.type === 'Group') icon = group;
-  if (props.data.type === 'User') icon = person;
+const MultiValueLabel = (props: MultiValueGenericProps<AdGroupItem, true, GroupedOption>) => {
+  let icon = computer
+  if (props.data.type === 'Group') icon = group
+  if (props.data.type === 'User') icon = person
 
   return (
     <div
@@ -190,13 +159,11 @@ const MultiValueLabel = (
         display: 'flex',
         alignItems: 'center',
         paddingLeft: 4,
-        backgroundColor: props.data.deleted
-          ? 'var(--eds_interactive_danger__highlight)'
-          : undefined,
+        backgroundColor: props.data.deleted ? 'var(--eds_interactive_danger__highlight)' : undefined,
       }}
     >
       <Icon data={icon} size={16} />
       <components.MultiValueLabel {...props} />
     </div>
-  );
-};
+  )
+}

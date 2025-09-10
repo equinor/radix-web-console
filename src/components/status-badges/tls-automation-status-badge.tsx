@@ -1,17 +1,11 @@
-import { Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, time } from '@equinor/eds-icons';
-import type { TlsAutomation } from '../../store/radix-api';
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
+import { Icon } from '@equinor/eds-core-react'
+import { check, error_outlined, time } from '@equinor/eds-icons'
+import type { TlsAutomation } from '../../store/radix-api'
+import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-badge-template'
 
-type Status = TlsAutomation['status'] | 'Unknown';
+type Status = TlsAutomation['status'] | 'Unknown'
 
-const BadgeTemplates: Record<
-  Status,
-  Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>
-> = {
+const BadgeTemplates: Record<Status, Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>> = {
   Pending: {
     type: 'warning',
     icon: <Icon data={time} />,
@@ -28,17 +22,17 @@ const BadgeTemplates: Record<
     icon: <Icon data={time} />,
     text: 'Order Status Unknown',
   },
-};
+}
 
 type Props = {
-  status: Status;
-};
+  status: Status
+}
 export function TLSAutomationStatusBadge({ status }: Props) {
-  const { type, icon, text } = BadgeTemplates[status];
+  const { type, icon, text } = BadgeTemplates[status]
 
   return (
     <StatusBadgeTemplate type={type} icon={icon}>
       {text || status}
     </StatusBadgeTemplate>
-  );
+  )
 }

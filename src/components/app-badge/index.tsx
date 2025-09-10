@@ -1,10 +1,10 @@
-import { configure, type JdenticonConfig, toSvg } from 'jdenticon';
-import './style.css';
+import { configure, type JdenticonConfig, toSvg } from 'jdenticon'
+import './style.css'
 
 type AppBadgeProps = {
-  appName: string;
-  size?: number;
-};
+  appName: string
+  size?: number
+}
 
 const badgeConfig: JdenticonConfig = {
   hues: [207, 283, 64],
@@ -17,14 +17,14 @@ const badgeConfig: JdenticonConfig = {
     grayscale: 0.5,
   },
   backColor: '#ffffff00',
-};
+}
 
 export const AppBadge = ({ size = 64, appName }: AppBadgeProps) => {
-  const previousConfig = configure();
+  const previousConfig = configure()
 
-  configure(badgeConfig);
-  const badge = { __html: toSvg(appName, size) };
-  configure(previousConfig);
+  configure(badgeConfig)
+  const badge = { __html: toSvg(appName, size) }
+  configure(previousConfig)
 
-  return <div className="app-badge" dangerouslySetInnerHTML={badge} />;
-};
+  return <div className="app-badge" dangerouslySetInnerHTML={badge} />
+}

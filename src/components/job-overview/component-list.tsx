@@ -1,23 +1,21 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import type { DeploymentSummary } from '../../store/radix-api';
-import { routeWithParams } from '../../utils/string';
-import { GitCommitTags } from '../component/git-commit-tags';
-import { DockerImage } from '../docker-image';
+import { List, Typography } from '@equinor/eds-core-react'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import type { DeploymentSummary } from '../../store/radix-api'
+import { routeWithParams } from '../../utils/string'
+import { GitCommitTags } from '../component/git-commit-tags'
+import { DockerImage } from '../docker-image'
 
 type Props = {
-  appName: string;
-  deployments: DeploymentSummary[];
-  repository?: string;
-};
+  appName: string
+  deployments: DeploymentSummary[]
+  repository?: string
+}
 
 export const ComponentList = ({ appName, deployments, repository }: Props) => {
   return (
     <>
-      {deployments.some(
-        (value) => value.components && value.components.length > 0
-      ) && (
+      {deployments.some((value) => value.components && value.components.length > 0) && (
         <>
           <Typography variant="h4">Components</Typography>
           <List>
@@ -44,9 +42,7 @@ export const ComponentList = ({ appName, deployments, repository }: Props) => {
                           </Typography>{' '}
                           {' image '}
                           <DockerImage path={component.image} />
-                          {(component.skipDeployment ||
-                            component.commitID !==
-                              deployment.gitCommitHash) && (
+                          {(component.skipDeployment || component.commitID !== deployment.gitCommitHash) && (
                             <>
                               <> from past deployment</>
                               <GitCommitTags
@@ -69,5 +65,5 @@ export const ComponentList = ({ appName, deployments, repository }: Props) => {
         </>
       )}
     </>
-  );
-};
+  )
+}

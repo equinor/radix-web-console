@@ -1,26 +1,20 @@
-import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import type { OAuth2AuxiliaryResource } from '../../store/radix-api';
-import { getOAuthServiceTitle } from '../../utils/oauth';
-import { getOAuthReplicaUrl } from '../../utils/routing';
-import { ReplicaList } from '../replica-list';
-import { ComponentStatusBadge } from '../status-badges';
-import { OAuthToolbar } from './oauth-toolbar';
+import { Accordion, List, Typography } from '@equinor/eds-core-react'
+import type { OAuth2AuxiliaryResource } from '../../store/radix-api'
+import { getOAuthServiceTitle } from '../../utils/oauth'
+import { getOAuthReplicaUrl } from '../../utils/routing'
+import { ReplicaList } from '../replica-list'
+import { ComponentStatusBadge } from '../status-badges'
+import { OAuthToolbar } from './oauth-toolbar'
 
 type Props = {
-  appName: string;
-  envName: string;
-  componentName: string;
-  oauth2: OAuth2AuxiliaryResource;
-  refetch: () => unknown;
-};
+  appName: string
+  envName: string
+  componentName: string
+  oauth2: OAuth2AuxiliaryResource
+  refetch: () => unknown
+}
 
-export const OAuthService = ({
-  appName,
-  envName,
-  componentName,
-  oauth2,
-  refetch,
-}: Props) => (
+export const OAuthService = ({ appName, envName, componentName, oauth2, refetch }: Props) => (
   <Accordion className="accordion elevated" chevronPosition="right">
     <Accordion.Item isExpanded>
       <Accordion.Header>
@@ -36,11 +30,7 @@ export const OAuthService = ({
             {oauth2.deployments?.map((deployment) => (
               <List.Item key={deployment.type} className="oauth-list-item">
                 <div>
-                  <Typography
-                    className="whitespace-nowrap"
-                    variant="h5"
-                    as="span"
-                  >
+                  <Typography className="whitespace-nowrap" variant="h5" as="span">
                     {getOAuthServiceTitle(deployment.type)}
                   </Typography>
                   <div className="oauth-service-form__title">
@@ -60,21 +50,14 @@ export const OAuthService = ({
                     </span>
                   </div>
                   <div className="grid">
-                    {deployment.replicaList &&
-                    deployment.replicaList.length > 0 ? (
+                    {deployment.replicaList && deployment.replicaList.length > 0 ? (
                       <ReplicaList
                         appName={appName}
                         envName={envName}
                         compName={componentName}
                         replicaList={deployment.replicaList}
                         replicaUrlFunc={(name) =>
-                          getOAuthReplicaUrl(
-                            appName,
-                            envName,
-                            componentName,
-                            name,
-                            deployment.type
-                          )
+                          getOAuthReplicaUrl(appName, envName, componentName, name, deployment.type)
                         }
                       />
                     ) : (
@@ -89,4 +72,4 @@ export const OAuthService = ({
       </Accordion.Panel>
     </Accordion.Item>
   </Accordion>
-);
+)

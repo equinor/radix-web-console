@@ -3,22 +3,21 @@ import {
   radixApi,
   useGetDeployKeyAndSecretQuery,
   useRegisterApplicationMutation,
-} from '../../store/radix-api';
-import './style.css';
-import { useState } from 'react';
-import { pollingInterval } from '../../store/defaults';
-import { CreateApplicationScrim } from './create-application-scrim';
+} from '../../store/radix-api'
+import './style.css'
+import { useState } from 'react'
+import { pollingInterval } from '../../store/defaults'
+import { CreateApplicationScrim } from './create-application-scrim'
 
 export default function PageCreateApplication() {
-  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({});
-  const [createApp] = useRegisterApplicationMutation();
-  const [appName, setAppName] = useState<string>();
+  const [refreshApps] = radixApi.endpoints.showApplications.useLazyQuery({})
+  const [createApp] = useRegisterApplicationMutation()
+  const [appName, setAppName] = useState<string>()
 
-  const { data: secrets, refetch: refetchSecrets } =
-    useGetDeployKeyAndSecretQuery(
-      { appName: appName! },
-      { pollingInterval, skip: !appName }
-    );
+  const { data: secrets, refetch: refetchSecrets } = useGetDeployKeyAndSecretQuery(
+    { appName: appName! },
+    { pollingInterval, skip: !appName }
+  )
 
   const onCreateApplication = async (
     applicationRegistration: ApplicationRegistration,
@@ -29,15 +28,15 @@ export default function PageCreateApplication() {
         applicationRegistration,
         acknowledgeWarnings,
       },
-    }).unwrap();
+    }).unwrap()
 
     if (response.applicationRegistration) {
-      setAppName(response.applicationRegistration.name);
-      setTimeout(refetchSecrets, 250); // We cant refetch secrets while its _skipped_, so give it a few ms so React can catch up
+      setAppName(response.applicationRegistration.name)
+      setTimeout(refetchSecrets, 250) // We cant refetch secrets while its _skipped_, so give it a few ms so React can catch up
     }
 
-    return response.warnings ?? [];
-  };
+    return response.warnings ?? []
+  }
 
   return (
     <CreateApplicationScrim
@@ -45,5 +44,5 @@ export default function PageCreateApplication() {
       onCreateApplication={onCreateApplication}
       onRefreshApps={() => refreshApps({})}
     />
-  );
+  )
 }

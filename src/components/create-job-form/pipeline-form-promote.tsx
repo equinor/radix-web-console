@@ -1,74 +1,57 @@
-import {
-  Button,
-  CircularProgress,
-  NativeSelect,
-  Typography,
-} from '@equinor/eds-core-react';
-import { type FormEvent, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
+import { type FormEvent, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval } from '../../store/defaults'
 import {
   type DeploymentSummary,
   useGetDeploymentsQuery,
   useTriggerPipelinePromoteMutation,
-} from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { formatDateTime } from '../../utils/datetime';
-import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string';
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { RelativeToNow } from '../time/relative-to-now';
-import type { FormProp } from './index';
-import { MissingRadixConfigAlert } from './missing-radix-config-alert';
+} from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { formatDateTime } from '../../utils/datetime'
+import { smallDeploymentName, smallGithubCommitHash } from '../../utils/string'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { RelativeToNow } from '../time/relative-to-now'
+import type { FormProp } from './index'
+import { MissingRadixConfigAlert } from './missing-radix-config-alert'
 
 export function PipelineFormPromote({ application, onSuccess }: FormProp) {
-  const hasEnvironments =
-    application.environments && application.environments.length > 0;
-  const [searchParams] = useSearchParams();
-  const [trigger, state] = useTriggerPipelinePromoteMutation();
-  const { data: deployments } = useGetDeploymentsQuery(
-    { appName: application.name },
-    { pollingInterval }
-  );
-  const [toEnvironment, setToEnvironment] = useState('');
-  const [deploymentName, setDeploymentName] = useState(
-    searchParams.get('deploymentName') ?? ''
-  );
+  const hasEnvironments = application.environments && application.environments.length > 0
+  const [searchParams] = useSearchParams()
+  const [trigger, state] = useTriggerPipelinePromoteMutation()
+  const { data: deployments } = useGetDeploymentsQuery({ appName: application.name }, { pollingInterval })
+  const [toEnvironment, setToEnvironment] = useState('')
+  const [deploymentName, setDeploymentName] = useState(searchParams.get('deploymentName') ?? '')
 
-  const selectedDeployment = deployments?.find(
-    (x) => x.name === deploymentName
-  );
-  const fromEnvironment = selectedDeployment?.environment;
+  const selectedDeployment = deployments?.find((x) => x.name === deploymentName)
+  const fromEnvironment = selectedDeployment?.environment
 
-  const handleSubmit = handlePromiseWithToast(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+  const handleSubmit = handlePromiseWithToast(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-      const response = await trigger({
-        appName: application.name,
-        pipelineParametersPromote: {
-          toEnvironment,
-          deploymentName,
-          fromEnvironment,
-        },
-      }).unwrap();
-      onSuccess(response.name);
-    }
-  );
+    const response = await trigger({
+      appName: application.name,
+      pipelineParametersPromote: {
+        toEnvironment,
+        deploymentName,
+        fromEnvironment,
+      },
+    }).unwrap()
+    onSuccess(response.name)
+  })
 
   // Show deployments grouped by environment
-  const groupedDeployments = (deployments || []).reduce<
-    Record<string, Array<DeploymentSummary>>
-  >(
+  const groupedDeployments = (deployments || []).reduce<Record<string, Array<DeploymentSummary>>>(
     (obj, x) => ({
       ...obj,
       [x.environment]: [...(obj[x.environment] || []), x],
     }),
     {}
-  );
+  )
 
-  const isValid = !!(toEnvironment && deploymentName && fromEnvironment);
+  const isValid = !!(toEnvironment && deploymentName && fromEnvironment)
 
   return (
     <form onSubmit={handleSubmit}>
@@ -84,11 +67,7 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
             >
               Promote an existing deployment to an environment
             </Typography>
-            <Typography
-              group="input"
-              variant="text"
-              token={{ color: 'currentColor' }}
-            >
+            <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
               Deployment to promote
             </Typography>
             <NativeSelect
@@ -106,11 +85,8 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
                   {groupedDeployments[key].map((x, j) => (
                     <option key={j} value={x.name}>
                       {smallDeploymentName(x.name)}{' '}
-                      {x.activeTo
-                        ? `(${formatDateTime(x.activeFrom)})`
-                        : '(currently active)'}
-                      {x.gitCommitHash &&
-                        ` ${smallGithubCommitHash(x.gitCommitHash)}`}
+                      {x.activeTo ? `(${formatDateTime(x.activeFrom)})` : '(currently active)'}
+                      {x.gitCommitHash && ` ${smallGithubCommitHash(x.gitCommitHash)}`}
                       {x.gitTags && `, ${x.gitTags}`}
                     </option>
                   ))}
@@ -136,11 +112,7 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
                 on environment {selectedDeployment.environment}
               </Typography>
             )}
-            <Typography
-              group="input"
-              variant="text"
-              token={{ color: 'currentColor' }}
-            >
+            <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
               Target environment
             </Typography>
             <NativeSelect
@@ -153,20 +125,11 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
               <option hidden value="">
                 — Please select —
               </option>
-              {application.environments?.map(
-                ({ name, activeDeployment }, i) => (
-                  <option
-                    key={i}
-                    value={name}
-                    disabled={
-                      activeDeployment &&
-                      activeDeployment.name === deploymentName
-                    }
-                  >
-                    {name}
-                  </option>
-                )
-              )}
+              {application.environments?.map(({ name, activeDeployment }, i) => (
+                <option key={i} value={name} disabled={activeDeployment && activeDeployment.name === deploymentName}>
+                  {name}
+                </option>
+              ))}
             </NativeSelect>
           </div>
         ) : (
@@ -178,11 +141,7 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
               <CircularProgress size={16} /> Creating…
             </div>
           )}
-          {state.isError && (
-            <Alert type="danger">
-              Failed to create job. {getFetchErrorMessage(state.error)}
-            </Alert>
-          )}
+          {state.isError && <Alert type="danger">Failed to create job. {getFetchErrorMessage(state.error)}</Alert>}
           <div>
             <Button disabled={!isValid} type="submit">
               Create job
@@ -191,5 +150,5 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
         </div>
       </fieldset>
     </form>
-  );
+  )
 }

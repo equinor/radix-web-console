@@ -1,28 +1,28 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import clsx from 'clsx';
-import { differenceInDays } from 'date-fns';
-import { Fragment, useCallback, useMemo, useState } from 'react';
-import type { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
-import { pluraliser } from '../../utils/string';
-import { Alert, type AlertProps } from '../alert';
-import { ExternalDNSStatusBadge } from '../status-badges';
-import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge';
-import { TLSCertificateList } from '../tls-certificate-list';
+import { Icon, Table, Typography } from '@equinor/eds-core-react'
+import { chevron_down, chevron_up } from '@equinor/eds-icons'
+import clsx from 'clsx'
+import { differenceInDays } from 'date-fns'
+import { Fragment, useCallback, useMemo, useState } from 'react'
+import type { ExternalDns, Tls, TlsAutomation } from '../../store/radix-api'
+import { dataSorter, sortCompareString } from '../../utils/sort-utils'
+import { pluraliser } from '../../utils/string'
+import { Alert, type AlertProps } from '../alert'
+import { ExternalDNSStatusBadge } from '../status-badges'
+import { TLSAutomationStatusBadge } from '../status-badges/tls-automation-status-badge'
+import { TLSCertificateList } from '../tls-certificate-list'
 
-type TlsStatus = Tls['status'];
+type TlsStatus = Tls['status']
 
 const StatusMessageAlertTemplate = {
   Pending: { type: 'info' },
   Consistent: { type: 'info' },
   Invalid: { type: 'danger' },
-} satisfies Record<TlsStatus, AlertProps>;
+} satisfies Record<TlsStatus, AlertProps>
 
 type StatusMessagesProps = {
-  status: TlsStatus;
-  messages: Array<string>;
-};
+  status: TlsStatus
+  messages: Array<string>
+}
 
 function StatusMessages({ status, messages }: StatusMessagesProps) {
   return (
@@ -33,55 +33,49 @@ function StatusMessages({ status, messages }: StatusMessagesProps) {
         ))}
       </div>
     </Alert>
-  );
+  )
 }
 
-type AutomationStatus = TlsAutomation['status'] | 'Unknown';
+type AutomationStatus = TlsAutomation['status'] | 'Unknown'
 
 const TlsAutomationMessageAlertTemplate = {
   Pending: { type: 'warning' },
   Success: { type: 'info' },
   Failed: { type: 'danger' },
   Unknown: { type: 'warning' },
-} satisfies Record<AutomationStatus, AlertProps>;
+} satisfies Record<AutomationStatus, AlertProps>
 
 type TlsAutomationMessageProps = {
-  status: AutomationStatus;
-  message: string;
-};
+  status: AutomationStatus
+  message: string
+}
 
-function TlsAutomationStatusMessage({
-  status,
-  message,
-}: TlsAutomationMessageProps) {
+function TlsAutomationStatusMessage({ status, message }: TlsAutomationMessageProps) {
   return (
     <Alert {...TlsAutomationMessageAlertTemplate[status]}>
       <div className="grid grid--gap-medium">
         <Typography>{message}</Typography>
       </div>
     </Alert>
-  );
+  )
 }
 
-const dayPluraliser = pluraliser('day', 'days');
+const dayPluraliser = pluraliser('day', 'days')
 
 type Props = {
-  externalDnsList: Array<ExternalDns>;
-  onItemClick?: (item: ExternalDns) => void;
-};
+  externalDnsList: Array<ExternalDns>
+  onItemClick?: (item: ExternalDns) => void
+}
 export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
   const sortedExternalDnsList = useMemo(
-    () =>
-      dataSorter(externalDnsList, [
-        (x, y) => sortCompareString(x.fqdn, y.fqdn),
-      ]),
+    () => dataSorter(externalDnsList, [(x, y) => sortCompareString(x.fqdn, y.fqdn)]),
     [externalDnsList]
-  );
-  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({});
+  )
+  const [expandedRows, setExpandedRows] = useState<Record<string, boolean>>({})
   const expandRow = useCallback<(name: string) => void>(
     (name) => setExpandedRows((x) => ({ ...x, [name]: !x[name] })),
     []
-  );
+  )
 
   return (
     <Table>
@@ -98,11 +92,11 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
       </Table.Head>
       <Table.Body>
         {sortedExternalDnsList.map((externalDns) => {
-          const expanded = !!expandedRows[externalDns.fqdn];
-          const certificates = externalDns.tls.certificates ?? [];
-          const automationMessage = externalDns.tls.automation?.message;
-          const statusMessage = externalDns.tls.statusMessages;
-          const certificateExpiry = certificates[0]?.notAfter;
+          const expanded = !!expandedRows[externalDns.fqdn]
+          const certificates = externalDns.tls.certificates ?? []
+          const automationMessage = externalDns.tls.automation?.message
+          const statusMessage = externalDns.tls.statusMessages
+          const certificateExpiry = certificates[0]?.notAfter
 
           return (
             <Fragment key={externalDns.fqdn}>
@@ -112,19 +106,9 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
                 })}
               >
                 <Table.Cell className="fitwidth padding-right-0">
-                  {(certificates.length > 0 ||
-                    statusMessage ||
-                    automationMessage) && (
-                    <Typography
-                      link
-                      as="span"
-                      onClick={() => expandRow(externalDns.fqdn)}
-                    >
-                      <Icon
-                        data={expanded ? chevron_up : chevron_down}
-                        role="button"
-                        title="Toggle more information"
-                      />
+                  {(certificates.length > 0 || statusMessage || automationMessage) && (
+                    <Typography link as="span" onClick={() => expandRow(externalDns.fqdn)}>
+                      <Icon data={expanded ? chevron_up : chevron_down} role="button" title="Toggle more information" />
                     </Typography>
                   )}
                 </Table.Cell>
@@ -138,16 +122,7 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
                   </Typography>
                 </Table.Cell>
                 <Table.Cell>
-                  {certificateExpiry && (
-                    <>
-                      {dayPluraliser(
-                        differenceInDays(
-                          new Date(certificateExpiry),
-                          new Date()
-                        )
-                      )}
-                    </>
-                  )}
+                  {certificateExpiry && <>{dayPluraliser(differenceInDays(new Date(certificateExpiry), new Date()))}</>}
                 </Table.Cell>
                 <Table.Cell>
                   <ExternalDNSStatusBadge status={externalDns.tls.status} />
@@ -155,9 +130,7 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
                 <Table.Cell style={{ textAlign: 'center' }}>
                   {externalDns.tls.useAutomation && (
                     <Typography as="span" color="primary">
-                      <TLSAutomationStatusBadge
-                        status={externalDns.tls.automation?.status || 'Unknown'}
-                      />
+                      <TLSAutomationStatusBadge status={externalDns.tls.automation?.status || 'Unknown'} />
                     </Typography>
                   )}
                 </Table.Cell>
@@ -166,35 +139,23 @@ export const ExternalDNSList = ({ externalDnsList, onItemClick }: Props) => {
                 <Table.Row>
                   <Table.Cell />
                   <Table.Cell colSpan={4}>
-                    <div
-                      className="grid grid--gap-medium"
-                      style={{ margin: '16px 0' }}
-                    >
+                    <div className="grid grid--gap-medium" style={{ margin: '16px 0' }}>
                       {automationMessage && (
                         <TlsAutomationStatusMessage
-                          status={
-                            externalDns.tls.automation?.status || 'Unknown'
-                          }
+                          status={externalDns.tls.automation?.status || 'Unknown'}
                           message={automationMessage}
                         />
                       )}
-                      {statusMessage && (
-                        <StatusMessages
-                          status={externalDns.tls.status}
-                          messages={statusMessage}
-                        />
-                      )}
-                      {certificates.length > 0 && (
-                        <TLSCertificateList tlsCertificates={certificates} />
-                      )}
+                      {statusMessage && <StatusMessages status={externalDns.tls.status} messages={statusMessage} />}
+                      {certificates.length > 0 && <TLSCertificateList tlsCertificates={certificates} />}
                     </div>
                   </Table.Cell>
                 </Table.Row>
               )}
             </Fragment>
-          );
+          )
         })}
       </Table.Body>
     </Table>
-  );
-};
+  )
+}

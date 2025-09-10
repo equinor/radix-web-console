@@ -1,8 +1,8 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react'
 
-import { ConfigList } from '../config-list';
-import { AvailabilityCharts } from '../data-chart';
-import { DocumentTitle } from '../document-title';
+import { ConfigList } from '../config-list'
+import { AvailabilityCharts } from '../data-chart'
+import { DocumentTitle } from '../document-title'
 
 export default function PageAbout() {
   return (
@@ -14,8 +14,7 @@ export default function PageAbout() {
       <div className="o-layout-single__content">
         <div className="panel grid grid--gap-small">
           <Typography variant="overline">
-            Radix Web Console [{import.meta.env.PACKAGE_NAME}@
-            {import.meta.env.PACKAGE_VERSION}]
+            Radix Web Console [{import.meta.env.PACKAGE_NAME}@{import.meta.env.PACKAGE_VERSION}]
           </Typography>
           <AvailabilityCharts />
           <Typography variant="h4">Configuration</Typography>
@@ -23,5 +22,5 @@ export default function PageAbout() {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,16 +1,16 @@
-import { Typography } from '@equinor/eds-core-react';
-import { Server } from 'miragejs';
-import type { ComponentProps } from 'react';
+import { Typography } from '@equinor/eds-core-react'
+import { Server } from 'miragejs'
+import type { ComponentProps } from 'react'
 import type {
   GetSearchApplicationsApiArg,
   GetSearchApplicationsApiResponse,
   ShowApplicationsApiResponse,
-} from '../../store/radix-api';
+} from '../../store/radix-api'
 import type {
   GetApplicationVulnerabilitySummariesApiArg,
   GetApplicationVulnerabilitySummariesApiResponse,
-} from '../../store/scan-api';
-import AppList from '.';
+} from '../../store/scan-api'
+import AppList from '.'
 
 const testApps: ShowApplicationsApiResponse = [
   {
@@ -31,12 +31,8 @@ const testApps: ShowApplicationsApiResponse = [
   {
     name: 'radix-web-console',
     environmentActiveComponents: {
-      botnet: [
-        { image: 'yes', name: 'botnet-1', type: 'job', status: 'Consistent' },
-      ],
-      coinminer: [
-        { image: 'no', name: 'queen', type: 'component', status: 'Consistent' },
-      ],
+      botnet: [{ image: 'yes', name: 'botnet-1', type: 'job', status: 'Consistent' }],
+      coinminer: [{ image: 'no', name: 'queen', type: 'component', status: 'Consistent' }],
     },
     latestJob: {
       name: 'latest job',
@@ -46,7 +42,7 @@ const testApps: ShowApplicationsApiResponse = [
       triggeredFromWebhook: false,
     },
   },
-];
+]
 
 const testVulns: GetApplicationVulnerabilitySummariesApiResponse = [
   {
@@ -82,7 +78,7 @@ const testVulns: GetApplicationVulnerabilitySummariesApiResponse = [
       },
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -91,50 +87,36 @@ new Server({
     this.get(
       '/api/v1/applications',
       (): ShowApplicationsApiResponse => [
-        ...testApps.reduce<ShowApplicationsApiResponse>(
-          (obj, { name }) => [...obj, { name }],
-          []
-        ),
+        ...testApps.reduce<ShowApplicationsApiResponse>((obj, { name }) => [...obj, { name }], []),
         { name: 'app' },
         { name: 'another-app' },
         { name: 'yet-another-app' },
       ]
-    );
+    )
 
     // Mock response for SearchApplications
     this.get(
       '/api/v1/applications/_search',
       (_, request): GetSearchApplicationsApiResponse => [
         ...testApps
-          .filter(({ name }) =>
-            (request.queryParams as GetSearchApplicationsApiArg)?.apps
-              ?.split(',')
-              .includes(name!)
-          )
+          .filter(({ name }) => (request.queryParams as GetSearchApplicationsApiArg)?.apps?.split(',').includes(name!))
           .reduce<GetSearchApplicationsApiResponse>((obj, app) => {
-            return [...obj, app];
+            return [...obj, app]
           }, []),
       ]
-    );
+    )
 
     // Mock response for ApplicationVulnerabilitySummaries
     this.get(
       'scan-api/applications/vulnerabilities/:appName',
       (_, request): GetApplicationVulnerabilitySummariesApiResponse => [
-        testVulns.find(
-          ({ name }) =>
-            name ===
-            (request.params as GetApplicationVulnerabilitySummariesApiArg)
-              ?.appName
-        )!,
+        testVulns.find(({ name }) => name === (request.params as GetApplicationVulnerabilitySummariesApiArg)?.appName)!,
       ]
-    );
+    )
   },
-});
+})
 
-const testData: Array<
-  { description: string } & ComponentProps<typeof AppList>
-> = [
+const testData: Array<{ description: string } & ComponentProps<typeof AppList>> = [
   {
     description: 'With applications, without favourites',
     // favouriteAppNames: [],
@@ -147,18 +129,15 @@ const testData: Array<
     description: 'With applications, with favourites',
     // favouriteAppNames: testApps.map(({ name }) => name),
   },
-];
+]
 
 export default (
   <div style={{ maxWidth: '1000px' }}>
     {testData.map(({ description, ...rest }, i) => (
-      <div
-        key={i}
-        style={{ margin: '1em', padding: '2em', border: '1px solid #000' }}
-      >
+      <div key={i} style={{ margin: '1em', padding: '2em', border: '1px solid #000' }}>
         <Typography variant="h4">{description}</Typography>
         <AppList {...rest} />
       </div>
     ))}
   </div>
-);
+)

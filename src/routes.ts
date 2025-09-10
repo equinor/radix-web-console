@@ -1,17 +1,17 @@
 export type RouteParams = {
-  appName?: string;
-  componentName?: string;
-  deploymentName?: string;
-  envName?: string;
-  jobComponentName?: string;
-  jobName?: string;
-  pipelineRunName?: string;
-  replicaName?: string;
-  scheduledBatchName?: string;
-  scheduledJobName?: string;
-  stepName?: string;
-  taskName?: string;
-};
+  appName?: string
+  componentName?: string
+  deploymentName?: string
+  envName?: string
+  jobComponentName?: string
+  jobName?: string
+  pipelineRunName?: string
+  replicaName?: string
+  scheduledBatchName?: string
+  scheduledJobName?: string
+  stepName?: string
+  taskName?: string
+}
 
 // biome-ignore format: long lines
 export const routes = {

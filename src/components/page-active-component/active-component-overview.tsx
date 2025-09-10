@@ -1,72 +1,59 @@
-import type { FunctionComponent } from 'react';
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
-import {
-  useGetApplicationQuery,
-  useGetComponentEventsQuery,
-  useGetEnvironmentQuery,
-} from '../../store/radix-api';
-import { getEnvsUrl } from '../../utils/routing';
-import { routeWithParams } from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets';
-import { EnvironmentVariables } from '../environment-variables';
-import { ComponentReplicaList } from './component-replica-list';
-import { ComponentReplicaLogAccordion } from './component-replica-log-accordion';
-import { ComponentVulnerabilityDetails } from './component-vulnerability-details';
-import { ExternalDNSAccordion } from './external-dns';
-import { HorizontalScalingSummary } from './horizontal-scaling-summary';
-import { OAuthService } from './oauth-service';
-import { Overview } from './overview';
-import './style.css';
-import useLocalStorage from '../../effects/use-local-storage';
-import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
-import { EventsList } from '../events-list';
-import { ActiveComponentToolbar } from './active-component-toolbar';
-import { ComponentStatus } from './component-status';
+import type { FunctionComponent } from 'react'
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetApplicationQuery, useGetComponentEventsQuery, useGetEnvironmentQuery } from '../../store/radix-api'
+import { getEnvsUrl } from '../../utils/routing'
+import { routeWithParams } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { ActiveComponentSecrets } from '../component/secrets/active-component-secrets'
+import { EnvironmentVariables } from '../environment-variables'
+import { ComponentReplicaList } from './component-replica-list'
+import { ComponentReplicaLogAccordion } from './component-replica-log-accordion'
+import { ComponentVulnerabilityDetails } from './component-vulnerability-details'
+import { ExternalDNSAccordion } from './external-dns'
+import { HorizontalScalingSummary } from './horizontal-scaling-summary'
+import { OAuthService } from './oauth-service'
+import { Overview } from './overview'
+import './style.css'
+import useLocalStorage from '../../effects/use-local-storage'
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
+import { EventsList } from '../events-list'
+import { ActiveComponentToolbar } from './active-component-toolbar'
+import { ComponentStatus } from './component-status'
 
 export const ActiveComponentOverview: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
+  appName: string
+  envName: string
+  componentName: string
 }> = ({ appName, envName, componentName }) => {
-  const { data: application } = useGetApplicationQuery(
-    { appName },
-    { skip: !appName, pollingInterval }
-  );
+  const { data: application } = useGetApplicationQuery({ appName }, { skip: !appName, pollingInterval })
   const {
     data: environment,
     refetch,
     ...envState
-  } = useGetEnvironmentQuery(
-    { appName, envName },
-    { skip: !appName || !envName, pollingInterval }
-  );
+  } = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
 
-  const { appAlias } = application || {};
-  const deployment = environment?.activeDeployment;
-  const component = deployment?.components?.find(
-    ({ name }) => name === componentName
-  );
+  const { appAlias } = application || {}
+  const deployment = environment?.activeDeployment
+  const component = deployment?.components?.find(({ name }) => name === componentName)
 
   const componentDNSAliases = application?.dnsAliases?.filter(
-    (dnsAlias) =>
-      dnsAlias.componentName === componentName &&
-      dnsAlias.environmentName == envName
-  );
+    (dnsAlias) => dnsAlias.componentName === componentName && dnsAlias.environmentName == envName
+  )
 
-  const [isEventListExpanded, setIsEventListExpanded] =
-    useLocalStorage<boolean>('componentEventListExpanded', false);
+  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage<boolean>('componentEventListExpanded', false)
   const { data: events } = useGetComponentEventsQuery(
     { appName, envName, componentName },
     {
       skip: !appName || !envName || !componentName || !isEventListExpanded,
       pollingInterval,
     }
-  );
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] =
-    useLocalStorage<boolean>('activeComponentEnvVarsListExpanded', true);
+  )
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
+    'activeComponentEnvVarsListExpanded',
+    true
+  )
 
   return (
     <>
@@ -85,12 +72,7 @@ export const ActiveComponentOverview: FunctionComponent<{
       <AsyncResource asyncState={envState}>
         {component && (
           <>
-            <ActiveComponentToolbar
-              component={component}
-              appName={appName}
-              envName={envName}
-              refetch={refetch}
-            />
+            <ActiveComponentToolbar component={component} appName={appName} envName={envName} refetch={refetch} />
 
             <ComponentStatus
               appName={appName}
@@ -135,11 +117,7 @@ export const ActiveComponentOverview: FunctionComponent<{
                   refetch={refetch}
                 />
               )}
-              <ComponentVulnerabilityDetails
-                appName={appName}
-                envName={envName}
-                componentName={componentName}
-              />
+              <ComponentVulnerabilityDetails appName={appName} envName={envName} componentName={componentName} />
               {component.externalDNS && component.externalDNS.length > 0 && (
                 <ExternalDNSAccordion
                   appName={appName}
@@ -158,8 +136,7 @@ export const ActiveComponentOverview: FunctionComponent<{
                 isExpanded={isEventListExpanded}
                 onExpanded={setIsEventListExpanded}
                 events={dataSorter(events ?? [], [
-                  ({ lastTimestamp: x }, { lastTimestamp: y }) =>
-                    sortCompareDate(x, y, 'descending'),
+                  ({ lastTimestamp: x }, { lastTimestamp: y }) => sortCompareDate(x, y, 'descending'),
                 ])}
               />
               <EnvironmentVariables
@@ -171,14 +148,12 @@ export const ActiveComponentOverview: FunctionComponent<{
                 onExpanded={setIsEnvVarsListExpanded}
               />
               {component.horizontalScalingSummary && (
-                <HorizontalScalingSummary
-                  summary={component.horizontalScalingSummary}
-                />
+                <HorizontalScalingSummary summary={component.horizontalScalingSummary} />
               )}
             </div>
           </>
         )}
       </AsyncResource>
     </>
-  );
-};
+  )
+}

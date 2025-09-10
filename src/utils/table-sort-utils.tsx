@@ -1,44 +1,35 @@
-import { Icon, type IconProps } from '@equinor/eds-core-react';
-import {
-  chevron_down,
-  chevron_up,
-  type IconData,
-  unfold_more,
-} from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
+import { Icon, type IconProps } from '@equinor/eds-core-react'
+import { chevron_down, chevron_up, type IconData, unfold_more } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
 
-import type { SortDirection } from './sort-utils';
+import type { SortDirection } from './sort-utils'
 
 function getTableSortIcon(dir: SortDirection): IconData {
   switch (dir) {
     case 'ascending':
-      return chevron_down;
+      return chevron_down
     case 'descending':
-      return chevron_up;
+      return chevron_up
     default:
-      return unfold_more;
+      return unfold_more
   }
 }
 
 export function getNewSortDir(direction: SortDirection, nullable?: boolean) {
   if (!direction) {
-    return 'ascending';
+    return 'ascending'
   }
 
   if (direction === 'ascending') {
-    return 'descending';
+    return 'descending'
   }
 
-  return nullable ? undefined : 'ascending';
+  return nullable ? undefined : 'ascending'
 }
 
 export const TableSortIcon: FunctionComponent<{
-  direction: SortDirection;
-  size?: IconProps['size'];
+  direction: SortDirection
+  size?: IconProps['size']
 }> = ({ direction, size = 16 }) => (
-  <Icon
-    style={{ marginLeft: 'auto', marginRight: 0 }}
-    data={getTableSortIcon(direction)}
-    size={size}
-  />
-);
+  <Icon style={{ marginLeft: 'auto', marginRight: 0 }} data={getTableSortIcon(direction)} size={size} />
+)

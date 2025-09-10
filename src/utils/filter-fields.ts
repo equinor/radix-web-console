@@ -4,11 +4,8 @@
  * @param obj Object to filter
  * @param keys Keys to keep
  */
-export function filterFields<T extends object, K extends keyof T>(
-  obj: T,
-  keys: Readonly<Array<K>>
-): Pick<T, K> {
-  return splitFields(obj, keys).filtered;
+export function filterFields<T extends object, K extends keyof T>(obj: T, keys: Readonly<Array<K>>): Pick<T, K> {
+  return splitFields(obj, keys).filtered
 }
 
 /**
@@ -24,9 +21,9 @@ function splitFields<T extends object, K extends keyof T>(
   return Object.keys(obj ?? {}).reduce(
     (o, key) => {
       // @ts-expect-error I gave up typing this //todo
-      o[keys?.includes(key as K) ? 'filtered' : 'unfiltered'][key] = obj?.[key];
-      return o;
+      o[keys?.includes(key as K) ? 'filtered' : 'unfiltered'][key] = obj?.[key]
+      return o
     },
     { filtered: {} as Pick<T, K>, unfiltered: {} as Omit<T, K> }
-  );
+  )
 }

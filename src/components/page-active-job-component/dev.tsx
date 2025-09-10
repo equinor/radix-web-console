@@ -1,4 +1,4 @@
-import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list';
+import { ScheduledJobList } from '../component/scheduled-job/scheduled-job-list'
 
 const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
   {
@@ -175,7 +175,7 @@ const testData: Array<Parameters<typeof ScheduledJobList>[0]> = [
     jobComponentName: 'job-JQERS1',
     totalJobCount: 0,
   },
-];
+]
 
 export default (
   <div style={{ backgroundColor: 'var(--eds_ui_background__default)' }}>
@@ -186,4 +186,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

@@ -1,8 +1,8 @@
-import { Divider } from '@equinor/eds-core-react';
-import { Response, Server } from 'miragejs';
-import { Fragment } from 'react';
-import type { Job } from '../../store/radix-api';
-import { JobOverview } from '.';
+import { Divider } from '@equinor/eds-core-react'
+import { Response, Server } from 'miragejs'
+import { Fragment } from 'react'
+import type { Job } from '../../store/radix-api'
+import { JobOverview } from '.'
 
 const testData: Array<Job> = [
   {
@@ -177,23 +177,23 @@ const testData: Array<Job> = [
     pipeline: 'deploy',
     triggeredFromWebhook: false,
   },
-];
+]
 
 // Mock API responses
 new Server({
   routes() {
-    const rootPath = '/api/v1/applications/:appName/jobs';
+    const rootPath = '/api/v1/applications/:appName/jobs'
 
     // Mock response for specific jobs
-    testData.forEach((x) => this.get(`${rootPath}/${x.name}`, () => x));
+    testData.forEach((x) => this.get(`${rootPath}/${x.name}`, () => x))
     // Mock response for any job
-    this.get(`${rootPath}/:jobName`, () => new Response(404));
+    this.get(`${rootPath}/:jobName`, () => new Response(404))
     // Mock response for StopJob button
-    this.post(`${rootPath}/:jobName/stop`, () => new Response(200));
+    this.post(`${rootPath}/:jobName/stop`, () => new Response(200))
     // Mock response for ReRun button
-    this.post(`${rootPath}/:jobName/rerun`, () => new Response(200));
+    this.post(`${rootPath}/:jobName/rerun`, () => new Response(200))
   },
-});
+})
 
 const notAJob: Job = {
   name: 'noJob',
@@ -201,7 +201,7 @@ const notAJob: Job = {
   status: 'Waiting',
   pipeline: 'build',
   triggeredFromWebhook: false,
-};
+}
 
 export default (
   <div
@@ -228,4 +228,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

@@ -1,40 +1,30 @@
-import {
-  Button,
-  Divider,
-  Icon,
-  Scrim,
-  Typography,
-} from '@equinor/eds-core-react';
-import { clear } from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react';
+import { Button, Divider, Icon, Scrim, Typography } from '@equinor/eds-core-react'
+import { clear } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import type { FunctionComponent, PropsWithChildren, ReactNode } from 'react'
 
-import './style.css';
+import './style.css'
 
 export interface ScrimPopupProps {
-  className?: string;
-  title: ReactNode;
-  open: boolean;
-  onClose?: () => void;
-  isDismissable?: boolean;
+  className?: string
+  title: ReactNode
+  open: boolean
+  onClose?: () => void
+  isDismissable?: boolean
 }
 
-export const ScrimPopup: FunctionComponent<
-  PropsWithChildren<ScrimPopupProps>
-> = ({ className, title, children, open, onClose, isDismissable }) => (
+export const ScrimPopup: FunctionComponent<PropsWithChildren<ScrimPopupProps>> = ({
+  className,
+  title,
+  children,
+  open,
+  onClose,
+  isDismissable,
+}) => (
   <Scrim open={open} {...(isDismissable && { isDismissable, onClose })}>
-    <div
-      className={clsx(
-        'scrim-dialog',
-        className ? { [className]: !!className } : undefined
-      )}
-    >
+    <div className={clsx('scrim-dialog', className ? { [className]: !!className } : undefined)}>
       <div className="dialog-header">
-        {typeof title === 'string' || typeof title === 'number' ? (
-          <Typography variant="h5">{title}</Typography>
-        ) : (
-          title
-        )}
+        {typeof title === 'string' || typeof title === 'number' ? <Typography variant="h5">{title}</Typography> : title}
         <Button variant="ghost" onClick={onClose}>
           <Icon data={clear} />
         </Button>
@@ -51,4 +41,4 @@ export const ScrimPopup: FunctionComponent<
       </div>
     </div>
   </Scrim>
-);
+)

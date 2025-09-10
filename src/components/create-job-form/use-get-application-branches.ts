@@ -1,4 +1,4 @@
-import type { Application } from '../../store/radix-api';
+import type { Application } from '../../store/radix-api'
 
 export function useGetApplicationBranches(application?: Application) {
   return (
@@ -11,5 +11,5 @@ export function useGetApplicationBranches(application?: Application) {
         }),
         {}
       ) ?? {}
-  );
+  )
 }

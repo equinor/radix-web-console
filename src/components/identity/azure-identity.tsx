@@ -1,18 +1,18 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { info_circle } from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { info_circle } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
 
-import { externalUrls } from '../../externalUrls';
-import { Alert } from '../alert';
-import { CompactCopyButton } from '../compact-copy-button';
-import { ExternalLink } from '../link/external-link';
+import { externalUrls } from '../../externalUrls'
+import { Alert } from '../alert'
+import { CompactCopyButton } from '../compact-copy-button'
+import { ExternalLink } from '../link/external-link'
 
 export interface AzureIdentityProps {
-  oidcIssuerUrl: string;
-  namespace: string;
-  serviceAccountName: string;
-  clientId: string;
-  allowManagedIdentity?: boolean;
+  oidcIssuerUrl: string
+  namespace: string
+  serviceAccountName: string
+  clientId: string
+  allowManagedIdentity?: boolean
 }
 
 const WorkloadIdentityHelp: FunctionComponent = () => (
@@ -21,14 +21,12 @@ const WorkloadIdentityHelp: FunctionComponent = () => (
     <div>
       <Typography as="span">
         Please refer to guide{' '}
-        <ExternalLink href={externalUrls.workloadIdentityGuide}>
-          Configure Workload Identity
-        </ExternalLink>{' '}
-        for information about configuration and troubleshooting
+        <ExternalLink href={externalUrls.workloadIdentityGuide}>Configure Workload Identity</ExternalLink> for
+        information about configuration and troubleshooting
       </Typography>
     </div>
   </Alert>
-);
+)
 
 export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
   oidcIssuerUrl,
@@ -90,4 +88,4 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
     </div>
     <WorkloadIdentityHelp />
   </div>
-);
+)

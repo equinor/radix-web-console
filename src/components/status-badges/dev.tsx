@@ -1,7 +1,7 @@
-import { Divider, Icon, Typography } from '@equinor/eds-core-react';
-import { coffee } from '@equinor/eds-icons';
-import type React from 'react';
-import type { ComponentType, PropsWithChildren } from 'react';
+import { Divider, Icon, Typography } from '@equinor/eds-core-react'
+import { coffee } from '@equinor/eds-icons'
+import type React from 'react'
+import type { ComponentType, PropsWithChildren } from 'react'
 
 import {
   BadgeTemplates,
@@ -16,21 +16,15 @@ import {
   ProgressStatusBadge,
   RadixJobConditionBadge,
   ReplicaStatusBadge,
-} from '.';
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
+} from '.'
+import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-badge-template'
 
 interface TestDataTemplate {
-  description: string;
-  text?: string;
+  description: string
+  text?: string
 }
 
-const templateTestData: Array<
-  TestDataTemplate &
-    Pick<StatusBadgeTemplateProps, 'className' | 'icon' | 'type'>
-> = [
+const templateTestData: Array<TestDataTemplate & Pick<StatusBadgeTemplateProps, 'className' | 'icon' | 'type'>> = [
   { description: 'no Type, no Text, no Icon' },
   { description: 'no Type, Text, no Icon', text: 'TestBadge' },
   { description: 'no Type, no Text, Icon', icon: <Icon data={coffee} /> },
@@ -45,7 +39,7 @@ const templateTestData: Array<
   { description: 'type Danger', text: 'Danger', type: 'danger' },
   { description: 'type None', text: 'None', type: 'none' },
   { description: 'type Default', text: 'Default', type: 'default' },
-];
+]
 
 const genericTestData = [
   { description: 'no Type, no Text', type: 'unknown' },
@@ -73,7 +67,7 @@ const genericTestData = [
     customIconData: coffee,
     type: 'unknown',
   },
-] satisfies Array<TestDataTemplate & GenericStatusBadgeProps>;
+] satisfies Array<TestDataTemplate & GenericStatusBadgeProps>
 
 const GenericBadge: <P, S extends TestDataTemplate>(
   title: string,
@@ -89,7 +83,7 @@ const GenericBadge: <P, S extends TestDataTemplate>(
       </div>
     ))}
   </>
-);
+)
 
 const EnumBadge: <P extends { status: S }, S extends string>(
   title: string,
@@ -104,16 +98,12 @@ const EnumBadge: <P extends { status: S }, S extends string>(
       </div>
     ))}
   </>
-);
+)
 
 const testData = [
   GenericBadge('StatusBadgeTemplate', templateTestData, StatusBadgeTemplate),
   GenericBadge('GenericStatusBadges', genericTestData, GenericStatusBadge),
-  EnumBadge(
-    'BuildSecretStatusBadge',
-    ['Consistent', 'Pending'],
-    BuildSecretStatusBadge
-  ),
+  EnumBadge('BuildSecretStatusBadge', ['Consistent', 'Pending'], BuildSecretStatusBadge),
   EnumBadge(
     'ComponentSecretStatusBadge',
     ['Pending', 'Consistent', 'NotAvailable', 'Invalid', 'Unsupported'],
@@ -133,11 +123,7 @@ const testData = [
     // @ts-expect-error No idea how to fix this one
     ComponentStatusBadge
   ),
-  EnumBadge(
-    'ImageHubSecretStatusBadge',
-    ['Consistent', 'Pending'],
-    ImageHubSecretStatusBadge
-  ),
+  EnumBadge('ImageHubSecretStatusBadge', ['Consistent', 'Pending'], ImageHubSecretStatusBadge),
   EnumBadge(
     'PipelineRunBadges',
     // @ts-expect-error No idea how to fix this one
@@ -157,18 +143,10 @@ const testData = [
   ),
   EnumBadge(
     'ReplicaStatusBadges',
-    [
-      'Pending',
-      'Failed',
-      'Failing',
-      'Running',
-      'Succeeded',
-      'Terminated',
-      'Starting',
-    ],
+    ['Pending', 'Failed', 'Failing', 'Running', 'Succeeded', 'Terminated', 'Starting'],
     ReplicaStatusBadge
   ),
-] as const;
+] as const
 
 export default (
   <div
@@ -183,4 +161,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

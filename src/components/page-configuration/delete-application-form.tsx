@@ -1,53 +1,41 @@
-import {
-  Accordion,
-  Button,
-  Icon,
-  TextField,
-  Typography,
-} from '@equinor/eds-core-react';
-import { warning_outlined } from '@equinor/eds-icons';
-import { type ChangeEvent, useState } from 'react';
+import { Accordion, Button, Icon, TextField, Typography } from '@equinor/eds-core-react'
+import { warning_outlined } from '@equinor/eds-icons'
+import { type ChangeEvent, useState } from 'react'
 
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
 
-import './style.css';
-import { useNavigate } from 'react-router';
-import useLocalStorage from '../../effects/use-local-storage';
-import { routes } from '../../routes';
-import { useDeleteApplicationMutation } from '../../store/radix-api';
+import './style.css'
+import { useNavigate } from 'react-router'
+import useLocalStorage from '../../effects/use-local-storage'
+import { routes } from '../../routes'
+import { useDeleteApplicationMutation } from '../../store/radix-api'
 
 interface Props {
-  appName: string;
+  appName: string
 }
 
 export default function DeleteApplicationForm({ appName }: Props) {
-  const [mutate] = useDeleteApplicationMutation();
-  const [inputValue, setInputValue] = useState('');
-  const [visibleScrim, setVisibleScrim] = useState(false);
-  const navigate = useNavigate();
+  const [mutate] = useDeleteApplicationMutation()
+  const [inputValue, setInputValue] = useState('')
+  const [visibleScrim, setVisibleScrim] = useState(false)
+  const navigate = useNavigate()
 
-  const [, setFavourites] = useLocalStorage<Array<string>>(
-    'favouriteApplications',
-    []
-  );
-  const [, setKnownAppNames] = useLocalStorage<Array<string>>(
-    'knownApplications',
-    []
-  );
+  const [, setFavourites] = useLocalStorage<Array<string>>('favouriteApplications', [])
+  const [, setKnownAppNames] = useLocalStorage<Array<string>>('knownApplications', [])
 
   const deleteAppNameFromLocalStorage = (appName: string) => {
-    setKnownAppNames((old) => old.filter((name) => name != appName));
-    setFavourites((old) => old.filter((name) => name != appName));
-  };
+    setKnownAppNames((old) => old.filter((name) => name != appName))
+    setFavourites((old) => old.filter((name) => name != appName))
+  }
 
   const doDelete = handlePromiseWithToast(async () => {
-    setVisibleScrim(false);
-    mutate({ appName });
-    deleteAppNameFromLocalStorage(appName);
-    navigate(routes.apps);
-  }, 'Deleted');
+    setVisibleScrim(false)
+    mutate({ appName })
+    deleteAppNameFromLocalStorage(appName)
+    navigate(routes.apps)
+  }, 'Deleted')
   return (
     <Accordion className="accordion" chevronPosition="right">
       <Accordion.Item>
@@ -58,9 +46,7 @@ export default function DeleteApplicationForm({ appName }: Props) {
         </Accordion.Header>
         <Accordion.Panel>
           <div className="grid grid--gap-medium">
-            <Typography>
-              Once you delete an application there is no going back
-            </Typography>
+            <Typography>Once you delete an application there is no going back</Typography>
             <div>
               <Button color="danger" onClick={() => setVisibleScrim(true)}>
                 Delete application
@@ -83,27 +69,19 @@ export default function DeleteApplicationForm({ appName }: Props) {
                 <Typography>This action can not be undone.</Typography>
               </Alert>
               <Typography>
-                You will permanently remove <strong>{appName}</strong> from
-                Radix including all its environments.
+                You will permanently remove <strong>{appName}</strong> from Radix including all its environments.
               </Typography>
               <Typography>
-                If you still want to delete this application and understand the
-                consequences, type <strong>delete</strong> in the text field
-                below.
+                If you still want to delete this application and understand the consequences, type{' '}
+                <strong>delete</strong> in the text field below.
               </Typography>
               <TextField
                 id="deleteConfirmField"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setInputValue(e.target.value)
-                }
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
                 value={inputValue}
               />
               <div>
-                <Button
-                  color="danger"
-                  disabled={inputValue?.trim() !== 'delete'}
-                  onClick={doDelete}
-                >
+                <Button color="danger" disabled={inputValue?.trim() !== 'delete'} onClick={doDelete}>
                   Delete
                 </Button>
               </div>
@@ -112,5 +90,5 @@ export default function DeleteApplicationForm({ appName }: Props) {
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
+  )
 }
