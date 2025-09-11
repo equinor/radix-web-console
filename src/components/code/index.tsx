@@ -32,7 +32,7 @@ export const Code: FunctionComponent<CodeProps & { children: string }> = ({
   resizable,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null)
-  const terminalRef = useRef<Terminal>()
+  const terminalRef = useRef<Terminal | undefined>(undefined)
 
   useEffect(() => {
     if (!containerRef.current) return

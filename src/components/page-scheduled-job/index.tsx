@@ -1,7 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { type FunctionComponent, useMemo } from 'react'
 import { routes } from '../../routes'
-import { type ReplicaSummary, type ScheduledJobSummary, useGetJobQuery, useJobLogQuery } from '../../store/radix-api'
+import { type ReplicaSummary, type ScheduledJobSummary, useGetJobQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
@@ -14,6 +14,7 @@ import { ScheduledJobOverview } from './scheduled-job-overview'
 
 import './style.css'
 
+// @ts-expect-error Will use this on in this PR, if I forgot its a bug :D
 function isJobSettled(status?: ScheduledJobSummary['status']): boolean {
   switch (status) {
     case 'Failed':
