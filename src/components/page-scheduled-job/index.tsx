@@ -38,17 +38,6 @@ export const PageScheduledJob: FunctionComponent<{
       pollingInterval: 5000,
     }
   )
-  const [pollingInterval, setPollingInterval] = useState(5000)
-  const pollLogsState = useJobLogQuery(
-    { appName, envName, jobComponentName, scheduledJobName, lines: '1000' },
-    {
-      skip: !appName || !envName || !jobComponentName || !scheduledJobName,
-      pollingInterval,
-    }
-  )
-  useEffect(() => {
-    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000)
-  }, [job?.status])
 
   const jobReplicas = useMemo(() => {
     return dataSorter(job?.replicaList, [(a, b) => sortCompareDate(a.created, b.created, 'descending')])
@@ -102,7 +91,6 @@ export const PageScheduledJob: FunctionComponent<{
                     jobComponentName={jobComponentName}
                     scheduledJobName={scheduledJobName}
                     replica={jobReplicas[0]}
-                    logState={pollLogsState}
                     isExpanded={true}
                   />
                 </div>

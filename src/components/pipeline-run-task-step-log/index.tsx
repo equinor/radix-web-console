@@ -37,7 +37,6 @@ export function PipelineRunTaskStepLog({ appName, jobName, pipelineRunName, task
               <Code
                 copy
                 resizable
-                autoscroll
                 download
                 downloadCb={() =>
                   downloadLog(`${stepName}.txt`, () =>
@@ -58,7 +57,7 @@ export function PipelineRunTaskStepLog({ appName, jobName, pipelineRunName, task
                 {log}
               </Code>
             ) : (
-              <Typography>No data</Typography>
+              <Code>No data</Code>
             )}
           </AsyncResource>
         </Accordion.Panel>

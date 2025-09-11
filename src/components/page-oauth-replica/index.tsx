@@ -9,8 +9,9 @@ import { getEnvsUrl } from '../../utils/routing'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
+import { Code } from '../code'
 import { downloadLog } from '../code/log-helper'
-import { Replica } from '../replica'
+import { ReplicaOverview } from '../replica/replica-overview'
 
 interface Props {
   appName: string
@@ -70,35 +71,45 @@ export function PageOAuthAuxiliaryReplica({ appName, envName, componentName, typ
 
       <AsyncResource asyncState={environmentState}>
         {replica && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            downloadCb={() =>
-              downloadLog(`${replica.name}.txt`, () =>
-                getLog(
-                  {
-                    appName,
-                    envName,
-                    componentName,
-                    type: getValidatedOAuthType(type),
-                    podName: replicaName,
-                    file: 'true',
-                  },
-                  false
-                ).unwrap()
-              )
-            }
-            title={
-              <>
-                <Typography>
-                  OAuth2 Service <strong>{getOAuthServiceTitle(type)}</strong>
-                </Typography>
-                <Typography>
-                  Replica <strong>{smallReplicaName(replicaName)}</strong>, component <strong>{componentName}</strong>
-                </Typography>
-              </>
-            }
-          />
+          <>
+            <Typography variant="h4">Overview</Typography>
+            <ReplicaOverview
+              replica={replica}
+              title={
+                <>
+                  <Typography>
+                    OAuth2 Service <strong>{getOAuthServiceTitle(type)}</strong>
+                  </Typography>
+                  <Typography>
+                    Replica <strong>{smallReplicaName(replicaName)}</strong>, component <strong>{componentName}</strong>
+                  </Typography>
+                </>
+              }
+            />
+
+            <Code
+              copy
+              resizable
+              download
+              downloadCb={() =>
+                downloadLog(`${replica.name}.txt`, () =>
+                  getLog(
+                    {
+                      appName,
+                      envName,
+                      componentName,
+                      type: getValidatedOAuthType(type),
+                      podName: replicaName,
+                      file: 'true',
+                    },
+                    false
+                  ).unwrap()
+                )
+              }
+            >
+              {pollLogsState.data ?? 'No log or replica'}
+            </Code>
+          </>
         )}
       </AsyncResource>
     </>

@@ -1,12 +1,12 @@
-import type { FunctionComponent } from 'react'
+import { type FunctionComponent, useEffect, useState } from 'react'
 import { logApi } from '../../store/log-api'
 import { type ReplicaSummary, radixApi } from '../../store/radix-api'
-import type { FetchQueryResult } from '../../store/types'
 import { downloadLog } from '../code/log-helper'
-import { Replica } from '../replica'
 
 import './style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
+import { Code } from '../code'
+import { ReplicaOverview } from '../replica/replica-overview'
 
 export const JobReplica: FunctionComponent<{
   header?: string
@@ -15,11 +15,29 @@ export const JobReplica: FunctionComponent<{
   envName: string
   scheduledJobName: string
   replica: ReplicaSummary
-  logState?: FetchQueryResult<string>
   isExpanded?: boolean
-}> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, logState, isExpanded }) => {
+}> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, isExpanded }) => {
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
   const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
+
+  const [log, setLog] = useState('')
+  const [historyLog, setHistoryLog] = useState('')
+
+  useEffect(() => {
+    getLog({ appName, envName, jobComponentName, scheduledJobName, replicaName: replica.name }).then(({ data }) =>
+      setLog(data!)
+    )
+  }, [replica, getLog, appName, envName, jobComponentName, scheduledJobName])
+
+  useEffect(() => {
+    if (log) {
+      return
+    }
+    getHistoryLog({ appName, envName, jobComponentName, jobName: jobComponentName, replicaName: replica.name }).then(
+      ({ data }) => setHistoryLog(data as string)
+    )
+  }, [replica, log, getHistoryLog, appName, envName, jobComponentName])
+
   return (
     <div className="grid grid--gap-medium">
       <Accordion className="accordion elevated" chevronPosition="right">
@@ -30,49 +48,32 @@ export const JobReplica: FunctionComponent<{
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <Replica
-              replica={replica}
-              logState={logState}
-              downloadCb={() =>
-                downloadLog(`${replica.name}.txt`, () =>
-                  getLog(
-                    {
-                      appName,
-                      envName,
-                      jobComponentName,
-                      scheduledJobName,
-                      replicaName: replica.name,
-                      file: 'true',
-                    },
-                    false
-                  ).unwrap()
-                )
-              }
-              getHistoryLog={async () => {
-                return await getHistoryLog({
-                  appName: appName,
-                  envName: envName,
-                  jobComponentName: jobComponentName,
-                  jobName: scheduledJobName,
-                  replicaName: replica.name,
-                  tail: 1000,
-                }).unwrap()
-              }}
-              downloadHistoryCb={() =>
-                downloadLog(
-                  `${replica.name}.txt`,
-                  () =>
-                    getHistoryLog({
-                      appName: appName,
-                      envName: envName,
-                      jobComponentName: jobComponentName,
-                      jobName: scheduledJobName,
-                      replicaName: replica.name,
-                      file: true,
-                    }).unwrap() as Promise<string>
-                )
-              }
-            />
+            <>
+              <ReplicaOverview replica={replica} />
+
+              <Code
+                copy
+                resizable
+                download
+                downloadCb={() =>
+                  downloadLog(`${replica.name}.txt`, () =>
+                    getLog(
+                      {
+                        appName,
+                        envName,
+                        jobComponentName,
+                        scheduledJobName,
+                        replicaName: replica.name,
+                        file: 'true',
+                      },
+                      false
+                    ).unwrap()
+                  )
+                }
+              >
+                {log ?? historyLog ?? 'Replica has no log'}
+              </Code>
+            </>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>

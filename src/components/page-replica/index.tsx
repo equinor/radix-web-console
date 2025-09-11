@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import useLocalStorage from '../../effects/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
@@ -11,9 +11,10 @@ import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
+import { Code } from '../code'
 import { downloadLog } from '../code/log-helper'
 import { EventsList } from '../events-list'
-import { Replica } from '../replica'
+import { ReplicaOverview } from '../replica/replica-overview'
 
 interface Props {
   appName: string
@@ -86,29 +87,32 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
       />
       <AsyncResource asyncState={environmentState}>
         {replica && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            downloadCb={() =>
-              downloadLog(`${replica.name}.txt`, () =>
-                getLog(
-                  {
-                    appName,
-                    envName,
-                    componentName,
-                    podName: replicaName,
-                    file: 'true',
-                  },
-                  false
-                ).unwrap()
-              )
-            }
-            title={
-              <Typography>
-                Replica <strong>{smallReplicaName(replicaName)}</strong>, component <strong>{componentName}</strong>
-              </Typography>
-            }
-          />
+          <>
+            <Typography variant="h4">Overview</Typography>
+            <ReplicaOverview replica={replica} />
+
+            <Code
+              copy
+              resizable
+              download
+              downloadCb={() =>
+                downloadLog(`${replica.name}.txt`, () =>
+                  getLog(
+                    {
+                      appName,
+                      envName,
+                      componentName,
+                      podName: replicaName,
+                      file: 'true',
+                    },
+                    false
+                  ).unwrap()
+                )
+              }
+            >
+              {pollLogsState.data ?? 'No log or replica'}
+            </Code>
+          </>
         )}
       </AsyncResource>
       <EventsList

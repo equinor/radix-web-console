@@ -5,12 +5,17 @@ import { clsx } from 'clsx'
 import { type FunctionComponent, useEffect, useRef } from 'react'
 import '@xterm/xterm/css/xterm.css'
 import { FitAddon } from '@xterm/addon-fit'
-import { copyToClipboard } from '../../utils/string'
+import { copyToClipboard, copyToTextFile } from '../../utils/string'
+
+export const WHITE = '\u001b[37m'
+export const YELLOW = '\u001b[33m'
+export const RED = '\u001b[31m'
 
 import './style.css'
 
 export type CodeProps = {
   copy?: boolean
+  download?: boolean
   downloadCb?: () => unknown
   filename?: string
   content?: EventSource
@@ -19,7 +24,9 @@ export type CodeProps = {
 
 export const Code: FunctionComponent<CodeProps & { children: string }> = ({
   copy,
+  download,
   downloadCb,
+  filename,
   children,
   content,
   resizable,
@@ -42,7 +49,7 @@ export const Code: FunctionComponent<CodeProps & { children: string }> = ({
     })
     terminalRef.current.loadAddon(fitAddon)
     terminalRef.current.open(containerRef.current)
-    terminalRef.current.write('hello world\r\n')
+    terminalRef.current.write(`${YELLOW}Starting stream...${WHITE}\r\n\r\n`)
 
     const observer = new ResizeObserver(() => {
       // biome-ignore lint/suspicious/noFocusedTests: false positive
@@ -81,8 +88,11 @@ export const Code: FunctionComponent<CodeProps & { children: string }> = ({
                 <Icon data={copyIcon} /> Copy
               </Button>
             )}
-            {downloadCb && (
-              <Button variant="ghost" onClick={() => downloadCb()}>
+            {download && (
+              <Button
+                variant="ghost"
+                onClick={() => (downloadCb ? downloadCb() : copyToTextFile(filename ?? 'log.txt', children))}
+              >
                 <Icon data={downloadIcon} /> Download
               </Button>
             )}

@@ -86,7 +86,7 @@ function ContainerLog({ appName, container: { name, parentId, id }, jobName, sta
   return (
     <AsyncResource asyncState={state}>
       {data ? (
-        <Code copy autoscroll resizable download filename={`${jobName}_${name}.txt`}>
+        <Code copy resizable download filename={`${jobName}_${name}.txt`}>
           {data as string}
         </Code>
       ) : (
@@ -126,7 +126,6 @@ export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogs
               {liveLog ? (
                 <Code
                   copy
-                  autoscroll
                   resizable
                   download
                   downloadCb={() =>
