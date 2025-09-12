@@ -1,9 +1,9 @@
 import { Typography } from '@equinor/eds-core-react'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import useLocalStorage from '../../effects/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
-import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery, useReplicaLogQuery } from '../../store/radix-api'
+import { useGetEnvironmentQuery, useGetReplicaEventsQuery } from '../../store/radix-api'
 import { useReplicaLogStream } from '../../store/use-log'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
@@ -11,8 +11,7 @@ import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
-import { Code } from '../code'
-import { downloadLog } from '../code/log-helper'
+import { Code, type CodeRef, RED, WHITE } from '../code'
 import { EventsList } from '../events-list'
 import { ReplicaOverview } from '../replica/replica-overview'
 
@@ -24,24 +23,17 @@ interface Props {
 }
 
 function PageReplica({ appName, envName, componentName, replicaName }: Props) {
+  const terminalRef = useRef<CodeRef>(undefined)
   const environmentState = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
-  const pollLogsState = useReplicaLogQuery(
-    { appName, envName, componentName, podName: replicaName, lines: '1000' },
-    {
-      skip: !appName || !envName || !componentName || !replicaName,
-      pollingInterval: 5000,
-    }
-  )
 
   const msgHandler = useCallback((msg: string, isError: boolean) => {
     if (isError) {
-      console.error(msg)
+      terminalRef.current?.write(`${RED}${msg}${WHITE}\r\n`)
     } else {
-      console.log(msg)
+      terminalRef.current?.write(`${msg}\r\n`)
     }
   }, [])
 
-  const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery()
   useReplicaLogStream(appName, envName, componentName, replicaName, 5, msgHandler)
 
   const replica = environmentState.data?.activeDeployment?.components
@@ -90,28 +82,7 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           <>
             <Typography variant="h4">Overview</Typography>
             <ReplicaOverview replica={replica} />
-
-            <Code
-              copy
-              resizable
-              download
-              downloadCb={() =>
-                downloadLog(`${replica.name}.txt`, () =>
-                  getLog(
-                    {
-                      appName,
-                      envName,
-                      componentName,
-                      podName: replicaName,
-                      file: 'true',
-                    },
-                    false
-                  ).unwrap()
-                )
-              }
-            >
-              {pollLogsState.data ?? 'No log or replica'}
-            </Code>
+            <Code ref={terminalRef} copy resizable download />
           </>
         )}
       </AsyncResource>
