@@ -3,7 +3,7 @@ import { useCallback, useRef } from 'react'
 import useLocalStorage from '../../effects/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
-import { useGetEnvironmentQuery, useGetReplicaEventsQuery } from '../../store/radix-api'
+import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery } from '../../store/radix-api'
 import { useReplicaLogStream } from '../../store/use-log'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
@@ -25,6 +25,7 @@ interface Props {
 function PageReplica({ appName, envName, componentName, replicaName }: Props) {
   const terminalRef = useRef<CodeRef>(undefined)
   const environmentState = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
+  const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery()
 
   const msgHandler = useCallback((msg: string, isError: boolean) => {
     if (isError) {
@@ -34,7 +35,7 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
     }
   }, [])
 
-  useReplicaLogStream(appName, envName, componentName, replicaName, 5, msgHandler)
+  useReplicaLogStream(appName, envName, componentName, replicaName, msgHandler)
 
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
@@ -82,7 +83,15 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           <>
             <Typography variant="h4">Overview</Typography>
             <ReplicaOverview replica={replica} />
-            <Code ref={terminalRef} copy resizable download />
+            <Code
+              ref={terminalRef}
+              copy
+              resizable
+              download
+              downloadCb={() =>
+                getLog({ appName, envName, componentName, podName: replicaName, lines: '100000000' }).unwrap()
+              }
+            />
           </>
         )}
       </AsyncResource>

@@ -5,11 +5,10 @@ export function useReplicaLogStream(
   envName: string,
   componentName: string,
   podName: string,
-  lines: number,
   callback: (msg: string, isError: boolean) => void
 ) {
   useEffect(() => {
-    const url = `/api/v1/applications/${appName}/environments/${envName}/components/${componentName}/replicas/${podName}/logs?follow=true&lines=${lines}`
+    const url = `/api/v1/applications/${appName}/environments/${envName}/components/${componentName}/replicas/${podName}/logs?follow=true&lines=1000`
     const eventSource = new EventSource(url)
 
     eventSource.onmessage = (event) => {
@@ -24,5 +23,5 @@ export function useReplicaLogStream(
     return () => {
       eventSource.close()
     }
-  }, [appName, envName, componentName, podName, lines, callback])
+  }, [appName, envName, componentName, podName, callback])
 }

@@ -14,6 +14,7 @@ export const YELLOW = '\u001b[33m'
 export const RED = '\u001b[31m'
 
 import './style.css'
+import { LoadingButton } from '../button/loading-button'
 
 export type CodeRef = {
   write: (data: string) => void
@@ -22,13 +23,14 @@ export type CodeRef = {
 export type CodeProps = {
   copy?: boolean
   download?: boolean
+  downloadCb?: () => Promise<string>
   filename?: string
   content?: EventSource
   resizable?: boolean
   ref?: Ref<CodeRef | undefined>
 }
 
-export const Code: FunctionComponent<CodeProps> = ({ copy, download, filename, resizable, ref }) => {
+export const Code: FunctionComponent<CodeProps> = ({ copy, download, downloadCb, filename, resizable, ref }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const terminalRef = useRef<Terminal | undefined>(undefined)
   const serializeAddon = useRef<SerializeAddon | undefined>(undefined)
@@ -45,6 +47,7 @@ export const Code: FunctionComponent<CodeProps> = ({ copy, download, filename, r
       lineHeight: 1.8,
       convertEol: true,
       disableStdin: true,
+      scrollback: 1000,
       theme: {},
     })
 
@@ -71,9 +74,16 @@ export const Code: FunctionComponent<CodeProps> = ({ copy, download, filename, r
     }
   })
 
-  const getContent = () => {
-    const content = serializeAddon.current?.serialize() ?? ''
-    return stripAnsi(content)
+  const getContent = async () => {
+    let content = ''
+    if (downloadCb) {
+      content = await downloadCb()
+    } else {
+      content = serializeAddon.current?.serialize() ?? ''
+    }
+    content = stripAnsi(content)
+
+    return content
   }
 
   return (
@@ -82,14 +92,17 @@ export const Code: FunctionComponent<CodeProps> = ({ copy, download, filename, r
         <div className="code__toolbar">
           <Button.Group>
             {copy && (
-              <Button variant="ghost" onClick={() => copyToClipboard(getContent())}>
+              <LoadingButton variant="ghost" onClick={async () => copyToClipboard(await getContent())}>
                 <Icon data={copyIcon} /> Copy
-              </Button>
+              </LoadingButton>
             )}
             {download && (
-              <Button variant="ghost" onClick={() => copyToTextFile(filename ?? 'log.txt', getContent())}>
+              <LoadingButton
+                variant="ghost"
+                onClick={async () => copyToTextFile(filename ?? 'log.txt', await getContent())}
+              >
                 <Icon data={downloadIcon} /> Download
-              </Button>
+              </LoadingButton>
             )}
           </Button.Group>
         </div>
