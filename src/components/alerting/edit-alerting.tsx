@@ -16,7 +16,6 @@ export const UpdateSlackReceivers: FunctionComponent<{
       .map(([receiver]) => (
         <TextField
           key={receiver}
-          id="url"
           type="url"
           label="Enter Slack webhook URL where alerts should be sent"
           placeholder="Type Slack webhook URL here"

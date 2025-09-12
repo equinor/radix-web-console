@@ -1,8 +1,8 @@
 import type { Terminal } from '@xterm/xterm'
 import { useEffect, useRef } from 'react'
-import { Code, type CodeProps } from '.'
+import { Log, LogProps } from './log'
 
-const testdata: Array<CodeProps & { text: string }> = [
+const testdata: Array<LogProps & { text: string }> = [
   {
     text: '                                                                              \n                                                                              \n                                                                              \n        88888b.d88b.  .d88b. 88888b.  .d88b. .d8888b 88888b.  8888b.  .d8888b .d88b.  \n        888 "888 "88bd88""88b888 "88bd88""88b88K     888 "88b    "88bd88P"   d8P  Y8b \n        888  888  888888  888888  888888  888"Y8888b.888  888.d888888888     88888888 \n        888  888  888Y88..88P888  888Y88..88P     X88888 d88P888  888Y88b.   Y8b.     \n        888  888  888 "Y88P" 888  888 "Y88P"  88888P\'88888P" "Y888888 "Y8888P "Y8888  \n                                                     888                              \n                                                     888                              \n                                                     888                              \n             888 \n             888 \n             888 \n         .d88888 \n        d88" 888 \n        888  888 \n        Y88b 888 \n         "Y88888 \n                 \n                 \n                 ',
   },
@@ -32,13 +32,7 @@ function CodeContainer({ text, ...props }: { text: string; copy?: boolean; downl
   const terminalRef = useRef<Terminal | undefined>(undefined)
 
   useEffect(() => {
-    console.log(text)
-
     text.split('\n').forEach((line) => {
-      if (!terminalRef.current) {
-        console.log('No terminalRef')
-      }
-
       terminalRef.current!.writeln(line)
     })
   }, [text])
@@ -52,7 +46,7 @@ function CodeContainer({ text, ...props }: { text: string; copy?: boolean; downl
       }}
     >
       <div style={{ padding: '10px' }}>
-        <Code ref={terminalRef} {...props} />
+        <Log ref={terminalRef} {...props} />
       </div>
     </div>
   )

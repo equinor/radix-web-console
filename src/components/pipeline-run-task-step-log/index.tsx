@@ -2,7 +2,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react'
 
 import { radixApi, useGetTektonPipelineRunTaskStepLogsQuery } from '../../store/radix-api'
 import AsyncResource from '../async-resource/async-resource'
-import { Code } from '../code'
+import { Code } from '../code/code'
 import { downloadLog } from '../code/log-helper'
 
 interface Props {

@@ -5,7 +5,7 @@ import { downloadLog } from '../code/log-helper'
 
 import './style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { Code } from '../code'
+import { Code } from '../code/code'
 import { ReplicaOverview } from '../replica/replica-overview'
 
 export const JobReplica: FunctionComponent<{

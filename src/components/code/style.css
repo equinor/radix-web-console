@@ -27,3 +27,12 @@
   width: 100%;
   height: 100%;
 }
+
+.code > .code__card > pre {
+  padding: var(--eds_spacing_small) var(--eds_spacing_medium_small);
+  word-wrap: break-word;
+  width: 100%;
+  height: 100%;
+  white-space: pre-wrap;
+  word-break: break-all;
+}

@@ -15,7 +15,7 @@ import { ScheduledJobOverview } from './scheduled-job-overview'
 import './style.css'
 
 // @ts-expect-error Will use this on in this PR, if I forgot its a bug :D
-function isJobSettled(status?: ScheduledJobSummary['status']): boolean {
+function _isJobSettled(status?: ScheduledJobSummary['status']): boolean {
   switch (status) {
     case 'Failed':
     case 'Stopped':

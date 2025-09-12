@@ -11,7 +11,7 @@ import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
-import { Code, type CodeRef, RED, WHITE } from '../code'
+import { Code, type CodeRef, RED, WHITE } from '../code/code'
 import { EventsList } from '../events-list'
 import { ReplicaOverview } from '../replica/replica-overview'
 

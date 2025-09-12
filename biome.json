@@ -1,6 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.6/schema.json",
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "files": {
     "includes": [
       "src/**",
@@ -62,7 +68,8 @@
       "suspicious": {
         "noArrayIndexKey": "off",
         "noAssignInExpressions": "off",
-        "noDoubleEquals": "off"
+        "noDoubleEquals": "off",
+        "useIterableCallbackReturn": "off"
       },
       "performance": {
         "noAccumulatingSpread": "off"

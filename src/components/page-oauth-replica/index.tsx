@@ -9,7 +9,7 @@ import { getEnvsUrl } from '../../utils/routing'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
-import { Code } from '../code'
+import { Code } from '../code/code'
 import { downloadLog } from '../code/log-helper'
 import { ReplicaOverview } from '../replica/replica-overview'
 
