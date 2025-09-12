@@ -1,3 +1,5 @@
+import type { Terminal } from '@xterm/xterm'
+import { useEffect, useRef } from 'react'
 import { Code, type CodeProps } from '.'
 
 const testdata: Array<CodeProps & { text: string }> = [
@@ -21,18 +23,37 @@ const testdata: Array<CodeProps & { text: string }> = [
 export default (
   <div className="grid grid--gap-small">
     {testdata.map((x, i) => (
-      <div
-        style={{
-          border: 'solid 2px gray',
-          width: 'max-content',
-          margin: '4px',
-        }}
-        key={i}
-      >
-        <div style={{ padding: '10px' }}>
-          <Code {...x}>{x.text}</Code>
-        </div>
-      </div>
+      <CodeContainer key={i} {...x} />
     ))}
   </div>
 )
+
+function CodeContainer({ text, ...props }: { text: string; copy?: boolean; download?: boolean }) {
+  const terminalRef = useRef<Terminal | undefined>(undefined)
+
+  useEffect(() => {
+    console.log(text)
+
+    text.split('\n').forEach((line) => {
+      if (!terminalRef.current) {
+        console.log('No terminalRef')
+      }
+
+      terminalRef.current!.writeln(line)
+    })
+  }, [text])
+
+  return (
+    <div
+      style={{
+        border: 'solid 2px gray',
+        width: '100%',
+        margin: '4px',
+      }}
+    >
+      <div style={{ padding: '10px' }}>
+        <Code ref={terminalRef} {...props} />
+      </div>
+    </div>
+  )
+}

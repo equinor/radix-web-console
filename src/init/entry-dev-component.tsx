@@ -32,13 +32,14 @@ class DevComponent extends Component<{ component?: string }, { content: React.JS
   }
 
   private async fetchModule(component: string): Promise<DefaultModuleImport> {
-    for (const ext of ['jsx', 'tsx']) {
-      try {
-        const path = `../components/${component}/dev.${ext}`
-        return await import(/* @vite-ignore */ path).then((module: DefaultModuleImport) => module)
-      } catch (_) {
-        /* empty */
-      }
+    console.log(component)
+
+    try {
+      const path = `../components/${component}/dev.tsx`
+      return await import(/* @vite-ignore */ path)
+    } catch (err) {
+      console.error(err)
+      /* empty */
     }
 
     throw Error('Not found')
