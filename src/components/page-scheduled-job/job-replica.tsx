@@ -4,7 +4,7 @@ import { type ReplicaSummary, radixApi, useJobLogQuery } from '../../store/radix
 
 import './style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { getScheduledJobLogStreamUrl } from '../../store/use-log'
+import { getScheduledJobLogStreamUrl } from '../../store/eventstream-log-api'
 import { getFetchErrorCode } from '../../store/utils/parse-errors'
 import AsyncResource from '../async-resource/async-resource'
 import { Log, StreamingLog } from '../code/log'

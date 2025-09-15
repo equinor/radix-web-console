@@ -1,7 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
 
 import { radixApi } from '../../store/radix-api'
-import { getTektonPipelineRunTaskStepLogsStreamUrl } from '../../store/use-log'
+import { getTektonPipelineRunTaskStepLogsStreamUrl } from '../../store/eventstream-log-api'
 import { StreamingLog } from '../code/log'
 
 interface Props {
