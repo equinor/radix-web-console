@@ -19,7 +19,7 @@ interface StepLogsProps {
 export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogsProps) {
   const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
   const state = useGetPipelineJobStepLogsQuery(
-    { appName, jobName, stepName, lines: '5' },
+    { appName, jobName, stepName, lines: '1' },
     { skip: !appName || !jobName || !stepName, pollingInterval: 0 }
   )
   const eventStreamUrl = getPipelineJobStepLogsStreamUrl(appName, jobName, stepName)

@@ -21,8 +21,8 @@ export function getJobContainerLogStreamUrl(
   return `/api/v1//applications/${appName}/pipelinejobs/${pipelineJobName}/replicas/${replicaName}/containers/${containerId}/log?follow=true&lines=1000`
 }
 
-export function getPipelineJobStepLogsStreamUrl(appName: string, pipelineJobName: string, stepName: string) {
-  return `/api/v1/applications/${appName}/pipelinejobs/${pipelineJobName}/logs/${stepName}?follow=true&lines=1000`
+export function getPipelineJobStepLogsStreamUrl(appName: string, jobName: string, stepName: string) {
+  return `/api/v1/applications/${appName}/jobs/${jobName}/logs/${stepName}?follow=true&lines=1000`
 }
 
 export function getTektonPipelineRunTaskStepLogsStreamUrl(
