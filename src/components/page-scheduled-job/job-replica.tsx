@@ -1,12 +1,14 @@
 import { type FunctionComponent, useState } from 'react'
-import { logApi } from '../../store/log-api'
-import { type ReplicaSummary, radixApi } from '../../store/radix-api'
+import { logApi, useGetJobLogQuery, useGetJobReplicaLogQuery } from '../../store/log-api'
+import { type ReplicaSummary, radixApi, useJobLogQuery } from '../../store/radix-api'
 
 import './style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import { getScheduledJobLogStreamUrl } from '../../store/use-log'
-import { StreamingLog } from '../code/log'
+import { Log, StreamingLog } from '../code/log'
 import { ReplicaOverview } from '../replica/replica-overview'
+import { getFetchErrorCode } from '../../store/utils/parse-errors'
+import AsyncResource from '../async-resource/async-resource'
 
 export const JobReplica: FunctionComponent<{
   header?: string
@@ -22,6 +24,17 @@ export const JobReplica: FunctionComponent<{
 
   const [_log, _setLog] = useState('')
   const [_historyLog, _setHistoryLog] = useState('')
+
+  const state = useJobLogQuery(
+    { appName, envName, jobComponentName, scheduledJobName, lines: '1', replicaName: replica.name },
+    { skip: !appName || !scheduledJobName || !jobComponentName, pollingInterval: 0 }
+  )
+  const notFound = state.isError && getFetchErrorCode(state.error) === 404
+
+  const historyLogState = useGetJobReplicaLogQuery(
+    { appName, envName, jobComponentName, jobName: scheduledJobName, replicaName: replica.name },
+    { skip: !notFound && !state.isLoading }
+  )
 
   // const eventStreamUrl = getJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
   const eventStreamUrl = getScheduledJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
@@ -51,29 +64,33 @@ export const JobReplica: FunctionComponent<{
             </Accordion.HeaderTitle>
           </Accordion.Header>
           <Accordion.Panel>
-            <>
+            <AsyncResource asyncState={{ isLoading: state.isLoading || historyLogState.isLoading, isError: false }}>
               <ReplicaOverview replica={replica} />
-
-              <StreamingLog
-                eventStreamUrl={eventStreamUrl}
-                copy
-                download
-                filename={`${replica.name}.txt`}
-                downloadCb={() =>
-                  getLog(
-                    {
-                      appName,
-                      envName,
-                      jobComponentName,
-                      scheduledJobName,
-                      replicaName: replica.name,
-                      file: 'true',
-                    },
-                    false
-                  ).unwrap()
-                }
-              />
-            </>
+              {notFound && (
+                <Log content={historyLogState.data as string} copy download filename={`${replica.name}.txt`} />
+              )}
+              {!notFound && (
+                <StreamingLog
+                  eventStreamUrl={eventStreamUrl}
+                  copy
+                  download
+                  filename={`${replica.name}.txt`}
+                  downloadCb={() =>
+                    getLog(
+                      {
+                        appName,
+                        envName,
+                        jobComponentName,
+                        scheduledJobName,
+                        replicaName: replica.name,
+                        file: 'true',
+                      },
+                      false
+                    ).unwrap()
+                  }
+                />
+              )}
+            </AsyncResource>
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>

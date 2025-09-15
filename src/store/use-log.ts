@@ -50,9 +50,10 @@ export function getScheduledJobLogStreamUrl(
   envName: string,
   jobComponentName: string,
   jobName: string,
-  replicaName: string
+  replicaName?: string
 ) {
-  return `/api/v1/applications/${appName}/environments/${envName}/jobcomponents/${jobComponentName}/scheduledjobs/${jobName}/logs?replicaName=${replicaName}&follow=true&lines=1000`
+  return `/api/v1/applications/${appName}/environments/${envName}/jobcomponents/${jobComponentName}/scheduledjobs/${jobName}/logs?follow=true&lines=1000${replicaName ? `&replicaName=${replicaName}` : ''}`
 }
 
-// /api/v1/applications/edc2023-radix-wi-rihag/environments/dev/jobcomponents/compute/scheduledjobs/batch-computeg0lcllk5h-20250915120000-mxufpd7w-vwlizojr/logs?replicaName=batch-computeg0lcllk5h-20250915120000-mxufpd7w-vwlizojr-lw4x8
+// /api/v1/applications/radix-job-demo/environments/qa/jobcomponents/compute/scheduledjobs/batch-computerx9vtdmtk-20250912125555-swr2jslq-cp8znjeg/logs?replicaName=batch-computerx9vtdmtk-20250912125555-swr2jslq-cp8znjeg-jqgnq&follow=true&lines=1000
+// /api/v1/applications/radix-job-demo/environments/qa/jobcomponents/compute/scheduledjobs/batch-computerx9vtdmtk-20250912125555-swr2jslq-cp8znjeg/logs?lines=1000
