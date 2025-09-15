@@ -54,7 +54,6 @@ export const ChangeConfigFileForm: FunctionComponent<ChangeConfigFileFormProps> 
                 </div>
               )}
               <TextField
-                id="filepath"
                 disabled={isLoading}
                 value={configNameState ?? radixConfigFullName ?? defaultConfigName ?? ''}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setConfigNameState(e.target.value)}

@@ -1,11 +1,11 @@
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { type FunctionComponent, useState } from 'react'
 import { logApi } from '../../store/log-api'
 import { type ReplicaSummary, radixApi } from '../../store/radix-api'
-import { downloadLog } from '../code/log-helper'
 
 import './style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { Code } from '../code/code'
+import { getScheduledJobLogStreamUrl } from '../../store/use-log'
+import { StreamingLog } from '../code/log'
 import { ReplicaOverview } from '../replica/replica-overview'
 
 export const JobReplica: FunctionComponent<{
@@ -18,25 +18,28 @@ export const JobReplica: FunctionComponent<{
   isExpanded?: boolean
 }> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, isExpanded }) => {
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
-  const [getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
+  const [_getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
 
-  const [log, setLog] = useState('')
-  const [historyLog, setHistoryLog] = useState('')
+  const [_log, _setLog] = useState('')
+  const [_historyLog, _setHistoryLog] = useState('')
 
-  useEffect(() => {
-    getLog({ appName, envName, jobComponentName, scheduledJobName, replicaName: replica.name }).then(({ data }) =>
-      setLog(data!)
-    )
-  }, [replica, getLog, appName, envName, jobComponentName, scheduledJobName])
+  // const eventStreamUrl = getJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
+  const eventStreamUrl = getScheduledJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
 
-  useEffect(() => {
-    if (log) {
-      return
-    }
-    getHistoryLog({ appName, envName, jobComponentName, jobName: jobComponentName, replicaName: replica.name }).then(
-      ({ data }) => setHistoryLog(data as string)
-    )
-  }, [replica, log, getHistoryLog, appName, envName, jobComponentName])
+  // useEffect(() => {
+  //   getLog({ appName, envName, jobComponentName, scheduledJobName, replicaName: replica.name }).then(({ data }) =>
+  //     setLog(data!)
+  //   )
+  // }, [replica, getLog, appName, envName, jobComponentName, scheduledJobName])
+
+  // useEffect(() => {
+  //   if (log) {
+  //     return
+  //   }
+  //   getHistoryLog({ appName, envName, jobComponentName, jobName: jobComponentName, replicaName: replica.name }).then(
+  //     ({ data }) => setHistoryLog(data as string)
+  //   )
+  // }, [replica, log, getHistoryLog, appName, envName, jobComponentName])
 
   return (
     <div className="grid grid--gap-medium">
@@ -51,28 +54,25 @@ export const JobReplica: FunctionComponent<{
             <>
               <ReplicaOverview replica={replica} />
 
-              <Code
+              <StreamingLog
+                eventStreamUrl={eventStreamUrl}
                 copy
-                resizable
                 download
+                filename={`${replica.name}.txt`}
                 downloadCb={() =>
-                  downloadLog(`${replica.name}.txt`, () =>
-                    getLog(
-                      {
-                        appName,
-                        envName,
-                        jobComponentName,
-                        scheduledJobName,
-                        replicaName: replica.name,
-                        file: 'true',
-                      },
-                      false
-                    ).unwrap()
-                  )
+                  getLog(
+                    {
+                      appName,
+                      envName,
+                      jobComponentName,
+                      scheduledJobName,
+                      replicaName: replica.name,
+                      file: 'true',
+                    },
+                    false
+                  ).unwrap()
                 }
-              >
-                {log ?? historyLog ?? 'Replica has no log'}
-              </Code>
+              />
             </>
           </Accordion.Panel>
         </Accordion.Item>

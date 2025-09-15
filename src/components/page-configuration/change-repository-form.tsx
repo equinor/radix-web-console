@@ -20,7 +20,7 @@ const DeployKey = ({ appName }: { appName: string }) => {
 
   return (
     <AsyncResource asyncState={depAndSecState}>
-      <Code copy>{deployKeAndSecret?.publicDeployKey ?? ''}</Code>
+      <Code copy content={deployKeAndSecret?.publicDeployKey ?? ''} />
     </AsyncResource>
   )
 }
@@ -71,7 +71,6 @@ export function ChangeRepositoryForm({ appName, repository, refetch, sharedSecre
                 </div>
               )}
               <TextField
-                id="githubUrlField"
                 disabled={isLoading}
                 type="url"
                 value={currentRepository ?? repository ?? ''}

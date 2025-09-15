@@ -1,14 +1,11 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react'
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons'
-import type { FunctionComponent } from 'react'
+import { useMemo } from 'react'
 import '@xterm/xterm/css/xterm.css'
 import { copyToClipboard, copyToTextFile } from '../../utils/string'
 import './style.css'
+import stripAnsi from 'strip-ansi'
 import { LoadingButton } from '../button/loading-button'
-
-export const WHITE = '\u001b[37m'
-export const YELLOW = '\u001b[33m'
-export const RED = '\u001b[31m'
 
 export type CodeProps = {
   copy?: boolean
@@ -17,7 +14,9 @@ export type CodeProps = {
   content: string
 }
 
-export const Code: FunctionComponent<CodeProps> = ({ copy, download, content, filename }) => {
+export const Code = ({ copy, download, content, filename }: CodeProps) => {
+  const cleaned = useMemo(() => stripAnsi(content), [content])
+
   return (
     <div className="code">
       {(copy || download) && (
@@ -37,7 +36,7 @@ export const Code: FunctionComponent<CodeProps> = ({ copy, download, content, fi
         </div>
       )}
       <Card className="code__card">
-        <pre>{content}</pre>
+        <pre>{cleaned}</pre>
       </Card>
     </div>
   )

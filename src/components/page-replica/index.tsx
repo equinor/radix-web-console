@@ -1,17 +1,16 @@
 import { Typography } from '@equinor/eds-core-react'
-import { useCallback, useRef } from 'react'
 import useLocalStorage from '../../effects/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery } from '../../store/radix-api'
-import { useReplicaLogStream } from '../../store/use-log'
+import { getReplicaLogStreamUrl } from '../../store/use-log'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
-import { Code, type CodeRef, RED, WHITE } from '../code/code'
+import { StreamingLog } from '../code/log'
 import { EventsList } from '../events-list'
 import { ReplicaOverview } from '../replica/replica-overview'
 
@@ -23,19 +22,9 @@ interface Props {
 }
 
 function PageReplica({ appName, envName, componentName, replicaName }: Props) {
-  const terminalRef = useRef<CodeRef>(undefined)
   const environmentState = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
   const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery()
-
-  const msgHandler = useCallback((msg: string, isError: boolean) => {
-    if (isError) {
-      terminalRef.current?.write(`${RED}${msg}${WHITE}\r\n`)
-    } else {
-      terminalRef.current?.write(`${msg}\r\n`)
-    }
-  }, [])
-
-  useReplicaLogStream(appName, envName, componentName, replicaName, msgHandler)
+  const eventStreamUrl = getReplicaLogStreamUrl(appName, envName, componentName, replicaName)
 
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
@@ -83,10 +72,9 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
           <>
             <Typography variant="h4">Overview</Typography>
             <ReplicaOverview replica={replica} />
-            <Code
-              ref={terminalRef}
+            <StreamingLog
+              eventStreamUrl={eventStreamUrl}
               copy
-              resizable
               download
               downloadCb={() =>
                 getLog({ appName, envName, componentName, podName: replicaName, lines: '100000000' }).unwrap()

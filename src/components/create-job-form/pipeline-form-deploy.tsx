@@ -1,5 +1,5 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useId, useState } from 'react'
 import { useTriggerPipelineDeployMutation } from '../../store/radix-api'
 
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
@@ -12,6 +12,7 @@ export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
   const hasEnvironments = application.environments && application.environments.length > 0
   const [trigger, state] = useTriggerPipelineDeployMutation()
   const [toEnvironment, setToEnvironment] = useState('')
+  const toEnvironmentSelectId = useId()
   const handleSubmit = handlePromiseWithToast(async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -46,7 +47,7 @@ export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
                 Environment
               </Typography>
               <NativeSelect
-                id="ToEnvironmentSelect"
+                id={toEnvironmentSelectId}
                 label=""
                 name="toEnvironment"
                 onChange={(e) => setToEnvironment(e.target.value)}

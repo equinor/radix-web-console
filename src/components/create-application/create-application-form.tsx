@@ -83,7 +83,6 @@ export function CreateApplicationForm({ registration, onCreate, onNext }: Props)
         </Alert>
         <fieldset disabled={loading || !!registration} className="grid grid--gap-medium">
           <TextField
-            id="name_field"
             label="Name"
             // @ts-expect-error Textfield does actually allow JSX
             helperText={
@@ -96,14 +95,12 @@ export function CreateApplicationForm({ registration, onCreate, onNext }: Props)
             defaultValue={registration?.name}
           />
           <TextField
-            id="repository_field"
             label="GitHub repository"
             helperText="Full URL, e.g. 'https://github.com/equinor/my-app'"
             name="repository"
             defaultValue={registration?.repository}
           />
           <TextField
-            id="configbranch_field"
             label="Config Branch"
             // @ts-expect-error Textfield does actually allow JSX
             helperText={
@@ -115,7 +112,6 @@ export function CreateApplicationForm({ registration, onCreate, onNext }: Props)
             defaultValue={registration?.configBranch ?? 'main'}
           />
           <TextField
-            id="radixconfig_file_field"
             label="Config file"
             helperText="The name and optionally the path of the Radix config file. Located in the repository root folder of the config branch"
             name="radixConfigFullName"

@@ -57,7 +57,6 @@ export const ChangeConfigBranchForm: FunctionComponent<ChangeConfigBranchFormPro
             )}
             <TextField
               label="Branch"
-              id="branchField"
               helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
               disabled={isLoading}
               type="text"

@@ -76,7 +76,6 @@ export default function DeleteApplicationForm({ appName }: Props) {
                 <strong>delete</strong> in the text field below.
               </Typography>
               <TextField
-                id="deleteConfirmField"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value)}
                 value={inputValue}
               />
