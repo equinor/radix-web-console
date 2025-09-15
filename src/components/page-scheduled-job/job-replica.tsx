@@ -1,14 +1,14 @@
 import { type FunctionComponent, useState } from 'react'
-import { logApi, useGetJobLogQuery, useGetJobReplicaLogQuery } from '../../store/log-api'
+import { logApi, useGetJobReplicaLogQuery } from '../../store/log-api'
 import { type ReplicaSummary, radixApi, useJobLogQuery } from '../../store/radix-api'
 
 import './style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import { getScheduledJobLogStreamUrl } from '../../store/use-log'
-import { Log, StreamingLog } from '../code/log'
-import { ReplicaOverview } from '../replica/replica-overview'
 import { getFetchErrorCode } from '../../store/utils/parse-errors'
 import AsyncResource from '../async-resource/async-resource'
+import { Log, StreamingLog } from '../code/log'
+import { ReplicaOverview } from '../replica/replica-overview'
 
 export const JobReplica: FunctionComponent<{
   header?: string
