@@ -52,6 +52,7 @@ export const StreamingLog = ({ copy, download, downloadCb, filename, eventStream
       return false
     })
     fit.fit()
+    
     terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
 
     const eventSource = new EventSource(eventStreamUrl)
@@ -137,8 +138,8 @@ export const Log = ({ copy, download, downloadCb, filename, content }: LogProps)
     })
     terminal.current.open(containerRef.current)
     fit.fit()
-    terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
 
+    terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
     terminal.current.writeln(content)
     terminal.current.writeln(`${YELLOW}Stream completed.${WHITE}`)
   }, [serializeAddon, content])
