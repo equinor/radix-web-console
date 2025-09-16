@@ -142,7 +142,7 @@ const ReplicaState = ({ restartCount, statusMessage, exitCode }: ReplicaStatePro
     {statusMessage && (
       <>
         <Typography>
-          Status message <strong>{status}</strong>
+          Status message <strong>{statusMessage}</strong>
         </Typography>
       </>
     )}
