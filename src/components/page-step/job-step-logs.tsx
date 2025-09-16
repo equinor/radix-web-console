@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { radixApi, useGetPipelineJobStepLogsQuery } from '../../store/radix-api'
 import { getPipelineJobStepLogsStreamUrl } from '../../store/eventstream-log-api'
+import { radixApi, useGetPipelineJobStepLogsQuery } from '../../store/radix-api'
 import { getFetchErrorCode } from '../../store/utils/parse-errors'
 import { StreamingLog } from '../code/log'
 import { HistoricalLog } from './historical-log'
