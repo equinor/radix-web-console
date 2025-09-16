@@ -33,24 +33,8 @@ export const JobReplica: FunctionComponent<{
     { skip: !notFound && !state.isLoading }
   )
 
-  // const eventStreamUrl = getJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
+  
   const eventStreamUrl = getScheduledJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
-
-  // useEffect(() => {
-  //   getLog({ appName, envName, jobComponentName, scheduledJobName, replicaName: replica.name }).then(({ data }) =>
-  //     setLog(data!)
-  //   )
-  // }, [replica, getLog, appName, envName, jobComponentName, scheduledJobName])
-
-  // useEffect(() => {
-  //   if (log) {
-  //     return
-  //   }
-  //   getHistoryLog({ appName, envName, jobComponentName, jobName: jobComponentName, replicaName: replica.name }).then(
-  //     ({ data }) => setHistoryLog(data as string)
-  //   )
-  // }, [replica, log, getHistoryLog, appName, envName, jobComponentName])
-
   return (
     <div className="grid grid--gap-medium">
       <Accordion className="accordion elevated" chevronPosition="right">
