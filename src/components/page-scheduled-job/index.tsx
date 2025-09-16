@@ -14,17 +14,6 @@ import { ScheduledJobOverview } from './scheduled-job-overview'
 
 import './style.css'
 
-// @ts-expect-error Will use this on in this PR, if I forgot its a bug :D
-function _isJobSettled(status?: ScheduledJobSummary['status']): boolean {
-  switch (status) {
-    case 'Failed':
-    case 'Stopped':
-    case 'Succeeded':
-      return true
-  }
-  return false
-}
-
 export const PageScheduledJob: FunctionComponent<{
   appName: string
   jobComponentName: string
