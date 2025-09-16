@@ -20,7 +20,6 @@ export const JobReplica: FunctionComponent<{
   isExpanded?: boolean
 }> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, isExpanded }) => {
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
-  const [_getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
 
 
   const state = useJobLogQuery(
