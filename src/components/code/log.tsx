@@ -14,6 +14,16 @@ export const WHITE = '\u001b[37m'
 export const YELLOW = '\u001b[33m'
 export const RED = '\u001b[31m'
 
+const defaultOptions = {
+  cursorBlink: false,
+  fontFamily: 'var(--eds_typography_font-family_monospace)',
+  fontSize: 14,
+  lineHeight: 1.8,
+  convertEol: true,
+  disableStdin: true,
+  scrollback: 5000,
+}
+
 export type StreamingLogProps = {
   copy?: boolean
   download?: boolean
@@ -25,19 +35,7 @@ export type StreamingLogProps = {
 export const StreamingLog = ({ copy, download, downloadCb, filename, eventStreamUrl }: StreamingLogProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const serializeAddon = useMemo(() => new SerializeAddon(), [])
-  const terminal = useRef(
-    new Terminal({
-      cursorBlink: true,
-      fontFamily: 'var(--eds_typography_font-family_monospace)',
-      fontSize: 14,
-      lineHeight: 1.8,
-      convertEol: true,
-      disableStdin: true,
-      scrollback: 1000,
-      logLevel: 'warn',
-      theme: {},
-    })
-  )
+  const terminal = useRef(new Terminal(defaultOptions))
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -46,6 +44,13 @@ export const StreamingLog = ({ copy, download, downloadCb, filename, eventStream
     terminal.current.loadAddon(fit)
     terminal.current.loadAddon(serializeAddon)
     terminal.current.open(containerRef.current)
+    terminal.current.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+      if ((event.key === 'c' || event.key === 'C') && (event.ctrlKey || event.metaKey)) {
+        copyToClipboard(terminal.current.getSelection())
+      }
+
+      return false
+    })
     fit.fit()
     terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
 
@@ -115,19 +120,7 @@ export type LogProps = {
 export const Log = ({ copy, download, downloadCb, filename, content }: LogProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const serializeAddon = useMemo(() => new SerializeAddon(), [])
-  const terminal = useRef(
-    new Terminal({
-      cursorBlink: false,
-      fontFamily: 'var(--eds_typography_font-family_monospace)',
-      fontSize: 14,
-      lineHeight: 1.8,
-      convertEol: true,
-      disableStdin: true,
-      scrollback: 1000,
-      logLevel: 'warn',
-      theme: {},
-    })
-  )
+  const terminal = useRef(new Terminal(defaultOptions))
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -135,6 +128,13 @@ export const Log = ({ copy, download, downloadCb, filename, content }: LogProps)
     const fit = new FitAddon()
     terminal.current.loadAddon(fit)
     terminal.current.loadAddon(serializeAddon)
+    terminal.current.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+      if ((event.key === 'c' || event.key === 'C') && (event.ctrlKey || event.metaKey)) {
+        copyToClipboard(terminal.current.getSelection())
+      }
+
+      return false
+    })
     terminal.current.open(containerRef.current)
     fit.fit()
     terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
