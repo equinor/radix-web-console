@@ -54,6 +54,3 @@ export function getScheduledJobLogStreamUrl(
 ) {
   return `/api/v1/applications/${appName}/environments/${envName}/jobcomponents/${jobComponentName}/scheduledjobs/${jobName}/logs?follow=true&lines=1000${replicaName ? `&replicaName=${replicaName}` : ''}`
 }
-
-// /api/v1/applications/radix-job-demo/environments/qa/jobcomponents/compute/scheduledjobs/batch-computerx9vtdmtk-20250912125555-swr2jslq-cp8znjeg/logs?replicaName=batch-computerx9vtdmtk-20250912125555-swr2jslq-cp8znjeg-jqgnq&follow=true&lines=1000
-// /api/v1/applications/radix-job-demo/environments/qa/jobcomponents/compute/scheduledjobs/batch-computerx9vtdmtk-20250912125555-swr2jslq-cp8znjeg/logs?lines=1000
