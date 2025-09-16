@@ -37,7 +37,7 @@ export function PipelineRunTaskStepLog({ appName, jobName, pipelineRunName, task
             eventStreamUrl={eventStreamUrl}
             copy
             download
-            filename="{stepName}.txt"
+            filename={`${stepName}.txt`}
             downloadCb={() =>
               getLog(
                 {
