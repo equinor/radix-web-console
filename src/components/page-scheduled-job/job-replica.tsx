@@ -1,5 +1,5 @@
-import { type FunctionComponent, useState } from 'react'
-import { logApi, useGetJobReplicaLogQuery } from '../../store/log-api'
+import type { FunctionComponent } from 'react'
+import { useGetJobReplicaLogQuery } from '../../store/log-api'
 import { type ReplicaSummary, radixApi, useJobLogQuery } from '../../store/radix-api'
 
 import './style.css'
@@ -21,7 +21,6 @@ export const JobReplica: FunctionComponent<{
 }> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, isExpanded }) => {
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
 
-
   const state = useJobLogQuery(
     { appName, envName, jobComponentName, scheduledJobName, lines: '1', replicaName: replica.name },
     { skip: !appName || !scheduledJobName || !jobComponentName, pollingInterval: 0 }
@@ -33,7 +32,6 @@ export const JobReplica: FunctionComponent<{
     { skip: !notFound && !state.isLoading }
   )
 
-  
   const eventStreamUrl = getScheduledJobLogStreamUrl(appName, envName, jobComponentName, scheduledJobName, replica.name)
   return (
     <div className="grid grid--gap-medium">

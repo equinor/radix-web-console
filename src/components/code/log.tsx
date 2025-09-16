@@ -52,7 +52,7 @@ export const StreamingLog = ({ copy, download, downloadCb, filename, eventStream
       return false
     })
     fit.fit()
-    
+
     terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
 
     const eventSource = new EventSource(eventStreamUrl)
