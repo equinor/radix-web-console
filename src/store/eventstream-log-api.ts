@@ -18,7 +18,7 @@ export function getJobContainerLogStreamUrl(
   replicaName: string,
   containerId: string
 ) {
-  return `/api/v1//applications/${appName}/pipelinejobs/${pipelineJobName}/replicas/${replicaName}/containers/${containerId}/log?follow=true&lines=1000`
+  return `/api/v1/applications/${appName}/pipelinejobs/${pipelineJobName}/replicas/${replicaName}/containers/${containerId}/log?follow=true&lines=1000`
 }
 
 export function getPipelineJobStepLogsStreamUrl(appName: string, jobName: string, stepName: string) {
