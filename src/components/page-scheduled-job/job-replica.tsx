@@ -22,8 +22,6 @@ export const JobReplica: FunctionComponent<{
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
   const [_getHistoryLog] = logApi.endpoints.getJobReplicaLog.useLazyQuery()
 
-  const [_log, _setLog] = useState('')
-  const [_historyLog, _setHistoryLog] = useState('')
 
   const state = useJobLogQuery(
     { appName, envName, jobComponentName, scheduledJobName, lines: '1', replicaName: replica.name },
