@@ -129,7 +129,7 @@ const ScheduledJobState: FunctionComponent<Pick<ScheduledJobSummary, 'failedCoun
     {message && (
       <>
         <Typography>
-          Status message <strong>{status}</strong>
+          Status message <strong>{message}</strong>
         </Typography>
       </>
     )}
