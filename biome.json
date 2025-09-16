@@ -44,44 +44,44 @@
   "linter": {
     "rules": {
       "security": {
-      "noDangerouslySetInnerHtml": "off"
-    },
-    "complexity": {
-      "noForEach": "off",
-      "noUselessFragments": "off",
-      "useArrowFunction": "off"
-    },
-    "style": {
-      "noUselessElse": "off",
-      "useNumberNamespace": "off",
-      "noNonNullAssertion": "off",
-      "noParameterAssign": "off",
-      "useAsConstAssertion": "error",
-      "useDefaultParameterLast": "error",
-      "useEnumInitializers": "error",
-      "useSelfClosingElements": "error",
-      "useSingleVarDeclarator": "error",
-      "noUnusedTemplateLiteral": "error",
-      "noInferrableTypes": "error",
-      "noDescendingSpecificity": "off"
-    },
-    "suspicious": {
-      "noArrayIndexKey": "off",
-      "noAssignInExpressions": "off",
-      "noDoubleEquals": "off",
-      "useIterableCallbackReturn": "off"
-    },
-    "performance": {
-      "noAccumulatingSpread": "off"
-    },
-    "a11y": {
-      "noRedundantRoles": "off",
-      "useKeyWithClickEvents": "off",
-      "noStaticElementInteractions": "off"
-    },
-    "nursery": {
-      "noFloatingPromises": "error"
+        "noDangerouslySetInnerHtml": "off"
+      },
+      "complexity": {
+        "noForEach": "off",
+        "noUselessFragments": "off",
+        "useArrowFunction": "off"
+      },
+      "style": {
+        "noUselessElse": "off",
+        "useNumberNamespace": "off",
+        "noNonNullAssertion": "off",
+        "noParameterAssign": "off",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "noInferrableTypes": "error",
+        "noDescendingSpecificity": "off"
+      },
+      "suspicious": {
+        "noArrayIndexKey": "off",
+        "noAssignInExpressions": "off",
+        "noDoubleEquals": "off",
+        "useIterableCallbackReturn": "off"
+      },
+      "performance": {
+        "noAccumulatingSpread": "off"
+      },
+      "a11y": {
+        "noRedundantRoles": "off",
+        "useKeyWithClickEvents": "off",
+        "noStaticElementInteractions": "off"
+      },
+      "nursery": {
+        "noFloatingPromises": "error"
+      }
     }
   }
-}
 }
