@@ -1,5 +1,5 @@
 export function getReplicaLogStreamUrl(appName: string, envName: string, componentName: string, podName: string) {
-  return `/api/v1/applications/${appName}/environments/${envName}/components/${componentName}/replicas/${podName}/logs?follow=true&lines=100`
+  return `/api/v1/applications/${appName}/environments/${envName}/components/${componentName}/replicas/${podName}/logs?follow=true&lines=1000`
 }
 
 export function getOauthAuxiliaryLogStreamUrl(
