@@ -1,6 +1,6 @@
 import { Button, Card, Icon } from '@equinor/eds-core-react'
 import { copy as copyIcon, download as downloadIcon } from '@equinor/eds-icons'
-import { Terminal } from '@xterm/xterm'
+import { type ITerminalInitOnlyOptions, type ITerminalOptions, Terminal } from '@xterm/xterm'
 import { useEffect, useMemo, useRef } from 'react'
 import '@xterm/xterm/css/xterm.css'
 import { SerializeAddon } from '@xterm/addon-serialize'
@@ -21,8 +21,8 @@ const defaultOptions = {
   lineHeight: 1.8,
   convertEol: true,
   disableStdin: true,
-  scrollback: 5000,
-}
+  scrollback: 10000,
+} satisfies ITerminalOptions & ITerminalInitOnlyOptions
 
 export type StreamingLogProps = {
   copy?: boolean
