@@ -1,4 +1,3 @@
-import './style.css'
 import { useGetJobPayloadQuery } from '../../../store/radix-api'
 import { Code } from '../../code/code'
 
@@ -20,5 +19,9 @@ export const Payload = ({ appName, envName, jobComponentName, jobName }: Payload
     { pollingInterval: 0 }
   )
 
-  return <Code content={data ?? ''} download copy />
+  return (
+    <div className="tw:m-4 tw:mt-0">
+      <Code content={data ?? ''} copy />
+    </div>
+  )
 }

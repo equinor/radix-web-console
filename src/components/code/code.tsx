@@ -12,6 +12,7 @@ export type CodeProps = {
   download?: boolean
   filename?: string
   content: string
+  className?: string
 }
 
 export const Code = ({ copy, download, content, filename }: CodeProps) => {

@@ -10,7 +10,7 @@ export const JobSchedulerDetails: FunctionComponent<{
 }> = ({ component }) => (
   <>
     <Typography>Job manager:</Typography>
-    <List className="o-indent-list">
+    <List className="tw:grid tw:grid-cols-1 tw:gap-4">
       <List.Item key="status">
         <div className="grid grid--gap-small grid--auto-columns">
           <Typography>status</Typography>

@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import packageJson from './package.json';
+import tailwindcss from '@tailwindcss/vite'
 
 // regex filter for dev.* components
 const devComponentRegex =
@@ -27,5 +28,6 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    tailwindcss(),
   ],
 });
