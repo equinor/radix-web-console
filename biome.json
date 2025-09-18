@@ -21,8 +21,7 @@
       "!src/store/service-now-api.ts",
       "!src/store/scan-api.ts",
       "!src/store/cost-api.ts",
-      "!src/store/uptime-api.ts",
-      "!src/global.css"
+      "!src/store/uptime-api.ts"
     ]
   },
   "formatter": {

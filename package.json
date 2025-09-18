@@ -35,7 +35,6 @@
     "@equinor/eds-icons": "^0.22.0",
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@reduxjs/toolkit": "^2.9.0",
-    "@tailwindcss/vite": "^4.1.13",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-serialize": "^0.13.0",
     "@xterm/xterm": "^5.5.0",
@@ -55,8 +54,7 @@
     "react-toastify": "^11.0.5",
     "sanitize.css": "^13.0.0",
     "strip-ansi": "^7.1.2",
-    "styled-components": "^6.1.13",
-    "tailwindcss": "^4.1.13"
+    "styled-components": "^6.1.13"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.4",

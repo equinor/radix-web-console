@@ -108,3 +108,8 @@
   grid-template-columns: repeat(4, min-content);
   column-gap: var(--eds_spacing_small);
 }
+
+.payload {
+  margin: var(--eds_spacing_medium);
+  margin-top: 0;
+}

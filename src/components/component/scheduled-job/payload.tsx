@@ -1,6 +1,8 @@
 import { useGetJobPayloadQuery } from '../../../store/radix-api'
 import { Code } from '../../code/code'
 
+import './style.css'
+
 export interface PayloadProps {
   appName: string
   envName: string
@@ -20,7 +22,7 @@ export const Payload = ({ appName, envName, jobComponentName, jobName }: Payload
   )
 
   return (
-    <div className="tw:m-4 tw:mt-0">
+    <div className="payload">
       <Code content={data ?? ''} copy />
     </div>
   )
