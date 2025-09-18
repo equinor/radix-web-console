@@ -21,14 +21,16 @@
       "!src/store/service-now-api.ts",
       "!src/store/scan-api.ts",
       "!src/store/cost-api.ts",
-      "!src/store/uptime-api.ts"
+      "!src/store/uptime-api.ts",
+      "!src/global.css"
     ]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
-    "lineWidth": 120
+    "lineWidth": 120,
+    "formatWithErrors": true
   },
   "javascript": {
     "formatter": {

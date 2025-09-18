@@ -1,7 +1,14 @@
 @import "tailwindcss" prefix(tw);
 
 /* Tailwind CSS sets all image resources to display: block, wich breaks all our icons */
-img, svg, video, canvas, audio, iframe, embed, object {
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
   display: inline-block;
   vertical-align: inherit;
 }
