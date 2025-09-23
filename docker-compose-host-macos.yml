@@ -31,7 +31,7 @@ services:
       test: "exit 0"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.27-alpine3.21
+    image: nginxinc/nginx-unprivileged:1.29-alpine3.22
     container_name: radix-proxy_container
     read_only: true
     depends_on:
