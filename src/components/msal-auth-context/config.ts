@@ -6,7 +6,11 @@ export const msGraphConfig = {
 }
 
 export const serviceNowApiConfig = {
-  scopes: configVariables.SERVICENOW_PROXY_SCOPES.split(','),
+  scopes: configVariables.SERVICENOW_PROXY_SCOPES.split(' '),
+}
+
+export const radixApiConfig = {
+  scopes: configVariables.RADIX_API_SCOPES.split(' '),
 }
 
 export const msalConfig: Configuration = {
