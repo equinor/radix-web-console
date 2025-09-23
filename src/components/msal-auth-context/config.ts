@@ -10,7 +10,7 @@ export const serviceNowApiConfig = {
 }
 
 export const radixApiConfig = {
-  scopes: configVariables.RADIX_API_SCOPES.split(' '),
+  scopes: configVariables.RADIXAPI_SCOPES.split(' '),
 }
 
 export const msalConfig: Configuration = {
