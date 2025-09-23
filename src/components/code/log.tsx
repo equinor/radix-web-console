@@ -221,9 +221,7 @@ const useAuthentication = () => {
 
     authProvider
       .getAccessToken()
-      .then((token) => {
-        setToken(token)
-      })
+      .then((token) => setToken(token))
       .catch((err) => setTokenError(err))
   }, [authProvider])
 
