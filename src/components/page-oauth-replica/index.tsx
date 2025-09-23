@@ -1,42 +1,29 @@
 import { Typography } from '@equinor/eds-core-react'
-
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
-import { radixApi, useGetEnvironmentQuery, useGetOAuthPodLogQuery } from '../../store/radix-api'
+import { getOauthAuxiliaryLogStreamUrl } from '../../store/eventstream-log-api'
+import { radixApi, useGetEnvironmentQuery } from '../../store/radix-api'
 import { getOAuthServiceTitle, getValidatedOAuthType } from '../../utils/oauth'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
-import { downloadLog } from '../code/log-helper'
-import { Replica } from '../replica'
+import { StreamingLog } from '../code/log'
+import { ReplicaOverview } from '../replica/replica-overview'
 
 interface Props {
   appName: string
   envName: string
   componentName: string
-  type?: 'oauth' | 'oauth-redis' | '""'
+  type: 'oauth' | 'oauth-redis'
   replicaName: string
 }
 
 export function PageOAuthAuxiliaryReplica({ appName, envName, componentName, type, replicaName }: Props) {
   const environmentState = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
-  const pollLogsState = useGetOAuthPodLogQuery(
-    {
-      appName,
-      envName,
-      componentName,
-      type: getValidatedOAuthType(type),
-      podName: replicaName,
-      lines: '1000',
-    },
-    {
-      skip: !appName || !envName || !componentName || !replicaName,
-      pollingInterval: 5000,
-    }
-  )
   const [getLog] = radixApi.endpoints.getOAuthPodLog.useLazyQuery()
+  const eventStreamUrl = getOauthAuxiliaryLogStreamUrl(appName, envName, componentName, type, replicaName)
 
   const deployment = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
@@ -70,11 +57,28 @@ export function PageOAuthAuxiliaryReplica({ appName, envName, componentName, typ
 
       <AsyncResource asyncState={environmentState}>
         {replica && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            downloadCb={() =>
-              downloadLog(`${replica.name}.txt`, () =>
+          <>
+            <Typography variant="h4">Overview</Typography>
+            <ReplicaOverview
+              replica={replica}
+              title={
+                <>
+                  <Typography>
+                    OAuth2 Service <strong>{getOAuthServiceTitle(type)}</strong>
+                  </Typography>
+                  <Typography>
+                    Replica <strong>{smallReplicaName(replicaName)}</strong>, component <strong>{componentName}</strong>
+                  </Typography>
+                </>
+              }
+            />
+
+            <StreamingLog
+              eventStreamUrl={eventStreamUrl}
+              copy
+              download
+              filename={`${replica.name}.txt`}
+              downloadCb={() =>
                 getLog(
                   {
                     appName,
@@ -86,19 +90,9 @@ export function PageOAuthAuxiliaryReplica({ appName, envName, componentName, typ
                   },
                   false
                 ).unwrap()
-              )
-            }
-            title={
-              <>
-                <Typography>
-                  OAuth2 Service <strong>{getOAuthServiceTitle(type)}</strong>
-                </Typography>
-                <Typography>
-                  Replica <strong>{smallReplicaName(replicaName)}</strong>, component <strong>{componentName}</strong>
-                </Typography>
-              </>
-            }
-          />
+              }
+            />
+          </>
         )}
       </AsyncResource>
     </>

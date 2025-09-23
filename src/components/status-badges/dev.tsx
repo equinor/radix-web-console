@@ -113,14 +113,19 @@ const testData = [
   EnumBadge(
     'ComponentStatusBadges',
     [
+      // @ts-expect-error No idea how to fix this one
       'StoppedComponent',
+      // @ts-expect-error No idea how to fix this one
       'ConsistentComponent',
+      // @ts-expect-error No idea how to fix this one
       'ComponentReconciling',
+      // @ts-expect-error No idea how to fix this one
       'ComponentRestarting',
+      // @ts-expect-error No idea how to fix this one
       'ComponentOutdated',
+      // @ts-expect-error No idea how to fix this one
       'Unsupported',
     ],
-    // @ts-expect-error No idea how to fix this one
     ComponentStatusBadge
   ),
   EnumBadge('ImageHubSecretStatusBadge', ['Consistent', 'Pending'], ImageHubSecretStatusBadge),

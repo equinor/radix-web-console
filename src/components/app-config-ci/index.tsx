@@ -53,7 +53,7 @@ export function AppConfigConfigurationItem({
     { skip: !Number.isFinite(configurationItem) }
   )
 
-  const containerRef = useRef<HTMLDivElement>()
+  const containerRef = useRef<HTMLDivElement | undefined>(undefined)
 
   function onChange(newValue: Application | null): void {
     configurationItemChangeCallback?.(newValue)

@@ -17,7 +17,7 @@ export const PageRouter: FunctionComponent<Pick<RouterProviderProps, 'router'>> 
   return (
     <div className="page-root">
       <div className="page-root-layout-base">
-        <RouterProvider router={router} fallbackElement={<LazyLoadFallback />} />
+        <RouterProvider future={{ v7_startTransition: true }} router={router} fallbackElement={<LazyLoadFallback />} />
       </div>
     </div>
   )

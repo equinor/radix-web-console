@@ -1,12 +1,14 @@
 import { Button, Icon, Menu } from '@equinor/eds-core-react'
 import { more_vertical } from '@equinor/eds-icons'
-import { Fragment, type FunctionComponent, useState } from 'react'
+import { type ReactNode, useState } from 'react'
 
 import './style.css'
 
-export const JobContextMenu: FunctionComponent<{
-  menuItems: Array<ReturnType<(typeof Menu)['Item']>>
-}> = ({ menuItems }) => {
+type Props = {
+  menuItems: ReactNode
+}
+
+export const JobContextMenu = ({ menuItems }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>()
 
@@ -22,9 +24,7 @@ export const JobContextMenu: FunctionComponent<{
         anchorEl={anchorEl}
         placement="right-start"
       >
-        {menuItems?.map((item, i) => (
-          <Fragment key={i}>{item}</Fragment>
-        ))}
+        {menuItems}
       </Menu>
     </>
   )

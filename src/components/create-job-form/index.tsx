@@ -1,5 +1,5 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useMemo } from 'react'
+import { type FunctionComponent, useId, useMemo } from 'react'
 
 import { useSearchParams } from 'react-router-dom'
 import { pollingInterval } from '../../store/defaults'
@@ -40,6 +40,7 @@ export default function CreateJobForm({ appName, onSuccess }: CreateJobFormProps
   const buildBranches = useGetApplicationBranches(application)
   const hasBuildBranches = Object.keys(buildBranches).length > 0
   const [searchParams, setSearchParams] = useSearchParams()
+  const pipelineNameSelectId = useId()
   const setPipelineType = (pipeline: string) =>
     setSearchParams((prev) => {
       prev.set(pipelineSearchParam, pipeline)
@@ -62,7 +63,12 @@ export default function CreateJobForm({ appName, onSuccess }: CreateJobFormProps
       <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
         Pipeline
       </Typography>
-      <NativeSelect id="PipelineNameSelect" label="" value={pipeline} onChange={(e) => setPipelineType(e.target.value)}>
+      <NativeSelect
+        id={pipelineNameSelectId}
+        label=""
+        value={pipeline}
+        onChange={(e) => setPipelineType(e.target.value)}
+      >
         <option hidden value="">
           — Please select —
         </option>

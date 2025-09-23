@@ -1,7 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useEffect, useMemo, useState } from 'react'
+import { type FunctionComponent, useMemo } from 'react'
 import { routes } from '../../routes'
-import { type ReplicaSummary, type ScheduledJobSummary, useGetJobQuery, useJobLogQuery } from '../../store/radix-api'
+import { type ReplicaSummary, useGetJobQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
@@ -13,16 +13,6 @@ import { JobReplica } from './job-replica'
 import { ScheduledJobOverview } from './scheduled-job-overview'
 
 import './style.css'
-
-function isJobSettled(status?: ScheduledJobSummary['status']): boolean {
-  switch (status) {
-    case 'Failed':
-    case 'Stopped':
-    case 'Succeeded':
-      return true
-  }
-  return false
-}
 
 export const PageScheduledJob: FunctionComponent<{
   appName: string
@@ -38,17 +28,6 @@ export const PageScheduledJob: FunctionComponent<{
       pollingInterval: 5000,
     }
   )
-  const [pollingInterval, setPollingInterval] = useState(5000)
-  const pollLogsState = useJobLogQuery(
-    { appName, envName, jobComponentName, scheduledJobName, lines: '1000' },
-    {
-      skip: !appName || !envName || !jobComponentName || !scheduledJobName,
-      pollingInterval,
-    }
-  )
-  useEffect(() => {
-    setPollingInterval(isJobSettled(job?.status) ? 0 : 5000)
-  }, [job?.status])
 
   const jobReplicas = useMemo(() => {
     return dataSorter(job?.replicaList, [(a, b) => sortCompareDate(a.created, b.created, 'descending')])
@@ -102,7 +81,6 @@ export const PageScheduledJob: FunctionComponent<{
                     jobComponentName={jobComponentName}
                     scheduledJobName={scheduledJobName}
                     replica={jobReplicas[0]}
-                    logState={pollLogsState}
                     isExpanded={true}
                   />
                 </div>

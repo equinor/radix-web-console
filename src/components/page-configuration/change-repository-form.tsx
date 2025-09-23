@@ -6,7 +6,7 @@ import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { configVariables } from '../../utils/config'
 import { Alert } from '../alert'
 import AsyncResource from '../async-resource/async-resource'
-import { Code } from '../code'
+import { Code } from '../code/code'
 import { CompactCopyButton } from '../compact-copy-button'
 import imageDeployKey from '../configure-application-github/deploy-key02.png'
 import imageWebhook from '../configure-application-github/webhook01.png'
@@ -20,7 +20,7 @@ const DeployKey = ({ appName }: { appName: string }) => {
 
   return (
     <AsyncResource asyncState={depAndSecState}>
-      <Code copy>{deployKeAndSecret?.publicDeployKey ?? ''}</Code>
+      <Code copy content={deployKeAndSecret?.publicDeployKey ?? ''} />
     </AsyncResource>
   )
 }
@@ -71,7 +71,6 @@ export function ChangeRepositoryForm({ appName, repository, refetch, sharedSecre
                 </div>
               )}
               <TextField
-                id="githubUrlField"
                 disabled={isLoading}
                 type="url"
                 value={currentRepository ?? repository ?? ''}

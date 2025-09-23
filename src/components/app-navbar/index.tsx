@@ -41,23 +41,6 @@ export interface AppNavbarProps {
 const radixClusterType = configVariables.RADIX_CLUSTER_TYPE
 
 const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
-  const NavbarLinkElement = forwardRef<
-    HTMLAnchorElement,
-    Parameters<typeof NavLink>[0] & NavbarLinkItem & { collapsed?: boolean }
-  >(({ collapsed, icon, label, ...rest }, ref) => (
-    <NavLink {...rest} ref={ref}>
-      {collapsed ? (
-        <Button variant="ghost_icon" color="secondary">
-          <Icon data={icon} />
-        </Button>
-      ) : (
-        <Typography variant="drawer_inactive" group="navigation">
-          <Icon data={icon} /> {label}
-        </Typography>
-      )}
-    </NavLink>
-  ))
-
   return collapsed ? (
     <Tooltip title={link.label} placement="right" enterDelay={0}>
       <NavbarLinkElement {...link} collapsed />
@@ -69,6 +52,23 @@ const NavbarLink = ({ collapsed, ...link }: NavbarLinkItem) => {
     />
   )
 }
+
+const NavbarLinkElement = forwardRef<
+  HTMLAnchorElement,
+  Parameters<typeof NavLink>[0] & NavbarLinkItem & { collapsed?: boolean }
+>(({ collapsed, icon, label, ...rest }, ref) => (
+  <NavLink {...rest} ref={ref}>
+    {collapsed ? (
+      <Button variant="ghost_icon" color="secondary">
+        <Icon data={icon} />
+      </Button>
+    ) : (
+      <Typography variant="drawer_inactive" group="navigation">
+        <Icon data={icon} /> {label}
+      </Typography>
+    )}
+  </NavLink>
+))
 
 const NavbarExpanded = ({ appName, links }: NavbarProps) => {
   const [favourites, setFavourites] = useLocalStorage<Array<string>>('favouriteApplications', [])

@@ -1,6 +1,5 @@
 import { CircularProgress, Icon } from '@equinor/eds-core-react'
 import { blocked, check, error_outlined, run, time } from '@equinor/eds-icons'
-import * as PropTypes from 'prop-types'
 
 import type { ComponentProps } from 'react'
 import type { PipelineRunTask, PipelineRunTaskStep } from '../../store/radix-api'
@@ -80,8 +79,4 @@ type Props = {
 export function PipelineRunStatusBadge({ status }: Props) {
   const props = BadgeTemplates[status] || {}
   return <StatusBadgeTemplate {...props}>{status}</StatusBadgeTemplate>
-}
-
-PipelineRunStatusBadge.propTypes = {
-  status: PropTypes.string.isRequired,
 }

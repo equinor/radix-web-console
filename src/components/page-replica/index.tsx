@@ -2,16 +2,17 @@ import { Typography } from '@equinor/eds-core-react'
 import useLocalStorage from '../../effects/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
-import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery, useReplicaLogQuery } from '../../store/radix-api'
+import { getReplicaLogStreamUrl } from '../../store/eventstream-log-api'
+import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { routeWithParams, smallReplicaName } from '../../utils/string'
 import AsyncResource from '../async-resource/async-resource'
 import { Breadcrumb } from '../breadcrumb'
-import { downloadLog } from '../code/log-helper'
+import { StreamingLog } from '../code/log'
 import { EventsList } from '../events-list'
-import { Replica } from '../replica'
+import { ReplicaOverview } from '../replica/replica-overview'
 
 interface Props {
   appName: string
@@ -22,14 +23,8 @@ interface Props {
 
 function PageReplica({ appName, envName, componentName, replicaName }: Props) {
   const environmentState = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
-  const pollLogsState = useReplicaLogQuery(
-    { appName, envName, componentName, podName: replicaName, lines: '1000' },
-    {
-      skip: !appName || !envName || !componentName || !replicaName,
-      pollingInterval: 5000,
-    }
-  )
   const [getLog] = radixApi.endpoints.replicaLog.useLazyQuery()
+  const eventStreamUrl = getReplicaLogStreamUrl(appName, envName, componentName, replicaName)
 
   const replica = environmentState.data?.activeDeployment?.components
     ?.find((x) => x.name === componentName)
@@ -74,29 +69,18 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
       />
       <AsyncResource asyncState={environmentState}>
         {replica && (
-          <Replica
-            logState={pollLogsState}
-            replica={replica}
-            downloadCb={() =>
-              downloadLog(`${replica.name}.txt`, () =>
-                getLog(
-                  {
-                    appName,
-                    envName,
-                    componentName,
-                    podName: replicaName,
-                    file: 'true',
-                  },
-                  false
-                ).unwrap()
-              )
-            }
-            title={
-              <Typography>
-                Replica <strong>{smallReplicaName(replicaName)}</strong>, component <strong>{componentName}</strong>
-              </Typography>
-            }
-          />
+          <>
+            <Typography variant="h4">Overview</Typography>
+            <ReplicaOverview replica={replica} />
+            <StreamingLog
+              eventStreamUrl={eventStreamUrl}
+              copy
+              download
+              downloadCb={() =>
+                getLog({ appName, envName, componentName, podName: replicaName, lines: '100000000' }).unwrap()
+              }
+            />
+          </>
         )}
       </AsyncResource>
       <EventsList

@@ -1,7 +1,7 @@
 import { Button, Checkbox, CircularProgress, Icon, NativeSelect, TextField, Typography } from '@equinor/eds-core-react'
 import { info_circle } from '@equinor/eds-icons'
 import { uniq } from 'lodash-es'
-import { type ChangeEvent, type FormEvent, useState } from 'react'
+import { type ChangeEvent, type FormEvent, useId, useState } from 'react'
 import {
   type PipelineParametersBuild,
   useTriggerPipelineBuildDeployMutation,
@@ -31,6 +31,8 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
   const useBuildCache = application.useBuildKit && application.useBuildCache
   const [overrideUseBuildCache, setOverrideUseBuildCache] = useState<boolean>(useBuildCache)
   const [refreshBuildCache, setRefreshBuildCache] = useState<boolean>(false)
+  const branchSelectId = useId()
+  const toEnvironmentSelect = useId()
 
   const handleOnTextChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
     setBuildBranch(value)
@@ -122,7 +124,7 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
             <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
               Git branch to build
             </Typography>
-            <NativeSelect id="BranchSelect" label="" onChange={handleChange}>
+            <NativeSelect id={branchSelectId} label="" onChange={handleChange}>
               <option hidden value="">
                 — Please select —
               </option>
@@ -139,7 +141,6 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
                 </Typography>
                 <fieldset>
                   <TextField
-                    id="branch_full_name_field"
                     helperText={`Pattern: ${selectedBranch}`}
                     name="branchFullName"
                     value={branchFullName}
@@ -154,7 +155,7 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
                   Environment (optional)
                 </Typography>
                 <NativeSelect
-                  id="ToEnvironmentSelect"
+                  id={toEnvironmentSelect}
                   label=""
                   name="toEnvironment"
                   onChange={(e) => setToEnvironment(e.target.value)}

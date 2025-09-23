@@ -48,7 +48,6 @@ export const SecretForm: FunctionComponent<{
           <fieldset className="grid grid--gap-small" disabled={disableForm}>
             <TextField
               label="Secret value"
-              id="secret_value_field"
               value={value.current}
               multiline
               onChange={({ target }: ChangeEvent<HTMLInputElement>) =>

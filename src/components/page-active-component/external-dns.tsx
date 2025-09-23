@@ -60,7 +60,6 @@ const TlsEditForm: FunctionComponent<{
         <ExternalDnsAliasHelp />
         <fieldset className="grid grid--gap-large" disabled={isSaving}>
           <TextField
-            id="certString"
             label="Certificate"
             multiline
             rows={5}
@@ -69,7 +68,6 @@ const TlsEditForm: FunctionComponent<{
             }
           />
           <TextField
-            id="privateKeyString"
             label="Private Key"
             multiline
             rows={5}

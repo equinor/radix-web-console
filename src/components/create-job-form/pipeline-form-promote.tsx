@@ -1,5 +1,5 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useId, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { pollingInterval } from '../../store/defaults'
@@ -24,6 +24,8 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
   const { data: deployments } = useGetDeploymentsQuery({ appName: application.name }, { pollingInterval })
   const [toEnvironment, setToEnvironment] = useState('')
   const [deploymentName, setDeploymentName] = useState(searchParams.get('deploymentName') ?? '')
+  const deploymentNameSelectId = useId()
+  const toEnvironmentSelectId = useId()
 
   const selectedDeployment = deployments?.find((x) => x.name === deploymentName)
   const fromEnvironment = selectedDeployment?.environment
@@ -71,7 +73,7 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
               Deployment to promote
             </Typography>
             <NativeSelect
-              id="DeploymentNameSelect"
+              id={deploymentNameSelectId}
               label=""
               onChange={(e) => setDeploymentName(e.target.value)}
               name="deploymentName"
@@ -116,7 +118,7 @@ export function PipelineFormPromote({ application, onSuccess }: FormProp) {
               Target environment
             </Typography>
             <NativeSelect
-              id="ToEnvironmentSelect"
+              id={toEnvironmentSelectId}
               label=""
               name="toEnvironment"
               onChange={(e) => setToEnvironment(e.target.value)}

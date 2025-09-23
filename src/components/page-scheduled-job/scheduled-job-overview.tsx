@@ -3,7 +3,6 @@ import { isNil } from 'lodash-es'
 import type { FunctionComponent } from 'react'
 import type { ScheduledJobSummary } from '../../store/radix-api'
 import { smallScheduledBatchName, smallScheduledJobName } from '../../utils/string'
-import { Code } from '../code'
 import { CommandAndArgs } from '../component/command-and-args'
 import { ComponentDeployment } from '../component/component-deployment'
 import { ResourceRequirements } from '../resource-requirements'
@@ -12,68 +11,13 @@ import { RadixJobConditionBadge } from '../status-badges'
 import { Duration } from '../time/duration'
 import { RelativeToNow } from '../time/relative-to-now'
 
-const ScheduledJobDuration: FunctionComponent<{
-  started: string
-  finished?: string
-}> = ({ started, finished }) => {
-  return (
-    <>
-      <Typography>
-        Started{' '}
-        <strong>
-          <RelativeToNow time={started} />
-        </strong>
-      </Typography>
-      {finished && (
-        <>
-          <Typography>
-            Ended{' '}
-            <strong>
-              <RelativeToNow time={finished} />
-            </strong>
-          </Typography>
-          <Typography>
-            Duration{' '}
-            <strong>
-              <Duration start={started} end={finished} />
-            </strong>
-          </Typography>
-        </>
-      )}
-    </>
-  )
-}
-
-const ScheduledJobState: FunctionComponent<Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>> = ({
-  failedCount,
-  message,
-  status,
-}) => (
-  <>
-    {!Number.isNaN(failedCount) && failedCount > 0 && (
-      <div>
-        <Typography>
-          Failed <strong>{failedCount} times</strong>
-        </Typography>
-      </div>
-    )}
-
-    {status && <RadixJobConditionBadge status={status} />}
-
-    {message && (
-      <>
-        <Typography>Status message</Typography>
-        <Code>{message}</Code>
-      </>
-    )}
-  </>
-)
-
-export const ScheduledJobOverview: FunctionComponent<{
+type Props = {
   job: ScheduledJobSummary
   jobComponentName: string
   appName: string
-}> = ({ job, jobComponentName, appName }) => {
+}
+
+export const ScheduledJobOverview = ({ job, jobComponentName, appName }: Props) => {
   return (
     <>
       <Typography variant="h4">Overview</Typography>
@@ -133,3 +77,61 @@ export const ScheduledJobOverview: FunctionComponent<{
     </>
   )
 }
+
+const ScheduledJobDuration: FunctionComponent<{
+  started: string
+  finished?: string
+}> = ({ started, finished }) => {
+  return (
+    <>
+      <Typography>
+        Started{' '}
+        <strong>
+          <RelativeToNow time={started} />
+        </strong>
+      </Typography>
+      {finished && (
+        <>
+          <Typography>
+            Ended{' '}
+            <strong>
+              <RelativeToNow time={finished} />
+            </strong>
+          </Typography>
+          <Typography>
+            Duration{' '}
+            <strong>
+              <Duration start={started} end={finished} />
+            </strong>
+          </Typography>
+        </>
+      )}
+    </>
+  )
+}
+
+const ScheduledJobState: FunctionComponent<Pick<ScheduledJobSummary, 'failedCount' | 'message' | 'status'>> = ({
+  failedCount,
+  message,
+  status,
+}) => (
+  <>
+    {!Number.isNaN(failedCount) && failedCount > 0 && (
+      <div>
+        <Typography>
+          Failed <strong>{failedCount} times</strong>
+        </Typography>
+      </div>
+    )}
+
+    {status && <RadixJobConditionBadge status={status} />}
+
+    {message && (
+      <>
+        <Typography>
+          Status message <strong>{message}</strong>
+        </Typography>
+      </>
+    )}
+  </>
+)

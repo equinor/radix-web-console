@@ -1,5 +1,5 @@
 import { List, Progress, Typography } from '@equinor/eds-core-react'
-import { Code } from '../code'
+import { Code } from '../code/code'
 import imageDeployKey from './deploy-key02.png'
 
 import './style.css'
@@ -21,7 +21,7 @@ export const ConfigureDeployKey = ({ app, deployKey }: Props) => {
             {deployKey?.publicDeployKey ? (
               <section className="deploy-key">
                 Copy this key:
-                <Code copy>{deployKey?.publicDeployKey}</Code>
+                <Code copy content={deployKey?.publicDeployKey} />
               </section>
             ) : (
               <>

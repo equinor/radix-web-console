@@ -1,8 +1,7 @@
 import { Icon } from '@equinor/eds-core-react'
 import { check_circle_outlined, error_outlined, info_circle, warning_outlined } from '@equinor/eds-icons'
 import type { FunctionComponent } from 'react'
-import { type Id, ToastContainer, toast } from 'react-toastify'
-import type { ToastIcon, TypeOptions } from 'react-toastify/dist/types'
+import { type Id, ToastContainer, type ToastIcon, type TypeOptions, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import './style.css'
