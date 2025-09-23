@@ -257,6 +257,7 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+          follow: queryArg.follow,
           previous: queryArg.previous,
         },
       }),
@@ -386,6 +387,7 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+          follow: queryArg.follow,
         },
       }),
     }),
@@ -447,6 +449,7 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+          follow: queryArg.follow,
           previous: queryArg.previous,
         },
       }),
@@ -779,6 +782,7 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+          follow: queryArg.follow,
         },
       }),
     }),
@@ -897,6 +901,7 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+          follow: queryArg.follow,
         },
       }),
     }),
@@ -962,6 +967,7 @@ const injectedRtkApi = api.injectEndpoints({
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
           file: queryArg.file,
+          follow: queryArg.follow,
         },
       }),
     }),
@@ -1436,6 +1442,8 @@ export type LogApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Get log as a server-sent event stream if true */
+  follow?: string;
   /** Get previous container log if true */
   previous?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
@@ -1564,6 +1572,8 @@ export type GetOAuthPodLogApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Get log as a server-sent event stream if true */
+  follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -1646,6 +1656,8 @@ export type ReplicaLogApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Get log as a server-sent event stream if true */
+  follow?: string;
   /** Get previous container log if true */
   previous?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
@@ -2081,6 +2093,8 @@ export type JobLogApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Get log as a server-sent event stream if true */
+  follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -2192,6 +2206,8 @@ export type GetPipelineJobStepLogsApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Get log as a server-sent event stream if true */
+  follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
@@ -2272,6 +2288,8 @@ export type GetTektonPipelineRunTaskStepLogsApiArg = {
   lines?: string;
   /** Get log as a file if true */
   file?: string;
+  /** Get log as a server-sent event stream if true */
+  follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */

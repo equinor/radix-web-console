@@ -1,29 +1,26 @@
-import { Icon, Tooltip, Typography } from '@equinor/eds-core-react';
-import { external_link, type IconData } from '@equinor/eds-icons';
-import { forwardRef, type PropsWithChildren } from 'react';
+import { Icon, Tooltip, Typography } from '@equinor/eds-core-react'
+import { external_link, type IconData } from '@equinor/eds-icons'
+import { forwardRef, type PropsWithChildren } from 'react'
 
-type ToolTipWrapperProps = { toolTip?: string };
+type ToolTipWrapperProps = { toolTip?: string }
 
-const ToolTipWrapper = ({
-  toolTip,
-  children,
-}: PropsWithChildren<ToolTipWrapperProps>) =>
+const ToolTipWrapper = ({ toolTip, children }: PropsWithChildren<ToolTipWrapperProps>) =>
   toolTip ? (
     <Tooltip title={toolTip}>
       <span>{children}</span>
     </Tooltip>
   ) : (
     <>{children}</>
-  );
+  )
 
 type ExternalLinkProps = {
-  href: string;
-  icon?: IconData | null | undefined; // null = no icon, undefined = external_link (default), or custom icon
-  color?: string;
-  className?: string;
-  toolTip?: string;
-  title?: string;
-};
+  href: string
+  icon?: IconData | null | undefined // null = no icon, undefined = external_link (default), or custom icon
+  color?: string
+  className?: string
+  toolTip?: string
+  title?: string
+}
 
 export const ExternalLink = forwardRef(
   (
@@ -53,4 +50,4 @@ export const ExternalLink = forwardRef(
       </Typography>
     </ToolTipWrapper>
   )
-);
+)

@@ -1,17 +1,11 @@
-import {
-  type ComponentClass,
-  createElement,
-  type FunctionComponent,
-  type ReactElement,
-} from 'react';
-import { useParams } from 'react-router-dom';
-import { routes } from '../routes';
-import { getValidatedOAuthType } from './oauth';
-import { routeWithParams } from './string';
+import { type ComponentClass, createElement, type FunctionComponent, type ReactElement } from 'react'
+import { useParams } from 'react-router-dom'
+import { routes } from '../routes'
+import { getValidatedOAuthType } from './oauth'
+import { routeWithParams } from './string'
 
 /** Mark specific keys of an object optional */
-type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &
-  Partial<Pick<T, K>>;
+type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> & Partial<Pick<T, K>>
 
 /**
  * Maps route parameters as defined in react-router and injects them as
@@ -37,98 +31,80 @@ type Optionalize<T extends object, K extends keyof T> = Omit<T, keyof T & K> &
  * @param {string[] | {}} propMap List or object mapping of URL parameters to inject as props
  * @param {function(*)} Component Component to receive props
  */
-export function mapRouteParamsToProps<
-  P extends {},
-  M extends (keyof P)[] | { [K in keyof P]?: string },
->(
+export function mapRouteParamsToProps<P extends {}, M extends (keyof P)[] | { [K in keyof P]?: string }>(
   propMap: M extends (infer K)[] ? [K?, ...K[]] : M,
   Component: FunctionComponent<P> | ComponentClass<P>
-): (
-  props: Optionalize<P, M extends (infer K)[] ? Extract<keyof P, K> : keyof M>
-) => ReactElement<P> {
+): (props: Optionalize<P, M extends (infer K)[] ? Extract<keyof P, K> : keyof M>) => ReactElement<P> {
   return function (props) {
-    const params = useParams<P>();
-    const mappedProps = (
-      Array.isArray(propMap) ? (propMap as Array<string>) : Object.keys(propMap)
-    ).reduce<Partial<P>>(
+    const params = useParams<P>()
+    const mappedProps = (Array.isArray(propMap) ? (propMap as Array<string>) : Object.keys(propMap)).reduce<Partial<P>>(
       // @ts-expect-error I gave up typing this //todo
       (obj, key) => ({ ...obj, [key]: params[propMap[key] || key] }),
       {}
-    );
+    )
 
-    return createElement(Component, { ...mappedProps, ...props } as P);
-  };
+    return createElement(Component, { ...mappedProps, ...props } as P)
+  }
 }
 
 export function getAppUrl(appName: string): string {
   return routeWithParams(routes.app, {
     appName,
-  });
+  })
 }
 
 export function getAppConfigUrl(appName: string): string {
   return routeWithParams(routes.appConfig, {
     appName,
-  });
+  })
 }
 
-export function getAppDeploymentUrl(
-  appName: string,
-  deploymentName: string
-): string {
+export function getAppDeploymentUrl(appName: string, deploymentName: string): string {
   return routeWithParams(routes.appDeployment, {
     appName,
     deploymentName,
-  });
+  })
 }
 
 export function getAppDeploymentsUrl(appName: string): string {
   return routeWithParams(routes.appDeployments, {
     appName,
-  });
+  })
 }
 
 export function getAppJobsUrl(appName: string): string {
   return routeWithParams(routes.appJobs, {
     appName,
-  });
+  })
 }
 
 export function getEnvUrl(appName: string, envName: string): string {
   return routeWithParams(routes.appEnvironment, {
     appName,
     envName,
-  });
+  })
 }
 
 export function getEnvsUrl(appName: string): string {
   return routeWithParams(routes.appEnvironments, {
     appName,
-  });
+  })
 }
 
-export function getActiveComponentUrl(
-  appName: string,
-  envName: string,
-  componentName: string
-): string {
+export function getActiveComponentUrl(appName: string, envName: string, componentName: string): string {
   return routeWithParams(routes.appActiveComponent, {
     appName,
     envName,
     componentName,
-  });
+  })
 }
 
-export function getActiveJobComponentUrl(
-  appName: string,
-  envName: string,
-  jobComponentName: string
-): string {
+export function getActiveJobComponentUrl(appName: string, envName: string, jobComponentName: string): string {
   return routeWithParams(routes.appActiveJobComponent, {
     appName,
     envName,
     jobComponentName,
-  });
+  })
 }
 
 export function getOAuthReplicaUrl(
@@ -144,21 +120,16 @@ export function getOAuthReplicaUrl(
     componentName,
     replicaName,
     type: getValidatedOAuthType(type),
-  });
+  })
 }
 
-export function getReplicaUrl(
-  appName: string,
-  envName: string,
-  componentName: string,
-  replicaName: string
-): string {
+export function getReplicaUrl(appName: string, envName: string, componentName: string, replicaName: string): string {
   return routeWithParams(routes.appReplica, {
     appName,
     envName,
     componentName,
     replicaName,
-  });
+  })
 }
 
 export function getScheduledJobUrl(
@@ -172,7 +143,7 @@ export function getScheduledJobUrl(
     envName,
     jobComponentName,
     scheduledJobName,
-  });
+  })
 }
 
 export function getScheduledBatchJobUrl(
@@ -188,7 +159,7 @@ export function getScheduledBatchJobUrl(
     jobComponentName,
     scheduledBatchName,
     scheduledJobName,
-  });
+  })
 }
 
 export function getScheduledBatchUrl(
@@ -202,5 +173,5 @@ export function getScheduledBatchUrl(
     envName,
     jobComponentName,
     scheduledBatchName,
-  });
+  })
 }

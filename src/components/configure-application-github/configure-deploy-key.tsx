@@ -1,17 +1,14 @@
-import { List, Progress, Typography } from '@equinor/eds-core-react';
-import { Code } from '../code';
-import imageDeployKey from './deploy-key02.png';
+import { List, Progress, Typography } from '@equinor/eds-core-react'
+import { Code } from '../code/code'
+import imageDeployKey from './deploy-key02.png'
 
-import './style.css';
-import type {
-  ApplicationRegistration,
-  DeployKeyAndSecret,
-} from '../../store/radix-api';
-import { ExternalLink } from '../link/external-link';
+import './style.css'
+import type { ApplicationRegistration, DeployKeyAndSecret } from '../../store/radix-api'
+import { ExternalLink } from '../link/external-link'
 
 interface Props {
-  app: ApplicationRegistration;
-  deployKey?: DeployKeyAndSecret;
+  app: ApplicationRegistration
+  deployKey?: DeployKeyAndSecret
 }
 
 export const ConfigureDeployKey = ({ app, deployKey }: Props) => {
@@ -24,7 +21,7 @@ export const ConfigureDeployKey = ({ app, deployKey }: Props) => {
             {deployKey?.publicDeployKey ? (
               <section className="deploy-key">
                 Copy this key:
-                <Code copy>{deployKey?.publicDeployKey}</Code>
+                <Code copy content={deployKey?.publicDeployKey} />
               </section>
             ) : (
               <>
@@ -34,10 +31,8 @@ export const ConfigureDeployKey = ({ app, deployKey }: Props) => {
           </List.Item>
           <List.Item>
             Open Github's{' '}
-            <ExternalLink href={`${app.repository}/settings/keys/new`}>
-              Add New Deploy Key page
-            </ExternalLink>{' '}
-            and paste in your key
+            <ExternalLink href={`${app.repository}/settings/keys/new`}>Add New Deploy Key page</ExternalLink> and paste
+            in your key
           </List.Item>
           <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
           <List.Item>
@@ -46,13 +41,9 @@ export const ConfigureDeployKey = ({ app, deployKey }: Props) => {
           <List.Item>Press "Add key"</List.Item>
         </List>
         <div className={'screenshot'}>
-          <img
-            alt="Add deploy key' steps on GitHub"
-            src={imageDeployKey}
-            srcSet={`${imageDeployKey} 2x`}
-          />
+          <img alt="Add deploy key' steps on GitHub" src={imageDeployKey} srcSet={`${imageDeployKey} 2x`} />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

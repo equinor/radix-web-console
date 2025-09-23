@@ -1,12 +1,9 @@
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, traffic_light } from '@equinor/eds-icons';
-import type { SubPipelineTaskStep } from '../../store/radix-api';
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
+import { CircularProgress, Icon } from '@equinor/eds-core-react'
+import { check, error_outlined, traffic_light } from '@equinor/eds-icons'
+import type { SubPipelineTaskStep } from '../../store/radix-api'
+import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-badge-template'
 
-type JobSubPipelineStepStatus = Required<SubPipelineTaskStep>['status'];
+type JobSubPipelineStepStatus = Required<SubPipelineTaskStep>['status']
 
 export const JobSubPipelineStepConditionBadgeTemplates = {
   Waiting: { icon: <Icon data={traffic_light} /> },
@@ -50,13 +47,11 @@ export const JobSubPipelineStepConditionBadgeTemplates = {
   },
   FailureIgnored: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Error: { type: 'danger', icon: <Icon data={error_outlined} /> },
-} satisfies Record<JobSubPipelineStepStatus, StatusBadgeTemplateProps>;
+} satisfies Record<JobSubPipelineStepStatus, StatusBadgeTemplateProps>
 
 type Props = {
-  status: JobSubPipelineStepStatus;
-};
+  status: JobSubPipelineStepStatus
+}
 export const RadixJobSubPipelineStepConditionBadge = ({ status }: Props) => (
-  <StatusBadgeTemplate {...JobSubPipelineStepConditionBadgeTemplates[status]}>
-    {status}
-  </StatusBadgeTemplate>
-);
+  <StatusBadgeTemplate {...JobSubPipelineStepConditionBadgeTemplates[status]}>{status}</StatusBadgeTemplate>
+)

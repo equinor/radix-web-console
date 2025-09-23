@@ -1,5 +1,5 @@
-import { configureStore } from '@reduxjs/toolkit';
-import { setupListeners } from '@reduxjs/toolkit/query';
+import { configureStore } from '@reduxjs/toolkit'
+import { setupListeners } from '@reduxjs/toolkit/query'
 
 import {
   costStoreApi,
@@ -9,8 +9,8 @@ import {
   scanStoreApi,
   serviceNowStoreApi,
   uptimeApi,
-} from '../store/configs';
-import authReducer from '../store/msal/reducer';
+} from '../store/configs'
+import authReducer from '../store/msal/reducer'
 
 const store = configureStore({
   reducer: {
@@ -34,13 +34,13 @@ const store = configureStore({
       uptimeApi.middleware
     ),
   devTools: true,
-});
+})
 
 const getStore = (): typeof store => {
-  return store;
-};
-setupListeners(store.dispatch);
-export default getStore(); // global store
+  return store
+}
+setupListeners(store.dispatch)
+export default getStore() // global store
 
-export type RootStore = typeof store;
-export type RootState = ReturnType<RootStore['getState']>;
+export type RootStore = typeof store
+export type RootState = ReturnType<RootStore['getState']>

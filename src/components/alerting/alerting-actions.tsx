@@ -1,28 +1,19 @@
-import { Button } from '@equinor/eds-core-react';
-import './style.css';
-import type { AlertingConfig } from '../../store/radix-api';
+import { Button } from '@equinor/eds-core-react'
+import './style.css'
+import type { AlertingConfig } from '../../store/radix-api'
 
 type Props = {
-  config: AlertingConfig;
-  isSaving: boolean;
-  isEdit: boolean;
-  onEdit: () => void;
-  onSave: () => void;
-  onCancel: () => void;
-  onEnable: () => void;
-  onDisable: () => void;
-};
+  config: AlertingConfig
+  isSaving: boolean
+  isEdit: boolean
+  onEdit: () => void
+  onSave: () => void
+  onCancel: () => void
+  onEnable: () => void
+  onDisable: () => void
+}
 
-export const AlertingActions = ({
-  isEdit,
-  isSaving,
-  config,
-  onEdit,
-  onCancel,
-  onEnable,
-  onDisable,
-  onSave,
-}: Props) => {
+export const AlertingActions = ({ isEdit, isSaving, config, onEdit, onCancel, onEnable, onDisable, onSave }: Props) => {
   return (
     <div className="alerting-actions">
       <div className="grid grid--gap-small grid--auto-columns">
@@ -33,11 +24,7 @@ export const AlertingActions = ({
                 <Button disabled={isSaving} onClick={onSave}>
                   Save
                 </Button>
-                <Button
-                  disabled={isSaving}
-                  variant="outlined"
-                  onClick={onCancel}
-                >
+                <Button disabled={isSaving} variant="outlined" onClick={onCancel}>
                   Cancel
                 </Button>
               </>
@@ -62,5 +49,5 @@ export const AlertingActions = ({
         )}
       </div>
     </div>
-  );
-};
+  )
+}

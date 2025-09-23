@@ -1,11 +1,8 @@
-import { Divider } from '@equinor/eds-core-react';
-import type { EnvironmentSummary } from '../../store/radix-api';
-import { EnvironmentsSummary } from '.';
-import {
-  EnvironmentCardLayout,
-  type EnvironmentCardLayoutProps,
-} from './environment-card';
-import { URL_VAR_NAME } from './environment-ingress';
+import { Divider } from '@equinor/eds-core-react'
+import type { EnvironmentSummary } from '../../store/radix-api'
+import { EnvironmentsSummary } from '.'
+import { EnvironmentCardLayout, type EnvironmentCardLayoutProps } from './environment-card'
+import { URL_VAR_NAME } from './environment-ingress'
 
 const testData: Array<Array<EnvironmentSummary>> = [
   [
@@ -72,7 +69,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
     },
   ],
   [],
-];
+]
 
 export default (
   <>
@@ -117,7 +114,7 @@ export default (
       </div>
     </div>
   </>
-);
+)
 
 const cards: EnvironmentCardLayoutProps[] = [
   {
@@ -325,8 +322,8 @@ const cards: EnvironmentCardLayoutProps[] = [
       },
     },
   },
-] satisfies EnvironmentCardLayoutProps[];
+] satisfies EnvironmentCardLayoutProps[]
 
 function TestEnvironmentCards() {
-  return cards.map((k, i) => <EnvironmentCardLayout key={i} {...k} />);
+  return cards.map((k, i) => <EnvironmentCardLayout key={i} {...k} />)
 }

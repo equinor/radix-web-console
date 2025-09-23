@@ -1,21 +1,18 @@
-import { Typography } from '@equinor/eds-core-react';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
+import { Typography } from '@equinor/eds-core-react'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import { routeWithParams, smallDeploymentName } from '../../utils/string'
 
 interface DeploymentRefProps {
-  appName: string;
-  deploymentName: string;
+  appName: string
+  deploymentName: string
 }
 
-export const DeploymentRef = ({
-  appName,
-  deploymentName,
-}: DeploymentRefProps) => {
+export const DeploymentRef = ({ appName, deploymentName }: DeploymentRefProps) => {
   const deploymentLink = routeWithParams(routes.appDeployment, {
     appName,
     deploymentName,
-  });
+  })
 
   return (
     <Typography>
@@ -30,5 +27,5 @@ export const DeploymentRef = ({
         {smallDeploymentName(deploymentName)}
       </Typography>
     </Typography>
-  );
-};
+  )
+}

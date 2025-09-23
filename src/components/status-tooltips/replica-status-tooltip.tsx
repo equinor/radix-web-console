@@ -1,16 +1,7 @@
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import {
-  check_circle_outlined,
-  error_outlined,
-  run,
-  stop,
-  time,
-} from '@equinor/eds-icons';
-import type { ReplicaStatus } from '../../store/radix-api';
-import {
-  StatusTooltipTemplate,
-  type StatusTooltipTemplateProps,
-} from './status-tooltip-template';
+import { CircularProgress, Icon } from '@equinor/eds-core-react'
+import { check_circle_outlined, error_outlined, run, stop, time } from '@equinor/eds-icons'
+import type { ReplicaStatus } from '../../store/radix-api'
+import { StatusTooltipTemplate, type StatusTooltipTemplateProps } from './status-tooltip-template'
 
 const TooltipTemplates = {
   Pending: { title: 'Pending', icon: <Icon data={time} /> },
@@ -32,9 +23,7 @@ const TooltipTemplates = {
   Stopped: { title: 'Stopped', icon: <Icon data={stop} /> },
   Terminated: { title: 'Terminated', icon: <Icon data={stop} /> },
   Starting: { title: 'Starting', icon: <CircularProgress /> },
-} satisfies Record<ReplicaStatus['status'], StatusTooltipTemplateProps>;
+} satisfies Record<ReplicaStatus['status'], StatusTooltipTemplateProps>
 
-type Props = { status: ReplicaStatus['status'] };
-export const ReplicaStatusTooltip = ({ status }: Props) => (
-  <StatusTooltipTemplate {...TooltipTemplates[status]} />
-);
+type Props = { status: ReplicaStatus['status'] }
+export const ReplicaStatusTooltip = ({ status }: Props) => <StatusTooltipTemplate {...TooltipTemplates[status]} />

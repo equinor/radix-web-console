@@ -1,49 +1,42 @@
-import type {
-  Job,
-  PipelineRun,
-  PipelineRunTask,
-  PipelineRunTaskStep,
-} from '../../store/radix-api';
+import type { Job, PipelineRun, PipelineRunTask, PipelineRunTaskStep } from '../../store/radix-api'
 
-type StepRunReason = PipelineRunTaskStep['status'];
-type TaskRunReason = PipelineRunTask['status'];
-type PipelineRunReason = PipelineRun['status'];
-type JobReason = Job['status'];
+type StepRunReason = PipelineRunTaskStep['status']
+type TaskRunReason = PipelineRunTask['status']
+type PipelineRunReason = PipelineRun['status']
+type JobReason = Job['status']
 
 export function getJobExecutionState(status: JobReason): string {
   switch (status) {
     case 'Waiting':
     case 'Queued':
-      return 'Will execute';
+      return 'Will execute'
     case 'Running':
-      return 'Executing';
+      return 'Executing'
     case 'Stopping':
-      return 'Stopping';
+      return 'Stopping'
     case 'Failed':
     case 'Stopped':
     case 'StoppedNoChanges':
     case 'Succeeded':
-      return 'Executed';
+      return 'Executed'
     case undefined:
-      return 'unknown';
+      return 'unknown'
   }
 }
-export function getPipelineRunExecutionState(
-  status: PipelineRunReason
-): string {
+export function getPipelineRunExecutionState(status: PipelineRunReason): string {
   switch (status) {
     case 'Started':
     case 'ToBeRetried':
-      return 'will execute';
+      return 'will execute'
 
     case 'Running':
-      return 'Executing';
+      return 'Executing'
 
     case 'Succeeded':
     case 'Failed':
     case 'TaskRunCancelled':
     case 'TaskRunTimeout':
-      return 'Executed';
+      return 'Executed'
 
     case 'TaskRunImagePullFailed':
     case 'TaskRunResultLargerThanAllowedLimit':
@@ -54,9 +47,9 @@ export function getPipelineRunExecutionState(
     case 'TaskValidationFailed':
     case 'ResourceVerificationFailed':
     case 'FailureIgnored':
-      return 'Failed';
+      return 'Failed'
     case undefined:
-      return 'unknown';
+      return 'unknown'
   }
 }
 
@@ -65,11 +58,11 @@ export function getTaskRunExecutionState(status: TaskRunReason): string {
     case 'Started':
     case 'PipelineRunPending':
     case 'ResolvingPipelineRef':
-      return 'will execute';
+      return 'will execute'
 
     case 'Running':
     case 'PipelineRunStopping':
-      return 'Executing';
+      return 'Executing'
 
     case 'Succeeded':
     case 'Completed':
@@ -77,7 +70,7 @@ export function getTaskRunExecutionState(status: TaskRunReason): string {
     case 'Cancelled':
     case 'CancelledRunningFinally':
     case 'StoppedRunningFinally':
-      return 'Executed';
+      return 'Executed'
 
     case 'PipelineRunTimeout':
     case 'CouldntGetPipeline':
@@ -101,9 +94,9 @@ export function getTaskRunExecutionState(status: TaskRunReason): string {
     case 'CreateRunFailed':
     case 'CELEvaluationFailed':
     case 'InvalidParamValue':
-      return 'Failed';
+      return 'Failed'
     case undefined:
-      return 'unknown';
+      return 'unknown'
   }
 }
 
@@ -111,17 +104,17 @@ export function getStepTaskRunExecutionState(status: StepRunReason): string {
   switch (status) {
     case 'Started':
     case 'ToBeRetried':
-      return 'will execute';
+      return 'will execute'
 
     case 'Running':
-      return 'Executing';
+      return 'Executing'
 
     case 'Succeeded':
     case 'Failed':
     case 'TaskRunCancelled':
     case 'TaskRunTimeout':
     case 'TaskRunImagePullFailed':
-      return 'Executed';
+      return 'Executed'
 
     case 'TaskRunResultLargerThanAllowedLimit':
     case 'TaskRunStopSidecarFailed':
@@ -131,8 +124,8 @@ export function getStepTaskRunExecutionState(status: StepRunReason): string {
     case 'TaskValidationFailed':
     case 'ResourceVerificationFailed':
     case 'FailureIgnored':
-      return status;
+      return status
     case undefined:
-      return 'unknown';
+      return 'unknown'
   }
 }

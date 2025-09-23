@@ -1,11 +1,9 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
+import { List, Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
 
-import type { Component } from '../../store/radix-api';
+import type { Component } from '../../store/radix-api'
 
-export const ComponentSecrets: FunctionComponent<{ component: Component }> = ({
-  component,
-}) => (
+export const ComponentSecrets: FunctionComponent<{ component: Component }> = ({ component }) => (
   <>
     <Typography variant="h4">Secrets</Typography>
     {component &&
@@ -19,4 +17,4 @@ export const ComponentSecrets: FunctionComponent<{ component: Component }> = ({
         <Typography>This {component.type} uses no secrets</Typography>
       ))}
   </>
-);
+)

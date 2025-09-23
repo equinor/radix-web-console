@@ -1,11 +1,11 @@
-import { Typography } from '@equinor/eds-core-react';
-import type { ReplicaSummary } from '../../store/radix-api';
-import { parseImageDigest, parseImageTag } from '../../utils/docker';
+import { Typography } from '@equinor/eds-core-react'
+import type { ReplicaSummary } from '../../store/radix-api'
+import { parseImageDigest, parseImageTag } from '../../utils/docker'
 
-type props = { replica?: ReplicaSummary };
+type props = { replica?: ReplicaSummary }
 export const ReplicaImage = ({ replica }: props) => {
-  const image = parseImageTag(replica?.image ?? '').image;
-  const digest = parseImageDigest(replica?.imageId ?? '').digest;
+  const image = parseImageTag(replica?.image ?? '').image
+  const digest = parseImageDigest(replica?.imageId ?? '').digest
 
   return (
     <>
@@ -20,5 +20,5 @@ export const ReplicaImage = ({ replica }: props) => {
         </Typography>
       )}
     </>
-  );
-};
+  )
+}

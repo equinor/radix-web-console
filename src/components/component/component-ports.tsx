@@ -1,5 +1,5 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import type { Port } from '../../store/radix-api';
+import { List, Typography } from '@equinor/eds-core-react'
+import type { Port } from '../../store/radix-api'
 
 export const ComponentPorts = ({ ports }: { ports: Port[] }) =>
   ports.length > 0 ? (
@@ -15,4 +15,4 @@ export const ComponentPorts = ({ ports }: { ports: Port[] }) =>
     </div>
   ) : (
     <Typography>No open ports</Typography>
-  );
+  )

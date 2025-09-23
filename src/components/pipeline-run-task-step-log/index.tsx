@@ -1,36 +1,26 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-
-import {
-  radixApi,
-  useGetTektonPipelineRunTaskStepLogsQuery,
-} from '../../store/radix-api';
-import AsyncResource from '../async-resource/async-resource';
-import { Code } from '../code';
-import { downloadLog } from '../code/log-helper';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import { getTektonPipelineRunTaskStepLogsStreamUrl } from '../../store/eventstream-log-api'
+import { radixApi } from '../../store/radix-api'
+import { StreamingLog } from '../code/log'
 
 interface Props {
-  appName: string;
-  jobName: string;
-  pipelineRunName: string;
-  taskName: string;
-  stepName: string;
-  title: string;
+  appName: string
+  jobName: string
+  pipelineRunName: string
+  taskName: string
+  stepName: string
+  title: string
 }
 
-export function PipelineRunTaskStepLog({
-  appName,
-  jobName,
-  pipelineRunName,
-  taskName,
-  stepName,
-  title,
-}: Props) {
-  const { data: log, ...logState } = useGetTektonPipelineRunTaskStepLogsQuery(
-    { appName, jobName, pipelineRunName, taskName, stepName, lines: '1000' },
-    { pollingInterval: 5000 }
-  );
-  const [getLog] =
-    radixApi.endpoints.getTektonPipelineRunTaskStepLogs.useLazyQuery();
+export function PipelineRunTaskStepLog({ appName, jobName, pipelineRunName, taskName, stepName, title }: Props) {
+  const [getLog] = radixApi.endpoints.getTektonPipelineRunTaskStepLogs.useLazyQuery()
+  const eventStreamUrl = getTektonPipelineRunTaskStepLogsStreamUrl(
+    appName,
+    jobName,
+    pipelineRunName,
+    taskName,
+    stepName
+  )
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">
@@ -43,37 +33,27 @@ export function PipelineRunTaskStepLog({
           </Accordion.HeaderTitle>
         </Accordion.Header>
         <Accordion.Panel>
-          <AsyncResource asyncState={logState}>
-            {log ? (
-              <Code
-                copy
-                resizable
-                autoscroll
-                download
-                downloadCb={() =>
-                  downloadLog(`${stepName}.txt`, () =>
-                    getLog(
-                      {
-                        appName,
-                        jobName,
-                        pipelineRunName,
-                        taskName,
-                        stepName,
-                        file: 'true',
-                      },
-                      false
-                    ).unwrap()
-                  )
-                }
-              >
-                {log}
-              </Code>
-            ) : (
-              <Typography>No data</Typography>
-            )}
-          </AsyncResource>
+          <StreamingLog
+            eventStreamUrl={eventStreamUrl}
+            copy
+            download
+            filename={`${stepName}.txt`}
+            downloadCb={() =>
+              getLog(
+                {
+                  appName,
+                  jobName,
+                  pipelineRunName,
+                  taskName,
+                  stepName,
+                  file: 'true',
+                },
+                false
+              ).unwrap()
+            }
+          />
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
+  )
 }

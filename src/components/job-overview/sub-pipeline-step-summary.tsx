@@ -1,24 +1,18 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { time } from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import type { Step } from '../../store/radix-api';
-import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
-import { routeWithParams } from '../../utils/string';
-import { RadixJobSubPipelineStepConditionBadge } from '../status-badges/radix-job-subpipeline-step-condition-badge';
-import { RelativeToNow } from '../time/relative-to-now';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { time } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import type { Step } from '../../store/radix-api'
+import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime'
+import { routeWithParams } from '../../utils/string'
+import { RadixJobSubPipelineStepConditionBadge } from '../status-badges/radix-job-subpipeline-step-condition-badge'
+import { RelativeToNow } from '../time/relative-to-now'
 
-const SubPipelineStepDuration: FunctionComponent<
-  Pick<Step, 'started' | 'ended'>
-> = ({ ended, started }) =>
+const SubPipelineStepDuration: FunctionComponent<Pick<Step, 'started' | 'ended'>> = ({ ended, started }) =>
   started ? (
     <>
-      <RelativeToNow
-        time={new Date(started)}
-        titlePrefix="Start time"
-        capitalize
-      />
+      <RelativeToNow time={new Date(started)} titlePrefix="Start time" capitalize />
       {ended && (
         <span title={`End time ${formatDateTimePrecise(new Date(ended))}`}>
           {differenceInWords(new Date(ended), new Date(started))}
@@ -27,12 +21,12 @@ const SubPipelineStepDuration: FunctionComponent<
     </>
   ) : (
     <>Not yet started</>
-  );
+  )
 
 export const SubPipelineStepSummary: FunctionComponent<{
-  appName: string;
-  jobName: string;
-  step: Step;
+  appName: string
+  jobName: string
+  step: Step
 }> = ({ appName, jobName, step }) => (
   <div className="step-summary__content">
     <div className="step-summary__description">
@@ -51,9 +45,7 @@ export const SubPipelineStepSummary: FunctionComponent<{
         {step.subPipelineTaskStep?.taskName} / {step.subPipelineTaskStep?.name}
       </Typography>
 
-      <RadixJobSubPipelineStepConditionBadge
-        status={step.subPipelineTaskStep?.status ?? 'Waiting'}
-      />
+      <RadixJobSubPipelineStepConditionBadge status={step.subPipelineTaskStep?.status ?? 'Waiting'} />
     </div>
 
     <div className="step-summary__time">
@@ -63,4 +55,4 @@ export const SubPipelineStepSummary: FunctionComponent<{
       </div>
     </div>
   </div>
-);
+)

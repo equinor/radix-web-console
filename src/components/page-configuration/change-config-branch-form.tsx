@@ -1,40 +1,30 @@
-import {
-  Accordion,
-  Button,
-  CircularProgress,
-  List,
-  TextField,
-  Typography,
-} from '@equinor/eds-core-react';
-import {
-  type ChangeEvent,
-  type FormEvent,
-  type FunctionComponent,
-  useState,
-} from 'react';
-import { Link } from 'react-router-dom';
+import { Accordion, Button, CircularProgress, List, TextField, Typography } from '@equinor/eds-core-react'
+import { type ChangeEvent, type FormEvent, type FunctionComponent, useState } from 'react'
+import { Link } from 'react-router-dom'
 
-import { routes } from '../../routes';
-import { useModifyRegistrationDetailsMutation } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { routeWithParams } from '../../utils/string';
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
+import { routes } from '../../routes'
+import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { routeWithParams } from '../../utils/string'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 
 export interface ChangeConfigBranchFormProps {
-  appName: string;
-  configBranch: string;
-  refetch?: () => unknown;
+  appName: string
+  configBranch: string
+  refetch?: () => unknown
 }
 
-export const ChangeConfigBranchForm: FunctionComponent<
-  ChangeConfigBranchFormProps
-> = ({ appName, configBranch, refetch }) => {
-  const [configBranchState, setConfigBranchState] = useState(configBranch);
-  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation();
+export const ChangeConfigBranchForm: FunctionComponent<ChangeConfigBranchFormProps> = ({
+  appName,
+  configBranch,
+  refetch,
+}) => {
+  const [configBranchState, setConfigBranchState] = useState(configBranch)
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation()
 
   const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
-    ev.preventDefault();
+    ev.preventDefault()
 
     await mutate({
       appName,
@@ -43,10 +33,10 @@ export const ChangeConfigBranchForm: FunctionComponent<
           configBranch: configBranchState,
         },
       },
-    }).unwrap();
+    }).unwrap()
 
-    await refetch?.();
-  });
+    await refetch?.()
+  })
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -61,46 +51,31 @@ export const ChangeConfigBranchForm: FunctionComponent<
             {error && (
               <div>
                 <Alert type="danger">
-                  <Typography>
-                    Failed to change Config Branch.{' '}
-                    {getFetchErrorMessage(error)}
-                  </Typography>
+                  <Typography>Failed to change Config Branch. {getFetchErrorMessage(error)}</Typography>
                 </Alert>
               </div>
             )}
             <TextField
               label="Branch"
-              id="branchField"
               helperText="The name of the branch where Radix will read the radixconfig.yaml from, e.g. 'main' or 'master'"
               disabled={isLoading}
               type="text"
               value={configBranchState}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setConfigBranchState(e.target.value)
-              }
+              onChange={(e: ChangeEvent<HTMLInputElement>) => setConfigBranchState(e.target.value)}
             />
             <div className="o-body-text">
               <List variant="numbered">
+                <List.Item>Create a branch in GitHub that will be used as the new config branch</List.Item>
                 <List.Item>
-                  Create a branch in GitHub that will be used as the new config
-                  branch
+                  Type the name of the new branch in the field above and click "Change Config Branch"
                 </List.Item>
                 <List.Item>
-                  Type the name of the new branch in the field above and click
-                  "Change Config Branch"
-                </List.Item>
-                <List.Item>
-                  In radixconfig.yaml in the new branch, modify one of the
-                  environments to be built from this branch. This will trigger a
-                  new build-deploy job
+                  In radixconfig.yaml in the new branch, modify one of the environments to be built from this branch.
+                  This will trigger a new build-deploy job
                 </List.Item>
                 <List.Item>
                   Go to{' '}
-                  <Typography
-                    as={Link}
-                    to={routeWithParams(routes.appJobs, { appName: appName })}
-                    link
-                  >
+                  <Typography as={Link} to={routeWithParams(routes.appJobs, { appName: appName })} link>
                     Pipeline Jobs
                   </Typography>{' '}
                   to verify that the build-deploy job runs to completion
@@ -116,9 +91,7 @@ export const ChangeConfigBranchForm: FunctionComponent<
                 <Button
                   color="danger"
                   type="submit"
-                  disabled={
-                    configBranch === configBranchState || !configBranchState
-                  }
+                  disabled={configBranch === configBranchState || !configBranchState}
                 >
                   Change Config Branch
                 </Button>
@@ -128,5 +101,5 @@ export const ChangeConfigBranchForm: FunctionComponent<
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
-};
+  )
+}

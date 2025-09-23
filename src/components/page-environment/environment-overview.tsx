@@ -1,85 +1,64 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { github, trending_up } from '@equinor/eds-icons';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { github, trending_up } from '@equinor/eds-icons'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
 import {
   radixApi,
   useGetApplicationQuery,
   useGetEnvironmentEventsQuery,
   useGetEnvironmentQuery,
-} from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import {
-  getAppDeploymentUrl,
-  getAppUrl,
-  getEnvsUrl,
-} from '../../utils/routing';
-import { dataSorter, sortCompareDate } from '../../utils/sort-utils';
-import {
-  linkToGitHubBranch,
-  routeWithParams,
-  smallDeploymentName,
-} from '../../utils/string';
-import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DeploymentsList } from '../deployments-list';
-import { EventsList } from '../events-list';
-import { GitTagLinks } from '../git-tags/git-tag-links';
-import { RelativeToNow } from '../time/relative-to-now';
-import { ComponentList } from './component-list';
-import EnvironmentAlerting from './environment-alerting';
-import EnvironmentToolbar from './environment-toolbar';
+} from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { getAppDeploymentUrl, getAppUrl, getEnvsUrl } from '../../utils/routing'
+import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
+import { linkToGitHubBranch, routeWithParams, smallDeploymentName } from '../../utils/string'
+import { Alert } from '../alert'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { DeploymentsList } from '../deployments-list'
+import { EventsList } from '../events-list'
+import { GitTagLinks } from '../git-tags/git-tag-links'
+import { RelativeToNow } from '../time/relative-to-now'
+import { ComponentList } from './component-list'
+import EnvironmentAlerting from './environment-alerting'
+import EnvironmentToolbar from './environment-toolbar'
 
-import './style.css';
-import useLocalStorage from '../../effects/use-local-storage';
-import { CommitHash } from '../commit-hash';
-import { DefaultAppAlias } from '../component/default-app-alias';
-import { DNSAliases } from '../component/dns-aliases';
-import { GitCommitTags } from '../component/git-commit-tags';
-import { ExternalLink } from '../link/external-link';
+import './style.css'
+import useLocalStorage from '../../effects/use-local-storage'
+import { CommitHash } from '../commit-hash'
+import { DefaultAppAlias } from '../component/default-app-alias'
+import { DNSAliases } from '../component/dns-aliases'
+import { GitCommitTags } from '../component/git-commit-tags'
+import { ExternalLink } from '../link/external-link'
 
 type Props = {
-  appName: string;
-  envName: string;
-};
+  appName: string
+  envName: string
+}
 export const EnvironmentOverview = ({ appName, envName }: Props) => {
-  const { data: application } = useGetApplicationQuery(
-    { appName },
-    { skip: !appName, pollingInterval }
-  );
+  const { data: application } = useGetApplicationQuery({ appName }, { skip: !appName, pollingInterval })
   const {
     data: environment,
     refetch: refetchEnv,
     ...envState
-  } = useGetEnvironmentQuery(
-    { appName, envName },
-    { skip: !appName || !envName, pollingInterval }
-  );
-  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage(
-    'environmentEventListExpanded',
-    true
-  );
+  } = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
+  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage('environmentEventListExpanded', true)
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
     { skip: !appName || !envName || !isEventListExpanded, pollingInterval }
-  );
-  const [deleteEnvTrigger, deleteEnvState] =
-    radixApi.endpoints.deleteEnvironment.useMutation();
-  const { appAlias, dnsAliases, dnsExternalAliases } = application ?? {};
-  const envDNSAliases = dnsAliases
-    ? dnsAliases.filter((alias) => alias.environmentName == envName)
-    : [];
+  )
+  const [deleteEnvTrigger, deleteEnvState] = radixApi.endpoints.deleteEnvironment.useMutation()
+  const { appAlias, dnsAliases, dnsExternalAliases } = application ?? {}
+  const envDNSAliases = dnsAliases ? dnsAliases.filter((alias) => alias.environmentName == envName) : []
   const envDNSExternalAliases = dnsExternalAliases
     ? dnsExternalAliases.filter((alias) => alias.environmentName == envName)
-    : [];
+    : []
 
-  const isLoaded = application && environment;
-  const isOrphan = environment?.status === 'Orphan';
-  const deployment = isLoaded && environment.activeDeployment;
-  const skippedDeployComponents =
-    deployment?.components?.filter((c) => c.skipDeployment) ?? false;
+  const isLoaded = application && environment
+  const isOrphan = environment?.status === 'Orphan'
+  const deployment = isLoaded && environment.activeDeployment
+  const skippedDeployComponents = deployment?.components?.filter((c) => c.skipDeployment) ?? false
 
   return (
     <>
@@ -94,32 +73,20 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
       {(deleteEnvState.isSuccess || deleteEnvState.isError || isOrphan) && (
         <div className="grid grid--gap-medium">
           {deleteEnvState.isSuccess && (
-            <Alert>
-              Environment removal has started but it may take a while to be
-              completely removed
-            </Alert>
+            <Alert>Environment removal has started but it may take a while to be completely removed</Alert>
           )}
           {deleteEnvState.isError && (
-            <Alert type="warning">
-              Some unexpected error occurred:{' '}
-              {getFetchErrorMessage(deleteEnvState.error)}
-            </Alert>
+            <Alert type="warning">Some unexpected error occurred: {getFetchErrorMessage(deleteEnvState.error)}</Alert>
           )}
           {isOrphan && (
             <Alert
               type="warning"
               actions={
                 <Button
-                  disabled={
-                    deleteEnvState.isLoading || deleteEnvState.isSuccess
-                  }
+                  disabled={deleteEnvState.isLoading || deleteEnvState.isSuccess}
                   onClick={async () => {
-                    if (
-                      window.confirm(
-                        `Confirm deleting '${envName}' environment.`
-                      )
-                    ) {
-                      await deleteEnvTrigger({ appName, envName });
+                    if (window.confirm(`Confirm deleting '${envName}' environment.`)) {
+                      await deleteEnvTrigger({ appName, envName })
                     }
                   }}
                 >
@@ -128,8 +95,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
               }
             >
               <Typography>
-                This environment is orphaned; it is not defined in{' '}
-                <strong>radixconfig.yaml</strong>
+                This environment is orphaned; it is not defined in <strong>radixconfig.yaml</strong>
               </Typography>
             </Alert>
           )}
@@ -154,19 +120,14 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                   </Typography>
                   {environment.activeDeployment ? (
                     <Typography>
-                      Built and deployed from{' '}
-                      {environment.activeDeployment?.gitRefType ?? 'branch'}{' '}
+                      Built and deployed from {environment.activeDeployment?.gitRefType ?? 'branch'}{' '}
                       <ExternalLink
                         href={linkToGitHubBranch(
                           application.registration?.repository ?? '',
-                          environment.activeDeployment?.gitRef ??
-                            environment.branchMapping ??
-                            ''
+                          environment.activeDeployment?.gitRef ?? environment.branchMapping ?? ''
                         )}
                       >
-                        {environment.activeDeployment.gitRef ??
-                          environment.branchMapping ??
-                          ''}
+                        {environment.activeDeployment.gitRef ?? environment.branchMapping ?? ''}
                       </ExternalLink>{' '}
                       {deployment?.gitCommitHash && (
                         <>
@@ -208,18 +169,12 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                       <Typography>
                         Deployment active since{' '}
                         <strong>
-                          <RelativeToNow
-                            time={new Date(deployment.activeFrom)}
-                          />
+                          <RelativeToNow time={new Date(deployment.activeFrom)} />
                         </strong>
                       </Typography>
                       <Typography>
                         Active deployment{' '}
-                        <Typography
-                          as={Link}
-                          to={getAppDeploymentUrl(appName, deployment.name)}
-                          link
-                        >
+                        <Typography as={Link} to={getAppDeploymentUrl(appName, deployment.name)} link>
                           {smallDeploymentName(deployment.name)}
                         </Typography>{' '}
                         <Button
@@ -243,9 +198,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                           <Typography>Tags</Typography>
                           <GitTagLinks
                             gitTags={deployment.gitTags}
-                            repository={
-                              application.registration?.repository ?? ''
-                            }
+                            repository={application.registration?.repository ?? ''}
                           />
                           <Icon data={github} size={24} />
                         </div>
@@ -257,36 +210,21 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                 </div>
               </div>
             </section>
-            {appAlias?.environmentName == envName && (
-              <DefaultAppAlias appName={appName} appAlias={appAlias} />
-            )}
+            {appAlias?.environmentName == envName && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
             {envDNSAliases?.length > 0 && (
-              <DNSAliases
-                appName={appName}
-                dnsAliases={envDNSAliases}
-                title={'DNS aliases'}
-              />
+              <DNSAliases appName={appName} dnsAliases={envDNSAliases} title={'DNS aliases'} />
             )}
             {envDNSExternalAliases?.length > 0 && (
-              <DNSAliases
-                appName={appName}
-                dnsAliases={envDNSExternalAliases}
-                title={'DNS external aliases'}
-              />
+              <DNSAliases appName={appName} dnsAliases={envDNSExternalAliases} title={'DNS external aliases'} />
             )}
             {deployment && (
-              <ComponentList
-                appName={appName}
-                environment={environment}
-                components={deployment.components ?? []}
-              />
+              <ComponentList appName={appName} environment={environment} components={deployment.components ?? []} />
             )}
             <EventsList
               isExpanded={isEventListExpanded}
               onExpanded={setIsEventListExpanded}
               events={dataSorter(events ?? [], [
-                ({ lastTimestamp: x }, { lastTimestamp: y }) =>
-                  sortCompareDate(x, y, 'descending'),
+                ({ lastTimestamp: x }, { lastTimestamp: y }) => sortCompareDate(x, y, 'descending'),
               ])}
             />
             {environment.deployments && (
@@ -295,9 +233,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                 <DeploymentsList
                   inEnv
                   appName={appName}
-                  deployments={environment.deployments.filter(
-                    ({ activeTo }) => !!activeTo
-                  )}
+                  deployments={environment.deployments.filter(({ activeTo }) => !!activeTo)}
                 />
               </div>
             )}
@@ -305,7 +241,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
         )}
       </AsyncResource>
     </>
-  );
-};
+  )
+}
 
-export default EnvironmentOverview;
+export default EnvironmentOverview

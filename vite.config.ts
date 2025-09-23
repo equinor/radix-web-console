@@ -1,7 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
-
-import checker from 'vite-plugin-checker';
 import packageJson from './package.json';
 
 // regex filter for dev.* components
@@ -29,10 +27,5 @@ export default defineConfig({
   },
   plugins: [
     react(),
-    checker({
-      biome: {
-        command: 'check',
-      },
-    }),
   ],
 });

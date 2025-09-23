@@ -4,7 +4,7 @@ services:
     container_name: radix-web_container
     read_only: true
     working_dir: /app
-    command: [ "sh", "-c", "npm install --prefer-offline --no-audit && chown -R node:node node_modules && npm start" ]
+    command: [ "sh", "-c", "npm install --prefer-offline --no-audit --ignore-scripts && chown -R node:node node_modules && npm start" ]
     environment:
         - npm_config_proxy=${NPM_PROXY}
     volumes:

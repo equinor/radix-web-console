@@ -1,13 +1,9 @@
-import { Typography } from '@equinor/eds-core-react';
+import { Typography } from '@equinor/eds-core-react'
 
-import { addMinutes } from 'date-fns';
-import {
-  AppListItemLayout,
-  type AppListItemLayoutProps,
-  type FavouriteClickedHandler,
-} from '.';
+import { addMinutes } from 'date-fns'
+import { AppListItemLayout, type AppListItemLayoutProps, type FavouriteClickedHandler } from '.'
 
-const noop: FavouriteClickedHandler = (evt) => evt.preventDefault();
+const noop: FavouriteClickedHandler = (evt) => evt.preventDefault()
 
 const testData = [
   {
@@ -93,7 +89,7 @@ const testData = [
     isDeleted: true,
     appName: 'deleted-app',
   },
-] satisfies Array<{ description: string } & AppListItemLayoutProps>;
+] satisfies Array<{ description: string } & AppListItemLayoutProps>
 
 export default (
   <div style={{ background: '#eee', padding: 'var(--eds_spacing_medium)' }}>
@@ -104,4 +100,4 @@ export default (
       </div>
     ))}
   </div>
-);
+)

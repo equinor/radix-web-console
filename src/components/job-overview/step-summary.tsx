@@ -1,38 +1,31 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { time } from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
-import { Link } from 'react-router-dom';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { time } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
+import { Link } from 'react-router-dom'
 
-import { routes } from '../../routes';
-import type { Step } from '../../store/radix-api';
-import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime';
-import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline';
-import { routeWithParams } from '../../utils/string';
-import { RadixJobConditionBadge } from '../status-badges';
-import { RelativeToNow } from '../time/relative-to-now';
+import { routes } from '../../routes'
+import type { Step } from '../../store/radix-api'
+import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime'
+import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline'
+import { routeWithParams } from '../../utils/string'
+import { RadixJobConditionBadge } from '../status-badges'
+import { RelativeToNow } from '../time/relative-to-now'
 
 function getComponents(name: string, components: Array<string>): string {
   if (components?.length > 1) {
-    const maxEnumeratedComponents = 3;
+    const maxEnumeratedComponents = 3
     return components.length > maxEnumeratedComponents
       ? `${components.slice(0, maxEnumeratedComponents - 1).join(',')}…`
-      : `${components.slice(0, -1).join(',')} and ${components.slice(-1)}`;
+      : `${components.slice(0, -1).join(',')} and ${components.slice(-1)}`
   }
 
-  return name;
+  return name
 }
 
-const StepDuration: FunctionComponent<Pick<Step, 'started' | 'ended'>> = ({
-  ended,
-  started,
-}) =>
+const StepDuration: FunctionComponent<Pick<Step, 'started' | 'ended'>> = ({ ended, started }) =>
   started ? (
     <>
-      <RelativeToNow
-        time={new Date(started)}
-        titlePrefix="Start time"
-        capitalize
-      />
+      <RelativeToNow time={new Date(started)} titlePrefix="Start time" capitalize />
       {ended && (
         <span title={`End time ${formatDateTimePrecise(new Date(ended))}`}>
           {differenceInWords(new Date(ended), new Date(started))}
@@ -41,13 +34,13 @@ const StepDuration: FunctionComponent<Pick<Step, 'started' | 'ended'>> = ({
     </>
   ) : (
     <>Not yet started</>
-  );
+  )
 
-type StepDescriptionProps = { name?: string; components: Step['components'] };
+type StepDescriptionProps = { name?: string; components: Step['components'] }
 const StepDescription = ({ name, components }: StepDescriptionProps) => {
-  const stepDescription = getPipelineStepDescription(name);
+  const stepDescription = getPipelineStepDescription(name)
   if (stepDescription) {
-    return <>{stepDescription}</>;
+    return <>{stepDescription}</>
   }
 
   if (name === PipelineStep.CloneRepository) {
@@ -61,38 +54,34 @@ const StepDescription = ({ name, components }: StepDescriptionProps) => {
           </>
         )}
       </>
-    );
+    )
   }
 
-  const buildComponent = name?.match(/^build-(.+)$/);
+  const buildComponent = name?.match(/^build-(.+)$/)
   if (buildComponent) {
     return (
       <>
-        Building{' '}
-        <strong>{getComponents(buildComponent[1], components ?? [])}</strong>{' '}
-        component
+        Building <strong>{getComponents(buildComponent[1], components ?? [])}</strong> component
       </>
-    );
+    )
   }
 
-  const scanComponent = name?.match(/^scan-(.+)$/);
+  const scanComponent = name?.match(/^scan-(.+)$/)
   if (scanComponent) {
     return (
       <>
-        Scanning{' '}
-        <strong>{getComponents(scanComponent[1], components ?? [])}</strong>{' '}
-        component
+        Scanning <strong>{getComponents(scanComponent[1], components ?? [])}</strong> component
       </>
-    );
+    )
   }
 
-  return <>Unknown step</>;
-};
+  return <>Unknown step</>
+}
 
 export const StepSummary: FunctionComponent<{
-  appName: string;
-  jobName: string;
-  step: Step;
+  appName: string
+  jobName: string
+  step: Step
 }> = ({ appName, jobName, step }) => (
   <div className="step-summary__content">
     <div className="step-summary__description">
@@ -119,4 +108,4 @@ export const StepSummary: FunctionComponent<{
       </div>
     </div>
   </div>
-);
+)

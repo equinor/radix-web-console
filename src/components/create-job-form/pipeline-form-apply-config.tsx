@@ -1,34 +1,26 @@
-import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  List,
-  Typography,
-} from '@equinor/eds-core-react';
-import { type FormEvent, useState } from 'react';
-import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { Alert } from '../alert';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import type { FormProp } from './index';
+import { Button, Checkbox, CircularProgress, List, Typography } from '@equinor/eds-core-react'
+import { type FormEvent, useState } from 'react'
+import { useTriggerPipelineApplyConfigMutation } from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { Alert } from '../alert'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import type { FormProp } from './index'
 
 export function PipelineFormApplyConfig({ application, onSuccess }: FormProp) {
-  const [trigger, state] = useTriggerPipelineApplyConfigMutation();
-  const [deployExternalDNS, setDeployExternalDNS] = useState(false);
+  const [trigger, state] = useTriggerPipelineApplyConfigMutation()
+  const [deployExternalDNS, setDeployExternalDNS] = useState(false)
 
-  const handleSubmit = handlePromiseWithToast(
-    async (e: FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+  const handleSubmit = handlePromiseWithToast(async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
 
-      const response = await trigger({
-        appName: application.name,
-        pipelineParametersApplyConfig: {
-          deployExternalDNS: deployExternalDNS,
-        },
-      }).unwrap();
-      onSuccess(response.name);
-    }
-  );
+    const response = await trigger({
+      appName: application.name,
+      pipelineParametersApplyConfig: {
+        deployExternalDNS: deployExternalDNS,
+      },
+    }).unwrap()
+    onSuccess(response.name)
+  })
 
   return (
     <form onSubmit={handleSubmit}>
@@ -45,8 +37,7 @@ export function PipelineFormApplyConfig({ application, onSuccess }: FormProp) {
           </Typography>
           <List className="grid grid--gap-x-small">
             <List.Item>
-              Apply changes in DNS alias, build secrets, environments (create
-              new or soft-delete existing)
+              Apply changes in DNS alias, build secrets, environments (create new or soft-delete existing)
             </List.Item>
             <List.Item>
               <Checkbox
@@ -64,16 +55,12 @@ export function PipelineFormApplyConfig({ application, onSuccess }: FormProp) {
               <CircularProgress size={16} /> Creating…
             </div>
           )}
-          {state.isError && (
-            <Alert type="danger">
-              Failed to create job. {getFetchErrorMessage(state.error)}
-            </Alert>
-          )}
+          {state.isError && <Alert type="danger">Failed to create job. {getFetchErrorMessage(state.error)}</Alert>}
           <div>
             <Button type="submit">Create job</Button>
           </div>
         </div>
       </fieldset>
     </form>
-  );
+  )
 }

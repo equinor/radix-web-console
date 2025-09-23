@@ -1,30 +1,12 @@
-import { CircularProgress, Icon } from '@equinor/eds-core-react';
-import {
-  blocked,
-  check,
-  error_outlined,
-  run,
-  time,
-  traffic_light,
-} from '@equinor/eds-icons';
-import type { FunctionComponent } from 'react';
-import type {
-  ScheduledBatchSummary,
-  ScheduledJobSummary,
-} from '../../store/radix-api';
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
+import { CircularProgress, Icon } from '@equinor/eds-core-react'
+import { blocked, check, error_outlined, run, time, traffic_light } from '@equinor/eds-icons'
+import type { FunctionComponent } from 'react'
+import type { ScheduledBatchSummary, ScheduledJobSummary } from '../../store/radix-api'
+import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-badge-template'
 
-type JobSchedulerProgressStatus =
-  | ScheduledBatchSummary['status']
-  | ScheduledJobSummary['status'];
+type JobSchedulerProgressStatus = ScheduledBatchSummary['status'] | ScheduledJobSummary['status']
 
-const BadgeTemplates: Record<
-  JobSchedulerProgressStatus,
-  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
-> = {
+const BadgeTemplates: Record<JobSchedulerProgressStatus, Pick<StatusBadgeTemplateProps, 'icon' | 'type'>> = {
   Running: { icon: <Icon data={run} /> },
   Active: { icon: <Icon data={time} /> },
   Succeeded: { icon: <Icon data={check} /> },
@@ -33,12 +15,10 @@ const BadgeTemplates: Record<
   Waiting: { icon: <Icon data={traffic_light} /> },
   Stopping: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={blocked} /> },
-};
+}
 
 export const ProgressStatusBadge: FunctionComponent<{
-  status: JobSchedulerProgressStatus;
+  status: JobSchedulerProgressStatus
 }> = ({ status }) => (
-  <StatusBadgeTemplate {...BadgeTemplates[status]}>
-    {status === 'Active' ? 'Starting' : status}
-  </StatusBadgeTemplate>
-);
+  <StatusBadgeTemplate {...BadgeTemplates[status]}>{status === 'Active' ? 'Starting' : status}</StatusBadgeTemplate>
+)

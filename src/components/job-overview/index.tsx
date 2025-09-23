@@ -1,104 +1,76 @@
-import {
-  Button,
-  Checkbox,
-  CircularProgress,
-  Typography,
-} from '@equinor/eds-core-react';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { useInterval } from '../../effects/use-interval';
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
-import {
-  type Job,
-  radixApi,
-  useGetApplicationJobQuery,
-  useGetApplicationQuery,
-} from '../../store/radix-api';
-import {
-  routeWithParams,
-  smallDeploymentName,
-  smallJobName,
-} from '../../utils/string';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { CommitHash } from '../commit-hash';
-import { getJobExecutionState } from '../component/execution-state';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
-import { Duration } from '../time/duration';
-import { RelativeToNow } from '../time/relative-to-now';
-import { ComponentList } from './component-list';
-import { StepsList } from './steps-list';
+import { Button, Checkbox, CircularProgress, Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { useInterval } from '../../effects/use-interval'
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { type Job, radixApi, useGetApplicationJobQuery, useGetApplicationQuery } from '../../store/radix-api'
+import { routeWithParams, smallDeploymentName, smallJobName } from '../../utils/string'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { CommitHash } from '../commit-hash'
+import { getJobExecutionState } from '../component/execution-state'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
+import { Duration } from '../time/duration'
+import { RelativeToNow } from '../time/relative-to-now'
+import { ComponentList } from './component-list'
+import { StepsList } from './steps-list'
 
-import './style.css';
+import './style.css'
 
 function getStopButtonText(status: Job['status']): string {
   switch (status) {
     case 'Queued':
     case 'Waiting':
-      return 'Cancel';
+      return 'Cancel'
     case 'Running':
     case 'Stopping':
-      return 'Stop';
+      return 'Stop'
     default:
-      return '';
+      return ''
   }
 }
 
 function getBuildCacheStatus(job: Job | undefined): string {
   if (!job || job.useBuildKit !== true) {
-    return '';
+    return ''
   }
-  const statuses = [];
+  const statuses = []
   if (job.refreshBuildCache === true) {
-    statuses.push('refreshed');
+    statuses.push('refreshed')
   }
   if (typeof job.overrideUseBuildCache === 'boolean') {
-    statuses.push(job.overrideUseBuildCache === true ? 'used' : 'not used');
+    statuses.push(job.overrideUseBuildCache === true ? 'used' : 'not used')
   } else {
-    statuses.push(
-      typeof job.useBuildCache !== 'boolean' || job.useBuildCache === true
-        ? 'used'
-        : 'not used'
-    );
+    statuses.push(typeof job.useBuildCache !== 'boolean' || job.useBuildCache === true ? 'used' : 'not used')
   }
-  return statuses.join(', ');
+  return statuses.join(', ')
 }
 
 type Props = {
-  appName: string;
-  jobName: string;
-};
+  appName: string
+  jobName: string
+}
 
 export const JobOverview = ({ appName, jobName }: Props) => {
-  const [now, setNow] = useState(new Date());
-  const { data: application } = useGetApplicationQuery(
-    { appName },
-    { skip: !appName, pollingInterval }
-  );
+  const [now, setNow] = useState(new Date())
+  const { data: application } = useGetApplicationQuery({ appName }, { skip: !appName, pollingInterval })
   const {
     data: job,
     refetch: refetchJob,
     ...jobState
-  } = useGetApplicationJobQuery(
-    { appName, jobName },
-    { skip: !appName || !jobName, pollingInterval: 8000 }
-  );
-  const [stopJobTrigger, stopJobState] =
-    radixApi.endpoints.stopApplicationJob.useMutation();
-  const [rerunJobTrigger, rerunJobState] =
-    radixApi.endpoints.rerunApplicationJob.useMutation();
-  const [visibleRerunScrim, setVisibleRerunScrim] = useState<boolean>(false);
+  } = useGetApplicationJobQuery({ appName, jobName }, { skip: !appName || !jobName, pollingInterval: 8000 })
+  const [stopJobTrigger, stopJobState] = radixApi.endpoints.stopApplicationJob.useMutation()
+  const [rerunJobTrigger, rerunJobState] = radixApi.endpoints.rerunApplicationJob.useMutation()
+  const [visibleRerunScrim, setVisibleRerunScrim] = useState<boolean>(false)
 
-  const stopButtonText = getStopButtonText(job?.status);
-  const isStopping = stopJobState.isLoading || job?.status === 'Stopping';
-  const canBeRerun =
-    !stopJobState.isLoading &&
-    (job?.status === 'Failed' || job?.status === 'Stopped');
-  const isRerunning = rerunJobState.isLoading;
-  const buildCacheStatus = getBuildCacheStatus(job);
-  useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000);
+  const stopButtonText = getStopButtonText(job?.status)
+  const isStopping = stopJobState.isLoading || job?.status === 'Stopping'
+  const canBeRerun = !stopJobState.isLoading && (job?.status === 'Failed' || job?.status === 'Stopped')
+  const isRerunning = rerunJobState.isLoading
+  const buildCacheStatus = getBuildCacheStatus(job)
+  useInterval(() => setNow(new Date()), job?.ended ? 10000000 : 1000)
 
   return (
     <>
@@ -123,8 +95,8 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                   {!!stopButtonText && (
                     <Button
                       onClick={handlePromiseWithToast(async () => {
-                        await stopJobTrigger({ appName, jobName }).unwrap();
-                        refetchJob();
+                        await stopJobTrigger({ appName, jobName }).unwrap()
+                        refetchJob()
                       }, 'Stopped')}
                       disabled={isStopping}
                     >
@@ -143,10 +115,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
 
               {canBeRerun && (
                 <div>
-                  <Button
-                    onClick={() => setVisibleRerunScrim(true)}
-                    disabled={isRerunning}
-                  >
+                  <Button onClick={() => setVisibleRerunScrim(true)} disabled={isRerunning}>
                     Rerun
                   </Button>
                   {isRerunning && (
@@ -164,9 +133,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                   >
                     <div className="grid grid--gap-medium grid--auto-columns rerun-job-content">
                       <div className="rerun-job-options">
-                        <Typography>
-                          Create new a job with the same attributes
-                        </Typography>
+                        <Typography>Create new a job with the same attributes</Typography>
                       </div>
 
                       <Button.Group>
@@ -174,24 +141,19 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           disabled={isRerunning}
                           onClick={handlePromiseWithToast(
                             async () => {
-                              setVisibleRerunScrim(false);
+                              setVisibleRerunScrim(false)
                               await rerunJobTrigger({
                                 appName,
                                 jobName,
-                              }).unwrap();
-                              refetchJob();
+                              }).unwrap()
+                              refetchJob()
                             },
-                            `Pipeline job '${smallJobName(
-                              jobName
-                            )}' was successfully rerun.`
+                            `Pipeline job '${smallJobName(jobName)}' was successfully rerun.`
                           )}
                         >
                           Rerun
                         </Button>
-                        <Button
-                          variant="outlined"
-                          onClick={() => setVisibleRerunScrim(false)}
-                        >
+                        <Button variant="outlined" onClick={() => setVisibleRerunScrim(false)}>
                           Cancel
                         </Button>
                       </Button.Group>
@@ -205,8 +167,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                 <div className="grid grid--gap-medium grid--overview-columns">
                   <div className="grid grid--gap-medium">
                     <Typography>
-                      Pipeline Job {job.status?.toLowerCase()};{' '}
-                      {getJobExecutionState(job.status)} pipeline{' '}
+                      Pipeline Job {job.status?.toLowerCase()}; {getJobExecutionState(job.status)} pipeline{' '}
                       <strong>{job.pipeline}</strong>
                     </Typography>
                     {job.rerunFromJob && (
@@ -288,27 +249,19 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                       </div>
                     )}
                     <Typography>
-                      Triggered{' '}
-                      {job.triggeredFromWebhook && (
-                        <strong>from GitHub webhook</strong>
-                      )}{' '}
-                      by <strong>{job.triggeredBy || 'N/A'}</strong>
+                      Triggered {job.triggeredFromWebhook && <strong>from GitHub webhook</strong>} by{' '}
+                      <strong>{job.triggeredBy || 'N/A'}</strong>
                     </Typography>
-                    {(job.pipeline === 'build-deploy' ||
-                      job.pipeline === 'build') && (
+                    {(job.pipeline === 'build-deploy' || job.pipeline === 'build') && (
                       <>
                         <Typography>
-                          Build Kit{' '}
-                          <strong>
-                            {job.useBuildKit === true ? 'used' : 'not used'}
-                          </strong>
+                          Build Kit <strong>{job.useBuildKit === true ? 'used' : 'not used'}</strong>
                         </Typography>
-                        {job.useBuildKit === true &&
-                          buildCacheStatus.length > 0 && (
-                            <Typography>
-                              Build Cache <strong>{buildCacheStatus}</strong>
-                            </Typography>
-                          )}
+                        {job.useBuildKit === true && buildCacheStatus.length > 0 && (
+                          <Typography>
+                            Build Cache <strong>{buildCacheStatus}</strong>
+                          </Typography>
+                        )}
                       </>
                     )}
                     {(job.gitRef || job.branch || job.commitID) && (
@@ -316,17 +269,13 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         Built from{' '}
                         {(job.gitRef || job.branch) && (
                           <>
-                            {job.gitRefType ?? 'branch'}{' '}
-                            <strong>{job.gitRef ?? job.branch}</strong>
+                            {job.gitRefType ?? 'branch'} <strong>{job.gitRef ?? job.branch}</strong>
                           </>
                         )}
                         {job.commitID && (
                           <>
                             {' commit '}
-                            <CommitHash
-                              commit={job.commitID}
-                              repo={application?.registration?.repository}
-                            />
+                            <CommitHash commit={job.commitID} repo={application?.registration?.repository} />
                           </>
                         )}
                       </Typography>
@@ -344,10 +293,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         <Typography>
                           Job took{' '}
                           <strong>
-                            <Duration
-                              start={new Date(job.started)}
-                              end={new Date(job.ended)}
-                            />
+                            <Duration start={new Date(job.started)} end={new Date(job.ended)} />
                           </strong>
                         </Typography>
                       ) : (
@@ -407,18 +353,12 @@ export const JobOverview = ({ appName, jobName }: Props) => {
               </section>
 
               <section className="grid grid--gap-medium">
-                {job.steps && (
-                  <StepsList
-                    appName={appName}
-                    jobName={jobName}
-                    steps={job.steps}
-                  />
-                )}
+                {job.steps && <StepsList appName={appName} jobName={jobName} steps={job.steps} />}
               </section>
             </>
           )}
         </AsyncResource>
       </main>
     </>
-  );
-};
+  )
+}

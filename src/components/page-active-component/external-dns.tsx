@@ -1,47 +1,37 @@
-import {
-  Accordion,
-  Button,
-  Checkbox,
-  TextField,
-  Typography,
-} from '@equinor/eds-core-react';
-import { type ChangeEvent, type FunctionComponent, useState } from 'react';
+import { Accordion, Button, Checkbox, TextField, Typography } from '@equinor/eds-core-react'
+import { type ChangeEvent, type FunctionComponent, useState } from 'react'
 
-import { pollingInterval } from '../../store/defaults';
+import { pollingInterval } from '../../store/defaults'
 import {
   type ExternalDns,
   useGetEnvironmentQuery,
   useUpdateComponentExternalDnsTlsMutation,
-} from '../../store/radix-api';
-import { getFetchErrorData } from '../../store/utils/parse-errors';
-import { Alert } from '../alert';
-import { ExternalDnsAliasHelp } from '../external-dns-alias-help';
-import { ExternalDNSList } from '../external-dns-list';
-import { handlePromiseWithToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
+} from '../../store/radix-api'
+import { getFetchErrorData } from '../../store/utils/parse-errors'
+import { Alert } from '../alert'
+import { ExternalDnsAliasHelp } from '../external-dns-alias-help'
+import { ExternalDNSList } from '../external-dns-list'
+import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
 
 type TlsData = {
-  certificate?: string;
-  privateKey?: string;
-};
+  certificate?: string
+  privateKey?: string
+}
 
 const TlsEditForm: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  fqdn: string;
-  onSaveSuccess?: () => void;
+  appName: string
+  envName: string
+  componentName: string
+  fqdn: string
+  onSaveSuccess?: () => void
 }> = ({ appName, envName, componentName, fqdn, onSaveSuccess }) => {
-  const [{ certificate, privateKey }, setTlsData] = useState<TlsData>({});
-  const [skipValidation, setSkipValidation] = useState(false);
-  const tlsDataIsValid = certificate && privateKey;
-  const { refetch } = useGetEnvironmentQuery(
-    { appName, envName },
-    { skip: !appName || !envName, pollingInterval }
-  );
-  const [mutateTls, { isLoading: isSaving, isError, error }] =
-    useUpdateComponentExternalDnsTlsMutation();
-  const saveError = isError ? getFetchErrorData(error) : null;
+  const [{ certificate, privateKey }, setTlsData] = useState<TlsData>({})
+  const [skipValidation, setSkipValidation] = useState(false)
+  const tlsDataIsValid = certificate && privateKey
+  const { refetch } = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
+  const [mutateTls, { isLoading: isSaving, isError, error }] = useUpdateComponentExternalDnsTlsMutation()
+  const saveError = isError ? getFetchErrorData(error) : null
 
   const saveTls = handlePromiseWithToast(async () => {
     await mutateTls({
@@ -54,23 +44,22 @@ const TlsEditForm: FunctionComponent<{
         privateKey: privateKey!, // submit button is disabled if not set
         skipValidation,
       },
-    }).unwrap();
-    refetch();
-    onSaveSuccess?.();
-  });
+    }).unwrap()
+    refetch()
+    onSaveSuccess?.()
+  })
 
   return (
     <form
       onSubmit={async (ev) => {
-        ev.preventDefault();
-        await saveTls();
+        ev.preventDefault()
+        await saveTls()
       }}
     >
       <div className="grid grid--gap-large">
         <ExternalDnsAliasHelp />
         <fieldset className="grid grid--gap-large" disabled={isSaving}>
           <TextField
-            id="certString"
             label="Certificate"
             multiline
             rows={5}
@@ -79,20 +68,13 @@ const TlsEditForm: FunctionComponent<{
             }
           />
           <TextField
-            id="privateKeyString"
             label="Private Key"
             multiline
             rows={5}
-            onChange={(ev: ChangeEvent<HTMLInputElement>) =>
-              setTlsData((v) => ({ ...v, privateKey: ev.target.value }))
-            }
+            onChange={(ev: ChangeEvent<HTMLInputElement>) => setTlsData((v) => ({ ...v, privateKey: ev.target.value }))}
           />
         </fieldset>
-        <Checkbox
-          label="Skip validation"
-          disabled={isSaving}
-          onChange={(ev) => setSkipValidation(ev.target.checked)}
-        />
+        <Checkbox label="Skip validation" disabled={isSaving} onChange={(ev) => setSkipValidation(ev.target.checked)} />
         {saveError && (
           <Alert type="danger">
             {saveError.error && <Typography>{saveError.error}</Typography>}
@@ -106,26 +88,22 @@ const TlsEditForm: FunctionComponent<{
         </div>
       </div>
     </form>
-  );
-};
+  )
+}
 
 export const ExternalDNSAccordion: FunctionComponent<{
-  appName: string;
-  envName: string;
-  componentName: string;
-  externalDNSList: Array<ExternalDns>;
+  appName: string
+  envName: string
+  componentName: string
+  externalDNSList: Array<ExternalDns>
 }> = ({ appName, envName, componentName, externalDNSList }) => {
-  const [visibleScrim, setVisibleScrim] = useState(false);
-  const [selectedExternalDns, setSelectedExternalDns] = useState<ExternalDns>();
+  const [visibleScrim, setVisibleScrim] = useState(false)
+  const [selectedExternalDns, setSelectedExternalDns] = useState<ExternalDns>()
 
   return (
     <>
       <Accordion className="accordion elevated" chevronPosition="right">
-        <Accordion.Item
-          isExpanded={externalDNSList?.some(
-            (v) => v.tls.status !== 'Consistent'
-          )}
-        >
+        <Accordion.Item isExpanded={externalDNSList?.some((v) => v.tls.status !== 'Consistent')}>
           <Accordion.Header>
             <Accordion.HeaderTitle>
               <Typography className="whitespace-nowrap" variant="h4" as="span">
@@ -140,10 +118,10 @@ export const ExternalDNSAccordion: FunctionComponent<{
                 externalDnsList={externalDNSList}
                 onItemClick={(v) => {
                   if (v.tls.useAutomation) {
-                    return;
+                    return
                   }
-                  setSelectedExternalDns(v);
-                  setVisibleScrim(true);
+                  setSelectedExternalDns(v)
+                  setVisibleScrim(true)
                 }}
               />
             </div>
@@ -156,13 +134,12 @@ export const ExternalDNSAccordion: FunctionComponent<{
           title={selectedExternalDns.fqdn}
           open={visibleScrim}
           onClose={() => {
-            setVisibleScrim(false);
+            setVisibleScrim(false)
           }}
         >
           <div className="secret-item__scrim-content grid grid--gap-large">
             <Typography>
-              Update TLS certificate and private key for{' '}
-              <strong>{selectedExternalDns.fqdn}</strong>
+              Update TLS certificate and private key for <strong>{selectedExternalDns.fqdn}</strong>
             </Typography>
             <TlsEditForm
               appName={appName}
@@ -175,5 +152,5 @@ export const ExternalDNSAccordion: FunctionComponent<{
         </ScrimPopup>
       )}
     </>
-  );
-};
+  )
+}

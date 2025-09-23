@@ -1,43 +1,31 @@
-import {
-  Button,
-  Icon,
-  Tabs,
-  TopBar,
-  Typography,
-} from '@equinor/eds-core-react';
-import { close, info_circle, menu } from '@equinor/eds-icons';
-import { clsx } from 'clsx';
-import {
-  type FunctionComponent,
-  forwardRef,
-  type PropsWithChildren,
-  useState,
-} from 'react';
-import { clusterBases } from '../../clusterBases';
-import { externalUrls } from '../../externalUrls';
-import { routes } from '../../routes';
-import { configVariables } from '../../utils/config';
-import { HomeLogo } from '../home-logo';
-import { StyledToastContainer } from './styled-toaster';
+import { Button, Icon, Tabs, TopBar, Typography } from '@equinor/eds-core-react'
+import { close, info_circle, menu } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
+import { type FunctionComponent, forwardRef, type PropsWithChildren, useState } from 'react'
+import { clusterBases } from '../../clusterBases'
+import { externalUrls } from '../../externalUrls'
+import { routes } from '../../routes'
+import { configVariables } from '../../utils/config'
+import { HomeLogo } from '../home-logo'
+import { StyledToastContainer } from './styled-toaster'
 
-import './style.css';
-import { Link } from 'react-router-dom';
+import './style.css'
+import { Link } from 'react-router-dom'
 
 interface TabItemTemplateProps {
-  href: string;
-  mark?: boolean;
+  href: string
+  mark?: boolean
 }
 
-const TabItemTemplate = forwardRef<
-  HTMLButtonElement,
-  PropsWithChildren<TabItemTemplateProps>
->(({ href, mark, children }, ref) => (
-  <Tabs.Tab className={clsx({ active: mark })} ref={ref}>
-    <Button variant="ghost" href={href}>
-      {children}
-    </Button>
-  </Tabs.Tab>
-));
+const TabItemTemplate = forwardRef<HTMLButtonElement, PropsWithChildren<TabItemTemplateProps>>(
+  ({ href, mark, children }, ref) => (
+    <Tabs.Tab className={clsx({ active: mark })} ref={ref}>
+      <Button variant="ghost" href={href}>
+        {children}
+      </Button>
+    </Tabs.Tab>
+  )
+)
 
 const AboutButton: FunctionComponent = () => (
   <Typography
@@ -51,12 +39,12 @@ const AboutButton: FunctionComponent = () => (
   >
     <Icon data={info_circle} />
   </Typography>
-);
+)
 
 export const GlobalTopNav: FunctionComponent = () => {
-  const [menuIsClosed, setOpenMenu] = useState(false);
-  const handleClick = () => setOpenMenu(!menuIsClosed);
-  const radixClusterBase = configVariables.RADIX_CLUSTER_BASE;
+  const [menuIsClosed, setOpenMenu] = useState(false)
+  const handleClick = () => setOpenMenu(!menuIsClosed)
+  const radixClusterBase = configVariables.RADIX_CLUSTER_BASE
 
   return (
     <TopBar className="global-top-nav">
@@ -65,9 +53,7 @@ export const GlobalTopNav: FunctionComponent = () => {
       </TopBar.Header>
       <TopBar.CustomContent>
         <Tabs>
-          <Tabs.List
-            className={menuIsClosed ? 'nav-links active' : 'nav-links'}
-          >
+          <Tabs.List className={menuIsClosed ? 'nav-links active' : 'nav-links'}>
             {(configVariables.RADIX_CLUSTER_TYPE === 'development' && (
               <TabItemTemplate href={routes.home} mark>
                 Development
@@ -91,10 +77,7 @@ export const GlobalTopNav: FunctionComponent = () => {
             >
               Platform 2 (West Europe)
             </TabItemTemplate>
-            <TabItemTemplate
-              href={externalUrls.documentation}
-              mark={!radixClusterBase}
-            >
+            <TabItemTemplate href={externalUrls.documentation} mark={!radixClusterBase}>
               Documentation
             </TabItemTemplate>
             <Tabs.Tab className="icon-links" disabled>
@@ -113,5 +96,5 @@ export const GlobalTopNav: FunctionComponent = () => {
       </div>
       <StyledToastContainer />
     </TopBar>
-  );
-};
+  )
+}

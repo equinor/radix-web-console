@@ -1,8 +1,8 @@
-import { Divider } from '@equinor/eds-core-react';
-import { Fragment } from 'react';
+import { Divider } from '@equinor/eds-core-react'
+import { Fragment } from 'react'
 
-import type { Step } from '../../store/radix-api';
-import { PipelineRunTaskStepOverview } from './step-overview';
+import type { Step } from '../../store/radix-api'
+import { PipelineRunTaskStepOverview } from './step-overview'
 
 const testData: Array<Step> = [
   {
@@ -19,7 +19,7 @@ const testData: Array<Step> = [
       pipelineRunName: 'tkn-pipelinerun-dev-abcde-some-zxcv-20220510010101',
     },
   },
-];
+]
 
 export default (
   <div
@@ -46,4 +46,4 @@ export default (
       </Fragment>
     ))}
   </div>
-);
+)

@@ -1,21 +1,16 @@
-import { Code } from '../../code';
-import './style.css';
-import { pollingInterval } from '../../../store/defaults';
-import { useGetJobPayloadQuery } from '../../../store/radix-api';
+import { useGetJobPayloadQuery } from '../../../store/radix-api'
+import { Code } from '../../code/code'
+
+import './style.css'
 
 export interface PayloadProps {
-  appName: string;
-  envName: string;
-  jobComponentName: string;
-  jobName: string;
+  appName: string
+  envName: string
+  jobComponentName: string
+  jobName: string
 }
 
-export const Payload = ({
-  appName,
-  envName,
-  jobComponentName,
-  jobName,
-}: PayloadProps) => {
+export const Payload = ({ appName, envName, jobComponentName, jobName }: PayloadProps) => {
   const { data } = useGetJobPayloadQuery(
     {
       appName,
@@ -23,14 +18,12 @@ export const Payload = ({
       jobComponentName,
       jobName,
     },
-    { pollingInterval }
-  );
+    { pollingInterval: 0 }
+  )
 
   return (
-    <div className="payload-content">
-      <Code copy autoscroll resizable>
-        {data ?? ''}
-      </Code>
+    <div className="payload">
+      <Code content={data ?? ''} copy />
     </div>
-  );
-};
+  )
+}

@@ -1,66 +1,39 @@
-import { Icon, Table, Typography } from '@equinor/eds-core-react';
-import { send } from '@equinor/eds-icons';
-import { type FunctionComponent, useEffect, useState } from 'react';
-import { pollingInterval } from '../../store/defaults';
-import {
-  type DeploymentSummary,
-  useGetApplicationQuery,
-} from '../../store/radix-api';
-import {
-  dataSorter,
-  type SortDirection,
-  sortCompareDate,
-  sortCompareString,
-} from '../../utils/sort-utils';
-import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils';
-import { DeploymentSummaryTableRow } from './deployment-summary-table-row';
+import { Icon, Table, Typography } from '@equinor/eds-core-react'
+import { send } from '@equinor/eds-icons'
+import { type FunctionComponent, useEffect, useState } from 'react'
+import { pollingInterval } from '../../store/defaults'
+import { type DeploymentSummary, useGetApplicationQuery } from '../../store/radix-api'
+import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
+import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
+import { DeploymentSummaryTableRow } from './deployment-summary-table-row'
 
-import './style.css';
+import './style.css'
 
 export interface DeploymentsListProps {
-  appName: string;
-  deployments?: Readonly<Array<DeploymentSummary>>;
-  limit?: number;
-  inEnv?: boolean;
+  appName: string
+  deployments?: Readonly<Array<DeploymentSummary>>
+  limit?: number
+  inEnv?: boolean
 }
 
-export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
-  appName,
-  deployments,
-  limit,
-  inEnv,
-}) => {
-  const { data } = useGetApplicationQuery({ appName }, { pollingInterval });
-  const repo = data?.registration?.repository;
+export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({ appName, deployments, limit, inEnv }) => {
+  const { data } = useGetApplicationQuery({ appName }, { pollingInterval })
+  const repo = data?.registration?.repository
 
-  const [sortedData, setSortedData] = useState(deployments || []);
-  const [dateSort, setDateSort] = useState<SortDirection>('descending');
-  const [envSort, setEnvSort] = useState<SortDirection>();
-  const [pipelineSort, setPipelineSort] = useState<SortDirection>();
+  const [sortedData, setSortedData] = useState(deployments || [])
+  const [dateSort, setDateSort] = useState<SortDirection>('descending')
+  const [envSort, setEnvSort] = useState<SortDirection>()
+  const [pipelineSort, setPipelineSort] = useState<SortDirection>()
 
   useEffect(() => {
     setSortedData(
       dataSorter(deployments?.slice(0, limit || deployments.length), [
         (x, y) => sortCompareDate(x.activeFrom, y.activeFrom, dateSort),
-        (x, y) =>
-          sortCompareString(
-            x.pipelineJobType,
-            y.pipelineJobType,
-            pipelineSort,
-            false,
-            () => !!pipelineSort
-          ),
-        (x, y) =>
-          sortCompareString(
-            x.environment,
-            y.environment,
-            envSort,
-            false,
-            () => !!envSort
-          ),
+        (x, y) => sortCompareString(x.pipelineJobType, y.pipelineJobType, pipelineSort, false, () => !!pipelineSort),
+        (x, y) => sortCompareString(x.environment, y.environment, envSort, false, () => !!envSort),
       ])
-    );
-  }, [dateSort, deployments, envSort, limit, pipelineSort]);
+    )
+  }, [dateSort, deployments, envSort, limit, pipelineSort])
 
   return (
     <div className="deployments-list grid grid--gap-medium">
@@ -70,31 +43,20 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
             <Table.Head>
               <Table.Row>
                 <Table.Cell>ID</Table.Cell>
-                <Table.Cell
-                  sort="none"
-                  onClick={() => setDateSort(getNewSortDir(dateSort))}
-                >
+                <Table.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort))}>
                   Date / Time
                   <TableSortIcon direction={dateSort} />
                 </Table.Cell>
                 {!inEnv && (
                   <>
-                    <Table.Cell
-                      sort="none"
-                      onClick={() => setEnvSort(getNewSortDir(envSort, true))}
-                    >
+                    <Table.Cell sort="none" onClick={() => setEnvSort(getNewSortDir(envSort, true))}>
                       Environment
                       <TableSortIcon direction={envSort} />
                     </Table.Cell>
                     <Table.Cell>Status</Table.Cell>
                   </>
                 )}
-                <Table.Cell
-                  sort="none"
-                  onClick={() =>
-                    setPipelineSort(getNewSortDir(pipelineSort, true))
-                  }
-                >
+                <Table.Cell sort="none" onClick={() => setPipelineSort(getNewSortDir(pipelineSort, true))}>
                   Type of job
                   <TableSortIcon direction={pipelineSort} />
                 </Table.Cell>
@@ -104,13 +66,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
             </Table.Head>
             <Table.Body>
               {sortedData.map((x, i) => (
-                <DeploymentSummaryTableRow
-                  key={i}
-                  appName={appName}
-                  deployment={x}
-                  inEnv={inEnv}
-                  repo={repo}
-                />
+                <DeploymentSummaryTableRow key={i} appName={appName} deployment={x} inEnv={inEnv} repo={repo} />
               ))}
             </Table.Body>
           </Table>
@@ -124,5 +80,5 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({
         </div>
       )}
     </div>
-  );
-};
+  )
+}

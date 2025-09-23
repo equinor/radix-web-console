@@ -1,17 +1,14 @@
-import { Icon } from '@equinor/eds-core-react';
-import { check, error_outlined, stop, time } from '@equinor/eds-icons';
-import type { Secret } from '../../store/radix-api';
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
+import { Icon } from '@equinor/eds-core-react'
+import { check, error_outlined, stop, time } from '@equinor/eds-icons'
+import type { Secret } from '../../store/radix-api'
+import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-badge-template'
 
-type SecretStatus = Required<Secret>['status'];
+type SecretStatus = Required<Secret>['status']
 
 const Unsupported = {
   type: 'warning',
   icon: <Icon data={error_outlined} />,
-};
+}
 const BadgeTemplates = {
   Pending: { type: 'warning', icon: <Icon data={time} /> },
   Consistent: { icon: <Icon data={check} /> },
@@ -20,12 +17,12 @@ const BadgeTemplates = {
     icon: <Icon data={stop} />,
     children: 'Not available',
   },
-} satisfies Record<SecretStatus, StatusBadgeTemplateProps>;
+} satisfies Record<SecretStatus, StatusBadgeTemplateProps>
 
 type Props = {
-  status?: SecretStatus;
-};
+  status?: SecretStatus
+}
 export const ComponentSecretStatusBadge = ({ status }: Props) => {
-  const props = status ? BadgeTemplates[status] : Unsupported;
-  return <StatusBadgeTemplate {...props}>{status}</StatusBadgeTemplate>;
-};
+  const props = status ? BadgeTemplates[status] : Unsupported
+  return <StatusBadgeTemplate {...props}>{status}</StatusBadgeTemplate>
+}

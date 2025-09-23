@@ -1,4 +1,4 @@
-import { type ChipProps, Icon } from '@equinor/eds-core-react';
+import { type ChipProps, Icon } from '@equinor/eds-core-react'
 import {
   blocked,
   check,
@@ -8,13 +8,10 @@ import {
   timer,
   traffic_light,
   warning_outlined,
-} from '@equinor/eds-icons';
+} from '@equinor/eds-icons'
 
-import type { PropsWithChildren } from 'react';
-import {
-  StatusBadgeTemplate,
-  type StatusBadgeTemplateProps,
-} from './status-badge-template';
+import type { PropsWithChildren } from 'react'
+import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-badge-template'
 
 const BadgeTemplates = {
   running: { icon: <Icon data={run} /> },
@@ -28,19 +25,15 @@ const BadgeTemplates = {
   succeeded: { icon: <Icon data={check} /> },
   unknown: { icon: <Icon data={warning_outlined} />, type: 'warning' },
   warning: { icon: <Icon data={warning_outlined} />, type: 'warning' },
-} satisfies Record<string, StatusBadgeTemplateProps>;
+} satisfies Record<string, StatusBadgeTemplateProps>
 
 export type GenericStatusBadgeProps = PropsWithChildren<
   {
-    customIconData?: IconData;
-    type?: keyof typeof BadgeTemplates;
+    customIconData?: IconData
+    type?: keyof typeof BadgeTemplates
   } & ChipProps
->;
-export const GenericStatusBadge = ({
-  customIconData,
-  type,
-  ...chipProps
-}: GenericStatusBadgeProps) => (
+>
+export const GenericStatusBadge = ({ customIconData, type, ...chipProps }: GenericStatusBadgeProps) => (
   <StatusBadgeTemplate
     {...{
       ...chipProps,
@@ -49,4 +42,4 @@ export const GenericStatusBadge = ({
       ...(!!customIconData && { icon: <Icon data={customIconData} /> }),
     }}
   />
-);
+)

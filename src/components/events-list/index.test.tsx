@@ -1,5 +1,5 @@
 // import { render, screen } from '@testing-library/react';
-import { render } from '@testing-library/react';
+import { render } from '@testing-library/react'
 
 // import { EventsList } from '.';
 
@@ -167,9 +167,9 @@ import { render } from '@testing-library/react';
 // };
 
 test('nothing', () => {
-  expect('test').not.toBeNull();
-  render(<></>);
-});
+  expect('test').not.toBeNull()
+  render(<></>)
+})
 
 // test('EventsList renders two events', () => {
 //   render(<EventsList events={[normalEvent, warningEvent]} />);

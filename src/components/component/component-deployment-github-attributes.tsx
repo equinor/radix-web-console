@@ -1,10 +1,10 @@
-import { Progress, Typography } from '@equinor/eds-core-react';
-import type { Component, Deployment } from '../../store/radix-api';
-import { GitCommitTags } from './git-commit-tags';
+import { Progress, Typography } from '@equinor/eds-core-react'
+import type { Component, Deployment } from '../../store/radix-api'
+import { GitCommitTags } from './git-commit-tags'
 
 interface ComponentDeploymentGitHubAttributesProps {
-  deployComponent?: Component;
-  deployment?: Deployment;
+  deployComponent?: Component
+  deployment?: Deployment
 }
 
 export const ComponentDeploymentGitHubAttributes = ({
@@ -17,10 +17,7 @@ export const ComponentDeploymentGitHubAttributes = ({
         <>
           {deployComponent.commitID && (
             <Typography>
-              From{' '}
-              {deployment?.gitCommitHash !== deployComponent.commitID
-                ? 'past deployment '
-                : ''}
+              From {deployment?.gitCommitHash !== deployComponent.commitID ? 'past deployment ' : ''}
               <GitCommitTags
                 commitID={deployComponent.commitID}
                 gitTags={deployComponent.gitTags}
@@ -35,5 +32,5 @@ export const ComponentDeploymentGitHubAttributes = ({
         </Typography>
       )}
     </>
-  );
-};
+  )
+}

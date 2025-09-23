@@ -1,15 +1,15 @@
-import { Server } from 'miragejs';
+import { Server } from 'miragejs'
 import type {
   ChangeEnvVarApiResponse,
   Deployment,
   EnvVarsApiResponse,
   GetDeploymentApiResponse,
-} from '../../store/radix-api';
-import { DeploymentComponentOverview } from './deployment-component-overview';
+} from '../../store/radix-api'
+import { DeploymentComponentOverview } from './deployment-component-overview'
 
 const testData: Array<
   Parameters<typeof DeploymentComponentOverview>[0] & {
-    deployment: Deployment;
+    deployment: Deployment
   }
 > = [
   {
@@ -55,8 +55,7 @@ const testData: Array<
             LOG_LEVEL: 'INFO',
             PIPELINE_IMG_TAG: 'release-latest',
             RADIX_APP: 'radix-cost-allocation-api',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'server-radix-cost-allocation-api-prod.weekly-26.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'server-radix-cost-allocation-api-prod.weekly-26.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-26',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'server',
@@ -66,8 +65,7 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '77c9312da69845b983c24925a0a691c724293720',
             RADIX_PORTS: '(3003)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'server-radix-cost-allocation-api-prod.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'server-radix-cost-allocation-api-prod.dev.radix.equinor.com',
           },
         },
       ],
@@ -120,8 +118,7 @@ const testData: Array<
             LOG_LEVEL: 'INFO',
             PIPELINE_IMG_TAG: 'release-latest',
             RADIX_APP: 'radix-cost-allocation-api',
-            RADIX_CANONICAL_DOMAIN_NAME:
-              'server-radix-cost-allocation-api-prod.weekly-26.dev.radix.equinor.com',
+            RADIX_CANONICAL_DOMAIN_NAME: 'server-radix-cost-allocation-api-prod.weekly-26.dev.radix.equinor.com',
             RADIX_CLUSTERNAME: 'weekly-26',
             RADIX_CLUSTER_TYPE: 'development',
             RADIX_COMPONENT: 'server',
@@ -131,14 +128,13 @@ const testData: Array<
             RADIX_GIT_COMMIT_HASH: '77c9312da69845b983c24925a0a691c724293720',
             RADIX_PORTS: '(3003)',
             RADIX_PORT_NAMES: '(http)',
-            RADIX_PUBLIC_DOMAIN_NAME:
-              'server-radix-cost-allocation-api-prod.dev.radix.equinor.com',
+            RADIX_PUBLIC_DOMAIN_NAME: 'server-radix-cost-allocation-api-prod.dev.radix.equinor.com',
           },
         },
       ],
     },
   },
-];
+]
 
 // Mock API response
 new Server({
@@ -148,23 +144,23 @@ new Server({
       this.get<GetDeploymentApiResponse>(
         `/api/v1/applications/:appName/deployments/${deploymentName}`,
         () => deployment
-      );
-    });
+      )
+    })
 
     // Mock response for EnvVars
     this.get<EnvVarsApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => []
-    );
+    )
 
     // Mock response for ChangeEnvVar
     // @ts-expect-error no idea what this should be
     this.patch<ChangeEnvVarApiResponse>(
       '/api/v1/applications/:appName/environments/:envName/components/:componentName/envvars',
       () => void 0
-    );
+    )
   },
-});
+})
 
 export default (
   <div
@@ -175,11 +171,8 @@ export default (
   >
     <div className="grid grid--gap-large" style={{ margin: '0 auto' }}>
       {testData.map(({ appName, componentName, deploymentName }, i) => (
-        <DeploymentComponentOverview
-          key={i}
-          {...{ appName, componentName, deploymentName }}
-        />
+        <DeploymentComponentOverview key={i} {...{ appName, componentName, deploymentName }} />
       ))}
     </div>
   </div>
-);
+)

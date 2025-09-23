@@ -20,6 +20,7 @@
 .scrim-dialog > .dialog-content {
   min-width: 15rem;
   overflow-y: auto;
+  max-width: var(--layout-max-width);
 
   .dialog-content-text {
     padding: var(--eds_spacing_medium);

@@ -1,22 +1,22 @@
-import { Icon, Typography } from '@equinor/eds-core-react';
-import { chevron_down, chevron_up } from '@equinor/eds-icons';
-import { type FunctionComponent, useCallback, useState } from 'react';
+import { Icon, Typography } from '@equinor/eds-core-react'
+import { chevron_down, chevron_up } from '@equinor/eds-icons'
+import { type FunctionComponent, useCallback, useState } from 'react'
 
-import type { X509Certificate } from '../../store/radix-api';
-import { formatDateTime } from '../../utils/datetime';
+import type { X509Certificate } from '../../store/radix-api'
+import { formatDateTime } from '../../utils/datetime'
 
-import './style.css';
+import './style.css'
 
 export const TLSCertificateList: FunctionComponent<{
-  tlsCertificates: Array<X509Certificate>;
+  tlsCertificates: Array<X509Certificate>
 }> = ({ tlsCertificates }) => {
   const [expandedRows, setExpandedRows] = useState<Record<number, boolean>>({
     0: true,
-  });
+  })
   const expandRow = useCallback<(index: number) => void>(
     (idx) => setExpandedRows((x) => ({ ...x, [idx]: !x[idx] })),
     []
-  );
+  )
 
   return (
     <div className="grid grid--gap-large">
@@ -48,14 +48,12 @@ export const TLSCertificateList: FunctionComponent<{
                   </Typography>
                   {tls?.notBefore && (
                     <Typography>
-                      Issued{' '}
-                      <strong>{formatDateTime(new Date(tls.notBefore))}</strong>
+                      Issued <strong>{formatDateTime(new Date(tls.notBefore))}</strong>
                     </Typography>
                   )}
                   {tls?.notAfter && (
                     <Typography>
-                      Expires{' '}
-                      <strong>{formatDateTime(new Date(tls.notAfter))}</strong>
+                      Expires <strong>{formatDateTime(new Date(tls.notAfter))}</strong>
                     </Typography>
                   )}
                   {tls.dnsNames && tls.dnsNames.length > 0 && (
@@ -75,5 +73,5 @@ export const TLSCertificateList: FunctionComponent<{
           </div>
         ))}
     </div>
-  );
-};
+  )
+}

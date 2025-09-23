@@ -1,38 +1,26 @@
-import {
-  CircularProgress,
-  Icon,
-  List,
-  Typography,
-} from '@equinor/eds-core-react';
-import { computer, group } from '@equinor/eds-icons';
-import {
-  useGetAdGroupsQuery,
-  useGetAdServicePrincipalQuery,
-} from '../../store/ms-graph-api';
-import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
-import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert';
-import { ExternalLink } from '../link/external-link';
+import { CircularProgress, Icon, List, Typography } from '@equinor/eds-core-react'
+import { computer, group } from '@equinor/eds-icons'
+import { useGetAdGroupsQuery, useGetAdServicePrincipalQuery } from '../../store/ms-graph-api'
+import { Alert } from '../alert'
+import AsyncResource from '../async-resource/async-resource'
+import { UnknownADGroupsAlert } from '../component/unknown-ad-groups-alert'
+import { ExternalLink } from '../link/external-link'
 
 interface Props {
-  adGroups: Array<string>;
-  adUsers: Array<string>;
-  appName: string;
+  adGroups: Array<string>
+  adUsers: Array<string>
+  appName: string
 }
 
 export function Overview({ adGroups, adUsers, appName }: Props) {
   const { data: groups, ...groupState } = useGetAdGroupsQuery({
     ids: adGroups,
-  });
+  })
   const { data: SPs, ...spState } = useGetAdServicePrincipalQuery({
     ids: adUsers,
-  });
-  const unknownADGroups = adGroups.filter(
-    (adGroupId) => !groups?.some((x) => x.id === adGroupId)
-  );
-  const unknownADUsers = adUsers.filter(
-    (adUserId) => !SPs?.some((x) => x.id === adUserId)
-  );
+  })
+  const unknownADGroups = adGroups.filter((adGroupId) => !groups?.some((x) => x.id === adGroupId))
+  const unknownADUsers = adUsers.filter((adUserId) => !SPs?.some((x) => x.id === adUserId))
 
   return (
     <div className="grid grid--gap-medium">
@@ -52,14 +40,8 @@ export function Overview({ adGroups, adUsers, appName }: Props) {
                   <CircularProgress size={24} /> Updating…
                 </>
               ) : (
-                <AsyncResource
-                  asyncState={groupState}
-                  nonFailureErrorCodes={[404]}
-                >
-                  <AsyncResource
-                    asyncState={spState}
-                    nonFailureErrorCodes={[404]}
-                  >
+                <AsyncResource asyncState={groupState} nonFailureErrorCodes={[404]}>
+                  <AsyncResource asyncState={spState} nonFailureErrorCodes={[404]}>
                     <List className="grid grid--gap-small">
                       {groups?.map(({ id, displayName }) => (
                         <List.Item key={id}>
@@ -83,10 +65,7 @@ export function Overview({ adGroups, adUsers, appName }: Props) {
                   </AsyncResource>
                   {(!groupState.isFetching && unknownADGroups.length > 0) ||
                     (!spState.isFetching && unknownADUsers.length > 0 && (
-                      <UnknownADGroupsAlert
-                        unknownADGroups={unknownADGroups}
-                        unknownADUsers={unknownADUsers}
-                      />
+                      <UnknownADGroupsAlert unknownADGroups={unknownADGroups} unknownADUsers={unknownADUsers} />
                     ))}
                 </AsyncResource>
               )}
@@ -99,5 +78,5 @@ export function Overview({ adGroups, adUsers, appName }: Props) {
         </div>
       </section>
     </div>
-  );
+  )
 }

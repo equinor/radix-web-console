@@ -1,20 +1,20 @@
-import { CircularProgress, Typography } from '@equinor/eds-core-react';
-import { useState } from 'react';
-import { Chart } from 'react-google-charts';
-import { ScrimPopup } from '../scrim-popup';
+import { CircularProgress, Typography } from '@equinor/eds-core-react'
+import { useState } from 'react'
+import { Chart } from 'react-google-charts'
+import { ScrimPopup } from '../scrim-popup'
 
-import './style.css';
-import type { ChartWrapperOptions } from 'react-google-charts/dist/types';
-import { externalUrls } from '../../externalUrls';
-import { useGetUptimeQuery } from '../../store/uptime-api';
-import { ExternalLink } from '../link/external-link';
+import './style.css'
+import type { ChartWrapperOptions } from 'react-google-charts/dist/types'
+import { externalUrls } from '../../externalUrls'
+import { useGetUptimeQuery } from '../../store/uptime-api'
+import { ExternalLink } from '../link/external-link'
 
 export const AvailabilityCharts = () => {
-  const { data: uptime, isLoading, isError } = useGetUptimeQuery();
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const { data: uptime, isLoading, isError } = useGetUptimeQuery()
+  const [visibleScrim, setVisibleScrim] = useState(false)
 
   if (isError) {
-    return <span>Failed to load chart</span>;
+    return <span>Failed to load chart</span>
   }
 
   if (isLoading) {
@@ -22,51 +22,32 @@ export const AvailabilityCharts = () => {
       <strong>
         <CircularProgress size={16} /> Loading
       </strong>
-    );
+    )
   }
 
   if (!uptime || uptime.length === 0) {
-    return (
-      <Typography variant="body_short_bold">
-        Not enough data to display charts
-      </Typography>
-    );
+    return <Typography variant="body_short_bold">Not enough data to display charts</Typography>
   }
 
-  const data = uptime.map(([timestamp, available]) => [
-    new Date(timestamp * 1000),
-    Number(available),
-  ]);
+  const data = uptime.map(([timestamp, available]) => [new Date(timestamp * 1000), Number(available)])
 
-  const availability =
-    (uptime.filter(([_, x]) => x === '1').length / uptime.length) * 100;
+  const availability = (uptime.filter(([_, x]) => x === '1').length / uptime.length) * 100
 
   return (
     <>
       <Typography variant="h4">Availability past 30 days</Typography>
       <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
         <div className="chart-percentage__ring">
-          <CircularProgress
-            variant="determinate"
-            value={Math.min(Math.max(availability, 0), 100)}
-          />
+          <CircularProgress variant="determinate" value={Math.min(Math.max(availability, 0), 100)} />
           <Typography>{`${availability.toFixed(2)}%`}</Typography>
         </div>
         <Typography link>View history</Typography>
       </div>
-      <ScrimPopup
-        title="Availability"
-        open={visibleScrim}
-        onClose={() => setVisibleScrim(false)}
-        isDismissable
-      >
+      <ScrimPopup title="Availability" open={visibleScrim} onClose={() => setVisibleScrim(false)} isDismissable>
         <div className="chart-container grid grid--gap-medium">
           <Typography>
             For more information on availability, please check the{' '}
-            <ExternalLink href={externalUrls.uptimeDocs}>
-              documentation
-            </ExternalLink>
-            .
+            <ExternalLink href={externalUrls.uptimeDocs}>documentation</ExternalLink>.
           </Typography>
 
           {visibleScrim && uptime.length > 0 ? (
@@ -87,8 +68,8 @@ export const AvailabilityCharts = () => {
         </div>
       </ScrimPopup>
     </>
-  );
-};
+  )
+}
 
 const DataChartItemOptions: ChartWrapperOptions['options'] = {
   colors: ['#007079'],
@@ -111,4 +92,4 @@ const DataChartItemOptions: ChartWrapperOptions['options'] = {
     trigger: 'both',
   },
   aggregationTarget: 'none',
-};
+}

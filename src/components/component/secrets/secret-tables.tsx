@@ -1,51 +1,38 @@
-import { Table, Typography } from '@equinor/eds-core-react';
-import {
-  type FunctionComponent,
-  type ReactNode,
-  useEffect,
-  useState,
-} from 'react';
+import { Table, Typography } from '@equinor/eds-core-react'
+import { type FunctionComponent, type ReactNode, useEffect, useState } from 'react'
 
-import type { Secret } from '../../../store/radix-api';
-import {
-  dataSorter,
-  type SortDirection,
-  sortCompareString,
-} from '../../../utils/sort-utils';
-import { ScrimPopup } from '../../scrim-popup';
-import { ComponentSecretStatusBadge } from '../../status-badges';
-import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item';
-import { SecretOverview } from './secret-overview';
+import type { Secret } from '../../../store/radix-api'
+import { dataSorter, type SortDirection, sortCompareString } from '../../../utils/sort-utils'
+import { ScrimPopup } from '../../scrim-popup'
+import { ComponentSecretStatusBadge } from '../../status-badges'
+import { SecretListItemTitleAzureKeyVaultItem } from './secret-list-item-title-azure-key-vault-item'
+import { SecretOverview } from './secret-overview'
 
-import './style.css';
+import './style.css'
 
 export type SecretComponent<T extends object = object> = FunctionComponent<
   T & {
-    appName: string;
-    componentName: string;
-    envName: string;
-    secrets: Array<Secret>;
+    appName: string
+    componentName: string
+    envName: string
+    secrets: Array<Secret>
   }
->;
+>
 
 type Props = {
-  title: string;
-  scrimTitle?: ReactNode;
-  appName: string;
-  componentName: string;
-  envName: string;
-  secretName: string;
-};
+  title: string
+  scrimTitle?: ReactNode
+  appName: string
+  componentName: string
+  envName: string
+  secretName: string
+}
 const SecretLink = ({ title, scrimTitle, ...rest }: Props) => {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [visibleScrim, setVisibleScrim] = useState(false)
 
   return (
     <div>
-      <Typography
-        link
-        onClick={() => setVisibleScrim(!visibleScrim)}
-        token={{ textDecoration: 'none' }}
-      >
+      <Typography link onClick={() => setVisibleScrim(!visibleScrim)} token={{ textDecoration: 'none' }}>
         {title}
       </Typography>
 
@@ -61,14 +48,11 @@ const SecretLink = ({ title, scrimTitle, ...rest }: Props) => {
         </div>
       </ScrimPopup>
     </div>
-  );
-};
+  )
+}
 
-function getDisplayName({
-  displayName,
-  name,
-}: Pick<Secret, 'displayName' | 'name'>): string {
-  return displayName || name;
+function getDisplayName({ displayName, name }: Pick<Secret, 'displayName' | 'name'>): string {
+  return displayName || name
 }
 
 function useGetSortedSecrets(
@@ -76,41 +60,22 @@ function useGetSortedSecrets(
   nameSort?: SortDirection,
   resourceSort?: SortDirection
 ): Array<Secret> {
-  const [sortedData, setSortedData] = useState(secrets);
+  const [sortedData, setSortedData] = useState(secrets)
 
   useEffect(() => {
     setSortedData(
       dataSorter(secrets, [
-        (x, y) =>
-          sortCompareString(
-            getDisplayName(x),
-            getDisplayName(y),
-            nameSort,
-            true,
-            () => !!nameSort
-          ),
-        (x, y) =>
-          sortCompareString(
-            x.resource,
-            y.resource,
-            resourceSort,
-            true,
-            () => !!resourceSort
-          ),
+        (x, y) => sortCompareString(getDisplayName(x), getDisplayName(y), nameSort, true, () => !!nameSort),
+        (x, y) => sortCompareString(x.resource, y.resource, resourceSort, true, () => !!resourceSort),
       ])
-    );
-  }, [nameSort, resourceSort, secrets]);
+    )
+  }, [nameSort, resourceSort, secrets])
 
-  return sortedData;
+  return sortedData
 }
 
-export const GenericSecrets: SecretComponent = ({
-  appName,
-  envName,
-  componentName,
-  secrets,
-}) => {
-  const sortedSecrets = useGetSortedSecrets(secrets, 'ascending');
+export const GenericSecrets: SecretComponent = ({ appName, envName, componentName, secrets }) => {
+  const sortedSecrets = useGetSortedSecrets(secrets, 'ascending')
 
   return (
     <Table className="secret-table">
@@ -126,11 +91,7 @@ export const GenericSecrets: SecretComponent = ({
           <Table.Row key={x.name}>
             <Table.Cell className="fitwidth padding-right-0" />
             <Table.Cell>
-              <SecretLink
-                title={getDisplayName(x)}
-                secretName={x.name}
-                {...{ appName, envName, componentName }}
-              />
+              <SecretLink title={getDisplayName(x)} secretName={x.name} {...{ appName, envName, componentName }} />
             </Table.Cell>
             <Table.Cell>
               <ComponentSecretStatusBadge status={x.status} />
@@ -139,16 +100,11 @@ export const GenericSecrets: SecretComponent = ({
         ))}
       </Table.Body>
     </Table>
-  );
-};
+  )
+}
 
-export const KeyVaultSecrets: SecretComponent = ({
-  appName,
-  envName,
-  componentName,
-  secrets,
-}) => {
-  const sortedSecrets = useGetSortedSecrets(secrets, undefined, 'ascending');
+export const KeyVaultSecrets: SecretComponent = ({ appName, envName, componentName, secrets }) => {
+  const sortedSecrets = useGetSortedSecrets(secrets, undefined, 'ascending')
 
   return (
     <Table className="secret-table">
@@ -189,16 +145,11 @@ export const KeyVaultSecrets: SecretComponent = ({
         ))}
       </Table.Body>
     </Table>
-  );
-};
+  )
+}
 
-export const VolumeMountSecrets: SecretComponent = ({
-  appName,
-  envName,
-  componentName,
-  secrets,
-}) => {
-  const sortedSecrets = useGetSortedSecrets(secrets, 'ascending', 'ascending');
+export const VolumeMountSecrets: SecretComponent = ({ appName, envName, componentName, secrets }) => {
+  const sortedSecrets = useGetSortedSecrets(secrets, 'ascending', 'ascending')
 
   return (
     <Table className="secret-table">
@@ -230,5 +181,5 @@ export const VolumeMountSecrets: SecretComponent = ({
         ))}
       </Table.Body>
     </Table>
-  );
-};
+  )
+}

@@ -1,8 +1,8 @@
-import { List, Typography } from '@equinor/eds-core-react';
-import type { FunctionComponent } from 'react';
+import { List, Typography } from '@equinor/eds-core-react'
+import type { FunctionComponent } from 'react'
 
 export const IngressAllowList: FunctionComponent<{
-  allowedIpRanges?: Array<string>;
+  allowedIpRanges?: Array<string>
 }> = ({ allowedIpRanges }) =>
   allowedIpRanges && allowedIpRanges.length > 0 ? (
     <div>
@@ -15,4 +15,4 @@ export const IngressAllowList: FunctionComponent<{
     </div>
   ) : (
     <Typography>Accessible from all public IP addresses</Typography>
-  );
+  )

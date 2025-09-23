@@ -1,9 +1,9 @@
-import { List, Typography } from '@equinor/eds-core-react';
+import { List, Typography } from '@equinor/eds-core-react'
 
 type CommandAndArgsProps = {
-  command?: string[];
-  args?: string[];
-};
+  command?: string[]
+  args?: string[]
+}
 
 export const CommandAndArgs = ({ command, args }: CommandAndArgsProps) => (
   <>
@@ -32,4 +32,4 @@ export const CommandAndArgs = ({ command, args }: CommandAndArgsProps) => (
       </Typography>
     )}
   </>
-);
+)

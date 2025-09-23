@@ -1,30 +1,25 @@
-import { Accordion, List, Typography } from '@equinor/eds-core-react';
-import { type ReactNode, useState } from 'react';
-import { pollingInterval } from '../../store/defaults';
-import {
-  type ImageHubSecret,
-  radixApi,
-  useGetPrivateImageHubsQuery,
-} from '../../store/radix-api';
-import { getFetchErrorMessage } from '../../store/utils/parse-errors';
-import { dataSorter, sortCompareString } from '../../utils/sort-utils';
-import AsyncResource from '../async-resource/async-resource';
-import { errorToast, successToast } from '../global-top-nav/styled-toaster';
-import { ScrimPopup } from '../scrim-popup';
-import { SecretForm } from '../secret-form';
-import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge';
+import { Accordion, List, Typography } from '@equinor/eds-core-react'
+import { type ReactNode, useState } from 'react'
+import { pollingInterval } from '../../store/defaults'
+import { type ImageHubSecret, radixApi, useGetPrivateImageHubsQuery } from '../../store/radix-api'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
+import { dataSorter, sortCompareString } from '../../utils/sort-utils'
+import AsyncResource from '../async-resource/async-resource'
+import { errorToast, successToast } from '../global-top-nav/styled-toaster'
+import { ScrimPopup } from '../scrim-popup'
+import { SecretForm } from '../secret-form'
+import { ImageHubSecretStatusBadge } from '../status-badges/image-hub-secret-status-badge'
 
-import './style.css';
+import './style.css'
 
 interface FormProps {
-  appName: string;
-  secret: ImageHubSecret;
-  fetchSecret: () => void;
-  onSave?: () => void;
+  appName: string
+  secret: ImageHubSecret
+  fetchSecret: () => void
+  onSave?: () => void
 }
 function ImageHubForm({ appName, secret, fetchSecret, onSave }: FormProps) {
-  const [trigger, { isLoading }] =
-    radixApi.endpoints.updatePrivateImageHubsSecretValue.useMutation();
+  const [trigger, { isLoading }] = radixApi.endpoints.updatePrivateImageHubsSecretValue.useMutation()
 
   return (
     <SecretForm
@@ -39,17 +34,17 @@ function ImageHubForm({ appName, secret, fetchSecret, onSave }: FormProps) {
             appName,
             serverName: secret.server,
             secretParameters: { secretValue: value },
-          }).unwrap();
+          }).unwrap()
 
-          fetchSecret();
-          onSave?.();
-          successToast('Saved');
+          fetchSecret()
+          onSave?.()
+          successToast('Saved')
         } catch (error) {
-          errorToast(`Error while saving. ${getFetchErrorMessage(error)}`);
-          return false;
+          errorToast(`Error while saving. ${getFetchErrorMessage(error)}`)
+          return false
         }
 
-        return true;
+        return true
       }}
       overview={
         <div>
@@ -62,23 +57,19 @@ function ImageHubForm({ appName, secret, fetchSecret, onSave }: FormProps) {
         </div>
       }
     />
-  );
+  )
 }
 
 type SecretLinkProp = {
-  title: string;
-  scrimTitle?: ReactNode;
-} & FormProps;
+  title: string
+  scrimTitle?: ReactNode
+} & FormProps
 const SecretLink = ({ title, scrimTitle, ...rest }: SecretLinkProp) => {
-  const [visibleScrim, setVisibleScrim] = useState(false);
+  const [visibleScrim, setVisibleScrim] = useState(false)
 
   return (
     <div>
-      <Typography
-        link
-        onClick={() => setVisibleScrim(!visibleScrim)}
-        token={{ textDecoration: 'none' }}
-      >
+      <Typography link onClick={() => setVisibleScrim(!visibleScrim)} token={{ textDecoration: 'none' }}>
         {title}
       </Typography>
 
@@ -94,17 +85,14 @@ const SecretLink = ({ title, scrimTitle, ...rest }: SecretLinkProp) => {
         </div>
       </ScrimPopup>
     </div>
-  );
-};
+  )
+}
 
 type Props = {
-  appName: string;
-};
+  appName: string
+}
 export function ImageHubsAccordion({ appName }: Props) {
-  const { data, refetch, ...state } = useGetPrivateImageHubsQuery(
-    { appName },
-    { skip: !appName, pollingInterval }
-  );
+  const { data, refetch, ...state } = useGetPrivateImageHubsQuery({ appName }, { skip: !appName, pollingInterval })
 
   return (
     <Accordion className="accordion" chevronPosition="right">
@@ -116,9 +104,7 @@ export function ImageHubsAccordion({ appName }: Props) {
           <AsyncResource asyncState={state}>
             {data && data.length > 0 ? (
               <List className="o-indent-list">
-                {dataSorter(data, [
-                  (x, y) => sortCompareString(x.server, y.server),
-                ]).map((secret) => (
+                {dataSorter(data, [(x, y) => sortCompareString(x.server, y.server)]).map((secret) => (
                   <List.Item key={secret.server}>
                     <div className="grid grid--gap-large grid--auto-columns">
                       <SecretLink
@@ -128,9 +114,7 @@ export function ImageHubsAccordion({ appName }: Props) {
                         {...{ appName, secret }}
                       />
 
-                      <ImageHubSecretStatusBadge
-                        status={secret.status ?? 'Pending'}
-                      />
+                      <ImageHubSecretStatusBadge status={secret.status ?? 'Pending'} />
                     </div>
                   </List.Item>
                 ))}
@@ -142,5 +126,5 @@ export function ImageHubsAccordion({ appName }: Props) {
         </Accordion.Panel>
       </Accordion.Item>
     </Accordion>
-  );
+  )
 }

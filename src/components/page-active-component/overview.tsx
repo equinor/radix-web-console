@@ -5,35 +5,35 @@ import {
   type DnsAlias as DnsAliasModel,
   type ExternalDns,
   useGetApplicationResourcesUtilizationQuery,
-} from '../../store/radix-api';
-import { ComponentIdentity } from '../component/component-identity';
-import { ComponentPorts } from '../component/component-ports';
-import { DockerImage } from '../docker-image';
-import { ComponentStatusBadge } from '../status-badges';
-import { DefaultAlias } from './default-alias';
-import './style.css';
-import { Typography } from '@equinor/eds-core-react';
-import { slowPollingInterval } from '../../store/defaults';
-import { ComponentDeploymentGitHubAttributes } from '../component/component-deployment-github-attributes';
-import { DeploymentRef } from '../component/deployment-ref';
-import { IngressAllowList } from '../component/ingress-allow-list';
-import { ExternalLink } from '../link/external-link';
-import { ResourceRequirements } from '../resource-requirements';
-import { Runtime } from '../runtime';
-import { UtilizationPopover } from '../utilization-popover/utilization-popover';
-import { DNSAliases } from './dns-aliases';
+} from '../../store/radix-api'
+import { ComponentIdentity } from '../component/component-identity'
+import { ComponentPorts } from '../component/component-ports'
+import { DockerImage } from '../docker-image'
+import { ComponentStatusBadge } from '../status-badges'
+import { DefaultAlias } from './default-alias'
+import './style.css'
+import { Typography } from '@equinor/eds-core-react'
+import { slowPollingInterval } from '../../store/defaults'
+import { ComponentDeploymentGitHubAttributes } from '../component/component-deployment-github-attributes'
+import { DeploymentRef } from '../component/deployment-ref'
+import { IngressAllowList } from '../component/ingress-allow-list'
+import { ExternalLink } from '../link/external-link'
+import { ResourceRequirements } from '../resource-requirements'
+import { Runtime } from '../runtime'
+import { UtilizationPopover } from '../utilization-popover/utilization-popover'
+import { DNSAliases } from './dns-aliases'
 
-const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME';
+const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME'
 
 type Props = {
-  appName: string;
-  appAlias?: ApplicationAlias;
-  dnsAliases?: DnsAliasModel[];
-  dnsExternalAliases?: ExternalDns[];
-  envName: string;
-  component: Component;
-  deployment?: Deployment;
-};
+  appName: string
+  appAlias?: ApplicationAlias
+  dnsAliases?: DnsAliasModel[]
+  dnsExternalAliases?: ExternalDns[]
+  envName: string
+  component: Component
+  deployment?: Deployment
+}
 export const Overview = ({
   appName,
   appAlias,
@@ -43,15 +43,13 @@ export const Overview = ({
   component,
   deployment,
 }: Props) => {
-  const dnsAliasUrls = dnsAliases ? dnsAliases.map((alias) => alias.url) : [];
-  const dnsExternalAliasUrls = dnsExternalAliases
-    ? dnsExternalAliases.map((alias) => alias.fqdn)
-    : [];
+  const dnsAliasUrls = dnsAliases ? dnsAliases.map((alias) => alias.url) : []
+  const dnsExternalAliasUrls = dnsExternalAliases ? dnsExternalAliases.map((alias) => alias.fqdn) : []
 
   const { data: utilization } = useGetApplicationResourcesUtilizationQuery(
     { appName },
     { pollingInterval: slowPollingInterval }
-  );
+  )
 
   return (
     <div className="grid grid--gap-medium">
@@ -64,17 +62,9 @@ export const Overview = ({
           <Typography>
             Image <DockerImage path={component.image} />
           </Typography>
-          <DeploymentRef
-            appName={appName}
-            deploymentName={deployment?.name ?? ''}
-          />
-          <ComponentDeploymentGitHubAttributes
-            deployComponent={component}
-            deployment={deployment}
-          />
-          {component && deployment && (
-            <ComponentIdentity component={component} deployment={deployment} />
-          )}
+          <DeploymentRef appName={appName} deploymentName={deployment?.name ?? ''} />
+          <ComponentDeploymentGitHubAttributes deployComponent={component} deployment={deployment} />
+          {component && deployment && <ComponentIdentity component={component} deployment={deployment} />}
         </div>
 
         <div className="grid grid--gap-medium">
@@ -84,42 +74,20 @@ export const Overview = ({
           </div>
           <div className="grid grid--gap-small grid--auto-columns">
             <Typography>Utilization</Typography>
-            <UtilizationPopover
-              showLabel
-              utilization={utilization}
-              path={`${envName}.${component.name}.`}
-            />
+            <UtilizationPopover showLabel utilization={utilization} path={`${envName}.${component.name}.`} />
           </div>
           {component.variables?.[URL_VAR_NAME] && (
             <Typography>
-              Publicly available{' '}
-              <ExternalLink
-                href={`https://${component.variables[URL_VAR_NAME]}`}
-              >
-                link
-              </ExternalLink>
+              Publicly available <ExternalLink href={`https://${component.variables[URL_VAR_NAME]}`}>link</ExternalLink>
             </Typography>
           )}
-          {appAlias && (
-            <DefaultAlias
-              appAlias={appAlias}
-              componentName={component.name}
-              envName={envName}
-            />
-          )}
-          {dnsAliasUrls && dnsAliasUrls.length > 0 && (
-            <DNSAliases urls={dnsAliasUrls} title={'DNS aliases'} />
-          )}
+          {appAlias && <DefaultAlias appAlias={appAlias} componentName={component.name} envName={envName} />}
+          {dnsAliasUrls && dnsAliasUrls.length > 0 && <DNSAliases urls={dnsAliasUrls} title={'DNS aliases'} />}
           {dnsExternalAliasUrls && dnsExternalAliasUrls.length > 0 && (
-            <DNSAliases
-              urls={dnsExternalAliasUrls}
-              title={'DNS external aliases'}
-            />
+            <DNSAliases urls={dnsExternalAliasUrls} title={'DNS external aliases'} />
           )}
           {component.ports?.some(({ isPublic }) => isPublic) && (
-            <IngressAllowList
-              allowedIpRanges={component.network?.ingress?.public?.allow}
-            />
+            <IngressAllowList allowedIpRanges={component.network?.ingress?.public?.allow} />
           )}
           <ComponentPorts ports={component.ports ?? []} />
           {component.runtime && (
@@ -135,5 +103,5 @@ export const Overview = ({
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

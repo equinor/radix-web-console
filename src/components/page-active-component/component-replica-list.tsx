@@ -1,17 +1,17 @@
-import { Accordion, Typography } from '@equinor/eds-core-react';
-import type { ReplicaSummary } from '../../store/radix-api';
-import { getReplicaUrl } from '../../utils/routing';
-import { ReplicaList } from '../replica-list';
+import { Accordion, Typography } from '@equinor/eds-core-react'
+import type { ReplicaSummary } from '../../store/radix-api'
+import { getReplicaUrl } from '../../utils/routing'
+import { ReplicaList } from '../replica-list'
 
 type Props = {
-  title: string;
-  appName: string;
-  envName: string;
-  componentName: string;
-  replicaList?: Array<ReplicaSummary>;
-  isExpanded?: boolean;
-  showUtilization?: boolean;
-};
+  title: string
+  appName: string
+  envName: string
+  componentName: string
+  replicaList?: Array<ReplicaSummary>
+  isExpanded?: boolean
+  showUtilization?: boolean
+}
 export const ComponentReplicaList = ({
   title,
   appName,
@@ -39,9 +39,7 @@ export const ComponentReplicaList = ({
               envName={envName}
               compName={componentName}
               replicaList={replicaList}
-              replicaUrlFunc={(name) =>
-                getReplicaUrl(appName, envName, componentName, name)
-              }
+              replicaUrlFunc={(name) => getReplicaUrl(appName, envName, componentName, name)}
             />
           ) : (
             <Typography>This component has no replicas</Typography>
@@ -50,4 +48,4 @@ export const ComponentReplicaList = ({
       </Accordion.Panel>
     </Accordion.Item>
   </Accordion>
-);
+)

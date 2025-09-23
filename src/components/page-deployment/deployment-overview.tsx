@@ -1,29 +1,29 @@
-import { Button, Icon, Typography } from '@equinor/eds-core-react';
-import { info_circle } from '@equinor/eds-icons';
-import { Link } from 'react-router-dom';
-import { routes } from '../../routes';
-import { pollingInterval } from '../../store/defaults';
-import { useGetDeploymentQuery } from '../../store/radix-api';
-import { buildComponentMap } from '../../utils/build-component-map';
-import { routeWithParams, smallDeploymentName } from '../../utils/string';
-import { Alert } from '../alert';
-import AsyncResource from '../async-resource/async-resource';
-import { Breadcrumb } from '../breadcrumb';
-import { DeploymentComponentList } from './deployment-component-list';
-import { DeploymentJobComponentList } from './deployment-job-component-list';
-import { DeploymentSummary } from './deployment-summary';
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
+import { info_circle } from '@equinor/eds-icons'
+import { Link } from 'react-router-dom'
+import { routes } from '../../routes'
+import { pollingInterval } from '../../store/defaults'
+import { useGetDeploymentQuery } from '../../store/radix-api'
+import { buildComponentMap } from '../../utils/build-component-map'
+import { routeWithParams, smallDeploymentName } from '../../utils/string'
+import { Alert } from '../alert'
+import AsyncResource from '../async-resource/async-resource'
+import { Breadcrumb } from '../breadcrumb'
+import { DeploymentComponentList } from './deployment-component-list'
+import { DeploymentJobComponentList } from './deployment-job-component-list'
+import { DeploymentSummary } from './deployment-summary'
 
 type Props = {
-  appName: string;
-  deploymentName: string;
-};
+  appName: string
+  deploymentName: string
+}
 
 export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
   const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
-  );
-  const componentMap = buildComponentMap(deployment?.components ?? []);
+  )
+  const componentMap = buildComponentMap(deployment?.components ?? [])
   return (
     <>
       <Breadcrumb
@@ -90,5 +90,5 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
         </AsyncResource>
       </main>
     </>
-  );
-};
+  )
+}
