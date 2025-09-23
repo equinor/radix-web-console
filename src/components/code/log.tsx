@@ -35,18 +35,12 @@ export type StreamingLogProps = {
   eventStreamUrl: string
 }
 
-export const StreamingLog = ({
-  copy,
-  download,
-  downloadCb,
-  filename,
-  eventStreamUrl,
-}: StreamingLogProps) => {
+export const StreamingLog = ({ copy, download, downloadCb, filename, eventStreamUrl }: StreamingLogProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const serializeAddon = useMemo(() => new SerializeAddon(), [])
   const terminal = useRef(new Terminal(defaultOptions))
 
-  const {token, tokenError} = useAuthentication()
+  const { token, tokenError } = useAuthentication()
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -225,12 +219,13 @@ const useAuthentication = () => {
       return
     }
 
-    authProvider.getAccessToken()
-      .then(token => {
+    authProvider
+      .getAccessToken()
+      .then((token) => {
         setToken(token)
       })
-      .catch(err => setTokenError(err))
+      .catch((err) => setTokenError(err))
   }, [authProvider])
 
-  return {token, tokenError}
+  return { token, tokenError }
 }
