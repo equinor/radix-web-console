@@ -16,9 +16,6 @@ spec:
     - name: prod
       build:
         from: release
-    - name: dev
-      build:
-        from: replaqce-oauth2-proxy-with-msal-pkce
   components:
     - name: web
       readOnlyFileSystem: true
