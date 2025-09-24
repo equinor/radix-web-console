@@ -143,13 +143,9 @@ const UserInfo = () => {
             </Card.HeaderTitle>
           </Card.Header>
           <Card.Actions>
-            <Button onClick={() => signOut()}>
+            <Button onClick={() => signOut()} variant="outlined">
               <Icon data={log_out} />
               Sign out
-            </Button>
-            <Button onClick={() => signIn()} variant="outlined">
-              <Icon data={log_in} />
-              Sign in with a different account
             </Button>
           </Card.Actions>
         </Card>
