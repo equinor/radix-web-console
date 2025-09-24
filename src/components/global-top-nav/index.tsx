@@ -149,7 +149,7 @@ const UserInfo = () => {
             </Button>
             <Button onClick={() => signIn()} variant="outlined">
               <Icon data={log_in} />
-              Sign in with a differenct account
+              Sign in with a different account
             </Button>
           </Card.Actions>
         </Card>
