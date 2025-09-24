@@ -30,10 +30,6 @@
   left: 0;
   transition: all 0.2s ease;
 }
-.global-top-nav .nav-icon-links {
-  display: none;
-  top: 0;
-}
 
 .global-top-nav .nav-links > button {
   height: auto;
@@ -47,15 +43,6 @@
 .global-top-nav .nav-links > button a {
   width: 100%;
   height: var(--eds_shape_icon_button_min_height);
-}
-
-.global-top-nav .nav-links .icon-links a {
-  height: 40px;
-  width: 40px;
-}
-
-.mobile-menu {
-  justify-self: right;
 }
 
 .styled_toaster > div > .Toastify__toast-icon > svg[type="info"] {
@@ -84,8 +71,7 @@
 }
 
 @media (min-width: 50rem) {
-  .global-top-nav .mobile-menu,
-  .mobile-icon-links {
+  .global-top-nav .mobile-menu {
     display: none;
   }
   .global-top-nav {
@@ -104,10 +90,7 @@
     padding: var(--eds_spacing_medium);
     padding-bottom: var(--eds_spacing_small);
   }
-  .nav-links .icon-links {
-    display: none;
-  }
-  .global-top-nav .nav-icon-links {
-    display: block;
+  .global-top-nav .nav-icon-links > * {
+    margin-left: var(--eds_spacing_large);
   }
 }
