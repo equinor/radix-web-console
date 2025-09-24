@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { type BaseQueryApi, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { configVariables } from '../../utils/config'
 import type { RootState } from '../store'
 
@@ -8,9 +8,23 @@ const responseHandler = (response: Response) => {
   return !contentType || contentType.includes('text/plain') ? response.text() : response.json()
 }
 
+const proxyPrepareHeaders = async (headers: Headers, { getState }: Pick<BaseQueryApi, 'getState'>) => {
+  const state = getState() as RootState
+  const provider = state.auth.provider
+  if (!provider || !provider.radixApiAuthProvider) return headers
+
+  const token = await provider.radixApiAuthProvider.getAccessToken()
+  headers.set('Authorization', `Bearer ${token}`)
+  return headers
+}
+
 export const costStoreApi = createApi({
   reducerPath: 'costApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/cost-api', redirect: 'error' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/cost-api',
+    redirect: 'error',
+    prepareHeaders: proxyPrepareHeaders,
+  }),
   endpoints: () => ({}),
 })
 
@@ -20,6 +34,7 @@ export const logStoreApi = createApi({
     baseUrl: '/log-api',
     responseHandler,
     redirect: 'error',
+    prepareHeaders: proxyPrepareHeaders,
   }),
   endpoints: () => ({}),
 })
@@ -30,13 +45,18 @@ export const radixStoreApi = createApi({
     baseUrl: '/api/v1',
     responseHandler,
     redirect: 'error',
+    prepareHeaders: proxyPrepareHeaders,
   }),
   endpoints: () => ({}),
 })
 
 export const scanStoreApi = createApi({
   reducerPath: 'scanApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/scan-api', redirect: 'error' }),
+  baseQuery: fetchBaseQuery({
+    baseUrl: '/scan-api',
+    redirect: 'error',
+    prepareHeaders: proxyPrepareHeaders,
+  }),
   endpoints: () => ({}),
 })
 

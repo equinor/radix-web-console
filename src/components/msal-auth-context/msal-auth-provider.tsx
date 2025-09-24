@@ -10,11 +10,12 @@ import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-
 import { type PropsWithChildren, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { setAccount, setProvider } from '../../store/msal/reducer'
-import { msalConfig, msGraphConfig, serviceNowApiConfig } from './config'
+import { msalConfig, msGraphConfig, radixApiConfig, serviceNowApiConfig } from './config'
 
 export type MsalContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider
   serviceNowAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider
+  radixApiAuthProvider: AuthCodeMSALBrowserAuthenticationProvider
 }
 
 export function MsalAuthProvider({ children }: PropsWithChildren) {
@@ -44,6 +45,11 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
         account: account,
         interactionType: InteractionType.Redirect,
         scopes: serviceNowApiConfig.scopes,
+      }),
+      radixApiAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(msal, {
+        account: account,
+        interactionType: InteractionType.Redirect,
+        scopes: radixApiConfig.scopes,
       }),
     }
   }, [msal])

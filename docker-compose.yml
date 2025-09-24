@@ -24,7 +24,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: nginxinc/nginx-unprivileged:1.27-alpine3.21
+    image: nginxinc/nginx-unprivileged:1.29-alpine3.22
     container_name: radix-proxy_container
     read_only: true
     volumes:
@@ -48,49 +48,6 @@ services:
       - radix
     ports:
       - "8080:8080"
-    depends_on:
-      - auth
-
-  auth:
-    image: quay.io/oauth2-proxy/oauth2-proxy:v7.9.0
-    container_name: radix-auth_container
-    read_only: true
-    environment:
-      # See the `radixconfig.yaml` file for a description of these settings
-      - OAUTH2_PROXY_CLIENT_ID=5687b237-eda3-4ec3-a2a1-023e85a2bd84
-      - OAUTH2_PROXY_CLIENT_SECRET=${OAUTH2_PROXY_CLIENT_SECRET}
-      - OAUTH2_PROXY_COOKIE_REFRESH=45m
-      - OAUTH2_PROXY_COOKIE_SECRET=${OAUTH2_PROXY_COOKIE_SECRET}
-      - OAUTH2_PROXY_COOKIE_SECURE=false # only for development
-      - OAUTH2_PROXY_EMAIL_DOMAINS=*
-      - OAUTH2_PROXY_HTTP_ADDRESS=http://:8000
-      - OAUTH2_PROXY_OIDC_ISSUER_URL=https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0
-      - OAUTH2_PROXY_SKIP_CLAIMS_FROM_PROFILE_URL=true
-      - OAUTH2_PROXY_PASS_ACCESS_TOKEN=true
-      - OAUTH2_PROXY_PASS_BASIC_AUTH=false
-      - OAUTH2_PROXY_PASS_USER_HEADERS=false
-      - OAUTH2_PROXY_PROVIDER=oidc
-      - OAUTH2_PROXY_REDIRECT_URL=http://localhost:8000/oauth2/callback
-      - OAUTH2_PROXY_REDIS_CONNECTION_URL=redis://auth-state:6379
-      - OAUTH2_PROXY_SCOPE=openid profile offline_access 6dae42f8-4368-4678-94ff-3960e28e3630/user.read email # offline_access scope needed to get refresh token: https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-oauth2-auth-code-flow#successful-response-1
-      - OAUTH2_PROXY_SESSION_STORE_TYPE=redis
-      - OAUTH2_PROXY_SKIP_PROVIDER_BUTTON=true
-      - OAUTH2_PROXY_UPSTREAMS=http://proxy:8080
-    networks:
-      - radix
-    ports:
-      - "8000:8000" # In prod, this is served on port 443
-    depends_on:
-      - auth-state
-
-  # for use with development
-  auth-state:
-    image: redis:7-alpine
-    container_name: radix-auth-state_container
-    networks:
-      - radix
-    ports:
-      - "6379:6379"
 
 volumes:
   node-modules:

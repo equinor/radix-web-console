@@ -51,22 +51,6 @@ run:
 run-rebuild:
 	docker compose -f docker-compose.yml up --build
 
-.PHONY: run-host
-run-host:
-	docker compose -f docker-compose-host.yml up
-
-.PHONY: run-host-rebuild
-run-host-rebuild:
-	docker compose -f docker-compose-host.yml up --build
-
-.PHONY: run-mac
-run-mac:
-	docker compose -f docker-compose-host-macos.yml up
-
-.PHONY: run-mac-rebuild
-run-mac-rebuild:
-	docker compose -f docker-compose-host-macos.yml up --build
-
 .PHONY: down
 down:
 	docker compose down

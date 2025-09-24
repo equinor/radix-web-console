@@ -47,7 +47,7 @@ export function getFetchErrorData(error: ManagedErrors): {
   }
 
   if (IsMSALError(error)) {
-    if (error.message.includes('refresh_token_expired')) {
+    if (error.message.includes('refresh_token_expired') || error.message.includes('no_account_error')) {
       return {
         code: undefined,
         message: 'Session expired. Please login again.',
@@ -126,7 +126,7 @@ function IsMSALError(e: unknown): e is MSAALError {
   if (!('name' in e) || typeof e.name !== 'string') return false
   if (!('message' in e) || typeof e.message !== 'string') return false
 
-  if (e.name == 'InteractionRequiredAuthError' || e.name == 'AuthError') {
+  if (e.name == 'InteractionRequiredAuthError' || e.name == 'AuthError' || e.name == 'BrowserAuthError') {
     return true
   }
 
