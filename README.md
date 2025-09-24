@@ -25,10 +25,6 @@ This builds a Docker image `radix-web`, runs it in the container `radix-web_cont
 
 Stop docker-compose with Ctrl+C, but also run `docker-compose down` to clean the Docker state.
 
-To be able to use Radix-API, running locally with address `http://localhost:3002` and/or Radix cost allocation API, running locally with address `http://localhost:3003` - run `docker-compose` with command:
-
-    docker-compose -f docker-compose-host.yml up --build
-
 In the file [proxy/server.dev-host.conf](./proxy/server.dev-host.conf) uncomment lines with local or external URLs within `location` sections for needed local server.
 
 **Important**: the `node_modules` directory is **not** mapped to the host (if you don't have `node_modules` locally, it will be created but it will remain empty and [it will not map](https://stackoverflow.com/questions/29181032/add-a-volume-to-docker-but-exclude-a-sub-folder) between local and container environments). NPM commands must be run in the container, even if you have NPM installed on the host. To run a command in the container:
