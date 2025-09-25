@@ -37,6 +37,7 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
         .then((resp) => {
           if (resp) {
             console.log('handleRedirectPromise', resp)
+            msal.setActiveAccount(resp.account)
             setActiveAccount(resp.account)
           }
         })
