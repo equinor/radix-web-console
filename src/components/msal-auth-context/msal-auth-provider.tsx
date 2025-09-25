@@ -31,7 +31,7 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
   const [activeAccount, setActiveAccount] = useState(msal.getActiveAccount())
 
   console.log('activeAccount',activeAccount)
-
+  console.log('all accounts', msal.getAllAccounts())
   const ctx = useMemo(() => {
     if (!activeAccount) {
       return null
@@ -60,13 +60,11 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
 
   useEffect(() => {
     const callback: EventCallbackFunction = ({ eventType, payload }) => {
+      console.log(eventType, payload)
       if (eventType === EventType.LOGIN_SUCCESS) {
-        console.log(eventType, payload)
         const account = (payload as AuthenticationResult).account
         msal.setActiveAccount(account)
         setActiveAccount(account)
-      } else {
-        console.log(eventType)
       }
     }
 
