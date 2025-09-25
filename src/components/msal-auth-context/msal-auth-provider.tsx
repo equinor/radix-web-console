@@ -30,23 +30,22 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
 
   const [activeAccount, setActiveAccount] = useState(msal.getActiveAccount())
 
-  // useEffect(() => {
-  //   msal.initialize().then(() => {
-  //     msal
-  //       .handleRedirectPromise()
-  //       .then((resp) => {
-  //         console.log('handleRedirectPromise', resp)
-  //         if (resp) {
-  //           console.log('set active account')
-  //           setActiveAccount(resp.account)
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.error(err)
-  //       })
-  //   })
-  // }, [])
-  console.log('activeAccount',activeAccount)
+  useEffect(() => {
+    msal.initialize().then(() => {
+      msal
+        .handleRedirectPromise()
+        .then((resp) => {
+          if (resp) {
+            console.log('handleRedirectPromise', resp)
+            setActiveAccount(resp.account)
+          }
+        })
+        .catch((err) => {
+          console.error(err)
+        })
+    })
+  }, [])
+  console.log('activeAccount', activeAccount)
   // console.log('all accounts', msal.getAllAccounts())
   const ctx = useMemo(() => {
     if (!activeAccount) {

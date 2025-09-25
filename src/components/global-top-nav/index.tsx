@@ -105,18 +105,6 @@ const UserInfo = () => {
   const account = useAccount()
   const { instance } = useMsal()
 
-  instance.handleRedirectPromise()
-      .then((resp) => {
-        if (resp) {
-          console.log('handleRedirectPromise', resp)
-          instance.setActiveAccount(resp.account)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-
-
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
