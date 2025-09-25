@@ -103,21 +103,33 @@ const UserInfo = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
   const account = useAccount()
-  const msal = useMsal()
+  const { instance } = useMsal()
+
+  instance.handleRedirectPromise()
+      .then((resp) => {
+        if (resp) {
+          console.log('handleRedirectPromise', resp)
+          instance.setActiveAccount(resp.account)
+        }
+      })
+      .catch((err) => {
+        console.error(err)
+      })
+
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
 
   const signIn = async () => {
-    await msal.instance.loginRedirect({
+    await instance.loginRedirect({
       scopes: radixApiConfig.scopes,
       prompt: 'select_account',
     })
   }
 
   const signOut = async () => {
-    await msal.instance.logout()
+    await instance.logout()
   }
 
   return (
