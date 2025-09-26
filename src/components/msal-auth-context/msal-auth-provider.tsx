@@ -1,23 +1,10 @@
-import {
-  type AuthenticationResult,
-  type EventCallbackFunction,
-  EventType,
-  InteractionType,
-  PublicClientApplication,
-} from '@azure/msal-browser'
-import { MsalProvider } from '@azure/msal-react'
+import { InteractionType, type PublicClientApplication } from '@azure/msal-browser'
+import { useMsal } from '@azure/msal-react'
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser'
-import { type PropsWithChildren, useEffect, useMemo, useState } from 'react'
+import React, { type PropsWithChildren, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { setProvider } from '../../store/msal/reducer'
-import { msalConfig, msGraphConfig, radixApiConfig, serviceNowApiConfig } from './config'
-
-const msal = new PublicClientApplication(msalConfig)
-
-if (!msal.getActiveAccount() && msal.getAllAccounts().length > 0) {
-  // Account selection logic is app dependent. Adjust as needed for different use cases.
-  msal.setActiveAccount(msal.getAllAccounts()[0])
-}
+import { msGraphConfig, radixApiConfig, serviceNowApiConfig } from './config'
 
 export type MsalContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider
@@ -26,33 +13,16 @@ export type MsalContext = {
 }
 
 export function MsalAuthProvider({ children }: PropsWithChildren) {
+  const { instance } = useMsal()
   const dispatch = useDispatch()
+  const activeAccount = instance.getActiveAccount()
 
-  const [activeAccount, setActiveAccount] = useState(msal.getActiveAccount())
-
-  // useEffect(() => {
-  //   msal.initialize().then(() => {
-  //     msal
-  //       .handleRedirectPromise()
-  //       .then((resp) => {
-  //         if (resp) {
-  //           console.log('handleRedirectPromise', resp)
-  //           msal.setActiveAccount(resp.account)
-  //           setActiveAccount(resp.account)
-  //         }
-  //       })
-  //       .catch((err) => {
-  //         console.error(err)
-  //       })
-  //   })
-  // }, [])
-  console.log('activeAccount', activeAccount)
-  // console.log('all accounts', msal.getAllAccounts())
   const ctx = useMemo(() => {
     if (!activeAccount) {
       return null
     }
 
+    const msal = instance as PublicClientApplication
     return {
       // Used by the Graph SDK to authenticate API calls
       graphAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(msal, {
@@ -72,24 +42,7 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
         scopes: radixApiConfig.scopes,
       }),
     }
-  }, [activeAccount])
-
-  useEffect(() => {
-    const callback: EventCallbackFunction = ({ eventType, payload }) => {
-      console.log(eventType, payload)
-      if (eventType === EventType.LOGIN_SUCCESS) {
-        const account = (payload as AuthenticationResult).account
-        msal.setActiveAccount(account)
-        setActiveAccount(account)
-      }
-    }
-
-    const callbackId = msal.addEventCallback(callback)
-
-    return () => {
-      if (callbackId) msal.removeEventCallback(callbackId)
-    }
-  })
+  }, [activeAccount, instance])
 
   useEffect(() => {
     if (ctx) {
@@ -97,5 +50,5 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
     }
   }, [ctx, dispatch])
 
-  return <MsalProvider instance={msal}>{children}</MsalProvider>
+  return <>{children}</>
 }

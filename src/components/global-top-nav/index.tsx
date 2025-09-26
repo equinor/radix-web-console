@@ -2,7 +2,7 @@ import { useAccount, useMsal } from '@azure/msal-react'
 import { Button, Card, Icon, Popover, Tabs, TopBar, Typography } from '@equinor/eds-core-react'
 import { account_circle, close, info_circle, log_in, log_out, menu } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
-import { type FunctionComponent, forwardRef, type PropsWithChildren, useState, useEffect } from 'react'
+import { type FunctionComponent, forwardRef, type PropsWithChildren, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { clusterBases } from '../../clusterBases'
 import { externalUrls } from '../../externalUrls'
@@ -100,24 +100,10 @@ const AboutButton: FunctionComponent = () => (
 )
 
 const UserInfo = () => {
+  const { instance } = useMsal()
+  const account = useAccount()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-  const account = useAccount()
-  const { instance } = useMsal()
-
-  useEffect(() => {
-    instance
-      .handleRedirectPromise()
-      .then((resp) => {
-        if (resp) {
-          console.log('handleRedirectPromise', resp)
-          instance.setActiveAccount(resp.account)
-        }
-      })
-      .catch((err) => {
-        console.error(err)
-      })
-  }, [instance])
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
