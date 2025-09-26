@@ -2,7 +2,6 @@ import { type BaseQueryApi, createApi, fetchBaseQuery } from '@reduxjs/toolkit/q
 import { configVariables } from '../../utils/config'
 import type { RootState } from '../store'
 
-
 /** Override for text/plain response handler */
 const responseHandler = (response: Response) => {
   const contentType = response.headers.get('content-type')

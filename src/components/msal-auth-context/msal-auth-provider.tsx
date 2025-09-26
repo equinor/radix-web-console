@@ -1,7 +1,7 @@
 import { InteractionType, type PublicClientApplication } from '@azure/msal-browser'
 import { useMsal } from '@azure/msal-react'
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser'
-import React, { type PropsWithChildren, useEffect, useMemo } from 'react'
+import { type PropsWithChildren, useEffect, useMemo } from 'react'
 import { useDispatch } from 'react-redux'
 import { setProvider } from '../../store/msal/reducer'
 import { msGraphConfig, radixApiConfig, serviceNowApiConfig } from './config'

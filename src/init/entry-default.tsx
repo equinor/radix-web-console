@@ -1,4 +1,4 @@
-import { type AuthenticationResult, EventType, PublicClientApplication } from '@azure/msal-browser'
+import { PublicClientApplication } from '@azure/msal-browser'
 import { MsalProvider } from '@azure/msal-react'
 import { Provider } from 'react-redux'
 
@@ -25,7 +25,7 @@ msal
       if (currentActive && currentActive.username != resp.account.username) {
         setTimeout(() => {
           window.location.reload()
-        }, 0);
+        }, 0)
       }
     }
   })
