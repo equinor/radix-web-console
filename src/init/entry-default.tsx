@@ -22,7 +22,7 @@ msal
     if (resp) {
       const currentActive = msal.getActiveAccount()
       msal.setActiveAccount(resp.account)
-      if (currentActive && currentActive.username != resp.account.username) {
+      if (currentActive && currentActive.username !== resp.account.username) {
         setTimeout(() => {
           window.location.reload()
         }, 0)
