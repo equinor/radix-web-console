@@ -117,7 +117,7 @@ const UserInfo = () => {
   }
 
   const signOut = async () => {
-    await instance.logout()
+    await instance.logout({ account })
   }
 
   return (
