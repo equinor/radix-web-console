@@ -24,21 +24,17 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
   const activeAccount = useAccount()
   const [forceUpdateIdx, forceUpdate] = useReducer((x) => x + 1, 0)
 
-  const update = useCallback(() => {
-    dispatch(radixApi.util.resetApiState())
-    dispatch(scanApi.util.resetApiState())
-    dispatch(costApi.util.resetApiState())
-    dispatch(logApi.util.resetApiState())
-    dispatch(serviceNowApi.util.resetApiState())
-    dispatch(msGraphApi.util.resetApiState())
-    forceUpdate()
-  }, [dispatch])
-
   useEffect(() => {
     if (activeAccount) {
-      update()
+      dispatch(radixApi.util.resetApiState())
+      dispatch(scanApi.util.resetApiState())
+      dispatch(costApi.util.resetApiState())
+      dispatch(logApi.util.resetApiState())
+      dispatch(serviceNowApi.util.resetApiState())
+      dispatch(msGraphApi.util.resetApiState())
+      forceUpdate()
     }
-  }, [activeAccount, update])
+  }, [activeAccount, dispatch])
 
   const ctx = useMemo(() => {
     if (!activeAccount) {
