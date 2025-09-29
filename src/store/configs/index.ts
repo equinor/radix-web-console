@@ -11,7 +11,10 @@ const responseHandler = (response: Response) => {
 const proxyPrepareHeaders = async (headers: Headers, { getState }: Pick<BaseQueryApi, 'getState'>) => {
   const state = getState() as RootState
   const provider = state.auth.provider
-  if (!provider || !provider.radixApiAuthProvider) return headers
+
+  if (!provider || !provider.radixApiAuthProvider) {
+    return headers
+  }
 
   const token = await provider.radixApiAuthProvider.getAccessToken()
   headers.set('Authorization', `Bearer ${token}`)

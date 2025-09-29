@@ -100,24 +100,24 @@ const AboutButton: FunctionComponent = () => (
 )
 
 const UserInfo = () => {
+  const { instance } = useMsal()
+  const account = useAccount()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-  const account = useAccount()
-  const msal = useMsal()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
 
   const signIn = async () => {
-    await msal.instance.loginRedirect({
+    await instance.loginRedirect({
       scopes: radixApiConfig.scopes,
       prompt: 'select_account',
     })
   }
 
   const signOut = async () => {
-    await msal.instance.logout()
+    await instance.logout({ account })
   }
 
   return (

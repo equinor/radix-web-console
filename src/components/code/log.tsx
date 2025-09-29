@@ -205,8 +205,8 @@ export const Log = ({ copy, download, downloadCb, filename, content }: LogProps)
 }
 
 const useAuthentication = () => {
-  const store = useStore()
-  const state = store.getState() as RootState
+  const store = useStore<RootState>()
+  const state = store.getState()
   const authProvider = state.auth.provider?.radixApiAuthProvider
   const [token, setToken] = useState<string>()
   const [tokenError, setTokenError] = useState<Error>()
