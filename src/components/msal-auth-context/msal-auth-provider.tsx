@@ -1,9 +1,15 @@
 import { InteractionType, type PublicClientApplication } from '@azure/msal-browser'
-import { useMsal } from '@azure/msal-react'
+import { useAccount, useMsal } from '@azure/msal-react'
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser'
-import { type PropsWithChildren, useEffect, useMemo } from 'react'
+import React, { type PropsWithChildren, useCallback, useEffect, useMemo, useReducer } from 'react'
 import { useDispatch } from 'react-redux'
+import { costApi } from '../../store/cost-api'
+import { logApi } from '../../store/log-api'
+import { msGraphApi } from '../../store/ms-graph-api'
 import { setProvider } from '../../store/msal/reducer'
+import { radixApi } from '../../store/radix-api'
+import { scanApi } from '../../store/scan-api'
+import { serviceNowApi } from '../../store/service-now-api'
 import { msGraphConfig, radixApiConfig, serviceNowApiConfig } from './config'
 
 export type MsalContext = {
@@ -15,7 +21,24 @@ export type MsalContext = {
 export function MsalAuthProvider({ children }: PropsWithChildren) {
   const { instance } = useMsal()
   const dispatch = useDispatch()
-  const activeAccount = instance.getActiveAccount()
+  const activeAccount = useAccount()
+  const [forceUpdateIdx, forceUpdate] = useReducer((x) => x + 1, 0)
+
+  const update = useCallback(() => {
+    dispatch(radixApi.util.resetApiState())
+    dispatch(scanApi.util.resetApiState())
+    dispatch(costApi.util.resetApiState())
+    dispatch(logApi.util.resetApiState())
+    dispatch(serviceNowApi.util.resetApiState())
+    dispatch(msGraphApi.util.resetApiState())
+    forceUpdate()
+  }, [dispatch])
+
+  useEffect(() => {
+    if (activeAccount) {
+      update()
+    }
+  }, [activeAccount, update])
 
   const ctx = useMemo(() => {
     if (!activeAccount) {
@@ -50,5 +73,5 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
     }
   }, [ctx, dispatch])
 
-  return <>{children}</>
+  return <React.Fragment key={forceUpdateIdx.toString()}>{children}</React.Fragment>
 }
