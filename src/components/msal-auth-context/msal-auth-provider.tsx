@@ -1,7 +1,7 @@
 import { InteractionType, type PublicClientApplication } from '@azure/msal-browser'
 import { useAccount, useMsal } from '@azure/msal-react'
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser'
-import React, { type PropsWithChildren, useCallback, useEffect, useMemo, useReducer } from 'react'
+import React, { type PropsWithChildren, useEffect, useMemo, useReducer } from 'react'
 import { useDispatch } from 'react-redux'
 import { costApi } from '../../store/cost-api'
 import { logApi } from '../../store/log-api'
