@@ -8,15 +8,14 @@ import { router } from '../router'
 import store from '../store/store'
 import { msalConfig } from './msal-config'
 
-const msal = new PublicClientApplication(msalConfig)
+const msal = new PublicClientApplication(msalConfig);
 
-if (!msal.getActiveAccount() && msal.getAllAccounts().length > 0) {
-  msal.setActiveAccount(msal.getAllAccounts()[0])
-}
+msal.initialize().then(()=> {
+  if (!msal.getActiveAccount() && msal.getAllAccounts().length > 0) {
+    msal.setActiveAccount(msal.getAllAccounts()[0])
+  }
 
-await msal.initialize()
-
-msal
+  msal
   .handleRedirectPromise()
   .then((resp) => {
     if (resp) {
@@ -26,6 +25,7 @@ msal
   .catch((err) => {
     console.error(err)
   })
+})
 
 export default (
   <Provider store={store}>
