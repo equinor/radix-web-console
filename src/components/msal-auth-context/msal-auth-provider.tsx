@@ -1,71 +1,73 @@
-import {
-  type AuthenticationResult,
-  type EventCallbackFunction,
-  EventType,
-  InteractionType,
-  PublicClientApplication,
-} from '@azure/msal-browser'
-import { MsalProvider } from '@azure/msal-react'
+import { InteractionType, type PublicClientApplication } from '@azure/msal-browser'
+import { useAccount, useMsal } from '@azure/msal-react'
 import { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser'
-import { type PropsWithChildren, useEffect, useMemo } from 'react'
+import React, { type PropsWithChildren, useEffect, useMemo, useReducer } from 'react'
 import { useDispatch } from 'react-redux'
-import { setAccount, setProvider } from '../../store/msal/reducer'
-import { msalConfig, msGraphConfig, serviceNowApiConfig } from './config'
+import { costApi } from '../../store/cost-api'
+import { logApi } from '../../store/log-api'
+import { msGraphApi } from '../../store/ms-graph-api'
+import { setProvider } from '../../store/msal/reducer'
+import { radixApi } from '../../store/radix-api'
+import { scanApi } from '../../store/scan-api'
+import { serviceNowApi } from '../../store/service-now-api'
+import { msGraphConfig, radixApiConfig, serviceNowApiConfig } from './config'
 
 export type MsalContext = {
   graphAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider
   serviceNowAuthProvider?: AuthCodeMSALBrowserAuthenticationProvider
+  radixApiAuthProvider: AuthCodeMSALBrowserAuthenticationProvider
 }
 
 export function MsalAuthProvider({ children }: PropsWithChildren) {
+  const { instance } = useMsal()
   const dispatch = useDispatch()
+  const activeAccount = useAccount()
+  const [forceUpdateIdx, forceUpdate] = useReducer((x) => x + 1, 0)
 
-  const msal = useMemo(() => {
-    const msal = new PublicClientApplication(msalConfig)
-    const accounts = msal.getAllAccounts()
-    if (accounts?.length > 0) {
-      msal.setActiveAccount(accounts[0])
+  useEffect(() => {
+    if (activeAccount) {
+      dispatch(radixApi.util.resetApiState())
+      dispatch(scanApi.util.resetApiState())
+      dispatch(costApi.util.resetApiState())
+      dispatch(logApi.util.resetApiState())
+      dispatch(serviceNowApi.util.resetApiState())
+      dispatch(msGraphApi.util.resetApiState())
+      forceUpdate()
     }
-
-    return msal
-  }, [])
+  }, [activeAccount, dispatch])
 
   const ctx = useMemo(() => {
-    const account = msal.getActiveAccount()!
+    if (!activeAccount) {
+      return null
+    }
+
+    const msal = instance as PublicClientApplication
     return {
       // Used by the Graph SDK to authenticate API calls
       graphAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(msal, {
-        account: account,
+        account: activeAccount,
         interactionType: InteractionType.Redirect,
         scopes: msGraphConfig.scopes,
       }),
       // Used by the Graph SDK to authenticate API calls
       serviceNowAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(msal, {
-        account: account,
+        account: activeAccount,
         interactionType: InteractionType.Redirect,
         scopes: serviceNowApiConfig.scopes,
       }),
+      radixApiAuthProvider: new AuthCodeMSALBrowserAuthenticationProvider(msal, {
+        account: activeAccount,
+        interactionType: InteractionType.Redirect,
+        scopes: radixApiConfig.scopes,
+      }),
     }
-  }, [msal])
+  }, [activeAccount, instance])
 
   useEffect(() => {
-    const callback: EventCallbackFunction = ({ eventType, payload }) => {
-      if (eventType === EventType.LOGIN_SUCCESS) {
-        const account = (payload as AuthenticationResult).account
-        msal.setActiveAccount(account)
-        dispatch(setAccount(account))
-      }
+    if (ctx) {
+      dispatch(setProvider(ctx))
     }
-
-    const callbackId = msal.addEventCallback(callback)
-
-    // @ts-expect-error callbackId can be null if running on Node / Serverside
-    return () => msal.removeEventCallback(callbackId)
-  }, [dispatch, msal])
-
-  useEffect(() => {
-    dispatch(setProvider(ctx))
   }, [ctx, dispatch])
 
-  return <MsalProvider instance={msal}>{children}</MsalProvider>
+  return <React.Fragment key={forceUpdateIdx.toString()}>{children}</React.Fragment>
 }

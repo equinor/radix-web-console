@@ -17,6 +17,10 @@ export const configVariables = {
     'OAUTH2_AUTHORITY',
     'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0'
   ),
+  RADIXAPI_SCOPES: getVariable(
+    'RADIXAPI_SCOPES',
+    'openid profile offline_access 6dae42f8-4368-4678-94ff-3960e28e3630/user.read email'
+  ),
   SERVICENOW_PROXY_SCOPES: getVariable(
     'SERVICENOW_PROXY_SCOPES',
     '1b4a22f1-d4a1-4b6a-81b2-fd936daf1786/Application.Read'

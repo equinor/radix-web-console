@@ -1,16 +1,19 @@
-import { InteractionType } from '@azure/msal-browser'
-import { useMsal, useMsalAuthentication } from '@azure/msal-react'
 import type { FunctionComponent } from 'react'
 import { RouterProvider, type RouterProviderProps } from 'react-router-dom'
 
 import { LazyLoadFallback } from '../lazy-load-fallback'
 
 import './style.css'
+import { InteractionType } from '@azure/msal-browser'
+import { useMsalAuthentication } from '@azure/msal-react'
+import { useStore } from 'react-redux'
+import type { RootState } from '../../store/store'
 
 export const PageRouter: FunctionComponent<Pick<RouterProviderProps, 'router'>> = ({ router }) => {
   useMsalAuthentication(InteractionType.Redirect)
-  const { accounts } = useMsal()
-  if (accounts.length === 0) {
+
+  const authProvider = useAuthProvider()
+  if (!authProvider) {
     return <></>
   }
 
@@ -21,4 +24,10 @@ export const PageRouter: FunctionComponent<Pick<RouterProviderProps, 'router'>> 
       </div>
     </div>
   )
+}
+
+const useAuthProvider = () => {
+  const store = useStore<RootState>()
+  const state = store.getState()
+  return state.auth.provider
 }
