@@ -59,8 +59,7 @@ export function useMsalAccountLocalStorage<T>(key: string, defaultValue: T, test
 
   useEffect(() => {
     if (account && !migrated) {
-      migrateInfo[key] = true
-      setMigrateInfo(migrateInfo)
+      setMigrateInfo({ ...migrateInfo, [key]: true })
 
       if (!isEqual(defaultValueToUse, defaultValue)) {
         storeValue(defaultValueToUse)
