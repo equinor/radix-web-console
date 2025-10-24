@@ -2,8 +2,6 @@ import { useAccount } from '@azure/msal-react'
 import { useCallback, useState } from 'react'
 import { useInterval } from './use-interval'
 
-
-
 export function useLocalStorage<T>(key: string, defaultValue: T, testContent?: (value: unknown) => boolean) {
   const getLocalStorageItem = useCallback(
     (itemKey: string) => {
