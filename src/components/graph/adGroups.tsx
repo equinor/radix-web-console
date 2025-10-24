@@ -8,7 +8,7 @@ import {
   type OptionsOrGroups,
 } from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { useDebounce } from '../../effects/use-debounce'
+import { useDebounce } from '../../hooks/use-debounce'
 import {
   type EntraItem,
   useGetAdGroupsQuery,

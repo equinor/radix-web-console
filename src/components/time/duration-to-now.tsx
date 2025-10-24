@@ -1,4 +1,4 @@
-import { useNow } from '../../effects/use-now'
+import { useNow } from '../../hooks/use-now'
 import { Duration } from './duration'
 
 type Props = {

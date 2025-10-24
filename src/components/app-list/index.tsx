@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { type FunctionComponent, useState } from 'react'
 
 import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
 import { dataSorter, sortCompareString } from '../../utils/sort-utils'
@@ -9,8 +9,8 @@ import CreateApplication from '../create-application'
 
 import './style.css'
 import { refresh } from '@equinor/eds-icons'
-import { isEqual, uniq } from 'lodash-es'
-import useLocalStorage from '../../effects/use-local-storage'
+import { uniq } from 'lodash-es'
+import { useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
 import { pollingInterval } from '../../store/defaults'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { promiseHandler } from '../../utils/promise-handler'
@@ -31,9 +31,17 @@ const isArrayOfStrings = (variable: unknown): variable is string[] => {
 export default function AppList() {
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3)
 
-  const [favourites, setFavourites] = useLocalStorage<Array<string>>('favouriteApplications', [], isArrayOfStrings)
+  const [favourites, setFavourites] = useMsalAccountLocalStorage<Array<string>>(
+    'favouriteApplications',
+    [],
+    isArrayOfStrings
+  )
 
-  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>('knownApplications', [], isArrayOfStrings)
+  const [knownAppNames, setKnownAppNames] = useMsalAccountLocalStorage<Array<string>>(
+    'knownApplications',
+    [],
+    isArrayOfStrings
+  )
   const [refreshApps, appsState] = radixApi.endpoints.showApplications.useLazyQuery({})
 
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
@@ -63,25 +71,6 @@ export default function AppList() {
   }))
 
   const favouriteNames = dataSorter(favourites ?? [], [(x, y) => sortCompareString(x, y)])
-
-  // remove from know app names previously favorite knownApps, which do not currently exist
-  useEffect(() => {
-    if (!favourites || !knownApps) {
-      return
-    }
-    const knownAppNames = knownApps
-      .filter((knownApp) => !knownApp.isFavourite || favourites.some((favAppName) => favAppName === knownApp.name))
-      .map((app) => app.name)
-    const mergedKnownAndFavoriteAppNames = uniq([...knownAppNames, ...favourites]).sort()
-    if (
-      !isEqual(
-        knownApps.map((app) => app.name),
-        mergedKnownAndFavoriteAppNames
-      )
-    ) {
-      setKnownAppNames(mergedKnownAndFavoriteAppNames)
-    }
-  }, [knownApps, favourites, setKnownAppNames])
 
   return (
     <article className="grid grid--gap-medium">

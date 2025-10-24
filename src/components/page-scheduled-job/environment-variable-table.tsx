@@ -1,5 +1,5 @@
 import { Accordion, Table, Typography } from '@equinor/eds-core-react'
-import useLocalStorage from '../../effects/use-local-storage'
+import { useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
 
 import './style.css'
 
@@ -9,7 +9,7 @@ type Props = {
   }
 }
 export const EnvironmentVariableTable = ({ values }: Props) => {
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useMsalAccountLocalStorage(
     'batchJobEnvVarsListExpanded',
     true
   )

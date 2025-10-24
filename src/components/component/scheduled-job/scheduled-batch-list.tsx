@@ -19,7 +19,7 @@ import { JobDeploymentLink } from './job-deployment-link'
 import { RestartBatch } from './restart-batch'
 
 import './style.css'
-import useLocalStorage from '../../../effects/use-local-storage'
+import { useMsalAccountLocalStorage } from '../../../hooks/use-local-storage'
 import { routes } from '../../../routes'
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
@@ -56,7 +56,7 @@ export function ScheduledBatchList({
     (id, visible) => setVisibleRestartScrims((x) => ({ ...x, [id]: visible })),
     []
   )
-  const [isExpanded, setIsExpanded] = useLocalStorage<boolean>('batchJobListExpanded', false)
+  const [isExpanded, setIsExpanded] = useMsalAccountLocalStorage('batchJobListExpanded', false)
 
   const sortedData = useMemo(() => {
     return dataSorter(scheduledBatchList, [

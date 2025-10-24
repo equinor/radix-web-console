@@ -1,7 +1,7 @@
 import { Button, Checkbox, CircularProgress, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useInterval } from '../../effects/use-interval'
+import { useInterval } from '../../hooks/use-interval'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { type Job, radixApi, useGetApplicationJobQuery, useGetApplicationQuery } from '../../store/radix-api'

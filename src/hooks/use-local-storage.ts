@@ -1,7 +1,13 @@
+import { useAccount } from '@azure/msal-react'
+import { isEqual } from 'lodash-es'
 import { useState } from 'react'
 import { useInterval } from './use-interval'
 
-export default function useLocalStorage<T>(key: string, defaultValue: T, testContent?: (value: unknown) => boolean) {
+interface migrateInfo {
+  [key: string]: boolean
+}
+
+export function useLocalStorage<T>(key: string, defaultValue: T, testContent?: (value: unknown) => boolean) {
   function getLocalStorageItem(itemKey: string) {
     try {
       const storedItem = localStorage.getItem(itemKey)
@@ -37,4 +43,28 @@ export default function useLocalStorage<T>(key: string, defaultValue: T, testCon
   }, 250)
 
   return [state, storeValue] as const
+}
+
+export function useMsalAccountLocalStorage<T>(key: string, defaultValue: T, testContent?: (value: unknown) => boolean) {
+  const account = useAccount()
+  const accountKey = account ? `${key}.${account.homeAccountId}` : key
+  const migrateKey = account ? `localStorageAccountMigrate.${account.homeAccountId}` : key
+
+  const [migrateInfo, setMigrateInfo] = useLocalStorage<migrateInfo>(migrateKey, {})
+  const [nonAccountValue] = useLocalStorage(key, defaultValue)
+
+  const migrated = !!migrateInfo[key]
+  const defaultValueToUse = migrated ? defaultValue : nonAccountValue
+  const [value, storeValue] = useLocalStorage(accountKey, defaultValueToUse, testContent)
+
+  if (account && !migrated) {
+    migrateInfo[key] = true
+    setMigrateInfo(migrateInfo)
+
+    if (!isEqual(defaultValueToUse, defaultValue)) {
+      storeValue(defaultValueToUse)
+    }
+  }
+
+  return [value, storeValue] as const
 }

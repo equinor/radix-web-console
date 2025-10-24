@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
-import { useInterval } from '../../effects/use-interval'
+import { useInterval } from '../../hooks/use-interval'
 import type { ReplicaSummary } from '../../store/radix-api'
 import { smallReplicaName } from '../../utils/string'
 import { ReplicaImage } from '../replica-image'

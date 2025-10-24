@@ -25,7 +25,7 @@ import EnvironmentAlerting from './environment-alerting'
 import EnvironmentToolbar from './environment-toolbar'
 
 import './style.css'
-import useLocalStorage from '../../effects/use-local-storage'
+import { useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
 import { CommitHash } from '../commit-hash'
 import { DefaultAppAlias } from '../component/default-app-alias'
 import { DNSAliases } from '../component/dns-aliases'
@@ -43,7 +43,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
     refetch: refetchEnv,
     ...envState
   } = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
-  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage('environmentEventListExpanded', true)
+  const [isEventListExpanded, setIsEventListExpanded] = useMsalAccountLocalStorage('environmentEventListExpanded', true)
   const { data: events } = useGetEnvironmentEventsQuery(
     { appName, envName },
     { skip: !appName || !envName || !isEventListExpanded, pollingInterval }

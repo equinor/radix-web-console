@@ -8,7 +8,7 @@ import { ScrimPopup } from '../scrim-popup'
 
 import './style.css'
 import { useNavigate } from 'react-router'
-import useLocalStorage from '../../effects/use-local-storage'
+import { useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
 import { routes } from '../../routes'
 import { useDeleteApplicationMutation } from '../../store/radix-api'
 
@@ -22,8 +22,8 @@ export default function DeleteApplicationForm({ appName }: Props) {
   const [visibleScrim, setVisibleScrim] = useState(false)
   const navigate = useNavigate()
 
-  const [, setFavourites] = useLocalStorage<Array<string>>('favouriteApplications', [])
-  const [, setKnownAppNames] = useLocalStorage<Array<string>>('knownApplications', [])
+  const [, setFavourites] = useMsalAccountLocalStorage<Array<string>>('favouriteApplications', [])
+  const [, setKnownAppNames] = useMsalAccountLocalStorage<Array<string>>('knownApplications', [])
 
   const deleteAppNameFromLocalStorage = (appName: string) => {
     setKnownAppNames((old) => old.filter((name) => name != appName))
