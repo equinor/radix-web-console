@@ -37,7 +37,7 @@ export function useLocalStorage<T>(key: string, defaultValue: T, testContent?: (
 
   useInterval(() => {
     const current = getLocalStorageItem(key)
-    if (JSON.stringify(current) != JSON.stringify(state)) {
+    if (JSON.stringify(current) !== JSON.stringify(state)) {
       setState(current)
     }
   }, 250)
