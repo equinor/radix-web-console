@@ -1,6 +1,6 @@
 import { useAccount } from '@azure/msal-react'
 import { isEqual } from 'lodash-es'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useInterval } from './use-interval'
 
 interface migrateInfo {
@@ -57,14 +57,16 @@ export function useMsalAccountLocalStorage<T>(key: string, defaultValue: T, test
   const defaultValueToUse = migrated ? defaultValue : nonAccountValue
   const [value, storeValue] = useLocalStorage(accountKey, defaultValueToUse, testContent)
 
-  if (account && !migrated) {
-    migrateInfo[key] = true
-    setMigrateInfo(migrateInfo)
+  useEffect(() => {
+    if (account && !migrated) {
+      migrateInfo[key] = true
+      setMigrateInfo(migrateInfo)
 
-    if (!isEqual(defaultValueToUse, defaultValue)) {
-      storeValue(defaultValueToUse)
+      if (!isEqual(defaultValueToUse, defaultValue)) {
+        storeValue(defaultValueToUse)
+      }
     }
-  }
+  }, [account, defaultValueToUse, defaultValue, key, migrated, setMigrateInfo, migrateInfo, storeValue])
 
   return [value, storeValue] as const
 }
