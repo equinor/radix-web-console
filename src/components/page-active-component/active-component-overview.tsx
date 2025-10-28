@@ -16,7 +16,11 @@ import { HorizontalScalingSummary } from './horizontal-scaling-summary'
 import { OAuthService } from './oauth-service'
 import { Overview } from './overview'
 import './style.css'
-import { useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
+import {
+  activeComponentEnvVarsListExpandedKey,
+  componentEventListExpandedKey,
+  useLocalStorage,
+} from '../../hooks/use-local-storage'
 import { dataSorter, sortCompareDate } from '../../utils/sort-utils'
 import { EventsList } from '../events-list'
 import { ActiveComponentToolbar } from './active-component-toolbar'
@@ -42,7 +46,7 @@ export const ActiveComponentOverview: FunctionComponent<{
     (dnsAlias) => dnsAlias.componentName === componentName && dnsAlias.environmentName == envName
   )
 
-  const [isEventListExpanded, setIsEventListExpanded] = useMsalAccountLocalStorage('componentEventListExpanded', false)
+  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage(componentEventListExpandedKey, false)
   const { data: events } = useGetComponentEventsQuery(
     { appName, envName, componentName },
     {
@@ -50,10 +54,7 @@ export const ActiveComponentOverview: FunctionComponent<{
       pollingInterval,
     }
   )
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useMsalAccountLocalStorage(
-    'activeComponentEnvVarsListExpanded',
-    true
-  )
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage(activeComponentEnvVarsListExpandedKey, true)
 
   return (
     <>

@@ -10,7 +10,11 @@ import CreateApplication from '../create-application'
 import './style.css'
 import { refresh } from '@equinor/eds-icons'
 import { uniq } from 'lodash-es'
-import { useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
+import {
+  favouriteApplicationsKey,
+  knownApplicationsKey,
+  useMsalAccountLocalStorage,
+} from '../../hooks/use-local-storage'
 import { pollingInterval } from '../../store/defaults'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { promiseHandler } from '../../utils/promise-handler'
@@ -32,13 +36,13 @@ export default function AppList() {
   const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3)
 
   const [favourites, setFavourites] = useMsalAccountLocalStorage<Array<string>>(
-    'favouriteApplications',
+    favouriteApplicationsKey,
     [],
     isArrayOfStrings
   )
 
   const [knownAppNames, setKnownAppNames] = useMsalAccountLocalStorage<Array<string>>(
-    'knownApplications',
+    knownApplicationsKey,
     [],
     isArrayOfStrings
   )

@@ -2,6 +2,20 @@ import { useAccount } from '@azure/msal-react'
 import { useCallback, useState } from 'react'
 import { useInterval } from './use-interval'
 
+export const knownApplicationsKey = 'knownApplications'
+export const favouriteApplicationsKey = 'favouriteApplications'
+export const appNavKey = 'app-nav'
+export const batchJobListExpandedKey = 'batchJobListExpanded'
+export const componentEventListExpandedKey = 'componentEventListExpanded'
+export const activeComponentEnvVarsListExpandedKey = 'activeComponentEnvVarsListExpanded'
+export const activeJobComponentEnvVarsListExpandedKey = 'activeJobComponentEnvVarsListExpanded'
+export const singleJobListExpandedKey = 'singleJobListExpanded'
+export const deploymentComponentEnvVarsListExpandedKey = 'deploymentComponentEnvVarsListExpanded'
+export const deploymentJobComponentEnvVarsListExpandedKey = 'deploymentJobComponentEnvVarsListExpanded'
+export const environmentEventListExpandedKey = 'environmentEventListExpanded'
+export const replicaEventListExpandedKey = 'replicaEventListExpanded'
+export const batchJobEnvVarsListExpandedKey = 'batchJobEnvVarsListExpanded'
+
 export function useLocalStorage<T>(key: string, defaultValue: T, testContent?: (value: unknown) => boolean) {
   const getLocalStorageItem = useCallback(
     (itemKey: string) => {
