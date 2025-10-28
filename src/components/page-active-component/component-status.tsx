@@ -1,5 +1,5 @@
 import { Button } from '@equinor/eds-core-react'
-import { useDurationInterval } from '../../effects/use-interval'
+import { useDurationInterval } from '../../hooks/use-interval'
 import { type Component, useResetScaledComponentMutation } from '../../store/radix-api'
 import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'

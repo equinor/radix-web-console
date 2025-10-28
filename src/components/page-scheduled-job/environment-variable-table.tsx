@@ -1,5 +1,5 @@
 import { Accordion, Table, Typography } from '@equinor/eds-core-react'
-import useLocalStorage from '../../effects/use-local-storage'
+import { batchJobEnvVarsListExpandedKey, useLocalStorage } from '../../hooks/use-local-storage'
 
 import './style.css'
 
@@ -9,10 +9,7 @@ type Props = {
   }
 }
 export const EnvironmentVariableTable = ({ values }: Props) => {
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
-    'batchJobEnvVarsListExpanded',
-    true
-  )
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage(batchJobEnvVarsListExpandedKey, true)
 
   return (
     <Accordion className="accordion elevated" chevronPosition="right">

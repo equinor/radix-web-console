@@ -23,7 +23,12 @@ import { AppBadge } from '../app-badge'
 
 import './style.css'
 import { uniq } from 'lodash-es'
-import useLocalStorage from '../../effects/use-local-storage'
+import {
+  appNavKey,
+  favouriteApplicationsKey,
+  useLocalStorage,
+  useMsalAccountLocalStorage,
+} from '../../hooks/use-local-storage'
 import { ExternalLink } from '../link/external-link'
 
 type NavbarLinkItem = {
@@ -71,7 +76,7 @@ const NavbarLinkElement = forwardRef<
 ))
 
 const NavbarExpanded = ({ appName, links }: NavbarProps) => {
-  const [favourites, setFavourites] = useLocalStorage<Array<string>>('favouriteApplications', [])
+  const [favourites, setFavourites] = useMsalAccountLocalStorage<Array<string>>(favouriteApplicationsKey, [])
   const isFavourite = favourites.includes(appName)
   const toggleFavouriteApp = (app: string) => {
     if (isFavourite) {
@@ -145,7 +150,7 @@ const NavbarMinimized = ({ appName, links }: NavbarProps) => (
 )
 
 export const AppNavbar: FunctionComponent<AppNavbarProps> = ({ appName }) => {
-  const [toggle, setToggle] = useLocalStorage('app-nav', true)
+  const [toggle, setToggle] = useLocalStorage(appNavKey, true)
 
   const links: Array<NavbarLinkItem> = [
     { label: 'Environments', to: getEnvsUrl(appName), icon: world },

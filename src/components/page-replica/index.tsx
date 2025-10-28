@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import useLocalStorage from '../../effects/use-local-storage'
+import { replicaEventListExpandedKey, useLocalStorage } from '../../hooks/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { getReplicaLogStreamUrl } from '../../store/eventstream-log-api'
@@ -30,7 +30,7 @@ function PageReplica({ appName, envName, componentName, replicaName }: Props) {
     ?.find((x) => x.name === componentName)
     ?.replicaList?.find((x) => x.name === replicaName)
 
-  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage<boolean>('replicaEventListExpanded', false)
+  const [isEventListExpanded, setIsEventListExpanded] = useLocalStorage(replicaEventListExpandedKey, false)
   const { data: events } = useGetReplicaEventsQuery(
     { appName, envName, componentName, podName: replicaName },
     {
