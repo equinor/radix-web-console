@@ -1,7 +1,7 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
 
-import { useDurationInterval } from '../../effects/use-interval'
+import { useDurationInterval } from '../../hooks/use-interval'
 import { type Environment, radixApi } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { errorToast } from '../global-top-nav/styled-toaster'

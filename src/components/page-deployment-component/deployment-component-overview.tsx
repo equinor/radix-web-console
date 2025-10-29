@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'react'
-import useLocalStorage from '../../effects/use-local-storage'
+import { deploymentComponentEnvVarsListExpandedKey, useLocalStorage } from '../../hooks/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetDeploymentQuery } from '../../store/radix-api'
@@ -20,8 +20,8 @@ export const DeploymentComponentOverview: FunctionComponent<{
     { skip: !appName || !deploymentName, pollingInterval }
   )
   const component = deployment?.components?.find(({ name }) => name === componentName)
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
-    'deploymentComponentEnvVarsListExpanded',
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage(
+    deploymentComponentEnvVarsListExpandedKey,
     true
   )
 

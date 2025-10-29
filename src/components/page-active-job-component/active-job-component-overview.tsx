@@ -1,5 +1,9 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react'
-import useLocalStorage from '../../effects/use-local-storage'
+import {
+  activeJobComponentEnvVarsListExpandedKey,
+  singleJobListExpandedKey,
+  useLocalStorage,
+} from '../../hooks/use-local-storage'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import {
@@ -49,11 +53,11 @@ export const ActiveJobComponentOverview = ({ appName, envName, jobComponentName 
   const isStopped = component?.status === 'Stopped'
   const restartInProgress =
     restartState.isLoading || component?.status === 'Reconciling' || component?.status === 'Restarting'
-  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage<boolean>(
-    'activeJobComponentEnvVarsListExpanded',
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage(
+    activeJobComponentEnvVarsListExpandedKey,
     true
   )
-  const [isSingleJobListExpanded, setIsSingleJobListExpanded] = useLocalStorage<boolean>('singleJobListExpanded', false)
+  const [isSingleJobListExpanded, setIsSingleJobListExpanded] = useLocalStorage(singleJobListExpandedKey, false)
 
   return (
     <>

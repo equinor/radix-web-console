@@ -8,7 +8,7 @@ import {
 } from '../../store/radix-api'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import './style.css'
-import { useDurationInterval } from '../../effects/use-interval'
+import { useDurationInterval } from '../../hooks/use-interval'
 
 type Props = {
   component: Component

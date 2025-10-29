@@ -1,5 +1,5 @@
 import { Button, CircularProgress } from '@equinor/eds-core-react'
-import { useDurationInterval } from '../../effects/use-interval'
+import { useDurationInterval } from '../../hooks/use-interval'
 import { type OAuth2AuxiliaryResource, useRestartOAuthAuxiliaryResourceMutation } from '../../store/radix-api'
 import { getOAuthServiceTitle, getValidatedOAuthType } from '../../utils/oauth'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'

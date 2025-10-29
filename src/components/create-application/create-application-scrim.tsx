@@ -2,7 +2,7 @@ import { Button, Icon, Typography } from '@equinor/eds-core-react'
 import { add } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import useLocalStorage from '../../effects/use-local-storage'
+import { knownApplicationsKey, useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
 import { routes } from '../../routes'
 import type { ApplicationRegistration, DeployKeyAndSecret } from '../../store/radix-api'
 import { routeWithParams } from '../../utils/string'
@@ -29,7 +29,7 @@ export function CreateApplicationScrim({ secrets, onRefreshApps, onCreateApplica
     setRegistration(undefined)
   }
 
-  const [knownAppNames, setKnownAppNames] = useLocalStorage<Array<string>>('knownApplications', [])
+  const [knownAppNames, setKnownAppNames] = useMsalAccountLocalStorage<Array<string>>(knownApplicationsKey, [])
 
   const addAppNameToLocalStorage = (appName: string) => {
     if (knownAppNames.some((knownAppName) => knownAppName === appName)) {
