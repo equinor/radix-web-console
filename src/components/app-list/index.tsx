@@ -99,6 +99,14 @@ export default function AppList() {
         <Typography variant="body_short_bold">Favourites</Typography>
         <div className="app-list__buttons">
           <CreateApplication />
+          <Button
+            className="feedback-button"
+            href={'https://github.com/equinor/radix/issues'}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Give us feedback
+          </Button>
         </div>
       </div>
       <div className="app-list">
