@@ -8,6 +8,7 @@ import CreateApplication from '../create-application'
 
 import './style.css'
 import { refresh } from '@equinor/eds-icons'
+import { QueryStatus } from '@reduxjs/toolkit/query'
 import { uniq } from 'lodash-es'
 import {
   favouriteApplicationsKey,
@@ -20,6 +21,14 @@ import { pollingInterval } from '../../store/defaults'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { promiseHandler } from '../../utils/promise-handler'
 import { Alert } from '../alert'
+
+const LoadingCards = ({ amount }: { amount: number }) => (
+  <div className="app-list__list loading">
+    {[...Array(amount || 1)].map((_, i) => (
+      <AppListItem key={i} appName={''} handler={(e) => e.preventDefault()} isPlaceholder isLoading={false} />
+    ))}
+  </div>
+)
 
 const isArrayOfStrings = (variable: unknown): variable is string[] => {
   return Array.isArray(variable) && variable.every((item) => typeof item === 'string')
@@ -94,14 +103,6 @@ export default function AppList() {
         <Typography variant="body_short_bold">Favourites</Typography>
         <div className="app-list__buttons">
           <CreateApplication />
-          <Button
-            className="feedback-button"
-            href={'https://github.com/equinor/radix/issues'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Give us feedback
-          </Button>
         </div>
       </div>
       <div className="app-list">
@@ -139,7 +140,7 @@ export default function AppList() {
             <Typography variant="body_short_bold">All applications</Typography>
             <Button
               className={'action--justify-end'}
-              variant="ghost"
+              variant="outlined"
               color="primary"
               disabled={showAppsQueryState.isLoading || showAppsQueryState.isFetching}
               onClick={refreshKnownApps}
@@ -158,7 +159,7 @@ export default function AppList() {
             </div>
           )}
           <div className="grid grid--gap-medium app-list--section">
-            {knownAppNames?.length > 0 || showAppsQueryState.isLoading || showAppsQueryState.isFetching ? (
+            {knownAppNames?.length > 0 ? (
               <div className="app-list__list">
                 {knownApps.map((app) => {
                   return (
@@ -176,12 +177,24 @@ export default function AppList() {
                 })}
               </div>
             ) : (
-              <div className="app-list--no-apps-header">
-                <div className="grid grid--gap-small">
-                  <Typography variant="h4">No applications yet</Typography>
-                  <Typography>Applications that you create (or have access to) appear here</Typography>
-                </div>
-              </div>
+              <>
+                {showAppsQueryState.status === QueryStatus.fulfilled || knowAppNamesLastRefresh > 0 ? (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 'var(--eds_spacing_medium)',
+                    }}
+                  >
+                    <Typography variant="h3">No applications yet</Typography>
+                    <Typography>Applications that you create (or have access to) appear here</Typography>
+                    <CreateApplication />
+                  </div>
+                ) : (
+                  <LoadingCards amount={6} />
+                )}
+              </>
             )}
           </div>
         </>
