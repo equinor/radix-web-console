@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
-import { useCallback, useMemo } from 'react'
+import { useCallback } from 'react'
 
 import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
 import { dataSorter, sortCompareString } from '../../utils/sort-utils'
@@ -58,12 +58,7 @@ export default function AppList() {
     )
   }, [showAppsQuery, setKnownAppNames, setKnowAppNamesLastRefresh])
 
-  const timeStampNextRefresh = useMemo(
-    () => knowAppNamesLastRefresh + appListrefreshInterval,
-    [knowAppNamesLastRefresh]
-  )
-
-  useTimestampTimeout(refreshKnownApps, timeStampNextRefresh)
+  useTimestampTimeout(refreshKnownApps, knowAppNamesLastRefresh + appListrefreshInterval)
 
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
