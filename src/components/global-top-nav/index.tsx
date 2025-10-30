@@ -1,8 +1,8 @@
 import { useAccount, useMsal } from '@azure/msal-react'
 import { Button, Card, Icon, Popover, Tabs, TopBar, Typography } from '@equinor/eds-core-react'
-import { account_circle, close, info_circle, log_in, log_out, menu } from '@equinor/eds-icons'
+import { account_circle, close, comment_discussion, info_circle, log_in, log_out, menu } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
-import { type FunctionComponent, forwardRef, type PropsWithChildren, useState } from 'react'
+import { forwardRef, type PropsWithChildren, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { clusterBases } from '../../clusterBases'
 import { externalUrls } from '../../externalUrls'
@@ -14,7 +14,7 @@ import { StyledToastContainer } from './styled-toaster'
 
 import './style.css'
 
-export const GlobalTopNav: FunctionComponent = () => {
+export const GlobalTopNav = () => {
   const [menuIsClosed, setOpenMenu] = useState(false)
   const handleClick = () => setOpenMenu(!menuIsClosed)
   const radixClusterBase = configVariables.RADIX_CLUSTER_BASE
@@ -58,6 +58,7 @@ export const GlobalTopNav: FunctionComponent = () => {
       </TopBar.CustomContent>
       <TopBar.Actions className="nav-icon-links">
         <AboutButton />
+        <FeedbackButton />
         <UserInfo />
         <div className="mobile-menu">
           <Button variant="ghost_icon" onClick={handleClick}>
@@ -85,18 +86,23 @@ const TabItemTemplate = forwardRef<HTMLButtonElement, PropsWithChildren<TabItemT
   )
 )
 
-const AboutButton: FunctionComponent = () => (
-  <Typography
-    link
-    as={Link}
-    to={routes.about}
-    token={{
-      color: 'var(--eds_interactive_primary__resting)',
-      textDecoration: 'none',
-    }}
-  >
+const AboutButton = () => (
+  <Button variant="ghost" as={Link} to={routes.about}>
     <Icon data={info_circle} />
-  </Typography>
+  </Button>
+)
+
+const FeedbackButton = () => (
+  <Button
+    variant="ghost"
+    className="feedback-button"
+    href={'https://github.com/equinor/radix/issues'}
+    target="_blank"
+    rel="noopener noreferrer"
+    title="Give us feedback"
+  >
+    <Icon data={comment_discussion} />
+  </Button>
 )
 
 const UserInfo = () => {

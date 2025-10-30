@@ -1,26 +1,28 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useState } from 'react'
+import { useCallback } from 'react'
 
 import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
 import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 import { AppListItem } from '../app-list-item'
-import AsyncResource from '../async-resource/async-resource'
 import CreateApplication from '../create-application'
 
 import './style.css'
 import { refresh } from '@equinor/eds-icons'
+import { QueryStatus } from '@reduxjs/toolkit/query'
 import { uniq } from 'lodash-es'
 import {
   favouriteApplicationsKey,
   knownApplicationsKey,
+  knownApplicationsLastRefreshKey,
   useMsalAccountLocalStorage,
 } from '../../hooks/use-local-storage'
+import { useTimestampTimeout } from '../../hooks/use-timestamp-timeout'
 import { pollingInterval } from '../../store/defaults'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { promiseHandler } from '../../utils/promise-handler'
 import { Alert } from '../alert'
 
-const LoadingCards: FunctionComponent<{ amount: number }> = ({ amount }) => (
+const LoadingCards = ({ amount }: { amount: number }) => (
   <div className="app-list__list loading">
     {[...Array(amount || 1)].map((_, i) => (
       <AppListItem key={i} appName={''} handler={(e) => e.preventDefault()} isPlaceholder isLoading={false} />
@@ -32,9 +34,9 @@ const isArrayOfStrings = (variable: unknown): variable is string[] => {
   return Array.isArray(variable) && variable.every((item) => typeof item === 'string')
 }
 
-export default function AppList() {
-  const [randomPlaceholderCount] = useState(Math.floor(Math.random() * 5) + 3)
+const appListrefreshInterval = 24 * 60 * 60 * 1000
 
+export default function AppList() {
   const [favourites, setFavourites] = useMsalAccountLocalStorage<Array<string>>(
     favouriteApplicationsKey,
     [],
@@ -46,7 +48,26 @@ export default function AppList() {
     [],
     isArrayOfStrings
   )
-  const [refreshApps, appsState] = radixApi.endpoints.showApplications.useLazyQuery({})
+
+  const [knowAppNamesLastRefresh, setKnowAppNamesLastRefresh] = useMsalAccountLocalStorage(
+    knownApplicationsLastRefreshKey,
+    0
+  )
+
+  const [showAppsQuery, showAppsQueryState] = radixApi.endpoints.showApplications.useLazyQuery({})
+
+  const refreshKnownApps = useCallback(() => {
+    promiseHandler(
+      showAppsQuery({}).unwrap(),
+      (data) => {
+        setKnownAppNames(data.map((app) => app.name))
+        setKnowAppNamesLastRefresh(Date.now())
+      },
+      'error'
+    )
+  }, [showAppsQuery, setKnownAppNames, setKnowAppNamesLastRefresh])
+
+  useTimestampTimeout(refreshKnownApps, knowAppNamesLastRefresh + appListrefreshInterval)
 
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
@@ -82,14 +103,6 @@ export default function AppList() {
         <Typography variant="body_short_bold">Favourites</Typography>
         <div className="app-list__buttons">
           <CreateApplication />
-          <Button
-            className="feedback-button"
-            href={'https://github.com/equinor/radix/issues'}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Give us feedback
-          </Button>
         </div>
       </div>
       <div className="app-list">
@@ -125,60 +138,63 @@ export default function AppList() {
         <>
           <div className="applications-list-title-actions">
             <Typography variant="body_short_bold">All applications</Typography>
-            {(appsState.isLoading || appsState.isFetching) && (
-              <div>
-                <CircularProgress size={16} /> Loading applications…
-              </div>
-            )}
             <Button
               className={'action--justify-end'}
-              variant="ghost"
+              variant="outlined"
               color="primary"
-              disabled={appsState.isLoading || appsState.isFetching}
-              onClick={() =>
-                promiseHandler(
-                  refreshApps({}).unwrap(),
-                  (data) => setKnownAppNames(data.map((app) => app.name)),
-                  'error'
-                )
-              }
+              disabled={showAppsQueryState.isLoading || showAppsQueryState.isFetching}
+              onClick={refreshKnownApps}
             >
-              <Icon data={refresh} />
+              {showAppsQueryState.isLoading || showAppsQueryState.isFetching ? (
+                <CircularProgress size={16} />
+              ) : (
+                <Icon data={refresh} />
+              )}
               Refresh list
             </Button>
           </div>
-          {appsState.isError && (
+          {showAppsQueryState.isError && (
             <div>
-              <Alert type="danger">Failed to load applications. {getFetchErrorMessage(appsState.error)}</Alert>
+              <Alert type="danger">Failed to load applications. {getFetchErrorMessage(showAppsQueryState.error)}</Alert>
             </div>
           )}
           <div className="grid grid--gap-medium app-list--section">
-            {knownAppNames?.length > 0 || appsState.isLoading || appsState.isFetching ? (
-              <AsyncResource asyncState={appsState} loadingContent={<LoadingCards amount={randomPlaceholderCount} />}>
-                <div className="app-list__list">
-                  {knownApps.map((app) => {
-                    return (
-                      <AppListItem
-                        key={app.name}
-                        appName={app.name}
-                        handler={(e) => {
-                          changeFavouriteApplication(app.name, !app.isFavourite)
-                          e.preventDefault()
-                        }}
-                        isFavourite={app.isFavourite}
-                        isLoading={false}
-                      />
-                    )
-                  })}
-                </div>
-              </AsyncResource>
-            ) : (
-              <div className="app-list--no-apps-header">
-                <div className="grid grid--gap-small">
-                  <Typography variant="h4">No applications yet</Typography>
-                  <Typography>Applications that you create (or have access to) appear here</Typography>
-                </div>
+            {knownAppNames?.length > 0 ? (
+              <div className="app-list__list">
+                {knownApps.map((app) => {
+                  return (
+                    <AppListItem
+                      key={app.name}
+                      appName={app.name}
+                      handler={(e) => {
+                        changeFavouriteApplication(app.name, !app.isFavourite)
+                        e.preventDefault()
+                      }}
+                      isFavourite={app.isFavourite}
+                      isLoading={false}
+                    />
+                  )
+                })}
               </div>
+            ) : (
+              <>
+                {showAppsQueryState.status === QueryStatus.fulfilled || knowAppNamesLastRefresh > 0 ? (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      gap: 'var(--eds_spacing_medium)',
+                    }}
+                  >
+                    <Typography variant="h3">No applications yet</Typography>
+                    <Typography>Applications that you create (or have access to) appear here</Typography>
+                    <CreateApplication />
+                  </div>
+                ) : (
+                  <LoadingCards amount={6} />
+                )}
+              </>
             )}
           </div>
         </>

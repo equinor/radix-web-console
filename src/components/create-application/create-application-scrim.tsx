@@ -53,7 +53,7 @@ export function CreateApplicationScrim({ secrets, onRefreshApps, onCreateApplica
 
   return (
     <>
-      <Button className="action--justify-end" variant="ghost" color="primary" onClick={() => setVisibleScrim(true)}>
+      <Button className="action--justify-end" variant="contained" color="primary" onClick={() => setVisibleScrim(true)}>
         <Icon data={add} />
         Create new app
       </Button>
