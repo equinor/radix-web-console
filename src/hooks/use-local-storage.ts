@@ -15,6 +15,7 @@ export const deploymentJobComponentEnvVarsListExpandedKey = 'deploymentJobCompon
 export const environmentEventListExpandedKey = 'environmentEventListExpanded'
 export const replicaEventListExpandedKey = 'replicaEventListExpanded'
 export const batchJobEnvVarsListExpandedKey = 'batchJobEnvVarsListExpanded'
+export const knownApplicationsLastRefreshKey = 'knownApplicationsLastRefresh'
 
 export function useLocalStorage<T>(key: string, defaultValue: T, testContent?: (value: unknown) => boolean) {
   const getLocalStorageItem = useCallback(
