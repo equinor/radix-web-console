@@ -1,10 +1,7 @@
 import { radixStoreApi as api } from "./configs/index";
 const injectedRtkApi = api.injectEndpoints({
   endpoints: (build) => ({
-    showApplications: build.query<
-      ShowApplicationsApiResponse,
-      ShowApplicationsApiArg
-    >({
+    showApplications: build.query<ShowApplicationsApiResponse, ShowApplicationsApiArg>({
       query: (queryArg) => ({
         url: `/applications`,
         headers: {
@@ -14,10 +11,7 @@ const injectedRtkApi = api.injectEndpoints({
         params: { sshRepo: queryArg.sshRepo },
       }),
     }),
-    registerApplication: build.mutation<
-      RegisterApplicationApiResponse,
-      RegisterApplicationApiArg
-    >({
+    registerApplication: build.mutation<RegisterApplicationApiResponse, RegisterApplicationApiArg>({
       query: (queryArg) => ({
         url: `/applications`,
         method: "POST",
@@ -28,10 +22,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getSearchApplications: build.query<
-      GetSearchApplicationsApiResponse,
-      GetSearchApplicationsApiArg
-    >({
+    getSearchApplications: build.query<GetSearchApplicationsApiResponse, GetSearchApplicationsApiArg>({
       query: (queryArg) => ({
         url: `/applications/_search`,
         headers: {
@@ -41,15 +32,11 @@ const injectedRtkApi = api.injectEndpoints({
         params: {
           apps: queryArg.apps,
           includeLatestJobSummary: queryArg.includeLatestJobSummary,
-          includeEnvironmentActiveComponents:
-            queryArg.includeEnvironmentActiveComponents,
+          includeEnvironmentActiveComponents: queryArg.includeEnvironmentActiveComponents,
         },
       }),
     }),
-    searchApplications: build.mutation<
-      SearchApplicationsApiResponse,
-      SearchApplicationsApiArg
-    >({
+    searchApplications: build.mutation<SearchApplicationsApiResponse, SearchApplicationsApiArg>({
       query: (queryArg) => ({
         url: `/applications/_search`,
         method: "POST",
@@ -60,10 +47,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getApplication: build.query<
-      GetApplicationApiResponse,
-      GetApplicationApiArg
-    >({
+    getApplication: build.query<GetApplicationApiResponse, GetApplicationApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
         headers: {
@@ -72,10 +56,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    changeRegistrationDetails: build.mutation<
-      ChangeRegistrationDetailsApiResponse,
-      ChangeRegistrationDetailsApiArg
-    >({
+    changeRegistrationDetails: build.mutation<ChangeRegistrationDetailsApiResponse, ChangeRegistrationDetailsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
         method: "PUT",
@@ -86,10 +67,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    deleteApplication: build.mutation<
-      DeleteApplicationApiResponse,
-      DeleteApplicationApiArg
-    >({
+    deleteApplication: build.mutation<DeleteApplicationApiResponse, DeleteApplicationApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
         method: "DELETE",
@@ -99,10 +77,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    modifyRegistrationDetails: build.mutation<
-      ModifyRegistrationDetailsApiResponse,
-      ModifyRegistrationDetailsApiArg
-    >({
+    modifyRegistrationDetails: build.mutation<ModifyRegistrationDetailsApiResponse, ModifyRegistrationDetailsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}`,
         method: "PATCH",
@@ -139,23 +114,19 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    disableApplicationAlerting: build.mutation<
-      DisableApplicationAlertingApiResponse,
-      DisableApplicationAlertingApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/alerting/disable`,
-        method: "POST",
-        headers: {
-          "Impersonate-User": queryArg["Impersonate-User"],
-          "Impersonate-Group": queryArg["Impersonate-Group"],
-        },
-      }),
-    }),
-    enableApplicationAlerting: build.mutation<
-      EnableApplicationAlertingApiResponse,
-      EnableApplicationAlertingApiArg
-    >({
+    disableApplicationAlerting: build.mutation<DisableApplicationAlertingApiResponse, DisableApplicationAlertingApiArg>(
+      {
+        query: (queryArg) => ({
+          url: `/applications/${queryArg.appName}/alerting/disable`,
+          method: "POST",
+          headers: {
+            "Impersonate-User": queryArg["Impersonate-User"],
+            "Impersonate-Group": queryArg["Impersonate-Group"],
+          },
+        }),
+      }
+    ),
+    enableApplicationAlerting: build.mutation<EnableApplicationAlertingApiResponse, EnableApplicationAlertingApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/alerting/enable`,
         method: "POST",
@@ -165,10 +136,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getBuildSecrets: build.query<
-      GetBuildSecretsApiResponse,
-      GetBuildSecretsApiArg
-    >({
+    getBuildSecrets: build.query<GetBuildSecretsApiResponse, GetBuildSecretsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/buildsecrets`,
         headers: {
@@ -191,10 +159,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getDeployKeyAndSecret: build.query<
-      GetDeployKeyAndSecretApiResponse,
-      GetDeployKeyAndSecretApiArg
-    >({
+    getDeployKeyAndSecret: build.query<GetDeployKeyAndSecretApiResponse, GetDeployKeyAndSecretApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deploy-key-and-secret`,
         headers: {
@@ -203,10 +168,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    isDeployKeyValid: build.query<
-      IsDeployKeyValidApiResponse,
-      IsDeployKeyValidApiArg
-    >({
+    isDeployKeyValid: build.query<IsDeployKeyValidApiResponse, IsDeployKeyValidApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deploykey-valid`,
         headers: {
@@ -215,10 +177,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getDeployments: build.query<
-      GetDeploymentsApiResponse,
-      GetDeploymentsApiArg
-    >({
+    getDeployments: build.query<GetDeploymentsApiResponse, GetDeploymentsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/deployments`,
         headers: {
@@ -262,10 +221,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getEnvironmentSummary: build.query<
-      GetEnvironmentSummaryApiResponse,
-      GetEnvironmentSummaryApiArg
-    >({
+    getEnvironmentSummary: build.query<GetEnvironmentSummaryApiResponse, GetEnvironmentSummaryApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments`,
         headers: {
@@ -274,10 +230,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getEnvironment: build.query<
-      GetEnvironmentApiResponse,
-      GetEnvironmentApiArg
-    >({
+    getEnvironment: build.query<GetEnvironmentApiResponse, GetEnvironmentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}`,
         headers: {
@@ -286,10 +239,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    createEnvironment: build.mutation<
-      CreateEnvironmentApiResponse,
-      CreateEnvironmentApiArg
-    >({
+    createEnvironment: build.mutation<CreateEnvironmentApiResponse, CreateEnvironmentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}`,
         method: "POST",
@@ -299,10 +249,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    deleteEnvironment: build.mutation<
-      DeleteEnvironmentApiResponse,
-      DeleteEnvironmentApiArg
-    >({
+    deleteEnvironment: build.mutation<DeleteEnvironmentApiResponse, DeleteEnvironmentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}`,
         method: "DELETE",
@@ -338,23 +285,19 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    disableEnvironmentAlerting: build.mutation<
-      DisableEnvironmentAlertingApiResponse,
-      DisableEnvironmentAlertingApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting/disable`,
-        method: "POST",
-        headers: {
-          "Impersonate-User": queryArg["Impersonate-User"],
-          "Impersonate-Group": queryArg["Impersonate-Group"],
-        },
-      }),
-    }),
-    enableEnvironmentAlerting: build.mutation<
-      EnableEnvironmentAlertingApiResponse,
-      EnableEnvironmentAlertingApiArg
-    >({
+    disableEnvironmentAlerting: build.mutation<DisableEnvironmentAlertingApiResponse, DisableEnvironmentAlertingApiArg>(
+      {
+        query: (queryArg) => ({
+          url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting/disable`,
+          method: "POST",
+          headers: {
+            "Impersonate-User": queryArg["Impersonate-User"],
+            "Impersonate-Group": queryArg["Impersonate-Group"],
+          },
+        }),
+      }
+    ),
+    enableEnvironmentAlerting: build.mutation<EnableEnvironmentAlertingApiResponse, EnableEnvironmentAlertingApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/alerting/enable`,
         method: "POST",
@@ -364,31 +307,20 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getBuildStatus: build.query<
-      GetBuildStatusApiResponse,
-      GetBuildStatusApiArg
-    >({
+    getBuildStatus: build.query<GetBuildStatusApiResponse, GetBuildStatusApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/buildstatus`,
         params: { pipeline: queryArg.pipeline },
       }),
     }),
-    getOAuthPodLog: build.query<
-      GetOAuthPodLogApiResponse,
-      GetOAuthPodLogApiArg
-    >({
+    getOAuthPodLog: build.query<GetOAuthPodLogApiResponse, GetOAuthPodLogApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/aux/${queryArg["type"]}/replicas/${queryArg.podName}/logs`,
         headers: {
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: {
-          sinceTime: queryArg.sinceTime,
-          lines: queryArg.lines,
-          file: queryArg.file,
-          follow: queryArg.follow,
-        },
+        params: { sinceTime: queryArg.sinceTime, lines: queryArg.lines, file: queryArg.file, follow: queryArg.follow },
       }),
     }),
     restartOAuthAuxiliaryResource: build.mutation<
@@ -454,10 +386,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    resetScaledComponent: build.mutation<
-      ResetScaledComponentApiResponse,
-      ResetScaledComponentApiArg
-    >({
+    resetScaledComponent: build.mutation<ResetScaledComponentApiResponse, ResetScaledComponentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/reset-scale`,
         method: "POST",
@@ -467,10 +396,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    restartComponent: build.mutation<
-      RestartComponentApiResponse,
-      RestartComponentApiArg
-    >({
+    restartComponent: build.mutation<RestartComponentApiResponse, RestartComponentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/restart`,
         method: "POST",
@@ -480,10 +406,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    scaleComponent: build.mutation<
-      ScaleComponentApiResponse,
-      ScaleComponentApiArg
-    >({
+    scaleComponent: build.mutation<ScaleComponentApiResponse, ScaleComponentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/scale/${queryArg.replicas}`,
         method: "POST",
@@ -506,10 +429,7 @@ const injectedRtkApi = api.injectEndpoints({
         params: { secretName: queryArg.secretName },
       }),
     }),
-    changeComponentSecret: build.mutation<
-      ChangeComponentSecretApiResponse,
-      ChangeComponentSecretApiArg
-    >({
+    changeComponentSecret: build.mutation<ChangeComponentSecretApiResponse, ChangeComponentSecretApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/secrets/${queryArg.secretName}`,
         method: "PUT",
@@ -520,10 +440,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    startComponent: build.mutation<
-      StartComponentApiResponse,
-      StartComponentApiArg
-    >({
+    startComponent: build.mutation<StartComponentApiResponse, StartComponentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/start`,
         method: "POST",
@@ -533,10 +450,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    stopComponent: build.mutation<
-      StopComponentApiResponse,
-      StopComponentApiArg
-    >({
+    stopComponent: build.mutation<StopComponentApiResponse, StopComponentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/components/${queryArg.componentName}/stop`,
         method: "POST",
@@ -559,10 +473,7 @@ const injectedRtkApi = api.injectEndpoints({
         params: { latest: queryArg.latest },
       }),
     }),
-    getEnvironmentEvents: build.query<
-      GetEnvironmentEventsApiResponse,
-      GetEnvironmentEventsApiArg
-    >({
+    getEnvironmentEvents: build.query<GetEnvironmentEventsApiResponse, GetEnvironmentEventsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events`,
         headers: {
@@ -571,10 +482,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getComponentEvents: build.query<
-      GetComponentEventsApiResponse,
-      GetComponentEventsApiArg
-    >({
+    getComponentEvents: build.query<GetComponentEventsApiResponse, GetComponentEventsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events/components/${queryArg.componentName}`,
         headers: {
@@ -583,10 +491,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getReplicaEvents: build.query<
-      GetReplicaEventsApiResponse,
-      GetReplicaEventsApiArg
-    >({
+    getReplicaEvents: build.query<GetReplicaEventsApiResponse, GetReplicaEventsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/events/components/${queryArg.componentName}/replicas/${queryArg.podName}`,
         headers: {
@@ -617,10 +522,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    stopAllBatches: build.mutation<
-      StopAllBatchesApiResponse,
-      StopAllBatchesApiArg
-    >({
+    stopAllBatches: build.mutation<StopAllBatchesApiResponse, StopAllBatchesApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/batches/stop`,
         method: "POST",
@@ -680,10 +582,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getJobComponentDeployments: build.query<
-      GetJobComponentDeploymentsApiResponse,
-      GetJobComponentDeploymentsApiArg
-    >({
+    getJobComponentDeployments: build.query<GetJobComponentDeploymentsApiResponse, GetJobComponentDeploymentsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/jobcomponents/${queryArg.jobComponentName}/deployments`,
         headers: {
@@ -812,10 +711,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    restartEnvironment: build.mutation<
-      RestartEnvironmentApiResponse,
-      RestartEnvironmentApiArg
-    >({
+    restartEnvironment: build.mutation<RestartEnvironmentApiResponse, RestartEnvironmentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/restart`,
         method: "POST",
@@ -825,10 +721,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    startEnvironment: build.mutation<
-      StartEnvironmentApiResponse,
-      StartEnvironmentApiArg
-    >({
+    startEnvironment: build.mutation<StartEnvironmentApiResponse, StartEnvironmentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/start`,
         method: "POST",
@@ -838,10 +731,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    stopEnvironment: build.mutation<
-      StopEnvironmentApiResponse,
-      StopEnvironmentApiArg
-    >({
+    stopEnvironment: build.mutation<StopEnvironmentApiResponse, StopEnvironmentApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/stop`,
         method: "POST",
@@ -863,10 +753,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getApplicationJobs: build.query<
-      GetApplicationJobsApiResponse,
-      GetApplicationJobsApiArg
-    >({
+    getApplicationJobs: build.query<GetApplicationJobsApiResponse, GetApplicationJobsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs`,
         headers: {
@@ -875,10 +762,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getApplicationJob: build.query<
-      GetApplicationJobApiResponse,
-      GetApplicationJobApiArg
-    >({
+    getApplicationJob: build.query<GetApplicationJobApiResponse, GetApplicationJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}`,
         headers: {
@@ -887,28 +771,17 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getPipelineJobStepLogs: build.query<
-      GetPipelineJobStepLogsApiResponse,
-      GetPipelineJobStepLogsApiArg
-    >({
+    getPipelineJobStepLogs: build.query<GetPipelineJobStepLogsApiResponse, GetPipelineJobStepLogsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/logs/${queryArg.stepName}`,
         headers: {
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: {
-          sinceTime: queryArg.sinceTime,
-          lines: queryArg.lines,
-          file: queryArg.file,
-          follow: queryArg.follow,
-        },
+        params: { sinceTime: queryArg.sinceTime, lines: queryArg.lines, file: queryArg.file, follow: queryArg.follow },
       }),
     }),
-    getTektonPipelineRuns: build.query<
-      GetTektonPipelineRunsApiResponse,
-      GetTektonPipelineRunsApiArg
-    >({
+    getTektonPipelineRuns: build.query<GetTektonPipelineRunsApiResponse, GetTektonPipelineRunsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns`,
         headers: {
@@ -917,10 +790,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getTektonPipelineRun: build.query<
-      GetTektonPipelineRunApiResponse,
-      GetTektonPipelineRunApiArg
-    >({
+    getTektonPipelineRun: build.query<GetTektonPipelineRunApiResponse, GetTektonPipelineRunApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}`,
         headers: {
@@ -929,10 +799,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getTektonPipelineRunTasks: build.query<
-      GetTektonPipelineRunTasksApiResponse,
-      GetTektonPipelineRunTasksApiArg
-    >({
+    getTektonPipelineRunTasks: build.query<GetTektonPipelineRunTasksApiResponse, GetTektonPipelineRunTasksApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks`,
         headers: {
@@ -941,10 +808,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getTektonPipelineRunTask: build.query<
-      GetTektonPipelineRunTaskApiResponse,
-      GetTektonPipelineRunTaskApiArg
-    >({
+    getTektonPipelineRunTask: build.query<GetTektonPipelineRunTaskApiResponse, GetTektonPipelineRunTaskApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/pipelineruns/${queryArg.pipelineRunName}/tasks/${queryArg.taskName}`,
         headers: {
@@ -963,12 +827,7 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: {
-          sinceTime: queryArg.sinceTime,
-          lines: queryArg.lines,
-          file: queryArg.file,
-          follow: queryArg.follow,
-        },
+        params: { sinceTime: queryArg.sinceTime, lines: queryArg.lines, file: queryArg.file, follow: queryArg.follow },
       }),
     }),
     getTektonPipelineRunTaskStep: build.query<
@@ -995,10 +854,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    rerunApplicationJob: build.mutation<
-      RerunApplicationJobApiResponse,
-      RerunApplicationJobApiArg
-    >({
+    rerunApplicationJob: build.mutation<RerunApplicationJobApiResponse, RerunApplicationJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/rerun`,
         method: "POST",
@@ -1008,10 +864,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    stopApplicationJob: build.mutation<
-      StopApplicationJobApiResponse,
-      StopApplicationJobApiArg
-    >({
+    stopApplicationJob: build.mutation<StopApplicationJobApiResponse, StopApplicationJobApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs/${queryArg.jobName}/stop`,
         method: "POST",
@@ -1022,28 +875,22 @@ const injectedRtkApi = api.injectEndpoints({
       }),
     }),
     listPipelines: build.query<ListPipelinesApiResponse, ListPipelinesApiArg>({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/pipelines`,
-      }),
+      query: (queryArg) => ({ url: `/applications/${queryArg.appName}/pipelines` }),
     }),
-    triggerPipelineApplyConfig: build.mutation<
-      TriggerPipelineApplyConfigApiResponse,
-      TriggerPipelineApplyConfigApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/pipelines/apply-config`,
-        method: "POST",
-        body: queryArg.pipelineParametersApplyConfig,
-        headers: {
-          "Impersonate-User": queryArg["Impersonate-User"],
-          "Impersonate-Group": queryArg["Impersonate-Group"],
-        },
-      }),
-    }),
-    triggerPipelineBuild: build.mutation<
-      TriggerPipelineBuildApiResponse,
-      TriggerPipelineBuildApiArg
-    >({
+    triggerPipelineApplyConfig: build.mutation<TriggerPipelineApplyConfigApiResponse, TriggerPipelineApplyConfigApiArg>(
+      {
+        query: (queryArg) => ({
+          url: `/applications/${queryArg.appName}/pipelines/apply-config`,
+          method: "POST",
+          body: queryArg.pipelineParametersApplyConfig,
+          headers: {
+            "Impersonate-User": queryArg["Impersonate-User"],
+            "Impersonate-Group": queryArg["Impersonate-Group"],
+          },
+        }),
+      }
+    ),
+    triggerPipelineBuild: build.mutation<TriggerPipelineBuildApiResponse, TriggerPipelineBuildApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/build`,
         method: "POST",
@@ -1054,24 +901,20 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    triggerPipelineBuildDeploy: build.mutation<
-      TriggerPipelineBuildDeployApiResponse,
-      TriggerPipelineBuildDeployApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/pipelines/build-deploy`,
-        method: "POST",
-        body: queryArg.pipelineParametersBuild,
-        headers: {
-          "Impersonate-User": queryArg["Impersonate-User"],
-          "Impersonate-Group": queryArg["Impersonate-Group"],
-        },
-      }),
-    }),
-    triggerPipelineDeploy: build.mutation<
-      TriggerPipelineDeployApiResponse,
-      TriggerPipelineDeployApiArg
-    >({
+    triggerPipelineBuildDeploy: build.mutation<TriggerPipelineBuildDeployApiResponse, TriggerPipelineBuildDeployApiArg>(
+      {
+        query: (queryArg) => ({
+          url: `/applications/${queryArg.appName}/pipelines/build-deploy`,
+          method: "POST",
+          body: queryArg.pipelineParametersBuild,
+          headers: {
+            "Impersonate-User": queryArg["Impersonate-User"],
+            "Impersonate-Group": queryArg["Impersonate-Group"],
+          },
+        }),
+      }
+    ),
+    triggerPipelineDeploy: build.mutation<TriggerPipelineDeployApiResponse, TriggerPipelineDeployApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/deploy`,
         method: "POST",
@@ -1082,10 +925,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    triggerPipelinePromote: build.mutation<
-      TriggerPipelinePromoteApiResponse,
-      TriggerPipelinePromoteApiArg
-    >({
+    triggerPipelinePromote: build.mutation<TriggerPipelinePromoteApiResponse, TriggerPipelinePromoteApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/pipelines/promote`,
         method: "POST",
@@ -1096,10 +936,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    getPrivateImageHubs: build.query<
-      GetPrivateImageHubsApiResponse,
-      GetPrivateImageHubsApiArg
-    >({
+    getPrivateImageHubs: build.query<GetPrivateImageHubsApiResponse, GetPrivateImageHubsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/privateimagehubs`,
         headers: {
@@ -1122,10 +959,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    regenerateDeployKey: build.mutation<
-      RegenerateDeployKeyApiResponse,
-      RegenerateDeployKeyApiArg
-    >({
+    regenerateDeployKey: build.mutation<RegenerateDeployKeyApiResponse, RegenerateDeployKeyApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/regenerate-deploy-key`,
         method: "POST",
@@ -1136,10 +970,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    regenerateSharedSecret: build.mutation<
-      RegenerateSharedSecretApiResponse,
-      RegenerateSharedSecretApiArg
-    >({
+    regenerateSharedSecret: build.mutation<RegenerateSharedSecretApiResponse, RegenerateSharedSecretApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/regenerate-shared-secret`,
         method: "POST",
@@ -1163,10 +994,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    restartApplication: build.mutation<
-      RestartApplicationApiResponse,
-      RestartApplicationApiArg
-    >({
+    restartApplication: build.mutation<RestartApplicationApiResponse, RestartApplicationApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/restart`,
         method: "POST",
@@ -1176,10 +1004,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    startApplication: build.mutation<
-      StartApplicationApiResponse,
-      StartApplicationApiArg
-    >({
+    startApplication: build.mutation<StartApplicationApiResponse, StartApplicationApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/start`,
         method: "POST",
@@ -1189,10 +1014,7 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    stopApplication: build.mutation<
-      StopApplicationApiResponse,
-      StopApplicationApiArg
-    >({
+    stopApplication: build.mutation<StopApplicationApiResponse, StopApplicationApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/stop`,
         method: "POST",
@@ -1214,12 +1036,14 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getConfiguration: build.query<GetConfigurationApiResponse, GetConfigurationApiArg>({
+      query: () => ({ url: `/configuration` }),
+    }),
   }),
   overrideExisting: false,
 });
 export { injectedRtkApi as radixApi };
-export type ShowApplicationsApiResponse =
-  /** status 200 Successful operation */ ApplicationSummary[];
+export type ShowApplicationsApiResponse = /** status 200 Successful operation */ ApplicationSummary[];
 export type ShowApplicationsApiArg = {
   /** ssh repo to identify Radix application if exists */
   sshRepo?: string;
@@ -1238,8 +1062,7 @@ export type RegisterApplicationApiArg = {
   /** Request for an Application to register */
   applicationRegistrationRequest: ApplicationRegistrationRequest;
 };
-export type GetSearchApplicationsApiResponse =
-  /** status 200 Successful operation */ ApplicationSummary[];
+export type GetSearchApplicationsApiResponse = /** status 200 Successful operation */ ApplicationSummary[];
 export type GetSearchApplicationsApiArg = {
   /** Comma separated list of application names to search for */
   apps: string;
@@ -1252,8 +1075,7 @@ export type GetSearchApplicationsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type SearchApplicationsApiResponse =
-  /** status 200 Successful operation */ ApplicationSummary[];
+export type SearchApplicationsApiResponse = /** status 200 Successful operation */ ApplicationSummary[];
 export type SearchApplicationsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
@@ -1262,8 +1084,7 @@ export type SearchApplicationsApiArg = {
   /** List of application names to search for */
   applicationsSearchRequest: ApplicationsSearchRequest;
 };
-export type GetApplicationApiResponse =
-  /** status 200 Successful get application */ Application;
+export type GetApplicationApiResponse = /** status 200 Successful get application */ Application;
 export type GetApplicationApiArg = {
   /** Name of application */
   appName: string;
@@ -1305,8 +1126,7 @@ export type ModifyRegistrationDetailsApiArg = {
   /** Request for Application to patch */
   applicationRegistrationPatchRequest: ApplicationRegistrationPatchRequest;
 };
-export type GetApplicationAlertingConfigApiResponse =
-  /** status 200 Successful get alerts config */ AlertingConfig;
+export type GetApplicationAlertingConfigApiResponse = /** status 200 Successful get alerts config */ AlertingConfig;
 export type GetApplicationAlertingConfigApiArg = {
   /** Name of application */
   appName: string;
@@ -1327,8 +1147,7 @@ export type UpdateApplicationAlertingConfigApiArg = {
   /** Alerts configuration */
   updateAlertingConfig: UpdateAlertingConfig;
 };
-export type DisableApplicationAlertingApiResponse =
-  /** status 200 Successful disable alerting */ AlertingConfig;
+export type DisableApplicationAlertingApiResponse = /** status 200 Successful disable alerting */ AlertingConfig;
 export type DisableApplicationAlertingApiArg = {
   /** Name of application */
   appName: string;
@@ -1337,8 +1156,7 @@ export type DisableApplicationAlertingApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type EnableApplicationAlertingApiResponse =
-  /** status 200 Successful enable alerting */ AlertingConfig;
+export type EnableApplicationAlertingApiResponse = /** status 200 Successful enable alerting */ AlertingConfig;
 export type EnableApplicationAlertingApiArg = {
   /** Name of application */
   appName: string;
@@ -1347,8 +1165,7 @@ export type EnableApplicationAlertingApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetBuildSecretsApiResponse =
-  /** status 200 Successful operation */ BuildSecret[];
+export type GetBuildSecretsApiResponse = /** status 200 Successful operation */ BuildSecret[];
 export type GetBuildSecretsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1389,8 +1206,7 @@ export type IsDeployKeyValidApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetDeploymentsApiResponse =
-  /** status 200 Successful operation */ DeploymentSummary[];
+export type GetDeploymentsApiResponse = /** status 200 Successful operation */ DeploymentSummary[];
 export type GetDeploymentsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1403,8 +1219,7 @@ export type GetDeploymentsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetDeploymentApiResponse =
-  /** status 200 Successful get deployment */ Deployment;
+export type GetDeploymentApiResponse = /** status 200 Successful get deployment */ Deployment;
 export type GetDeploymentApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1451,8 +1266,7 @@ export type LogApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetEnvironmentSummaryApiResponse =
-  /** status 200 Successful operation */ EnvironmentSummary[];
+export type GetEnvironmentSummaryApiResponse = /** status 200 Successful operation */ EnvironmentSummary[];
 export type GetEnvironmentSummaryApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1461,8 +1275,7 @@ export type GetEnvironmentSummaryApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetEnvironmentApiResponse =
-  /** status 200 Successful get environment */ Environment;
+export type GetEnvironmentApiResponse = /** status 200 Successful get environment */ Environment;
 export type GetEnvironmentApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1495,8 +1308,7 @@ export type DeleteEnvironmentApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetEnvironmentAlertingConfigApiResponse =
-  /** status 200 Successful get alerts config */ AlertingConfig;
+export type GetEnvironmentAlertingConfigApiResponse = /** status 200 Successful get alerts config */ AlertingConfig;
 export type GetEnvironmentAlertingConfigApiArg = {
   /** Name of application */
   appName: string;
@@ -1521,8 +1333,7 @@ export type UpdateEnvironmentAlertingConfigApiArg = {
   /** Alerts configuration */
   updateAlertingConfig: UpdateAlertingConfig;
 };
-export type DisableEnvironmentAlertingApiResponse =
-  /** status 200 Successful disable alerting */ AlertingConfig;
+export type DisableEnvironmentAlertingApiResponse = /** status 200 Successful disable alerting */ AlertingConfig;
 export type DisableEnvironmentAlertingApiArg = {
   /** Name of application */
   appName: string;
@@ -1533,8 +1344,7 @@ export type DisableEnvironmentAlertingApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type EnableEnvironmentAlertingApiResponse =
-  /** status 200 Successful enable alerting */ AlertingConfig;
+export type EnableEnvironmentAlertingApiResponse = /** status 200 Successful enable alerting */ AlertingConfig;
 export type EnableEnvironmentAlertingApiArg = {
   /** Name of application */
   appName: string;
@@ -1594,8 +1404,7 @@ export type RestartOAuthAuxiliaryResourceApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type EnvVarsApiResponse =
-  /** status 200 environment variables */ EnvVar[];
+export type EnvVarsApiResponse = /** status 200 environment variables */ EnvVar[];
 export type EnvVarsApiArg = {
   /** Name of application */
   appName: string;
@@ -1781,8 +1590,7 @@ export type GetApplicationEnvironmentDeploymentsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetEnvironmentEventsApiResponse =
-  /** status 200 Successful get environment events */ Event[];
+export type GetEnvironmentEventsApiResponse = /** status 200 Successful get environment events */ Event[];
 export type GetEnvironmentEventsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1793,8 +1601,7 @@ export type GetEnvironmentEventsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetComponentEventsApiResponse =
-  /** status 200 Successful get environment events */ Event[];
+export type GetComponentEventsApiResponse = /** status 200 Successful get environment events */ Event[];
 export type GetComponentEventsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1807,8 +1614,7 @@ export type GetComponentEventsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetReplicaEventsApiResponse =
-  /** status 200 Successful get environment events */ Event[];
+export type GetReplicaEventsApiResponse = /** status 200 Successful get environment events */ Event[];
 export type GetReplicaEventsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -1834,8 +1640,7 @@ export type StopAllBatchesAndJobsForEnvironmentApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetBatchesApiResponse =
-  /** status 200 scheduled batches */ ScheduledBatchSummary[];
+export type GetBatchesApiResponse = /** status 200 scheduled batches */ ScheduledBatchSummary[];
 export type GetBatchesApiArg = {
   /** Name of application */
   appName: string;
@@ -1861,8 +1666,7 @@ export type StopAllBatchesApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetBatchApiResponse =
-  /** status 200 scheduled batch */ ScheduledBatchSummary;
+export type GetBatchApiResponse = /** status 200 scheduled batch */ ScheduledBatchSummary;
 export type GetBatchApiArg = {
   /** Name of application */
   appName: string;
@@ -1892,8 +1696,7 @@ export type DeleteBatchApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type CopyBatchApiResponse =
-  /** status 200 Success */ ScheduledBatchSummary;
+export type CopyBatchApiResponse = /** status 200 Success */ ScheduledBatchSummary;
 export type CopyBatchApiArg = {
   /** Name of application */
   appName: string;
@@ -1940,8 +1743,7 @@ export type StopBatchApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetJobComponentDeploymentsApiResponse =
-  /** status 200 Radix deployments */ DeploymentItem[];
+export type GetJobComponentDeploymentsApiResponse = /** status 200 Radix deployments */ DeploymentItem[];
 export type GetJobComponentDeploymentsApiArg = {
   /** Name of application */
   appName: string;
@@ -1954,8 +1756,7 @@ export type GetJobComponentDeploymentsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetJobsApiResponse =
-  /** status 200 scheduled jobs */ ScheduledJobSummary[];
+export type GetJobsApiResponse = /** status 200 scheduled jobs */ ScheduledJobSummary[];
 export type GetJobsApiArg = {
   /** Name of application */
   appName: string;
@@ -1981,8 +1782,7 @@ export type StopAllJobsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetJobApiResponse =
-  /** status 200 scheduled job */ ScheduledJobSummary;
+export type GetJobApiResponse = /** status 200 scheduled job */ ScheduledJobSummary;
 export type GetJobApiArg = {
   /** Name of application */
   appName: string;
@@ -2029,8 +1829,7 @@ export type CopyJobApiArg = {
   /** Request for creating a scheduled job */
   scheduledJobRequest: ScheduledJobRequest;
 };
-export type GetJobPayloadApiResponse =
-  /** status 200 scheduled job payload */ string;
+export type GetJobPayloadApiResponse = /** status 200 scheduled job payload */ string;
 export type GetJobPayloadApiArg = {
   /** Name of application */
   appName: string;
@@ -2169,8 +1968,7 @@ export type GetEnvironmentResourcesUtilizationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetApplicationJobsApiResponse =
-  /** status 200 Successful operation */ JobSummary[];
+export type GetApplicationJobsApiResponse = /** status 200 Successful operation */ JobSummary[];
 export type GetApplicationJobsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2179,8 +1977,7 @@ export type GetApplicationJobsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetApplicationJobApiResponse =
-  /** status 200 Successful get job */ Job;
+export type GetApplicationJobApiResponse = /** status 200 Successful get job */ Job;
 export type GetApplicationJobApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2191,8 +1988,7 @@ export type GetApplicationJobApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetPipelineJobStepLogsApiResponse =
-  /** status 200 Job step log */ string;
+export type GetPipelineJobStepLogsApiResponse = /** status 200 Job step log */ string;
 export type GetPipelineJobStepLogsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2213,8 +2009,7 @@ export type GetPipelineJobStepLogsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetTektonPipelineRunsApiResponse =
-  /** status 200 List of PipelineRun-s */ PipelineRun[];
+export type GetTektonPipelineRunsApiResponse = /** status 200 List of PipelineRun-s */ PipelineRun[];
 export type GetTektonPipelineRunsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2225,8 +2020,7 @@ export type GetTektonPipelineRunsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetTektonPipelineRunApiResponse =
-  /** status 200 List of Pipeline Runs */ PipelineRun;
+export type GetTektonPipelineRunApiResponse = /** status 200 List of Pipeline Runs */ PipelineRun;
 export type GetTektonPipelineRunApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2239,8 +2033,7 @@ export type GetTektonPipelineRunApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetTektonPipelineRunTasksApiResponse =
-  /** status 200 List of Pipeline Run Tasks */ PipelineRunTask[];
+export type GetTektonPipelineRunTasksApiResponse = /** status 200 List of Pipeline Run Tasks */ PipelineRunTask[];
 export type GetTektonPipelineRunTasksApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2253,8 +2046,7 @@ export type GetTektonPipelineRunTasksApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetTektonPipelineRunTaskApiResponse =
-  /** status 200 Pipeline Run Task */ PipelineRunTask;
+export type GetTektonPipelineRunTaskApiResponse = /** status 200 Pipeline Run Task */ PipelineRunTask;
 export type GetTektonPipelineRunTaskApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2269,8 +2061,7 @@ export type GetTektonPipelineRunTaskApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetTektonPipelineRunTaskStepLogsApiResponse =
-  /** status 200 Task step log */ string;
+export type GetTektonPipelineRunTaskStepLogsApiResponse = /** status 200 Task step log */ string;
 export type GetTektonPipelineRunTaskStepLogsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2295,8 +2086,7 @@ export type GetTektonPipelineRunTaskStepLogsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type GetTektonPipelineRunTaskStepApiResponse =
-  /** status 200 List of Pipeline Run Task Steps */ Step;
+export type GetTektonPipelineRunTaskStepApiResponse = /** status 200 List of Pipeline Run Task Steps */ Step;
 export type GetTektonPipelineRunTaskStepApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2351,14 +2141,12 @@ export type StopApplicationJobApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type ListPipelinesApiResponse =
-  /** status 200 Successful operation */ string[];
+export type ListPipelinesApiResponse = /** status 200 Successful operation */ string[];
 export type ListPipelinesApiArg = {
   /** Name of application */
   appName: string;
 };
-export type TriggerPipelineApplyConfigApiResponse =
-  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelineApplyConfigApiResponse = /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelineApplyConfigApiArg = {
   /** Name of application */
   appName: string;
@@ -2369,8 +2157,7 @@ export type TriggerPipelineApplyConfigApiArg = {
   /** Pipeline parameters */
   pipelineParametersApplyConfig: PipelineParametersApplyConfig;
 };
-export type TriggerPipelineBuildApiResponse =
-  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelineBuildApiResponse = /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelineBuildApiArg = {
   /** Name of application */
   appName: string;
@@ -2381,8 +2168,7 @@ export type TriggerPipelineBuildApiArg = {
   /** Pipeline parameters */
   pipelineParametersBuild: PipelineParametersBuild;
 };
-export type TriggerPipelineBuildDeployApiResponse =
-  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelineBuildDeployApiResponse = /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelineBuildDeployApiArg = {
   /** Name of application */
   appName: string;
@@ -2393,8 +2179,7 @@ export type TriggerPipelineBuildDeployApiArg = {
   /** Pipeline parameters */
   pipelineParametersBuild: PipelineParametersBuild;
 };
-export type TriggerPipelineDeployApiResponse =
-  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelineDeployApiResponse = /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelineDeployApiArg = {
   /** Name of application */
   appName: string;
@@ -2405,8 +2190,7 @@ export type TriggerPipelineDeployApiArg = {
   /** Pipeline parameters */
   pipelineParametersDeploy: PipelineParametersDeploy;
 };
-export type TriggerPipelinePromoteApiResponse =
-  /** status 200 Successful trigger pipeline */ JobSummary;
+export type TriggerPipelinePromoteApiResponse = /** status 200 Successful trigger pipeline */ JobSummary;
 export type TriggerPipelinePromoteApiArg = {
   /** Name of application */
   appName: string;
@@ -2417,8 +2201,7 @@ export type TriggerPipelinePromoteApiArg = {
   /** Pipeline parameters */
   pipelineParametersPromote: PipelineParametersPromote;
 };
-export type GetPrivateImageHubsApiResponse =
-  /** status 200 Successful operation */ ImageHubSecret[];
+export type GetPrivateImageHubsApiResponse = /** status 200 Successful operation */ ImageHubSecret[];
 export type GetPrivateImageHubsApiArg = {
   /** name of Radix application */
   appName: string;
@@ -2508,6 +2291,9 @@ export type GetApplicationResourcesUtilizationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
+export type GetConfigurationApiResponse =
+  /** status 200 Successful operation */ ClusterConfigurationHoldsClusterConfigurationEnvironment;
+export type GetConfigurationApiArg = void;
 export type TlsAutomation = {
   /** Message is a human readable description of the reason for the status */
   message?: string;
@@ -2629,15 +2415,7 @@ export type ReplicaStatus = {
     Starting Starting  Starting container
     Stopped Stopped  Stopped container
     Succeeded Succeeded  Succeeded all containers in the pod have voluntarily terminated */
-  status:
-    | "Pending"
-    | "Failed"
-    | "Failing"
-    | "Running"
-    | "Terminated"
-    | "Starting"
-    | "Stopped"
-    | "Succeeded";
+  status: "Pending" | "Failed" | "Failing" | "Running" | "Terminated" | "Starting" | "Stopped" | "Succeeded";
 };
 export type Resources = {
   cpu?: string;
@@ -2807,15 +2585,7 @@ export type JobSummary = {
   /** Started timestamp */
   started?: string;
   /** Status of the job */
-  status?:
-    | "Queued"
-    | "Waiting"
-    | "Running"
-    | "Succeeded"
-    | "Failed"
-    | "Stopped"
-    | "Stopping"
-    | "StoppedNoChanges";
+  status?: "Queued" | "Waiting" | "Running" | "Succeeded" | "Failed" | "Stopped" | "Stopping" | "StoppedNoChanges";
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api - usertoken.upn */
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
@@ -2960,12 +2730,7 @@ export type DeploymentSummary = {
   /** Name the unique name of the Radix application deployment */
   name: string;
   /** Type of pipeline job */
-  pipelineJobType?:
-    | "build"
-    | "build-deploy"
-    | "promote"
-    | "deploy"
-    | "apply-config";
+  pipelineJobType?: "build" | "build-deploy" | "promote" | "deploy" | "apply-config";
   /** Name of the environment the deployment was promoted from
     Applies only for pipeline jobs of type 'promote' */
   promotedFromEnvironment?: string;
@@ -3334,15 +3099,7 @@ export type ScheduledJobSummary = {
     Stopped ScheduledBatchJobStatusStopped  ScheduledBatchJobStatusStopped job stopped
     Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
     Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
-  status:
-    | "Running"
-    | "Succeeded"
-    | "Failed"
-    | "Waiting"
-    | "Stopping"
-    | "Stopped"
-    | "Active"
-    | "Completed";
+  status: "Running" | "Succeeded" | "Failed" | "Waiting" | "Stopping" | "Stopped" | "Active" | "Completed";
   /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
   /** Variable names map to values specified for this job. */
@@ -3374,15 +3131,7 @@ export type ScheduledBatchSummary = {
     Stopped ScheduledBatchJobStatusStopped  ScheduledBatchJobStatusStopped job stopped
     Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
     Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
-  status:
-    | "Running"
-    | "Succeeded"
-    | "Failed"
-    | "Waiting"
-    | "Stopping"
-    | "Stopped"
-    | "Active"
-    | "Completed";
+  status: "Running" | "Succeeded" | "Failed" | "Waiting" | "Stopping" | "Stopped" | "Active" | "Completed";
   /** TotalJobCount count of jobs, requested to be scheduled by a batch */
   totalJobCount: number;
 };
@@ -3475,14 +3224,7 @@ export type Step = {
   /** Started timestamp */
   started?: string;
   /** Status of the step */
-  status?:
-    | "Queued"
-    | "Waiting"
-    | "Running"
-    | "Succeeded"
-    | "Failed"
-    | "Stopped"
-    | "StoppedNoChanges";
+  status?: "Queued" | "Waiting" | "Running" | "Succeeded" | "Failed" | "Stopped" | "StoppedNoChanges";
   subPipelineTaskStep?: SubPipelineTaskStep;
 };
 export type Job = {
@@ -3536,15 +3278,7 @@ export type Job = {
   /** Started timestamp */
   started?: string;
   /** Status of the job */
-  status?:
-    | "Queued"
-    | "Waiting"
-    | "Running"
-    | "Succeeded"
-    | "Failed"
-    | "Stopped"
-    | "Stopping"
-    | "StoppedNoChanges";
+  status?: "Queued" | "Waiting" | "Running" | "Succeeded" | "Failed" | "Stopped" | "Stopping" | "StoppedNoChanges";
   /** Array of steps */
   steps?: Step[];
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api = usertoken.upn */
@@ -3827,6 +3561,16 @@ export type RegenerateSharedSecretData = {
   /** SharedSecret of the shared secret */
   sharedSecret?: string;
 };
+export type ClusterConfigurationHoldsClusterConfigurationEnvironment = {
+  /** ClusterEgressIps List of egress IPs for the cluster. Can be used for whitelisting in external services. */
+  clusterEgressIps?: string[];
+  /** ClusterName The name of the cluster */
+  clusterName?: string;
+  /** ClusterOidcIssuers List of OIDC issuers for the cluster. Can be used for configuring OIDC clients and setting up Federated Credentials. */
+  clusterOidcIssuers?: string[];
+  /** DNSZone The DNS zone configured for the cluster environment */
+  dnsZone?: string;
+};
 export const {
   useShowApplicationsQuery,
   useRegisterApplicationMutation,
@@ -3925,4 +3669,5 @@ export const {
   useStartApplicationMutation,
   useStopApplicationMutation,
   useGetApplicationResourcesUtilizationQuery,
+  useGetConfigurationQuery,
 } = injectedRtkApi;
