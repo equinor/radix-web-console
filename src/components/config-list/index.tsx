@@ -1,7 +1,5 @@
 import { Table, Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
-
-import { configVariables } from '../../utils/config'
 import { useGetConfigurationQuery } from '../../store/radix-api'
 
 const ConfigVariableTableCell: FunctionComponent<{
@@ -20,7 +18,7 @@ export const ConfigList: FunctionComponent = () => {
   const configItems = [
     { label: 'Cluster egress IPs', value: config?.clusterEgressIps },
     { label: 'Cluster OIDC issuer URL', value: config?.clusterOidcIssuers },
-    { label: 'Cluster base', value: config?.dnsZone }
+    { label: 'Cluster base', value: config?.dnsZone },
   ]
 
   return (
@@ -28,14 +26,14 @@ export const ConfigList: FunctionComponent = () => {
       <Table className="o-table">
 
         <Table.Body>
-          {configItems.sort((a, b) => a.label.localeCompare(b.label)).map(({label,value}) => (
+          {configItems
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .map(({label,value}) => (
               <Table.Row key={label}>
                 <Table.Cell>
                   <Typography>{label}</Typography>
                 </Table.Cell>
-                <ConfigVariableTableCell
-                  value={value}
-                />
+                <ConfigVariableTableCell value={value} />
               </Table.Row>
             ))}
         </Table.Body>
