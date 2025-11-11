@@ -8,7 +8,7 @@ import { CompactCopyButton } from '../compact-copy-button'
 import { ExternalLink } from '../link/external-link'
 
 export interface AzureIdentityProps {
-  oidcIssuerUrl: string
+  oidcIssuerUrls: string[]
   namespace: string
   serviceAccountName: string
   clientId: string
@@ -29,7 +29,7 @@ const WorkloadIdentityHelp: FunctionComponent = () => (
 )
 
 export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
-  oidcIssuerUrl,
+  oidcIssuerUrls,
   namespace,
   serviceAccountName,
   clientId,
@@ -60,11 +60,15 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
       </div>
       <div>
         <Typography group="input" variant="label">
-          Cluster Issuer URL
+          Cluster Issuer URLs
         </Typography>
-        <div>
-          <Typography as="span">{oidcIssuerUrl}</Typography>
-          <CompactCopyButton content={oidcIssuerUrl} size={14} />
+        <div className="grid grid--gap-small">
+          {oidcIssuerUrls.map((url, index) => (
+            <div key={index}>
+              <Typography as="span">{url}</Typography>
+              <CompactCopyButton content={url} size={14} />
+            </div>
+          ))}
         </div>
       </div>
       <div>

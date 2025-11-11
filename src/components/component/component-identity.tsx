@@ -2,7 +2,7 @@ import { List, Popover, Typography } from '@equinor/eds-core-react'
 import { type FunctionComponent, type SyntheticEvent, useEffect, useRef, useState } from 'react'
 
 import type { AzureIdentity as AzureIdentityModel, Component, Deployment } from '../../store/radix-api'
-import { configVariables } from '../../utils/config'
+import { useGetConfigurationQuery } from '../../store/radix-api'
 import { AzureIdentity } from '../identity/azure-identity'
 
 const AzureIdentityLink: FunctionComponent<{
@@ -20,6 +20,8 @@ const AzureIdentityLink: FunctionComponent<{
       document.body.removeEventListener('click', handleBodyClick)
     }
   }, [])
+
+  const { data: configVariables } = useGetConfigurationQuery()
 
   return (
     <>
@@ -40,7 +42,7 @@ const AzureIdentityLink: FunctionComponent<{
         <Popover.Content>
           <div className="grid grid--gap-medium">
             <AzureIdentity
-              oidcIssuerUrl={configVariables.CLUSTER_OIDC_ISSUER_URL}
+              oidcIssuerUrls={configVariables?.clusterOidcIssuers ?? [""]}
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}
