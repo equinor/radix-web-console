@@ -8,7 +8,7 @@ const ConfigVariableTableCell: FunctionComponent<{
 }> = ({ value }) => (
   <Table.Cell>
     <pre>
-      <div style={{userSelect: 'all'}}>
+      <div style={{ userSelect: 'all' }}>
       <Typography>{Array.isArray(value) ? value.join('\n') : JSON.stringify(value, null, 2)}</Typography>
       </div>
     </pre>
