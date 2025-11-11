@@ -29,7 +29,7 @@ export const ConfigList: FunctionComponent = () => {
           <Table.Body>
             {configItems
               .sort((a, b) => a.label.localeCompare(b.label))
-              .map(({label,value}) => (
+              .map(({ label, value }) => (
                 <Table.Row key={label}>
                   <Table.Cell>
                     <Typography>{label}</Typography>
