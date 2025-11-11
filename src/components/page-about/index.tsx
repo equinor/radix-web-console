@@ -17,7 +17,7 @@ export default function PageAbout() {
             Radix Web Console [{import.meta.env.PACKAGE_NAME}@{import.meta.env.PACKAGE_VERSION}]
           </Typography>
           <AvailabilityCharts />
-          <br/>
+          <br />
           <Typography variant="h4">Configuration</Typography>
           <ConfigList />
         </div>
