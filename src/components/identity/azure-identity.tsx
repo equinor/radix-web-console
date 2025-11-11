@@ -66,11 +66,10 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
         <Typography group="input" variant="label">
           Cluster Issuer URLs
         </Typography>
-
           <div className="grid grid--gap-small">
-            {oidcIssuerUrls.map((url) => (
+            {oidcIssuerUrls.map((url, index) => (
               <SelectAllContent>
-                <div key={url}>
+                <div key={index}>
                   <Typography as="span">{url}</Typography>
                   <CompactCopyButton content={url} size={14} />
                 </div>
