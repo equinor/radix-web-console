@@ -18,7 +18,7 @@ const ConfigVariableTableCell: FunctionComponent<{
     ) : (
       <pre>
         <div style={{ userSelect: 'all' }}>
-          <Typography>{String(value)}</Typography>
+          <Typography>{value == null ? '' : String(value)}</Typography>
         </div>
       </pre>
     )}
