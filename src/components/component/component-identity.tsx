@@ -21,7 +21,7 @@ const AzureIdentityLink: FunctionComponent<{
     }
   }, [])
 
-  const { data: configVariables } = useGetConfigurationQuery()
+  const { data: configVariables } = useGetConfigurationQuery(undefined, { skip: !popoverOpen })
 
   return (
     <>
@@ -42,7 +42,7 @@ const AzureIdentityLink: FunctionComponent<{
         <Popover.Content>
           <div className="grid grid--gap-medium">
             <AzureIdentity
-              oidcIssuerUrls={configVariables?.clusterOidcIssuers ?? ['']}
+              oidcIssuerUrls={configVariables?.clusterOidcIssuers ?? []}
               clientId={clientId}
               namespace={namespace}
               serviceAccountName={serviceAccountName}

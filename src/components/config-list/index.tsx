@@ -7,11 +7,21 @@ const ConfigVariableTableCell: FunctionComponent<{
   value: string[] | unknown
 }> = ({ value }) => (
   <Table.Cell>
-    <pre>
-      <div style={{ userSelect: 'all' }}>
-        <Typography>{Array.isArray(value) ? value.join('\n') : JSON.stringify(value, null, 2)}</Typography>
+    {Array.isArray(value) ? (
+      <div className="grid grid--gap-small">
+        {value.map((item, index) => (
+          <div key={index} style={{ userSelect: 'all' }}>
+            <Typography>{item}</Typography>
+          </div>
+        ))}
       </div>
-    </pre>
+    ) : (
+      <pre>
+        <div style={{ userSelect: 'all' }}>
+          <Typography>{String(value)}</Typography>
+        </div>
+      </pre>
+    )}
   </Table.Cell>
 )
 
