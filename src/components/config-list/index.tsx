@@ -44,7 +44,7 @@ export const ConfigList: FunctionComponent = () => {
               .map(({ label, value }) => (
                 <Table.Row key={label}>
                   <Table.Cell>
-                    <Typography>{label}</Typography>
+                    <Typography bold>{label}</Typography>
                   </Table.Cell>
                   <ConfigVariableTableCell value={value} />
                 </Table.Row>
