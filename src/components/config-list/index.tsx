@@ -31,7 +31,7 @@ export const ConfigList: FunctionComponent = () => {
   const configItems = [
     { label: 'Cluster egress IPs', value: config?.clusterEgressIps },
     { label: 'Cluster OIDC issuer URLs', value: config?.clusterOidcIssuers },
-    { label: 'Cluster base', value: config?.dnsZone },
+    { label: 'Cluster DNS Zone', value: config?.dnsZone },
   ]
 
   return (
