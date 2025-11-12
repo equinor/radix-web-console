@@ -1,42 +1,57 @@
 import { Table, Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
-
-import { configVariables } from '../../utils/config'
+import { useGetConfigurationQuery } from '../../store/radix-api'
+import AsyncResource from '../async-resource/async-resource'
 
 const ConfigVariableTableCell: FunctionComponent<{
   value: string[] | unknown
 }> = ({ value }) => (
   <Table.Cell>
-    <pre>
-      <Typography>{Array.isArray(value) ? value.join('\n') : JSON.stringify(value, null, 2)}</Typography>
-    </pre>
+    {Array.isArray(value) ? (
+      <div className="grid grid--gap-small">
+        {value.map((item, index) => (
+          <div key={index} style={{ userSelect: 'all' }}>
+            <Typography>{item}</Typography>
+          </div>
+        ))}
+      </div>
+    ) : (
+      <pre>
+        <div style={{ userSelect: 'all' }}>
+          <Typography>{value == null ? '' : String(value)}</Typography>
+        </div>
+      </pre>
+    )}
   </Table.Cell>
 )
 
-export const ConfigList: FunctionComponent = () => (
-  <div className="grid grid--table-overflow">
-    <Table className="o-table">
-      <Table.Head>
-        <Table.Row>
-          <Table.Cell>Key</Table.Cell>
-          <Table.Cell>Value</Table.Cell>
-        </Table.Row>
-      </Table.Head>
-      <Table.Body>
-        {Object.keys(configVariables)
-          .sort((a, b) => a.localeCompare(b))
-          .map((key) => (
-            <Table.Row key={key}>
-              <Table.Cell>
-                <Typography>{key}</Typography>
-              </Table.Cell>
-              <ConfigVariableTableCell
-                // @ts-expect-error key is mapped to string, even if its always keyof configVariable
-                value={configVariables[key]}
-              />
-            </Table.Row>
-          ))}
-      </Table.Body>
-    </Table>
-  </div>
-)
+export const ConfigList: FunctionComponent = () => {
+  const { data: config, ...state } = useGetConfigurationQuery()
+
+  const configItems = [
+    { label: 'Cluster Egress IPs', value: config?.clusterEgressIps },
+    { label: 'Cluster OIDC Issuer URLs', value: config?.clusterOidcIssuers },
+    { label: 'Cluster DNS Zone', value: config?.dnsZone },
+  ]
+
+  return (
+    <AsyncResource asyncState={state}>
+      <div className="grid grid--auto-columns">
+        <Table className="o-table">
+          <Table.Body>
+            {configItems
+              .sort((a, b) => a.label.localeCompare(b.label))
+              .map(({ label, value }) => (
+                <Table.Row key={label}>
+                  <Table.Cell>
+                    <Typography bold>{label}</Typography>
+                  </Table.Cell>
+                  <ConfigVariableTableCell value={value} />
+                </Table.Row>
+              ))}
+          </Table.Body>
+        </Table>
+      </div>
+    </AsyncResource>
+  )
+}

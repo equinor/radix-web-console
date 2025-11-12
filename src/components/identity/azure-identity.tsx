@@ -8,7 +8,7 @@ import { CompactCopyButton } from '../compact-copy-button'
 import { ExternalLink } from '../link/external-link'
 
 export interface AzureIdentityProps {
-  oidcIssuerUrl: string
+  oidcIssuerUrls: string[]
   namespace: string
   serviceAccountName: string
   clientId: string
@@ -28,8 +28,12 @@ const WorkloadIdentityHelp: FunctionComponent = () => (
   </Alert>
 )
 
+const SelectAllContent: FunctionComponent<{ children: React.ReactNode }> = ({ children }) => {
+  return <div style={{ userSelect: 'all' }}>{children}</div>
+}
+
 export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
-  oidcIssuerUrl,
+  oidcIssuerUrls,
   namespace,
   serviceAccountName,
   clientId,
@@ -53,37 +57,43 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
           </ExternalLink>
           )
         </Typography>
-        <div>
+        <SelectAllContent>
           <Typography as="span">{clientId}</Typography>
           <CompactCopyButton content={clientId} size={14} />
-        </div>
+        </SelectAllContent>
       </div>
       <div>
         <Typography group="input" variant="label">
-          Cluster Issuer URL
+          Cluster Issuer URLs
         </Typography>
-        <div>
-          <Typography as="span">{oidcIssuerUrl}</Typography>
-          <CompactCopyButton content={oidcIssuerUrl} size={14} />
+        <div className="grid grid--gap-small">
+          {oidcIssuerUrls.map((url) => (
+            <SelectAllContent key={url}>
+              <div>
+                <Typography as="span">{url}</Typography>
+                <CompactCopyButton content={url} size={14} />
+              </div>
+            </SelectAllContent>
+          ))}
         </div>
       </div>
       <div>
         <Typography group="input" variant="label">
           Namespace
         </Typography>
-        <div>
+        <SelectAllContent>
           <Typography as="span">{namespace}</Typography>
           <CompactCopyButton content={namespace} size={14} />
-        </div>
+        </SelectAllContent>
       </div>
       <div>
         <Typography group="input" variant="label">
           Service Account Name
         </Typography>
-        <div>
+        <SelectAllContent>
           <Typography as="span">{serviceAccountName}</Typography>
           <CompactCopyButton content={serviceAccountName} size={14} />
-        </div>
+        </SelectAllContent>
       </div>
     </div>
     <WorkloadIdentityHelp />
