@@ -7,14 +7,11 @@ envsubst '
   ${RADIX_CLUSTER_TYPE}
   ${RADIX_DNS_ZONE}
   ${RADIX_ENVIRONMENT}
-  ${CLUSTER_EGRESS_IPS}
-  ${CLUSTER_INGRESS_IPS}
   ${OAUTH2_CLIENT_ID}
   ${OAUTH2_AUTHORITY}
   ${RADIXAPI_SCOPES}
   ${SERVICENOW_PROXY_SCOPES}
   ${SERVICENOW_PROXY_BASEURL}
-  ${CLUSTER_OIDC_ISSUER_URL}
   ${CMDB_CI_URL}
   ' </inject-env-template.js >/app/config/tmp-inject-env.js
 mv /app/config/tmp-inject-env.js /app/config/inject-env.js
