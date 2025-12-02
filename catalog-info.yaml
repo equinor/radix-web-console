@@ -4,7 +4,14 @@ metadata:
   name: radix-web-console
   annotations:
     github.com/project-slug: equinor/radix-web-console
+  links:
+    - url: "https://console.radix.equinor.com/"
+      title: "Radix Comsole"
+      icon: dashboard
 spec:
-  type: other
-  lifecycle: unknown
+  type: website
+  lifecycle: production
   owner: omnia-radix
+  system: Radix
+  consumesApis:
+    - radix-api
