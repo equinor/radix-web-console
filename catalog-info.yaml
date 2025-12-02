@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: radix-web-console
+  annotations:
+    github.com/project-slug: equinor/radix-web-console
+spec:
+  type: other
+  lifecycle: unknown
+  owner: omnia-radix
