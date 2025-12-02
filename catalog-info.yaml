@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: radix-web-console
+  annotations:
+    github.com/project-slug: equinor/radix-web-console
+  links:
+    - url: "https://console.radix.equinor.com/"
+      title: "Radix Console"
+      icon: dashboard
+spec:
+  type: website
+  lifecycle: production
+  owner: omnia-radix
+  system: Radix
+  consumesApis:
+    - radix-api
