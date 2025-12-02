@@ -6,7 +6,7 @@ metadata:
     github.com/project-slug: equinor/radix-web-console
   links:
     - url: "https://console.radix.equinor.com/"
-      title: "Radix Comsole"
+      title: "Radix Console"
       icon: dashboard
 spec:
   type: website
