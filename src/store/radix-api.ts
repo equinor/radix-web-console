@@ -2560,9 +2560,7 @@ export type JobSummary = {
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
     branch
     tag
-    <empty> - either branch or tag
-    
-    required false */
+    <empty> - either branch or tag */
   gitRefType?: "branch" | "tag" | '""';
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
@@ -2721,9 +2719,7 @@ export type DeploymentSummary = {
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
     branch
     tag
-    <empty> - either branch or tag
-    
-    required false */
+    <empty> - either branch or tag */
   gitRefType?: "branch" | "tag" | '""';
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
@@ -2900,9 +2896,7 @@ export type Deployment = {
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
     branch
     tag
-    <empty> - either branch or tag
-    
-    required false */
+    <empty> - either branch or tag */
   gitRefType?: "branch" | "tag" | '""';
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
@@ -3251,9 +3245,7 @@ export type Job = {
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
     branch
     tag
-    <empty> - either branch or tag
-    
-    required false */
+    <empty> - either branch or tag */
   gitRefType?: "branch" | "tag" | '""';
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
@@ -3480,22 +3472,14 @@ export type PipelineParametersBuild = {
   /** CommitID the commit ID of the branch to build
     REQUIRED for "build" and "build-deploy" pipelines */
   commitID?: string;
-  /** DeployExternalDNS deploy external DNS */
-  deployExternalDNS?: boolean | null;
   /** GitRef Branch or tag to build from
     REQUIRED for "build" and "build-deploy" pipelines */
   gitRef?: string;
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
     branch
     tag
-    <empty> - either branch or tag
-    
-    required false */
+    <empty> - either branch or tag */
   gitRefType?: "branch" | "tag" | '""';
-  /** ImageName of the component, without repository name and image-tag */
-  imageName?: string;
-  /** ImageRepository of the component, without image name and image-tag */
-  imageRepository?: string;
   /** ImageTag of the image - if empty will use default logic */
   imageTag?: string;
   /** OverrideUseBuildCache override default or configured build cache option */
