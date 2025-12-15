@@ -16,7 +16,6 @@ import { JobsList } from '../jobs-list'
 const LATEST_JOBS_LIMIT = 5
 
 export function AppOverview({ appName }: { appName: string }) {
-  //const isPlayground: Readonly<boolean> = CLUSTERS  configVariables.RADIX_DNS_ZONE === configVariables.CLUSTERS.Playground?.baseUrl
   const isPlayground =
     Object.values(configVariables.CLUSTERS).find(({ baseUrl }) => baseUrl === configVariables.RADIX_DNS_ZONE)
       ?.isPlayground ?? false
