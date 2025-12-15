@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
 
-import { clusterBases } from '../../clusterBases'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
 import { configVariables } from '../../utils/config'
@@ -17,7 +16,9 @@ import { JobsList } from '../jobs-list'
 const LATEST_JOBS_LIMIT = 5
 
 export function AppOverview({ appName }: { appName: string }) {
-  const isPlayground: Readonly<boolean> = configVariables.RADIX_CLUSTER_BASE === clusterBases.playgroundWebConsole
+  const isPlayground =
+    Object.values(configVariables.CLUSTERS).find(({ baseUrl }) => baseUrl === configVariables.RADIX_DNS_ZONE)
+      ?.isPlayground ?? false
 
   const { data: application, ...state } = useGetApplicationQuery({ appName }, { skip: !appName, pollingInterval })
 
