@@ -59,10 +59,6 @@ export const GlobalTopNav = () => {
       <StyledToastContainer />
     </TopBar>
   )
-
-  function clusters() {
-    return Object.entries(CLUSTERS)
-  }
 }
 
 interface TabItemTemplateProps {
