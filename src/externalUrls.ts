@@ -1,4 +1,3 @@
-import { clusterBases } from './clusterBases'
 import { extractCweNumber } from './utils/cwe'
 
 // biome-ignore format: long lines
@@ -18,9 +17,6 @@ export const externalUrls = {
   resourcesDocs: 'https://radix.equinor.com/guides/resource-request/',
   kubernetesResourcesCpuUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu',
   kubernetesResourcesMemoryUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory',
-  radixPlatformWebConsole: `https://console.${clusterBases.radixPlatformWebConsole}/`,
-  radixPlatform2WebConsole: `https://console.${clusterBases.radixPlatform2WebConsole}/`,
-  playgroundWebConsole: `https://console.${clusterBases.playgroundWebConsole}/`,
   cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
   cweVulnerabilityInformation: (cwe: string) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
 } as const;

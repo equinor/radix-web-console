@@ -4,6 +4,8 @@ declare global {
   }
 }
 
+export type ClustersType = Map<string, { href: string; baseUrl: string; isDev?: boolean }>
+
 export const configVariables = {
   APP_NAME: getVariable('APP_NAME', 'Radix Web Console'),
   RADIX_CLUSTER_BASE: getVariable('RADIX_CLUSTER_BASE', 'dev.radix.equinor.com'),
@@ -31,6 +33,7 @@ export const configVariables = {
     'CMDB_CI_URL',
     'https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_business_app&sys_id={CIID}'
   ),
+  CLUSTERS: JSON.parse(getVariable('CLUSTERS', '{}')) as ClustersType,
 }
 
 function getVariable(key: string, defaultVariable: string): string {

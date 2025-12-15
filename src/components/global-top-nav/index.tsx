@@ -4,7 +4,6 @@ import { account_circle, close, comment_discussion, info_circle, log_in, log_out
 import { clsx } from 'clsx'
 import { forwardRef, type PropsWithChildren, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { clusterBases } from '../../clusterBases'
 import { externalUrls } from '../../externalUrls'
 import { routes } from '../../routes'
 import { configVariables } from '../../utils/config'
@@ -18,6 +17,7 @@ export const GlobalTopNav = () => {
   const [menuIsClosed, setOpenMenu] = useState(false)
   const handleClick = () => setOpenMenu(!menuIsClosed)
   const radixClusterBase = configVariables.RADIX_CLUSTER_BASE
+  const CLUSTERS = Object.entries(configVariables.CLUSTERS)
 
   return (
     <TopBar className="global-top-nav">
@@ -27,29 +27,19 @@ export const GlobalTopNav = () => {
       <TopBar.CustomContent>
         <Tabs>
           <Tabs.List className={menuIsClosed ? 'nav-links active' : 'nav-links'}>
-            {(configVariables.RADIX_CLUSTER_TYPE === 'development' && (
-              <TabItemTemplate href={routes.home} mark>
-                Development
-              </TabItemTemplate>
-            )) || <></>}
-            <TabItemTemplate
-              href={externalUrls.playgroundWebConsole}
-              mark={radixClusterBase === clusterBases.playgroundWebConsole}
-            >
-              Playground
-            </TabItemTemplate>
-            <TabItemTemplate
-              href={externalUrls.radixPlatformWebConsole}
-              mark={radixClusterBase === clusterBases.radixPlatformWebConsole}
-            >
-              Platform (North Europe)
-            </TabItemTemplate>
-            <TabItemTemplate
-              href={externalUrls.radixPlatform2WebConsole}
-              mark={radixClusterBase === clusterBases.radixPlatform2WebConsole}
-            >
-              Platform 2 (West Europe)
-            </TabItemTemplate>
+            {CLUSTERS.map(([name, cluster]) => {
+              const isDev = cluster.isDev && configVariables.RADIX_CLUSTER_TYPE !== 'development'
+              const isActive = radixClusterBase === cluster.baseUrl
+              if (isDev && !isActive) {
+                return null
+              }
+
+              return (
+                <TabItemTemplate href={cluster.href} mark={isActive} key={name}>
+                  {name}
+                </TabItemTemplate>
+              )
+            })}
             <TabItemTemplate href={externalUrls.documentation} mark={!radixClusterBase}>
               Documentation
             </TabItemTemplate>
@@ -69,6 +59,10 @@ export const GlobalTopNav = () => {
       <StyledToastContainer />
     </TopBar>
   )
+
+  function clusters() {
+    return Object.entries(CLUSTERS)
+  }
 }
 
 interface TabItemTemplateProps {
