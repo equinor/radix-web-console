@@ -4,11 +4,11 @@ declare global {
   }
 }
 
-export type ClustersType = Map<string, { href: string; baseUrl: string; isDev?: boolean }>
+export type ClustersType = Map<string, { href: string; baseUrl: string; isDev?: boolean; isPlayground?: boolean }>
 
 export const configVariables = {
   APP_NAME: getVariable('APP_NAME', 'Radix Web Console'),
-  RADIX_CLUSTER_BASE: getVariable('RADIX_CLUSTER_BASE', 'dev.radix.equinor.com'),
+  RADIX_DNS_ZONE: getVariable('RADIX_DNS_ZONE', 'dev.radix.equinor.com'),
   RADIX_CLUSTERNAME: getVariable('RADIX_CLUSTERNAME', 'weekly-32'),
   RADIX_CLUSTER_TYPE: getVariable('RADIX_CLUSTER_TYPE', 'development'),
   RADIX_ENVIRONMENT: getVariable('RADIX_ENVIRONMENT', 'prod'),

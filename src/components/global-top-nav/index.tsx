@@ -16,7 +16,7 @@ import './style.css'
 export const GlobalTopNav = () => {
   const [menuIsClosed, setOpenMenu] = useState(false)
   const handleClick = () => setOpenMenu(!menuIsClosed)
-  const radixClusterBase = configVariables.RADIX_CLUSTER_BASE
+  const radixClusterBase = configVariables.RADIX_DNS_ZONE
   const CLUSTERS = Object.entries(configVariables.CLUSTERS)
 
   return (
