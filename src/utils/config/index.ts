@@ -4,9 +4,14 @@ declare global {
   }
 }
 
+export type ClustersType = Map<string, { href: string; baseUrl: string; isDev?: boolean; isPlayground?: boolean }>
+
+const DefaultClusters =
+  '{"Development":{"href":"https://console.dev.radix.equinor.com/","baseUrl":"dev.radix.equinor.com","isDev":true},"Playground":{"href":"https://console.playground.radix.equinor.com/","baseUrl":"playground.radix.equinor.com", "isPlayground": true},"Platform (North Europe)":{"href":"https://console.radix.equinor.com/","baseUrl":"radix.equinor.com"},"Platform 2 (West Europe)":{"href":"https://console.c2.radix.equinor.com/","baseUrl":"c2.radix.equinor.com"},"Platform 3 (Sweden Central)":{"href":"https://console.c3.radix.equinor.com/","baseUrl":"c3.radix.equinor.com"}}'
+
 export const configVariables = {
   APP_NAME: getVariable('APP_NAME', 'Radix Web Console'),
-  RADIX_CLUSTER_BASE: getVariable('RADIX_CLUSTER_BASE', 'dev.radix.equinor.com'),
+  RADIX_DNS_ZONE: getVariable('RADIX_DNS_ZONE', 'dev.radix.equinor.com'),
   RADIX_CLUSTERNAME: getVariable('RADIX_CLUSTERNAME', 'weekly-32'),
   RADIX_CLUSTER_TYPE: getVariable('RADIX_CLUSTER_TYPE', 'development'),
   RADIX_ENVIRONMENT: getVariable('RADIX_ENVIRONMENT', 'prod'),
@@ -31,6 +36,7 @@ export const configVariables = {
     'CMDB_CI_URL',
     'https://equinor.service-now.com/selfservice?id=form&table=cmdb_ci_business_app&sys_id={CIID}'
   ),
+  CLUSTERS: JSON.parse(getVariable('CLUSTERS', DefaultClusters)) as ClustersType,
 }
 
 function getVariable(key: string, defaultVariable: string): string {

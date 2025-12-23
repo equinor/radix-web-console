@@ -5,7 +5,7 @@ const injectedRtkApi = uptimeApi.injectEndpoints({
   endpoints: (build) => ({
     getUptime: build.query<Result, void >(
       {
-        query: () => "/query/" + configVariables.RADIX_CLUSTER_BASE,
+        query: () => "/query/" + configVariables.RADIX_DNS_ZONE,
       }
     ),
   }),

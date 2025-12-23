@@ -13,7 +13,7 @@ import imageWebhook from '../configure-application-github/webhook01.png'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { ExternalLink } from '../link/external-link'
 
-const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE
+const radixZoneDNS = configVariables.RADIX_DNS_ZONE
 
 const DeployKey = ({ appName }: { appName: string }) => {
   const { data: deployKeAndSecret, ...depAndSecState } = useGetDeployKeyAndSecretQuery({ appName }, { pollingInterval })

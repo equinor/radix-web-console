@@ -7,7 +7,7 @@ import imageWebhook from './webhook02.png'
 type Props = { repository: string; appName: string; sharedSecret?: string }
 
 export function ConfigureGitHubWebhook({ repository, appName, sharedSecret }: Props) {
-  const radixZoneDNS = configVariables.RADIX_CLUSTER_BASE
+  const radixZoneDNS = configVariables.RADIX_DNS_ZONE
   return (
     <div className="grid grid--gap-medium">
       <Typography>
