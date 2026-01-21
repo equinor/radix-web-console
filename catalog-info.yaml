@@ -2,6 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: radix-web-console
+  title: Radix Web Console
+  description: "Main web application for radix platform"
   annotations:
     github.com/project-slug: equinor/radix-web-console
   links:
@@ -15,3 +17,5 @@ spec:
   system: Radix
   consumesApis:
     - radix-api
+    - radix-vulnerability-scanner-api
+    - radix-cost-allocation-api
