@@ -1,12 +1,10 @@
-import type { FunctionComponent } from 'react'
-import { RouterProvider, type RouterProviderProps } from 'react-router-dom'
-
-import { LazyLoadFallback } from '../lazy-load-fallback'
-
 import { InteractionType } from '@azure/msal-browser'
 import { useMsalAuthentication } from '@azure/msal-react'
+import type { FunctionComponent } from 'react'
 import { useStore } from 'react-redux'
+import { RouterProvider, type RouterProviderProps } from 'react-router-dom'
 import type { RootState } from '../../store/store'
+import { LazyLoadFallback } from '../lazy-load-fallback'
 import './style.css'
 
 export const PageRouter: FunctionComponent<Pick<RouterProviderProps, 'router'>> = ({ router }) => {
