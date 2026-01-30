@@ -31,7 +31,7 @@
   "dependencies": {
     "@azure/msal-browser": "^4.28.1",
     "@azure/msal-react": "^3.0.25",
-    "@equinor/eds-core-react": "^1.1.0",
+    "@equinor/eds-core-react": "^2.3.2",
     "@equinor/eds-icons": "^1.2.0",
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@reduxjs/toolkit": "^2.11.2",
@@ -60,7 +60,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.3.13",
     "@remix-run/web-fetch": "^4.4.2",
-    "@rtk-query/codegen-openapi": "^1.2.0",
+    "@rtk-query/codegen-openapi": "^2.2.0",
     "@testing-library/react": "^16.3.2",
     "@types/lodash-es": "^4.17.9",
     "@types/react": "^19.2.3",

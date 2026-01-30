@@ -1,4 +1,4 @@
-import { Table, TextField, Typography } from '@equinor/eds-core-react'
+import { Table, TextArea, Typography } from '@equinor/eds-core-react'
 import type { ChangeEvent, ReactNode } from 'react'
 import type { EnvVar } from '../../store/radix-api'
 import './style.css'
@@ -44,11 +44,10 @@ export const EnvironmentVariableTable = ({
             {!inEditMode ? (
               <Typography>{value}</Typography>
             ) : (
-              <TextField
+              <TextArea
                 id={name}
                 type="text"
                 value={value}
-                multiline
                 disabled={isTextfieldDisabled}
                 onChange={({ target }: ChangeEvent<HTMLInputElement>) => onValueChange(target.value, name)}
               />

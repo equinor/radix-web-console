@@ -1,4 +1,4 @@
-import { Accordion, Button, Checkbox, TextField, Typography } from '@equinor/eds-core-react'
+import { Accordion, Button, Checkbox, TextArea, Typography } from '@equinor/eds-core-react'
 import { type ChangeEvent, type FunctionComponent, useState } from 'react'
 
 import { pollingInterval } from '../../store/defaults'
@@ -59,17 +59,15 @@ const TlsEditForm: FunctionComponent<{
       <div className="grid grid--gap-large">
         <ExternalDnsAliasHelp />
         <fieldset className="grid grid--gap-large" disabled={isSaving}>
-          <TextField
+          <TextArea
             label="Certificate"
-            multiline
             rows={5}
             onChange={(ev: ChangeEvent<HTMLInputElement>) =>
               setTlsData((v) => ({ ...v, certificate: ev.target.value }))
             }
           />
-          <TextField
+          <TextArea
             label="Private Key"
-            multiline
             rows={5}
             onChange={(ev: ChangeEvent<HTMLInputElement>) => setTlsData((v) => ({ ...v, privateKey: ev.target.value }))}
           />
