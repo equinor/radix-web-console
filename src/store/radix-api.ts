@@ -8,7 +8,9 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { sshRepo: queryArg.sshRepo },
+        params: {
+          sshRepo: queryArg.sshRepo,
+        },
       }),
     }),
     registerApplication: build.mutation<RegisterApplicationApiResponse, RegisterApplicationApiArg>({
@@ -124,7 +126,7 @@ const injectedRtkApi = api.injectEndpoints({
             "Impersonate-Group": queryArg["Impersonate-Group"],
           },
         }),
-      }
+      },
     ),
     enableApplicationAlerting: build.mutation<EnableApplicationAlertingApiResponse, EnableApplicationAlertingApiArg>({
       query: (queryArg) => ({
@@ -184,7 +186,10 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { environment: queryArg.environment, latest: queryArg.latest },
+        params: {
+          environment: queryArg.environment,
+          latest: queryArg.latest,
+        },
       }),
     }),
     getDeployment: build.query<GetDeploymentApiResponse, GetDeploymentApiArg>({
@@ -295,7 +300,7 @@ const injectedRtkApi = api.injectEndpoints({
             "Impersonate-Group": queryArg["Impersonate-Group"],
           },
         }),
-      }
+      },
     ),
     enableEnvironmentAlerting: build.mutation<EnableEnvironmentAlertingApiResponse, EnableEnvironmentAlertingApiArg>({
       query: (queryArg) => ({
@@ -310,7 +315,9 @@ const injectedRtkApi = api.injectEndpoints({
     getBuildStatus: build.query<GetBuildStatusApiResponse, GetBuildStatusApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/environments/${queryArg.envName}/buildstatus`,
-        params: { pipeline: queryArg.pipeline },
+        params: {
+          pipeline: queryArg.pipeline,
+        },
       }),
     }),
     getOAuthPodLog: build.query<GetOAuthPodLogApiResponse, GetOAuthPodLogApiArg>({
@@ -320,7 +327,12 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { sinceTime: queryArg.sinceTime, lines: queryArg.lines, file: queryArg.file, follow: queryArg.follow },
+        params: {
+          sinceTime: queryArg.sinceTime,
+          lines: queryArg.lines,
+          file: queryArg.file,
+          follow: queryArg.follow,
+        },
       }),
     }),
     restartOAuthAuxiliaryResource: build.mutation<
@@ -426,7 +438,9 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { secretName: queryArg.secretName },
+        params: {
+          secretName: queryArg.secretName,
+        },
       }),
     }),
     changeComponentSecret: build.mutation<ChangeComponentSecretApiResponse, ChangeComponentSecretApiArg>({
@@ -470,7 +484,9 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { latest: queryArg.latest },
+        params: {
+          latest: queryArg.latest,
+        },
       }),
     }),
     getEnvironmentEvents: build.query<GetEnvironmentEventsApiResponse, GetEnvironmentEventsApiArg>({
@@ -778,7 +794,12 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { sinceTime: queryArg.sinceTime, lines: queryArg.lines, file: queryArg.file, follow: queryArg.follow },
+        params: {
+          sinceTime: queryArg.sinceTime,
+          lines: queryArg.lines,
+          file: queryArg.file,
+          follow: queryArg.follow,
+        },
       }),
     }),
     getTektonPipelineRuns: build.query<GetTektonPipelineRunsApiResponse, GetTektonPipelineRunsApiArg>({
@@ -827,7 +848,12 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: { sinceTime: queryArg.sinceTime, lines: queryArg.lines, file: queryArg.file, follow: queryArg.follow },
+        params: {
+          sinceTime: queryArg.sinceTime,
+          lines: queryArg.lines,
+          file: queryArg.file,
+          follow: queryArg.follow,
+        },
       }),
     }),
     getTektonPipelineRunTaskStep: build.query<
@@ -888,7 +914,7 @@ const injectedRtkApi = api.injectEndpoints({
             "Impersonate-Group": queryArg["Impersonate-Group"],
           },
         }),
-      }
+      },
     ),
     triggerPipelineBuild: build.mutation<TriggerPipelineBuildApiResponse, TriggerPipelineBuildApiArg>({
       query: (queryArg) => ({
@@ -912,7 +938,7 @@ const injectedRtkApi = api.injectEndpoints({
             "Impersonate-Group": queryArg["Impersonate-Group"],
           },
         }),
-      }
+      },
     ),
     triggerPipelineDeploy: build.mutation<TriggerPipelineDeployApiResponse, TriggerPipelineDeployApiArg>({
       query: (queryArg) => ({

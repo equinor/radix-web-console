@@ -1,6 +1,7 @@
 import type { ConfigFile } from '@rtk-query/codegen-openapi'
 
 const RADIX_LOG_API_SWAGGER_URL =
+  // @ts-expect-error: this is always executed on node, not in a browser
   process.env.OVERRIDE_RADIX_LOG_API_SWAGGER_URL || 'https://server-radix-log-api-qa.radix.equinor.com/swagger/doc.json'
 
 const config: ConfigFile = {
