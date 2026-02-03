@@ -13,8 +13,8 @@ metadata:
 spec:
   type: website
   lifecycle: production
-  owner: omnia-radix
-  system: Radix
+  owner: team-radix
+  system: system:default/Radix
   consumesApis:
     - radix-api
     - radix-vulnerability-scanner-api
