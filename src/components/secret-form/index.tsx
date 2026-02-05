@@ -1,11 +1,11 @@
-import { Button, TextField, Typography } from '@equinor/eds-core-react'
+import { Button, Textarea, Typography } from '@equinor/eds-core-react'
 import { type ChangeEvent, type FunctionComponent, type ReactNode, useState } from 'react'
 
 import type { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api'
 import { SecretStatus } from '../secret-status'
 
-import './style.css'
 import { SecretUpdatedBadge } from '../status-badges/secret-updated-badge'
+import './style.css'
 
 export const SecretForm: FunctionComponent<{
   secret: Secret | BuildSecret | ImageHubSecret
@@ -46,11 +46,10 @@ export const SecretForm: FunctionComponent<{
       <div className="secret-overview-form">
         <form>
           <fieldset className="grid grid--gap-small" disabled={disableForm}>
-            <TextField
+            <Textarea
               label="Secret value"
               value={value.current}
-              multiline
-              onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+              onChange={({ target }: ChangeEvent<HTMLTextAreaElement>) =>
                 setValue((x) => ({ ...x, current: target.value }))
               }
               {...(secret.status === 'Consistent' && {

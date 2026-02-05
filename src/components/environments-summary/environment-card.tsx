@@ -14,12 +14,11 @@ import {
 import { type EnvironmentVulnerabilities, useGetEnvironmentVulnerabilitySummaryQuery } from '../../store/scan-api'
 import { routeWithParams } from '../../utils/string'
 import { GitTagLinks } from '../git-tags/git-tag-links'
-import { EnvironmentIngress } from './environment-ingress'
-
-import './style.css'
 import { Severity, UtilizationPopover } from '../utilization-popover/utilization-popover'
 import { DeploymentDetails } from './deployment-details'
 import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers'
+import { EnvironmentIngress } from './environment-ingress'
+import './style.css'
 
 type EnvironmentCardProps = {
   appName: string
@@ -28,6 +27,7 @@ type EnvironmentCardProps = {
 }
 export const EnvironmentCard = ({ appName, env, repository }: EnvironmentCardProps) => {
   const deployment = env.activeDeployment
+  const deploymentName = deployment?.name
 
   const { data: envScan, isLoading: isEnvScanLoading } = useGetEnvironmentVulnerabilitySummaryQuery(
     { appName, envName: env.name },
@@ -37,9 +37,9 @@ export const EnvironmentCard = ({ appName, env, repository }: EnvironmentCardPro
   const { data: components, isLoading: isComponentsLoading } = useComponentsQuery(
     {
       appName,
-      deploymentName: deployment?.name!,
+      deploymentName: deploymentName!,
     },
-    { pollingInterval, skip: !deployment?.name }
+    { pollingInterval, skip: !deploymentName }
   )
 
   const { data: utilization, isLoading: isUtilizationLoading } = useGetApplicationResourcesUtilizationQuery(

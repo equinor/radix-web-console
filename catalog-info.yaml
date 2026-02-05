@@ -2,6 +2,8 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: radix-web-console
+  title: Radix Web Console
+  description: "Main web application for radix platform"
   annotations:
     github.com/project-slug: equinor/radix-web-console
   links:
@@ -11,7 +13,9 @@ metadata:
 spec:
   type: website
   lifecycle: production
-  owner: omnia-radix
-  system: Radix
+  owner: team-radix
+  system: system:default/Radix
   consumesApis:
     - radix-api
+    - radix-vulnerability-scanner-api
+    - radix-cost-allocation-api

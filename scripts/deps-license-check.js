@@ -13,6 +13,7 @@ const permittedLicenses = [
   'Python-2.0',
   'Unlicense',
   'WTFPL',
+  'BlueOak-1.0.0',
 ]
 
 // Provide a justification for excluding packages from checks!
