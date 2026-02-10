@@ -5,7 +5,7 @@ RUN npm ci --ignore-scripts
 COPY . .
 RUN npm run build
 
-FROM docker.io/nginxinc/nginx-unprivileged:1.29-alpine3.22
+FROM docker.io/nginxinc/nginx-unprivileged:1.29.5-alpine3.23
 WORKDIR /app
 COPY --from=builder /app/build /app
 COPY proxy/server.conf /default.conf
