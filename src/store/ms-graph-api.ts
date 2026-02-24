@@ -16,7 +16,7 @@ function isRootState(state: unknown): state is RootState {
     return false
   }
 
-  return !!state?.auth?.provider !== undefined
+  return state.auth.provider !== undefined && state.auth.provider !== null
 }
 
 let graphClient: Client | undefined
