@@ -67,7 +67,7 @@ export type EnvironmentCardLayoutProps = {
   components?: Component[]
   repository?: string
   env: Pick<EnvironmentSummary, 'name' | 'status' | 'branchMapping' | 'activeDeployment'>
-  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags'>
+  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags' | 'status'>
   envScan?: EnvironmentVulnerabilities
   utilization?: ReplicaResourcesUtilizationResponse
 }
@@ -114,7 +114,7 @@ export const EnvironmentCardLayout = ({
                 minimumSeverity={Severity.Information}
               />
               <VulnerabilityHeader envScan={envScan} />
-              <DeplopymentHeader components={components} />
+              <DeplopymentHeader components={components} deployment={deployment} />
             </>
           )}
         </div>

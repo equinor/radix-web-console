@@ -13,6 +13,7 @@ const testData: Array<GetEnvironmentApiResponse> = [
       namespace: 'any',
       repository: 'any',
       activeFrom: new Date('2023-12-01T11:27:17Z').toISOString(),
+      status: 'Ready',
     },
     secrets: [
       { name: 'secret_1', status: 'Consistent', component: 'component_1' },
@@ -27,6 +28,7 @@ const testData: Array<GetEnvironmentApiResponse> = [
       namespace: 'any',
       repository: 'any',
       activeFrom: new Date('2023-12-01T11:27:17Z').toISOString(),
+      status: 'Ready',
     },
     secrets: [
       { name: 'pandora', status: 'Pending', component: 'component_1' },

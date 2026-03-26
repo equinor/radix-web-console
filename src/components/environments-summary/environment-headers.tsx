@@ -1,4 +1,4 @@
-import type { Component, ReplicaSummary } from '../../store/radix-api'
+import type { Component, DeploymentSummary, ReplicaSummary } from '../../store/radix-api'
 import type { EnvironmentVulnerabilities, Vulnerability } from '../../store/scan-api'
 import { filterFields } from '../../utils/filter-fields'
 import {
@@ -16,9 +16,10 @@ const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = ['critical', 'h
 
 type DeploymentHeaderProps = {
   components?: Component[]
+  deployment?: Pick<DeploymentSummary, 'status'>
 }
 
-export const DeplopymentHeader = ({ components }: DeploymentHeaderProps) => {
+export const DeplopymentHeader = ({ components, deployment }: DeploymentHeaderProps) => {
   const replicas = (components ?? []).reduce<Array<ReplicaSummary>>(
     (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
     []
@@ -29,12 +30,13 @@ export const DeplopymentHeader = ({ components }: DeploymentHeaderProps) => {
     ...(replicas.length > 0 && {
       Replicas: aggregateComponentReplicaEnvironmentStatus(components ?? []),
     }),
+
   }
 
+  console.log(elements, deployment)
   if (!components || components.length === 0) {
     return null
   }
-
   return <EnvironmentCardStatus title="Environment status" statusElements={elements} />
 }
 

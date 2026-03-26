@@ -2758,6 +2758,14 @@ export type DeploymentSummary = {
   promotedFromEnvironment?: string;
   /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
   refreshBuildCache?: boolean | null;
+  /** Status of deployment reconciliation
+    Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
+    Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
+    Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
+    Inactive DeploymentStatusInactive  DeploymentStatusFailed deployment is inactive */
+  status: "Reconciling" | "Ready" | "Failed" | "Inactive";
+  /** StatusReason contains details when deployment status is Failed */
+  statusReason?: string;
   /** Defaults to true and requires useBuildKit to have an effect. */
   useBuildCache?: boolean | null;
   /** Enables BuildKit when building Dockerfile. */
@@ -2934,6 +2942,14 @@ export type Deployment = {
   refreshBuildCache?: boolean | null;
   /** Repository the GitHub repository that the deployment was built from */
   repository: string;
+  /** Status of deployment reconciliation
+    Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
+    Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
+    Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
+    Inactive DeploymentStatusInactive  DeploymentStatusFailed deployment is inactive */
+  status: "Reconciling" | "Ready" | "Failed" | "Inactive";
+  /** StatusReason contains details when deployment status is Failed */
+  statusReason?: string;
   /** Defaults to true and requires useBuildKit to have an effect. */
   useBuildCache?: boolean | null;
   /** Enables BuildKit when building Dockerfile. */
@@ -2972,7 +2988,7 @@ export type Secret = {
     | "client-cert-auth"
     | "oauth2-proxy";
   /** Updated timestamp of the last change */
-  updated?: any;
+  updated?: string;
 };
 export type Environment = {
   activeDeployment?: Deployment;
