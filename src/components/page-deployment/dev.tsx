@@ -13,6 +13,7 @@ const testData: Array<Parameters<typeof DeploymentOverview>[0] & { deployment: D
       createdByJob: 'radix-pipeline-20210617132936-qkpww',
       environment: 'qa',
       activeFrom: '2021-06-17T13:34:56.000Z',
+      status: 'Ready',
       components: [
         {
           image: 'radixdev.azurecr.io/my-app-server:qkpww',
@@ -176,6 +177,7 @@ const testData: Array<Parameters<typeof DeploymentOverview>[0] & { deployment: D
       environment: 'qa',
       activeFrom: '2021-06-17T13:34:56.000Z',
       activeTo: '2021-06-18T13:34:56.000Z',
+      status: 'Inactive',
       components: [
         {
           image: 'radixdev.azurecr.io/my-app-server:qkpww',

@@ -2565,6 +2565,167 @@ export type Component = {
     [key: string]: string;
   };
 };
+export type Deployment = {
+  /** ActiveFrom Timestamp when the deployment starts (or created) */
+  activeFrom: string;
+  /** ActiveTo Timestamp when the deployment ends */
+  activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
+  /** Array of components */
+  components?: Component[];
+  /** Name of job creating deployment */
+  createdByJob?: string;
+  /** Environment the environment this Radix application deployment runs in */
+  environment: string;
+  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
+  gitCommitHash?: string;
+  /** GitRef Branch or tag to build from */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | '""';
+  /** GitTags the git tags that the git commit hash points to */
+  gitTags?: string;
+  /** Name the unique name of the Radix application deployment */
+  name: string;
+  /** Namespace where the deployment is stored */
+  namespace: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
+  /** Repository the GitHub repository that the deployment was built from */
+  repository: string;
+  /** Status of deployment reconciliation
+    Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
+    Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
+    Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
+    Inactive DeploymentStatusInactive  DeploymentStatusFailed deployment is inactive */
+  status: "Reconciling" | "Ready" | "Failed" | "Inactive";
+  /** StatusReason contains details when deployment status is Failed */
+  statusReason?: string;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
+};
+export type ComponentSummary = {
+  /** CommitID the commit ID of the branch to build
+    REQUIRED for "build" and "build-deploy" pipelines */
+  commitID?: string;
+  /** GitTags the git tags that the git commit hash points to */
+  gitTags?: string;
+  /** Image name */
+  image: string;
+  /** Name the component */
+  name: string;
+  resources?: ResourceRequirements;
+  runtime?: Runtime;
+  /** SkipDeployment The component should not be deployed, but used existing */
+  skipDeployment?: boolean;
+  /** Type of component */
+  type: "component" | "job";
+};
+export type DeploymentSummary = {
+  /** ActiveFrom Timestamp when the deployment starts (or created) */
+  activeFrom: string;
+  /** ActiveTo Timestamp when the deployment ends */
+  activeTo?: string;
+  /** Name of the branch used to build the deployment */
+  builtFromBranch?: string;
+  /** CommitID the commit ID of the branch to build */
+  commitID?: string;
+  /** Array of component summaries */
+  components?: ComponentSummary[];
+  /** Name of job creating deployment */
+  createdByJob?: string;
+  /** Environment the environment this Radix application deployment runs in */
+  environment: string;
+  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
+  gitCommitHash?: string;
+  /** GitRef Branch or tag to build from */
+  gitRef?: string;
+  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
+    branch
+    tag
+    <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | '""';
+  /** GitTags the git tags that the git commit hash points to */
+  gitTags?: string;
+  /** Name the unique name of the Radix application deployment */
+  name: string;
+  /** Type of pipeline job */
+  pipelineJobType?: "build" | "build-deploy" | "promote" | "deploy" | "apply-config";
+  /** Name of the environment the deployment was promoted from
+    Applies only for pipeline jobs of type 'promote' */
+  promotedFromEnvironment?: string;
+  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
+  refreshBuildCache?: boolean | null;
+  /** Status of deployment reconciliation
+    Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
+    Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
+    Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
+    Inactive DeploymentStatusInactive  DeploymentStatusFailed deployment is inactive */
+  status: "Reconciling" | "Ready" | "Failed" | "Inactive";
+  /** StatusReason contains details when deployment status is Failed */
+  statusReason?: string;
+  /** Defaults to true and requires useBuildKit to have an effect. */
+  useBuildCache?: boolean | null;
+  /** Enables BuildKit when building Dockerfile. */
+  useBuildKit?: boolean | null;
+};
+export type Secret = {
+  /** Component name of the component having the secret */
+  component?: string;
+  /** DisplayName of the secret */
+  displayName?: string;
+  /** ID of the secret within the Resource */
+  id?: string;
+  /** Name of the secret or its property, related to type and resource) */
+  name: string;
+  /** Resource of the secrets */
+  resource?: string;
+  /** Status of the secret
+    Pending = Secret exists in Radix config, but not in cluster
+    Consistent = Secret exists in Radix config and in cluster
+    NotAvailable = Secret is available in external secret configuration but not in cluster */
+  status?: "Pending" | "Consistent" | "NotAvailable";
+  /** Type of the secret
+    generic SecretTypeGeneric
+    azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
+    csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
+    csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
+    csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
+    client-cert-auth SecretTypeClientCertificateAuth
+    oauth2-proxy SecretTypeOAuth2Proxy */
+  type?:
+    | "generic"
+    | "azure-blob-fuse-volume"
+    | "csi-azure-blob-volume"
+    | "csi-azure-key-vault-creds"
+    | "csi-azure-key-vault-item"
+    | "client-cert-auth"
+    | "oauth2-proxy";
+  /** Updated timestamp of the last change */
+  updated?: string;
+};
+export type Environment = {
+  activeDeployment?: Deployment;
+  /** BranchMapping The branch mapped to this environment */
+  branchMapping?: string;
+  /** Deployments All deployments in environment */
+  deployments?: DeploymentSummary[];
+  /** Name of the environment */
+  name: string;
+  /** Secrets All secrets in environment */
+  secrets?: Secret[];
+  /** Status of the environment
+    Pending = Environment exists in Radix config, but not in cluster
+    Consistent = Environment exists in Radix config and in cluster
+    Orphan = Environment does not exist in Radix config, but exists in cluster */
+  status?: "Pending" | "Consistent" | "Orphan";
+};
 export type JobSummary = {
   /** AppName of the application */
   appName?: string;
@@ -2624,6 +2785,8 @@ export type ApplicationSummary = {
   environmentActiveComponents?: {
     [key: string]: Component[];
   };
+  /** Environments List of environments for this application */
+  environments?: Environment[];
   latestJob?: JobSummary;
   /** Name the name of the application */
   name: string;
@@ -2705,63 +2868,6 @@ export type DnsExternalAlias = {
   environmentName: string;
   /** URL the public endpoint */
   url: string;
-};
-export type ComponentSummary = {
-  /** CommitID the commit ID of the branch to build
-    REQUIRED for "build" and "build-deploy" pipelines */
-  commitID?: string;
-  /** GitTags the git tags that the git commit hash points to */
-  gitTags?: string;
-  /** Image name */
-  image: string;
-  /** Name the component */
-  name: string;
-  resources?: ResourceRequirements;
-  runtime?: Runtime;
-  /** SkipDeployment The component should not be deployed, but used existing */
-  skipDeployment?: boolean;
-  /** Type of component */
-  type: "component" | "job";
-};
-export type DeploymentSummary = {
-  /** ActiveFrom Timestamp when the deployment starts (or created) */
-  activeFrom: string;
-  /** ActiveTo Timestamp when the deployment ends */
-  activeTo?: string;
-  /** Name of the branch used to build the deployment */
-  builtFromBranch?: string;
-  /** CommitID the commit ID of the branch to build */
-  commitID?: string;
-  /** Array of component summaries */
-  components?: ComponentSummary[];
-  /** Name of job creating deployment */
-  createdByJob?: string;
-  /** Environment the environment this Radix application deployment runs in */
-  environment: string;
-  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
-  gitCommitHash?: string;
-  /** GitRef Branch or tag to build from */
-  gitRef?: string;
-  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
-  /** GitTags the git tags that the git commit hash points to */
-  gitTags?: string;
-  /** Name the unique name of the Radix application deployment */
-  name: string;
-  /** Type of pipeline job */
-  pipelineJobType?: "build" | "build-deploy" | "promote" | "deploy" | "apply-config";
-  /** Name of the environment the deployment was promoted from
-    Applies only for pipeline jobs of type 'promote' */
-  promotedFromEnvironment?: string;
-  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
-  refreshBuildCache?: boolean | null;
-  /** Defaults to true and requires useBuildKit to have an effect. */
-  useBuildCache?: boolean | null;
-  /** Enables BuildKit when building Dockerfile. */
-  useBuildKit?: boolean | null;
 };
 export type EnvironmentSummary = {
   activeDeployment?: DeploymentSummary;
@@ -2901,94 +3007,6 @@ export type DeployKeyAndSecret = {
   publicDeployKey: string;
   /** SharedSecret the shared secret */
   sharedSecret: string;
-};
-export type Deployment = {
-  /** ActiveFrom Timestamp when the deployment starts (or created) */
-  activeFrom: string;
-  /** ActiveTo Timestamp when the deployment ends */
-  activeTo?: string;
-  /** Name of the branch used to build the deployment */
-  builtFromBranch?: string;
-  /** Array of components */
-  components?: Component[];
-  /** Name of job creating deployment */
-  createdByJob?: string;
-  /** Environment the environment this Radix application deployment runs in */
-  environment: string;
-  /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
-  gitCommitHash?: string;
-  /** GitRef Branch or tag to build from */
-  gitRef?: string;
-  /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
-  /** GitTags the git tags that the git commit hash points to */
-  gitTags?: string;
-  /** Name the unique name of the Radix application deployment */
-  name: string;
-  /** Namespace where the deployment is stored */
-  namespace: string;
-  /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
-  refreshBuildCache?: boolean | null;
-  /** Repository the GitHub repository that the deployment was built from */
-  repository: string;
-  /** Defaults to true and requires useBuildKit to have an effect. */
-  useBuildCache?: boolean | null;
-  /** Enables BuildKit when building Dockerfile. */
-  useBuildKit?: boolean | null;
-};
-export type Secret = {
-  /** Component name of the component having the secret */
-  component?: string;
-  /** DisplayName of the secret */
-  displayName?: string;
-  /** ID of the secret within the Resource */
-  id?: string;
-  /** Name of the secret or its property, related to type and resource) */
-  name: string;
-  /** Resource of the secrets */
-  resource?: string;
-  /** Status of the secret
-    Pending = Secret exists in Radix config, but not in cluster
-    Consistent = Secret exists in Radix config and in cluster
-    NotAvailable = Secret is available in external secret configuration but not in cluster */
-  status?: "Pending" | "Consistent" | "NotAvailable";
-  /** Type of the secret
-    generic SecretTypeGeneric
-    azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
-    csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
-    csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
-    csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
-    client-cert-auth SecretTypeClientCertificateAuth
-    oauth2-proxy SecretTypeOAuth2Proxy */
-  type?:
-    | "generic"
-    | "azure-blob-fuse-volume"
-    | "csi-azure-blob-volume"
-    | "csi-azure-key-vault-creds"
-    | "csi-azure-key-vault-item"
-    | "client-cert-auth"
-    | "oauth2-proxy";
-  /** Updated timestamp of the last change */
-  updated?: any;
-};
-export type Environment = {
-  activeDeployment?: Deployment;
-  /** BranchMapping The branch mapped to this environment */
-  branchMapping?: string;
-  /** Deployments All deployments in environment */
-  deployments?: DeploymentSummary[];
-  /** Name of the environment */
-  name: string;
-  /** Secrets All secrets in environment */
-  secrets?: Secret[];
-  /** Status of the environment
-    Pending = Environment exists in Radix config, but not in cluster
-    Consistent = Environment exists in Radix config and in cluster
-    Orphan = Environment does not exist in Radix config, but exists in cluster */
-  status?: "Pending" | "Consistent" | "Orphan";
 };
 export type EnvVarMetadata = {
   /** Value of the environment variable in radixconfig.yaml */

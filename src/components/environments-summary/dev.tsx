@@ -13,6 +13,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
         name: 'qa-hxn4z-ugvhgj0o',
         environment: 'qa',
         activeFrom: '2019-01-11T08:49:44Z',
+        status: 'Ready',
       },
       branchMapping: 'master',
     },
@@ -23,6 +24,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
         name: 'prod-srqer-ffst7fqx',
         environment: 'prod',
         activeFrom: '2019-01-04T06:39:48Z',
+        status: 'Ready',
       },
       branchMapping: 'release',
     },
@@ -33,6 +35,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
         name: 'pr520-qt1dm-4r9vcdtc',
         environment: 'pr520',
         activeFrom: '2018-12-27T12:26:34Z',
+        status: 'Ready',
       },
     },
     {
@@ -42,6 +45,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
         name: 'master-db5rw-44kn77up',
         environment: 'master',
         activeFrom: '0',
+        status: 'Ready',
       },
       branchMapping: 'master',
     },
@@ -54,6 +58,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
         name: 'qa-hxn4z-ugvhgj0o',
         environment: 'qa',
         activeFrom: '2019-01-11T08:49:44Z',
+        status: 'Ready',
       },
       branchMapping: 'master',
     },
@@ -64,6 +69,7 @@ const testData: Array<Array<EnvironmentSummary>> = [
         name: 'prod-srqer-ffst7fqx',
         environment: 'prod',
         activeFrom: '2019-01-04T06:39:48Z',
+        status: 'Ready',
       },
       branchMapping: 'release',
     },
@@ -129,7 +135,7 @@ const cards: EnvironmentCardLayoutProps[] = [
   {
     appName: 'test-component',
     env: { name: 'dev' },
-    deployment: { name: 'web', activeFrom: '2020-02-02T12:00:00Z' },
+    deployment: { name: 'web', activeFrom: '2020-02-02T12:00:00Z', status: 'Ready' },
     isLoading: true,
     envScan: undefined,
     components: undefined,
@@ -142,6 +148,7 @@ const cards: EnvironmentCardLayoutProps[] = [
       name: 'web',
       activeFrom: '2020-02-02T12:00:00Z',
       gitTags: 'abcd1234',
+      status: 'Ready',
     },
     isLoading: false,
     envScan: undefined,
@@ -190,6 +197,7 @@ const cards: EnvironmentCardLayoutProps[] = [
     deployment: {
       name: 'web',
       activeFrom: '2020-02-02T12:00:00Z',
+      status: 'Ready',
     },
     isLoading: true,
     utilization: {
@@ -253,6 +261,7 @@ const cards: EnvironmentCardLayoutProps[] = [
     deployment: {
       name: 'web',
       activeFrom: '2020-02-02T12:00:00Z',
+      status: 'Ready',
     },
     isLoading: false,
     envScan: {
@@ -298,6 +307,7 @@ const cards: EnvironmentCardLayoutProps[] = [
     deployment: {
       name: 'web',
       activeFrom: '2020-02-02T12:00:00Z',
+      status: 'Ready',
     },
     isLoading: false,
     envScan: { name: 'dev' },

@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import { routes } from '../../routes'
 import {
-  type Component,
+  type Environment,
   type JobSummary,
   type ReplicaResourcesUtilizationResponse,
   useGetApplicationResourcesUtilizationQuery,
@@ -26,8 +26,9 @@ import {
   EnvironmentVulnerabilityIndicator,
 } from '../environments-summary/environment-card-status'
 import {
-  aggregateComponentEnvironmentStatus,
-  aggregateComponentReplicaEnvironmentStatus,
+  aggregateComponentStatus,
+  aggregateComponentReplicaStatus,
+  aggregateDeploymentStatus,
   aggregateVulnerabilitySummaries,
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
@@ -43,7 +44,7 @@ export type FavouriteClickedHandler = (event: MouseEvent<HTMLButtonElement>, nam
 export interface AppListItemProps {
   appName: string
   latestJob?: JobSummary
-  environmentActiveComponents?: { [key: string]: Component[] }
+  environments?: Environment[]
   handler: FavouriteClickedHandler
   isPlaceholder?: boolean
   isFavourite?: boolean
@@ -78,7 +79,7 @@ export const AppListItem = ({ isLoading, ...props }: AppListItemProps) => {
 export type AppListItemLayoutProps = {
   appName: string
   latestJob?: JobSummary
-  environmentActiveComponents?: { [key: string]: Component[] }
+  environments?: Environment[]
   handler: FavouriteClickedHandler
   isPlaceholder?: boolean
   isFavourite?: boolean
@@ -91,7 +92,7 @@ export type AppListItemLayoutProps = {
 
 export const AppListItemLayout = ({
   latestJob,
-  environmentActiveComponents,
+  environments,
   isDeleted,
   appName,
   isLoading,
@@ -109,7 +110,7 @@ export const AppListItemLayout = ({
 
   const time = latestJob && (latestJob.status === 'Running' || !latestJob.ended ? latestJob.started : latestJob.ended)
 
-  const statusElements = parseAppForStatusElements(latestJob, environmentActiveComponents)
+  const statusElements = parseAppForStatusElements(latestJob, environments)
 
   const latestJobIsChanging = latestJob && (latestJob.status === 'Running' || latestJob.status === 'Stopping')
 
@@ -210,28 +211,24 @@ const WElement = ({ appName, isPlaceholder, className, children }: PropsWithChil
   )
 }
 
-function parseAppForStatusElements(
-  latestJob?: JobSummary,
-  environmentActiveComponents?: { [key: string]: Component[] }
-): EnvironmentCardStatusMap {
+function parseAppForStatusElements(latestJob?: JobSummary, environments?: Environment[]): EnvironmentCardStatusMap {
   return {
     ...(latestJob && {
       'Latest Job': latestJob.status == 'Failed' ? EnvironmentStatus.Danger : EnvironmentStatus.Consistent,
     }),
-    ...(environmentActiveComponents && {
-      Environments: aggregateEnvironmentStatus(
-        Object.keys(environmentActiveComponents).reduce(
-          (obj, x) => (environmentActiveComponents[x]?.length > 0 ? [...obj, ...environmentActiveComponents[x]] : obj),
-          [] as Component[]
-        )
-      ),
+    ...(environments && {
+      Environments: aggregateEnvironmentStatus(environments),
     }),
   }
 }
 
-function aggregateEnvironmentStatus(components: Component[]): EnvironmentStatus {
+function aggregateEnvironmentStatus(environments: Environment[]): EnvironmentStatus {
+  const components = environments.flatMap((env) => env.activeDeployment?.components ?? [])
+  const deployments = environments.filter((env) => env.activeDeployment).map((env) => env.activeDeployment!)
+
   return Math.max(
-    aggregateComponentEnvironmentStatus(components),
-    aggregateComponentReplicaEnvironmentStatus(components)
+    aggregateDeploymentStatus(deployments),
+    aggregateComponentStatus(components),
+    aggregateComponentReplicaStatus(components)
   )
 }
