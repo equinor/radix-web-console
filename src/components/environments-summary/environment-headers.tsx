@@ -7,9 +7,9 @@ import {
   EnvironmentVulnerabilityIndicator,
 } from './environment-card-status'
 import {
-  aggregateComponentEnvironmentStatus,
-  aggregateComponentReplicaEnvironmentStatus,
-  EnvironmentStatus,
+  aggregateComponentStatus,
+  aggregateComponentReplicaStatus,
+  aggregateDeploymentStatus,
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils'
 
@@ -27,14 +27,13 @@ export const DeplopymentHeader = ({ components, deployment }: DeploymentHeaderPr
   )
 
   const elements: EnvironmentCardStatusMap = {
-    Deployment: deployment && deployment.status == 'Failed' ? EnvironmentStatus.Danger : EnvironmentStatus.Consistent,
-    Components: aggregateComponentEnvironmentStatus(components ?? []),
+    Deployment: aggregateDeploymentStatus(deployment ? [deployment] : []),
+    Components: aggregateComponentStatus(components ?? []),
     ...(replicas.length > 0 && {
-      Replicas: aggregateComponentReplicaEnvironmentStatus(components ?? []),
+      Replicas: aggregateComponentReplicaStatus(components ?? []),
     }),
   }
 
-  console.log(elements, deployment)
   if (!components || components.length === 0) {
     return null
   }

@@ -117,7 +117,7 @@ export default function AppList() {
                       key={appName}
                       appName={appName}
                       isDeleted={!app}
-                      environmentActiveComponents={app?.environmentActiveComponents}
+                      environments={app?.environments}
                       latestJob={app?.latestJob}
                       handler={(e) => {
                         changeFavouriteApplication(appName, false)
