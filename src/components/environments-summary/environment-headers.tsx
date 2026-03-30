@@ -20,7 +20,7 @@ type DeploymentHeaderProps = {
   deployment?: Pick<DeploymentSummary, 'status'>
 }
 
-export const DeplopymentHeader = ({ components, deployment }: DeploymentHeaderProps) => {
+export const DeploymentHeader = ({ components, deployment }: DeploymentHeaderProps) => {
   const replicas = (components ?? []).reduce<Array<ReplicaSummary>>(
     (obj, { replicaList }) => (!replicaList ? obj : [...obj, ...replicaList]),
     []

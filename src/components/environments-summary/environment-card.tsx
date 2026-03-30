@@ -16,7 +16,7 @@ import { routeWithParams } from '../../utils/string'
 import { GitTagLinks } from '../git-tags/git-tag-links'
 import { Severity, UtilizationPopover } from '../utilization-popover/utilization-popover'
 import { DeploymentDetails } from './deployment-details'
-import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers'
+import { DeploymentHeader, VulnerabilityHeader } from './environment-headers'
 import { EnvironmentIngress } from './environment-ingress'
 import './style.css'
 
@@ -114,7 +114,7 @@ export const EnvironmentCardLayout = ({
                 minimumSeverity={Severity.Information}
               />
               <VulnerabilityHeader envScan={envScan} />
-              <DeplopymentHeader components={components} deployment={deployment} />
+              <DeploymentHeader components={components} deployment={deployment} />
             </>
           )}
         </div>
