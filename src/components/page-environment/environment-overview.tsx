@@ -216,7 +216,10 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
               </div>
             </section>
             {deployment && deployment.status === 'Failed' && !!deployment.statusReason && (
-              <Alert type="danger">{deployment?.statusReason}</Alert>
+              <Alert type="danger">
+                <Typography variant='h4'>Deployment Error</Typography>
+                <Typography variant='body_long'>{deployment?.statusReason}</Typography>
+              </Alert>
             )}
             {appAlias?.environmentName == envName && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
             {envDNSAliases?.length > 0 && (

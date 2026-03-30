@@ -34,18 +34,7 @@ const injectedRtkApi = api.injectEndpoints({
         params: {
           apps: queryArg.apps,
           includeLatestJobSummary: queryArg.includeLatestJobSummary,
-          includeEnvironmentActiveComponents: queryArg.includeEnvironmentActiveComponents,
-        },
-      }),
-    }),
-    searchApplications: build.mutation<SearchApplicationsApiResponse, SearchApplicationsApiArg>({
-      query: (queryArg) => ({
-        url: `/applications/_search`,
-        method: "POST",
-        body: queryArg.applicationsSearchRequest,
-        headers: {
-          "Impersonate-User": queryArg["Impersonate-User"],
-          "Impersonate-Group": queryArg["Impersonate-Group"],
+          includeEnvironments: queryArg.includeEnvironments,
         },
       }),
     }),
@@ -1092,23 +1081,14 @@ export type GetSearchApplicationsApiResponse = /** status 200 Successful operati
 export type GetSearchApplicationsApiArg = {
   /** Comma separated list of application names to search for */
   apps: string;
-  /** true to include LatestJobSummary */
-  includeLatestJobSummary?: string;
-  /** true to include ActiveComponents in Environments */
-  includeEnvironmentActiveComponents?: string;
+  /** true to include latest job summary */
+  includeLatestJobSummary?: boolean;
+  /** true to include environments */
+  includeEnvironments?: boolean;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
-};
-export type SearchApplicationsApiResponse = /** status 200 Successful operation */ ApplicationSummary[];
-export type SearchApplicationsApiArg = {
-  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
-  "Impersonate-Group"?: string;
-  /** List of application names to search for */
-  applicationsSearchRequest: ApplicationsSearchRequest;
 };
 export type GetApplicationApiResponse = /** status 200 Successful get application */ Application;
 export type GetApplicationApiArg = {
@@ -2781,10 +2761,6 @@ export type JobSummary = {
   useBuildKit?: boolean | null;
 };
 export type ApplicationSummary = {
-  /** EnvironmentActiveComponents All component summaries of the active deployments in the environments */
-  environmentActiveComponents?: {
-    [key: string]: Component[];
-  };
   /** Environments List of environments for this application */
   environments?: Environment[];
   latestJob?: JobSummary;
@@ -2830,15 +2806,6 @@ export type ApplicationRegistrationRequest = {
   /** AcknowledgeWarnings acknowledge all warnings */
   acknowledgeWarnings?: boolean;
   applicationRegistration?: ApplicationRegistration;
-};
-export type ApplicationSearchIncludeFields = {
-  environmentActiveComponents?: boolean;
-  latestJobSummary?: boolean;
-};
-export type ApplicationsSearchRequest = {
-  includeFields?: ApplicationSearchIncludeFields;
-  /** List of application names to be returned */
-  names: string[];
 };
 export type ApplicationAlias = {
   /** ComponentName the component exposing the endpoint */
@@ -3603,7 +3570,6 @@ export const {
   useShowApplicationsQuery,
   useRegisterApplicationMutation,
   useGetSearchApplicationsQuery,
-  useSearchApplicationsMutation,
   useGetApplicationQuery,
   useChangeRegistrationDetailsMutation,
   useDeleteApplicationMutation,
