@@ -7,8 +7,8 @@ import {
   EnvironmentVulnerabilityIndicator,
 } from './environment-card-status'
 import {
-  aggregateComponentStatus,
   aggregateComponentReplicaStatus,
+  aggregateComponentStatus,
   aggregateDeploymentStatus,
   environmentVulnerabilitySummarizer,
 } from './environment-status-utils'

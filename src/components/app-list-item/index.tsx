@@ -26,8 +26,8 @@ import {
   EnvironmentVulnerabilityIndicator,
 } from '../environments-summary/environment-card-status'
 import {
-  aggregateComponentStatus,
   aggregateComponentReplicaStatus,
+  aggregateComponentStatus,
   aggregateDeploymentStatus,
   aggregateVulnerabilitySummaries,
   EnvironmentStatus,
