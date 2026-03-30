@@ -1064,7 +1064,7 @@ export type ShowApplicationsApiArg = {
   sshRepo?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RegisterApplicationApiResponse =
@@ -1072,7 +1072,7 @@ export type RegisterApplicationApiResponse =
 export type RegisterApplicationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Request for an Application to register */
   applicationRegistrationRequest: ApplicationRegistrationRequest;
@@ -1087,7 +1087,7 @@ export type GetSearchApplicationsApiArg = {
   includeEnvironments?: boolean;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetApplicationApiResponse = /** status 200 Successful get application */ Application;
@@ -1096,7 +1096,7 @@ export type GetApplicationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ChangeRegistrationDetailsApiResponse =
@@ -1106,7 +1106,7 @@ export type ChangeRegistrationDetailsApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** request for Application to change */
   applicationRegistrationRequest: ApplicationRegistrationRequest;
@@ -1117,7 +1117,7 @@ export type DeleteApplicationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ModifyRegistrationDetailsApiResponse =
@@ -1127,7 +1127,7 @@ export type ModifyRegistrationDetailsApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Request for Application to patch */
   applicationRegistrationPatchRequest: ApplicationRegistrationPatchRequest;
@@ -1138,7 +1138,7 @@ export type GetApplicationAlertingConfigApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type UpdateApplicationAlertingConfigApiResponse =
@@ -1148,7 +1148,7 @@ export type UpdateApplicationAlertingConfigApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Alerts configuration */
   updateAlertingConfig: UpdateAlertingConfig;
@@ -1159,7 +1159,7 @@ export type DisableApplicationAlertingApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type EnableApplicationAlertingApiResponse = /** status 200 Successful enable alerting */ AlertingConfig;
@@ -1168,7 +1168,7 @@ export type EnableApplicationAlertingApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetBuildSecretsApiResponse = /** status 200 Successful operation */ BuildSecret[];
@@ -1177,7 +1177,7 @@ export type GetBuildSecretsApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type UpdateBuildSecretsSecretValueApiResponse = unknown;
@@ -1188,7 +1188,7 @@ export type UpdateBuildSecretsSecretValueApiArg = {
   secretName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** New secret value */
   secretParameters: SecretParameters;
@@ -1200,7 +1200,7 @@ export type GetDeployKeyAndSecretApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type IsDeployKeyValidApiResponse = unknown;
@@ -1209,7 +1209,7 @@ export type IsDeployKeyValidApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetDeploymentsApiResponse = /** status 200 Successful operation */ DeploymentSummary[];
@@ -1222,7 +1222,7 @@ export type GetDeploymentsApiArg = {
   latest?: boolean;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetDeploymentApiResponse = /** status 200 Successful get deployment */ Deployment;
@@ -1233,7 +1233,7 @@ export type GetDeploymentApiArg = {
   deploymentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ComponentsApiResponse = /** status 200 pod log */ Component[];
@@ -1244,7 +1244,7 @@ export type ComponentsApiArg = {
   deploymentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type LogApiResponse = /** status 200 pod log */ string;
@@ -1269,7 +1269,7 @@ export type LogApiArg = {
   previous?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetEnvironmentSummaryApiResponse = /** status 200 Successful operation */ EnvironmentSummary[];
@@ -1278,7 +1278,7 @@ export type GetEnvironmentSummaryApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetEnvironmentApiResponse = /** status 200 Successful get environment */ Environment;
@@ -1289,7 +1289,7 @@ export type GetEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type CreateEnvironmentApiResponse = unknown;
@@ -1300,7 +1300,7 @@ export type CreateEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type DeleteEnvironmentApiResponse = unknown;
@@ -1311,7 +1311,7 @@ export type DeleteEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetEnvironmentAlertingConfigApiResponse = /** status 200 Successful get alerts config */ AlertingConfig;
@@ -1322,7 +1322,7 @@ export type GetEnvironmentAlertingConfigApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type UpdateEnvironmentAlertingConfigApiResponse =
@@ -1334,7 +1334,7 @@ export type UpdateEnvironmentAlertingConfigApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Alerts configuration */
   updateAlertingConfig: UpdateAlertingConfig;
@@ -1347,7 +1347,7 @@ export type DisableEnvironmentAlertingApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type EnableEnvironmentAlertingApiResponse = /** status 200 Successful enable alerting */ AlertingConfig;
@@ -1358,7 +1358,7 @@ export type EnableEnvironmentAlertingApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetBuildStatusApiResponse = unknown;
@@ -1392,7 +1392,7 @@ export type GetOAuthPodLogApiArg = {
   follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RestartOAuthAuxiliaryResourceApiResponse = unknown;
@@ -1407,7 +1407,7 @@ export type RestartOAuthAuxiliaryResourceApiArg = {
   type: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type EnvVarsApiResponse = /** status 200 environment variables */ EnvVar[];
@@ -1420,7 +1420,7 @@ export type EnvVarsApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ChangeEnvVarApiResponse = unknown;
@@ -1433,7 +1433,7 @@ export type ChangeEnvVarApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Environment variables new values and metadata */
   body: EnvVarParameter[];
@@ -1450,7 +1450,7 @@ export type UpdateComponentExternalDnsTlsApiArg = {
   fqdn: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** New TLS private key and certificate */
   updateExternalDnsTlsRequest: UpdateExternalDnsTlsRequest;
@@ -1477,7 +1477,7 @@ export type ReplicaLogApiArg = {
   previous?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ResetScaledComponentApiResponse = unknown;
@@ -1490,7 +1490,7 @@ export type ResetScaledComponentApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RestartComponentApiResponse = unknown;
@@ -1503,7 +1503,7 @@ export type RestartComponentApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ScaleComponentApiResponse = unknown;
@@ -1518,7 +1518,7 @@ export type ScaleComponentApiArg = {
   replicas: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetAzureKeyVaultSecretVersionsApiResponse =
@@ -1536,7 +1536,7 @@ export type GetAzureKeyVaultSecretVersionsApiArg = {
   secretName?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ChangeComponentSecretApiResponse = unknown;
@@ -1551,7 +1551,7 @@ export type ChangeComponentSecretApiArg = {
   secretName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** New secret value */
   secretParameters: SecretParameters;
@@ -1566,7 +1566,7 @@ export type StartComponentApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopComponentApiResponse = unknown;
@@ -1579,7 +1579,7 @@ export type StopComponentApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetApplicationEnvironmentDeploymentsApiResponse =
@@ -1593,7 +1593,7 @@ export type GetApplicationEnvironmentDeploymentsApiArg = {
   latest?: boolean;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetEnvironmentEventsApiResponse = /** status 200 Successful get environment events */ Event[];
@@ -1604,7 +1604,7 @@ export type GetEnvironmentEventsApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetComponentEventsApiResponse = /** status 200 Successful get environment events */ Event[];
@@ -1617,7 +1617,7 @@ export type GetComponentEventsApiArg = {
   componentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetReplicaEventsApiResponse = /** status 200 Successful get environment events */ Event[];
@@ -1632,7 +1632,7 @@ export type GetReplicaEventsApiArg = {
   podName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopAllBatchesAndJobsForEnvironmentApiResponse = unknown;
@@ -1643,7 +1643,7 @@ export type StopAllBatchesAndJobsForEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetBatchesApiResponse = /** status 200 scheduled batches */ ScheduledBatchSummary[];
@@ -1656,7 +1656,7 @@ export type GetBatchesApiArg = {
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopAllBatchesApiResponse = unknown;
@@ -1669,7 +1669,7 @@ export type StopAllBatchesApiArg = {
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetBatchApiResponse = /** status 200 scheduled batch */ ScheduledBatchSummary;
@@ -1684,7 +1684,7 @@ export type GetBatchApiArg = {
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type DeleteBatchApiResponse = unknown;
@@ -1699,7 +1699,7 @@ export type DeleteBatchApiArg = {
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type CopyBatchApiResponse = /** status 200 Success */ ScheduledBatchSummary;
@@ -1714,7 +1714,7 @@ export type CopyBatchApiArg = {
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Request for creating a scheduled batch */
   scheduledBatchRequest: ScheduledBatchRequest;
@@ -1731,7 +1731,7 @@ export type RestartBatchApiArg = {
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopBatchApiResponse = unknown;
@@ -1746,7 +1746,7 @@ export type StopBatchApiArg = {
   batchName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetJobComponentDeploymentsApiResponse = /** status 200 Radix deployments */ DeploymentItem[];
@@ -1759,7 +1759,7 @@ export type GetJobComponentDeploymentsApiArg = {
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetJobsApiResponse = /** status 200 scheduled jobs */ ScheduledJobSummary[];
@@ -1772,7 +1772,7 @@ export type GetJobsApiArg = {
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopAllJobsApiResponse = unknown;
@@ -1785,7 +1785,7 @@ export type StopAllJobsApiArg = {
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetJobApiResponse = /** status 200 scheduled job */ ScheduledJobSummary;
@@ -1800,7 +1800,7 @@ export type GetJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type DeleteJobApiResponse = unknown;
@@ -1815,7 +1815,7 @@ export type DeleteJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type CopyJobApiResponse = /** status 200 Success */ ScheduledJobSummary;
@@ -1830,7 +1830,7 @@ export type CopyJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Request for creating a scheduled job */
   scheduledJobRequest: ScheduledJobRequest;
@@ -1847,7 +1847,7 @@ export type GetJobPayloadApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RestartJobApiResponse = unknown;
@@ -1862,7 +1862,7 @@ export type RestartJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopJobApiResponse = unknown;
@@ -1877,7 +1877,7 @@ export type StopJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type JobLogApiResponse = /** status 200 scheduled job log */ string;
@@ -1902,7 +1902,7 @@ export type JobLogApiArg = {
   follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopAllBatchesAndJobsForJobComponentApiResponse = unknown;
@@ -1915,7 +1915,7 @@ export type StopAllBatchesAndJobsForJobComponentApiArg = {
   jobComponentName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ResetManuallyScaledComponentsInEnvironmentApiResponse = unknown;
@@ -1926,7 +1926,7 @@ export type ResetManuallyScaledComponentsInEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RestartEnvironmentApiResponse = unknown;
@@ -1937,7 +1937,7 @@ export type RestartEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StartEnvironmentApiResponse = unknown;
@@ -1948,7 +1948,7 @@ export type StartEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopEnvironmentApiResponse = unknown;
@@ -1959,7 +1959,7 @@ export type StopEnvironmentApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetEnvironmentResourcesUtilizationApiResponse =
@@ -1971,7 +1971,7 @@ export type GetEnvironmentResourcesUtilizationApiArg = {
   envName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetApplicationJobsApiResponse = /** status 200 Successful operation */ JobSummary[];
@@ -1980,7 +1980,7 @@ export type GetApplicationJobsApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetApplicationJobApiResponse = /** status 200 Successful get job */ Job;
@@ -1991,7 +1991,7 @@ export type GetApplicationJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetPipelineJobStepLogsApiResponse = /** status 200 Job step log */ string;
@@ -2012,7 +2012,7 @@ export type GetPipelineJobStepLogsApiArg = {
   follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunsApiResponse = /** status 200 List of PipelineRun-s */ PipelineRun[];
@@ -2023,7 +2023,7 @@ export type GetTektonPipelineRunsApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunApiResponse = /** status 200 List of Pipeline Runs */ PipelineRun;
@@ -2036,7 +2036,7 @@ export type GetTektonPipelineRunApiArg = {
   pipelineRunName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTasksApiResponse = /** status 200 List of Pipeline Run Tasks */ PipelineRunTask[];
@@ -2049,7 +2049,7 @@ export type GetTektonPipelineRunTasksApiArg = {
   pipelineRunName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskApiResponse = /** status 200 Pipeline Run Task */ PipelineRunTask;
@@ -2064,7 +2064,7 @@ export type GetTektonPipelineRunTaskApiArg = {
   taskName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskStepLogsApiResponse = /** status 200 Task step log */ string;
@@ -2089,7 +2089,7 @@ export type GetTektonPipelineRunTaskStepLogsApiArg = {
   follow?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskStepApiResponse = /** status 200 List of Pipeline Run Task Steps */ Step;
@@ -2106,7 +2106,7 @@ export type GetTektonPipelineRunTaskStepApiArg = {
   stepName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetTektonPipelineRunTaskStepsApiResponse =
@@ -2122,7 +2122,7 @@ export type GetTektonPipelineRunTaskStepsApiArg = {
   taskName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RerunApplicationJobApiResponse = unknown;
@@ -2133,7 +2133,7 @@ export type RerunApplicationJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopApplicationJobApiResponse = unknown;
@@ -2144,7 +2144,7 @@ export type StopApplicationJobApiArg = {
   jobName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type ListPipelinesApiResponse = /** status 200 Successful operation */ string[];
@@ -2158,7 +2158,7 @@ export type TriggerPipelineApplyConfigApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersApplyConfig: PipelineParametersApplyConfig;
@@ -2169,7 +2169,7 @@ export type TriggerPipelineBuildApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersBuild: PipelineParametersBuild;
@@ -2180,7 +2180,7 @@ export type TriggerPipelineBuildDeployApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersBuild: PipelineParametersBuild;
@@ -2191,7 +2191,7 @@ export type TriggerPipelineDeployApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersDeploy: PipelineParametersDeploy;
@@ -2202,7 +2202,7 @@ export type TriggerPipelinePromoteApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Pipeline parameters */
   pipelineParametersPromote: PipelineParametersPromote;
@@ -2213,7 +2213,7 @@ export type GetPrivateImageHubsApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type UpdatePrivateImageHubsSecretValueApiResponse = unknown;
@@ -2224,7 +2224,7 @@ export type UpdatePrivateImageHubsSecretValueApiArg = {
   serverName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** New secret value */
   secretParameters: SecretParameters;
@@ -2235,7 +2235,7 @@ export type RegenerateDeployKeyApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Regenerate deploy key and secret data */
   regenerateDeployKeyData: RegenerateDeployKeyData;
@@ -2246,7 +2246,7 @@ export type RegenerateSharedSecretApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
   /** Regenerate shared secret and secret data */
   regenerateSharedSecretData: RegenerateSharedSecretData;
@@ -2257,7 +2257,7 @@ export type ResetManuallyScaledComponentsInApplicationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type RestartApplicationApiResponse = unknown;
@@ -2266,7 +2266,7 @@ export type RestartApplicationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StartApplicationApiResponse = unknown;
@@ -2275,7 +2275,7 @@ export type StartApplicationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type StopApplicationApiResponse = unknown;
@@ -2284,7 +2284,7 @@ export type StopApplicationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetApplicationResourcesUtilizationApiResponse =
@@ -2294,7 +2294,7 @@ export type GetApplicationResourcesUtilizationApiArg = {
   appName: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-seperated list of test groups (Required if Impersonate-User is set) */
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
 export type GetConfigurationApiResponse =
@@ -2581,7 +2581,7 @@ export type Deployment = {
     Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
     Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
     Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
-    Inactive DeploymentStatusInactive  DeploymentStatusFailed deployment is inactive */
+    Inactive DeploymentStatusInactive  DeploymentStatusInactive deployment is inactive */
   status: "Reconciling" | "Ready" | "Failed" | "Inactive";
   /** StatusReason contains details when deployment status is Failed */
   statusReason?: string;
@@ -2646,7 +2646,7 @@ export type DeploymentSummary = {
     Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
     Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
     Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
-    Inactive DeploymentStatusInactive  DeploymentStatusFailed deployment is inactive */
+    Inactive DeploymentStatusInactive  DeploymentStatusInactive deployment is inactive */
   status: "Reconciling" | "Ready" | "Failed" | "Inactive";
   /** StatusReason contains details when deployment status is Failed */
   statusReason?: string;
