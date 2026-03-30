@@ -21,6 +21,7 @@ const testData: Array<
       environment: 'qa',
       namespace: 'ns',
       repository: 'repo',
+      status: 'Ready',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-job-demo-api:2svag',
@@ -220,6 +221,7 @@ const testData: Array<
       namespace: 'ns',
       repository: 'repo',
       activeFrom: '1970-01-01',
+      status: 'Ready',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-job-demo-api:2svag',

@@ -7,6 +7,7 @@ const deployments: Array<DeploymentSummary> = [
     createdByJob: 'radix-pipeline-20190124132335-s7zie',
     environment: 'qa',
     activeFrom: '2019-01-24T13:27:17Z',
+    status: 'Ready',
   },
   {
     name: 'qa-cg4hz-xx1fbluj',
@@ -14,6 +15,7 @@ const deployments: Array<DeploymentSummary> = [
     environment: 'qa',
     activeFrom: '2019-01-24T08:21:28Z',
     activeTo: '2019-01-24T13:27:17Z',
+    status: 'Inactive',
   },
   {
     name: 'qa-y8ib5-kjtalhmj',
@@ -21,12 +23,14 @@ const deployments: Array<DeploymentSummary> = [
     environment: 'qa',
     activeFrom: '2019-01-22T13:44:46Z',
     activeTo: '2019-01-24T08:21:28Z',
+    status: 'Inactive',
   },
   {
     name: 'prod-tq9nx-l0jaycnm',
     createdByJob: 'radix-pipeline-20190122134007-tq9nx',
     environment: 'prod',
     activeFrom: '2019-01-22T13:43:41Z',
+    status: 'Ready',
   },
   {
     name: 'qa-boo06-ixgfw4jt',
@@ -34,6 +38,7 @@ const deployments: Array<DeploymentSummary> = [
     environment: 'qa',
     activeFrom: '2019-01-22T13:41:44Z',
     activeTo: '2019-01-22T13:44:46Z',
+    status: 'Inactive',
   },
   {
     name: 'qa-sywcg-zzbdpnxm',
@@ -41,6 +46,7 @@ const deployments: Array<DeploymentSummary> = [
     environment: 'qa',
     activeFrom: '2019-01-22T13:32:10Z',
     activeTo: '2019-01-22T13:41:44Z',
+    status: 'Inactive',
   },
   {
     name: 'qa-qn1cp-cuimkggt',
@@ -48,6 +54,7 @@ const deployments: Array<DeploymentSummary> = [
     environment: 'qa',
     activeFrom: '2019-01-21T11:10:52Z',
     activeTo: '2019-01-22T13:32:10Z',
+    status: 'Inactive',
   },
   {
     name: 'qa-zgase-liokot45',
@@ -55,18 +62,21 @@ const deployments: Array<DeploymentSummary> = [
     environment: 'qa',
     activeFrom: '2019-01-21T11:09:09Z',
     activeTo: '2019-01-21T11:10:52Z',
+    status: 'Inactive',
   },
   {
     name: 'qa-mzq2n-arszwzjv',
     environment: 'qa',
     activeFrom: '2019-01-18T14:38:36Z',
     activeTo: '2019-01-21T11:09:09Z',
+    status: 'Inactive',
   },
   {
     name: 'prod-nje0n-0wrmvkmv',
     environment: 'prod',
     activeFrom: '2019-01-18T14:38:25Z',
     activeTo: '2019-01-22T13:43:41Z',
+    status: 'Inactive',
   },
 ]
 

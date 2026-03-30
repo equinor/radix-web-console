@@ -16,7 +16,7 @@ import { routeWithParams } from '../../utils/string'
 import { GitTagLinks } from '../git-tags/git-tag-links'
 import { Severity, UtilizationPopover } from '../utilization-popover/utilization-popover'
 import { DeploymentDetails } from './deployment-details'
-import { DeplopymentHeader, VulnerabilityHeader } from './environment-headers'
+import { DeploymentHeader, VulnerabilityHeader } from './environment-headers'
 import { EnvironmentIngress } from './environment-ingress'
 import './style.css'
 
@@ -67,7 +67,7 @@ export type EnvironmentCardLayoutProps = {
   components?: Component[]
   repository?: string
   env: Pick<EnvironmentSummary, 'name' | 'status' | 'branchMapping' | 'activeDeployment'>
-  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags'>
+  deployment?: Pick<DeploymentSummary, 'activeFrom' | 'name' | 'gitTags' | 'status'>
   envScan?: EnvironmentVulnerabilities
   utilization?: ReplicaResourcesUtilizationResponse
 }
@@ -114,7 +114,7 @@ export const EnvironmentCardLayout = ({
                 minimumSeverity={Severity.Information}
               />
               <VulnerabilityHeader envScan={envScan} />
-              <DeplopymentHeader components={components} />
+              <DeploymentHeader components={components} deployment={deployment} />
             </>
           )}
         </div>

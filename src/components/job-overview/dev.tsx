@@ -60,6 +60,7 @@ const testData: Array<Job> = [
         name: 'dev-hd92u-xt6rpmbm',
         environment: 'dev',
         activeFrom: '2019-01-21T14:58:15Z',
+        status: 'Ready',
       },
     ],
     components: [
