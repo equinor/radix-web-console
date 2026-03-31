@@ -65,13 +65,9 @@ jobs:
           - playground
           - platform
     steps:
-      - name: "Fake TOKEN FOR RADIX CLI"
-        run: echo "APP_SERVICE_ACCOUNT_TOKEN=dummy" >> $GITHUB_ENV
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - name: "Validate"
-        uses: equinor/radix-github-actions@b23674a56b82a1da783b507bc7f15e7ca7067dd8 # v2.0.2
-        with:
-          args: validate radix-config --config-file radixconfig.${{matrix.env}}.yaml
+      - uses: equinor/radix-github-actions@b23674a56b82a1da783b507bc7f15e7ca7067dd8 # v2.0.2
+      - run: rx validate radix-config --config-file radixconfig.${{matrix.env}}.yaml
 
   verify-code-generation:
     name: Verify Code Generation
