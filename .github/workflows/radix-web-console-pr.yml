@@ -12,7 +12,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Build docker image
         env:
           REF: ${{ github.sha }}
@@ -22,8 +22,8 @@ jobs:
     name: Test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: "package.json"
       - run: npm ci
@@ -33,8 +33,8 @@ jobs:
     name: Dependencies
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: "package.json"
       - run: npm ci
@@ -44,10 +44,10 @@ jobs:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Setup Biome
-        uses: biomejs/setup-biome@v2
-      - uses: actions/setup-node@v6
+        uses: biomejs/setup-biome@4c91541eaada48f67d7dbd7833600ce162b68f51 # v2.7.1
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: "package.json"
       - run: npm ci
@@ -65,19 +65,15 @@ jobs:
           - playground
           - platform
     steps:
-      - name: "Fake TOKEN FOR RADIX CLI"
-        run: echo "APP_SERVICE_ACCOUNT_TOKEN=dummy" >> $GITHUB_ENV
-      - uses: actions/checkout@v4
-      - name: "Validate"
-        uses: equinor/radix-github-actions@v1
-        with:
-          args: validate radix-config --config-file radixconfig.${{matrix.env}}.yaml
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: equinor/radix-github-actions@b23674a56b82a1da783b507bc7f15e7ca7067dd8 # v2.0.2
+      - run: rx validate radix-config --config-file radixconfig.${{matrix.env}}.yaml
 
   verify-code-generation:
     name: Verify Code Generation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Verify Code Generation
         run: |
           make verify-generate
