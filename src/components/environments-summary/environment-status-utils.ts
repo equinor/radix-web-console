@@ -1,4 +1,4 @@
-import type { Component } from '../../store/radix-api'
+import type { Component, Deployment, DeploymentSummary } from '../../store/radix-api'
 import type { EnvironmentVulnerabilities, ImageScan } from '../../store/scan-api'
 import type { StatusBadgeTemplateType } from '../status-badges/status-badge-template'
 import type { StatusPopoverType } from '../status-popover/status-popover'
@@ -31,7 +31,25 @@ const ReplicaStatusMap = {
   Starting: EnvironmentStatus.Starting,
 } as const
 
-export function aggregateComponentEnvironmentStatus(components: Component[]): EnvironmentStatus {
+type DeploymentStatus = Required<Deployment | DeploymentSummary>['status']
+
+const DeploymentStatusMap = {
+  Reconciling: EnvironmentStatus.Consistent,
+  Failed: EnvironmentStatus.Danger,
+  Inactive: EnvironmentStatus.Consistent,
+  Ready: EnvironmentStatus.Consistent,
+} satisfies Record<DeploymentStatus, EnvironmentStatus>
+
+export function aggregateDeploymentStatus(
+  deployments: Pick<Deployment | DeploymentSummary, 'status'>[]
+): EnvironmentStatus {
+  return deployments.reduce(
+    (agg, deployment) => Math.max(DeploymentStatusMap[deployment.status], agg),
+    EnvironmentStatus.Consistent
+  )
+}
+
+export function aggregateComponentStatus(components: Component[]): EnvironmentStatus {
   return components.reduce<EnvironmentStatus>((obj, { status, oauth2 }) => {
     const compStatus = status ?? 'unknown'
     const oauth2Status = oauth2?.deployment.status ?? 'Consistent'
@@ -45,7 +63,7 @@ export function aggregateComponentEnvironmentStatus(components: Component[]): En
   }, EnvironmentStatus.Consistent)
 }
 
-export function aggregateComponentReplicaEnvironmentStatus(components: Component[]): EnvironmentStatus {
+export function aggregateComponentReplicaStatus(components: Component[]): EnvironmentStatus {
   const replicas = components
     .flatMap((c) => c.replicaList)
     .concat(components?.flatMap((c) => c.oauth2?.deployment.replicaList ?? []))

@@ -23,6 +23,7 @@ const testData: Array<
       repository: 'repo',
       createdByJob: 'radix-pipeline-20210708125435-gyslp',
       activeFrom: '2021-07-08T13:01:56.000Z',
+      status: 'Ready',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-cost-allocation-api-server:gyslp',
@@ -82,6 +83,7 @@ const testData: Array<
       repository: 'repo',
       createdByJob: 'radix-pipeline-20210708125435-gyslp',
       activeFrom: '2021-07-08T13:01:56.000Z',
+      status: 'Ready',
       components: [
         {
           image: 'radixdev.azurecr.io/radix-cost-allocation-api-server:gyslp',

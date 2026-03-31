@@ -72,8 +72,8 @@ export default function AppList() {
   const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
     {
       apps: favourites?.join(','),
-      includeEnvironmentActiveComponents: 'true',
-      includeLatestJobSummary: 'true',
+      includeEnvironments: true,
+      includeLatestJobSummary: true,
     },
     { skip: favourites?.length === 0, pollingInterval }
   )
@@ -117,7 +117,7 @@ export default function AppList() {
                       key={appName}
                       appName={appName}
                       isDeleted={!app}
-                      environmentActiveComponents={app?.environmentActiveComponents}
+                      environments={app?.environments}
                       latestJob={app?.latestJob}
                       handler={(e) => {
                         changeFavouriteApplication(appName, false)

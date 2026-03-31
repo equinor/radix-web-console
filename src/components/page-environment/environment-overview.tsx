@@ -31,6 +31,7 @@ import { DefaultAppAlias } from '../component/default-app-alias'
 import { DNSAliases } from '../component/dns-aliases'
 import { GitCommitTags } from '../component/git-commit-tags'
 import { ExternalLink } from '../link/external-link'
+import { DeploymentStatusBadge } from '../status-badges/deployment-status-badge'
 
 type Props = {
   appName: string
@@ -193,6 +194,10 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                           Promote <Icon data={trending_up} />
                         </Button>
                       </Typography>
+                      <div className="grid grid--gap-small grid--auto-columns">
+                        <Typography>Status</Typography>
+                        <DeploymentStatusBadge status={deployment.status} />
+                      </div>
                       {deployment.gitTags && (
                         <div className="environment-overview__tags grid grid--gap-x-small grid--auto-columns">
                           <Typography>Tags</Typography>
@@ -210,6 +215,12 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                 </div>
               </div>
             </section>
+            {deployment && deployment.status === 'Failed' && !!deployment.statusReason && (
+              <Alert type="danger">
+                <Typography variant="h4">Deployment Error</Typography>
+                <Typography variant="body_long">{deployment?.statusReason}</Typography>
+              </Alert>
+            )}
             {appAlias?.environmentName == envName && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
             {envDNSAliases?.length > 0 && (
               <DNSAliases appName={appName} dnsAliases={envDNSAliases} title={'DNS aliases'} />
