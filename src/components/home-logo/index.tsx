@@ -15,6 +15,6 @@ export const HomeLogo: FunctionComponent = () => (
       textDecoration: 'none',
     }}
   >
-    <HomeIcon /> Omnia Radix
+    <HomeIcon /> Radix
   </Typography>
 )
