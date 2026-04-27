@@ -255,7 +255,10 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                     {(job.pipeline === 'build-deploy' || job.pipeline === 'build') && (
                       <>
                         <Typography>
-                          Build Kit <strong>{job.useBuildKit === true ? 'used' : 'not used'}</strong>
+                          Build Kit{' '}
+                          <strong>
+                            {job.useBuildKit == null ? 'unknown' : job.useBuildKit === true ? 'used' : 'not used'}
+                          </strong>
                         </Typography>
                         {job.useBuildKit === true && buildCacheStatus.length > 0 && (
                           <Typography>
