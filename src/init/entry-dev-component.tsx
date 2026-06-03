@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router'
 import { LazyLoadFallback } from '../components/lazy-load-fallback'
 import { routes } from '../router/routes'
 import store from '../store/store'
+import { DEV_LOOKUP_FOLDERS } from './dev-folders.consts'
 
 type DefaultModuleImport = { default: React.JSX.Element }
 
@@ -32,14 +33,14 @@ class DevComponent extends Component<{ component?: string }, { content: React.JS
   }
 
   private async fetchModule(component: string): Promise<DefaultModuleImport> {
-    console.log(component)
-
-    try {
-      const path = `../components/${component}/dev.tsx`
-      return await import(/* @vite-ignore */ path)
-    } catch (err) {
-      console.error(err)
-      /* empty */
+    // Looks for a dev file in both the components and pages folders, as both may contain components with dev files
+    for (const folder of DEV_LOOKUP_FOLDERS) {
+      try {
+        const path = `../${folder}/${component}/dev.tsx`
+        return await import(/* @vite-ignore */ path)
+      } catch {
+        /* try next folder */
+      }
     }
 
     throw Error('Not found')

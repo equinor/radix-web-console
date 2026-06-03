@@ -1,26 +1,26 @@
-import PageApplication from '../components/app-overview'
-import PageAbout from '../components/page-about'
-import PageActiveComponent from '../components/page-active-component'
-import PageActiveJobComponent from '../components/page-active-job-component'
-import PageApplications from '../components/page-applications'
-import PageConfiguration from '../components/page-configuration'
-import PageDeployment from '../components/page-deployment'
-import PageDeploymentComponent from '../components/page-deployment-component'
-import PageDeploymentJobComponent from '../components/page-deployment-job-component'
-import PageDeployments from '../components/page-deployments'
-import PageEnvironment from '../components/page-environment'
-import PageEnvironments from '../components/page-environments'
-import PageOauthReplica from '../components/page-oauth-replica'
-import PagePipelineJob from '../components/page-pipeline-job'
-import PagePipelineJobNew from '../components/page-pipeline-job-new'
-import PagePipelineJobs from '../components/page-pipeline-jobs'
-import PageReplica from '../components/page-replica'
-import PageScheduledBatch from '../components/page-scheduled-batch'
-import PageScheduledJob from '../components/page-scheduled-job'
-import PageStep from '../components/page-step'
-import PipelineRunTaskStep from '../components/pipeline-run-task-step'
-import PageLayoutApplication from '../pages/page-application'
-import SessionExpired from '../pages/session-expired'
+import ApplicationLayout from '../layouts/application/ApplicationLayout'
+import AboutPage from '../pages/about/AboutPage'
+import ActiveComponentPage from '../pages/active-component/ActiveComponentPage'
+import ActiveJobComponentPage from '../pages/active-job-component/ActiveJobComponentPage'
+import AppOverviewPage from '../pages/app-overview/AppOverviewPage'
+import ApplicationsPage from '../pages/applications/ApplicationsPage'
+import ConfigurationPage from '../pages/configuration/ConfigurationPage'
+import DeploymentPage from '../pages/deployment/DeploymentPage'
+import DeploymentComponentPage from '../pages/deployment-component/DeploymentComponentPage'
+import DeploymentJobComponentPage from '../pages/deployment-job-component/DeploymentJobComponentPage'
+import DeploymentsPage from '../pages/deployments/DeploymentsPage'
+import EnvironmentPage from '../pages/environment/EnvironmentPage'
+import EnvironmentsPage from '../pages/environments/EnvironmentsPage'
+import OAuthAuxiliaryReplicaPage from '../pages/oauth-auxiliary-replica/OAuthAuxiliaryReplicaPage'
+import PipelineJobPage from '../pages/pipeline-job/PipelineJobPage'
+import PipelineJobNewPage from '../pages/pipeline-job-new/PipelineJobNewPage'
+import PipelineJobsPage from '../pages/pipeline-jobs/PipelineJobsPage'
+import PipelineRunTaskStepPage from '../pages/pipeline-run-task-step/PipelineRunTaskStepPage'
+import ReplicaPage from '../pages/replica/ReplicaPage'
+import ScheduledBatchPage from '../pages/scheduled-batch/ScheduledBatchPage'
+import ScheduledJobPage from '../pages/scheduled-job/ScheduledJobPage'
+import SessionExpiredPage from '../pages/session-expired/SessionExpiredPage'
+import StepPage from '../pages/step/StepPage'
 import { buildPathMap, type RouteNode } from './routes.internal'
 
 /**
@@ -31,35 +31,35 @@ import { buildPathMap, type RouteNode } from './routes.internal'
  * @internal - this constant should not be imported directly, use `routes` instead which includes static routes as well.
  */
 export const routeTree = [
-  { key: 'about', path: 'about', Component: PageAbout },
-  { key: 'sessionExpired', path: 'session-expired', Component: SessionExpired },
+  { key: 'about', path: 'about', Component: AboutPage },
+  { key: 'sessionExpired', path: 'session-expired', Component: SessionExpiredPage },
   {
     key: 'apps',
     path: 'applications',
-    index: PageApplications,
+    index: ApplicationsPage,
     children: [
       {
         key: 'app',
         path: ':appName',
-        Component: PageLayoutApplication,
-        index: PageApplication,
+        Component: ApplicationLayout,
+        index: AppOverviewPage,
         children: [
-          { key: 'appConfig', path: 'config', Component: PageConfiguration },
+          { key: 'appConfig', path: 'config', Component: ConfigurationPage },
           {
             key: 'appDeployments',
             path: 'deployments',
-            index: PageDeployments,
+            index: DeploymentsPage,
             children: [
               {
                 key: 'appDeployment',
                 path: ':deploymentName',
-                index: PageDeployment,
+                index: DeploymentPage,
                 children: [
-                  { key: 'appComponent', path: 'component/:componentName', Component: PageDeploymentComponent },
+                  { key: 'appComponent', path: 'component/:componentName', Component: DeploymentComponentPage },
                   {
                     key: 'appJobComponent',
                     path: 'jobcomponent/:jobComponentName',
-                    Component: PageDeploymentJobComponent,
+                    Component: DeploymentJobComponentPage,
                   },
                 ],
               },
@@ -68,41 +68,41 @@ export const routeTree = [
           {
             key: 'appEnvironments',
             path: 'envs',
-            index: PageEnvironments,
+            index: EnvironmentsPage,
             children: [
               {
                 key: 'appEnvironment',
                 path: ':envName',
-                index: PageEnvironment,
+                index: EnvironmentPage,
                 children: [
                   {
                     key: 'appActiveComponent',
                     path: 'component/:componentName',
-                    index: PageActiveComponent,
+                    index: ActiveComponentPage,
                     children: [
-                      { key: 'appReplica', path: 'replica/:replicaName', Component: PageReplica },
+                      { key: 'appReplica', path: 'replica/:replicaName', Component: ReplicaPage },
                       {
                         key: 'appOAuthAuxiliaryReplica',
                         path: 'aux/:type/replica/:replicaName',
-                        Component: PageOauthReplica,
+                        Component: OAuthAuxiliaryReplicaPage,
                       },
                     ],
                   },
                   {
                     key: 'appActiveJobComponent',
                     path: 'jobcomponent/:jobComponentName',
-                    index: PageActiveJobComponent,
+                    index: ActiveJobComponentPage,
                     children: [
-                      { key: 'appScheduledJob', path: 'scheduledjob/:scheduledJobName', Component: PageScheduledJob },
+                      { key: 'appScheduledJob', path: 'scheduledjob/:scheduledJobName', Component: ScheduledJobPage },
                       {
                         key: 'appScheduledBatch',
                         path: 'scheduledbatch/:scheduledBatchName',
-                        index: PageScheduledBatch,
+                        index: ScheduledBatchPage,
                         children: [
                           {
                             key: 'appScheduledBatchJob',
                             path: 'scheduledjob/:scheduledJobName',
-                            Component: PageScheduledJob,
+                            Component: ScheduledJobPage,
                           },
                         ],
                       },
@@ -115,15 +115,15 @@ export const routeTree = [
           {
             key: 'appJobs',
             path: 'jobs',
-            index: PagePipelineJobs,
+            index: PipelineJobsPage,
             children: [
-              { key: 'appJobNew', path: 'new', Component: PagePipelineJobNew },
-              { key: 'appJob', path: 'view/:jobName', Component: PagePipelineJob },
-              { key: 'appJobStep', path: 'view/:jobName/steps/:stepName', Component: PageStep },
+              { key: 'appJobNew', path: 'new', Component: PipelineJobNewPage },
+              { key: 'appJob', path: 'view/:jobName', Component: PipelineJobPage },
+              { key: 'appJobStep', path: 'view/:jobName/steps/:stepName', Component: StepPage },
               {
                 key: 'appPipelineRunTaskStep',
                 path: ':jobName/pipelineruns/:pipelineRunName/tasks/:taskName/steps/:stepName',
-                Component: PipelineRunTaskStep,
+                Component: PipelineRunTaskStepPage,
               },
             ],
           },
@@ -133,7 +133,9 @@ export const routeTree = [
   },
 ] as const satisfies readonly RouteNode[] // Needed to preserve literal types for `key` and `path` for type inference in `buildPathMap`
 
-/** Standalone paths that are not part of the router tree.
+/**
+ * Standalone paths that are not part of the router tree.
+ *
  * @internal - This constant should not be imported directly, use `routes` instead which includes these.
  */
 const staticRoutes = {
@@ -142,7 +144,8 @@ const staticRoutes = {
   devIntegration: '/dev-integration/(.*)',
 } as const
 
-/** Absolute URL templates keyed by route name.
+/**
+ * Absolute URL templates keyed by route name.
  *
  * @example
  *     {

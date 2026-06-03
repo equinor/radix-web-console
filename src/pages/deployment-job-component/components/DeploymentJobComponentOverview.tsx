@@ -1,0 +1,72 @@
+import type { FunctionComponent } from 'react'
+import AsyncResource from '../../../components/async-resource/async-resource'
+import { Breadcrumb } from '../../../components/breadcrumb'
+import { ComponentSecrets } from '../../../components/component/component-secrets'
+import { EnvironmentVariables } from '../../../components/environment-variables'
+import { deploymentJobComponentEnvVarsListExpandedKey, useLocalStorage } from '../../../hooks/use-local-storage'
+import { routes } from '../../../router/routes'
+import { pollingInterval } from '../../../store/defaults'
+import { useGetDeploymentQuery } from '../../../store/radix-api'
+import { routeWithParams, smallDeploymentName } from '../../../utils/string'
+import { Overview } from '../../active-job-component/components/Overview'
+
+export const DeploymentJobComponentOverview: FunctionComponent<{
+  appName: string
+  deploymentName: string
+  jobComponentName: string
+}> = ({ appName, deploymentName, jobComponentName }) => {
+  const { data: deployment, ...deploymentState } = useGetDeploymentQuery(
+    { appName, deploymentName },
+    { skip: !appName || !deploymentName, pollingInterval }
+  )
+  const component = deployment?.components?.find(({ name }) => name === jobComponentName)
+  const [isEnvVarsListExpanded, setIsEnvVarsListExpanded] = useLocalStorage(
+    deploymentJobComponentEnvVarsListExpandedKey,
+    true
+  )
+
+  return (
+    <>
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          {
+            label: 'Deployments',
+            to: routeWithParams(routes.appDeployments, { appName }),
+          },
+          {
+            label: smallDeploymentName(deploymentName),
+            to: routeWithParams(routes.appDeployment, {
+              appName,
+              deploymentName,
+            }),
+          },
+          { label: jobComponentName },
+        ]}
+      />
+
+      <AsyncResource asyncState={deploymentState}>
+        {deployment && component && (
+          <>
+            <Overview appName={appName} component={component} deployment={deployment} />
+            <div>
+              <ComponentSecrets component={component} />
+            </div>
+            <div className="grid grid--gap-medium">
+              <EnvironmentVariables
+                appName={appName}
+                envName={deployment.environment}
+                componentName={jobComponentName}
+                componentType={component.type}
+                hideRadixVars
+                readonly
+                isExpanded={isEnvVarsListExpanded}
+                onExpanded={setIsEnvVarsListExpanded}
+              />
+            </div>
+          </>
+        )}
+      </AsyncResource>
+    </>
+  )
+}

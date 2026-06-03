@@ -1,0 +1,73 @@
+import { Accordion, Button, CircularProgress, Typography } from '@equinor/eds-core-react'
+import { type FormEvent, useState } from 'react'
+import { Alert } from '../../../components/alert'
+import { AppConfigConfigurationItem } from '../../../components/app-config-ci'
+import { handlePromiseWithToast } from '../../../components/global-top-nav/styled-toaster'
+import { useModifyRegistrationDetailsMutation } from '../../../store/radix-api'
+import type { Application } from '../../../store/service-now-api'
+import { getFetchErrorMessage } from '../../../store/utils/parse-errors'
+
+interface Props {
+  appName: string
+  configurationItem?: string
+  refetch?: () => unknown
+}
+
+export const ChangeConfigurationItemForm = ({ appName, configurationItem, refetch }: Props) => {
+  const [newCI, setNewCI] = useState<Application | null>(null)
+  const [mutate, { isLoading, error }] = useModifyRegistrationDetailsMutation()
+
+  const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
+    ev.preventDefault()
+
+    await mutate({
+      appName,
+      applicationRegistrationPatchRequest: {
+        applicationRegistrationPatch: {
+          configurationItem: newCI!.appId.toString(), //Button is disabled if newCI is not set
+        },
+      },
+    }).unwrap()
+
+    await refetch?.()
+  })
+
+  return (
+    <Accordion className="accordion" chevronPosition="right">
+      <Accordion.Item style={{ overflow: 'visible' }}>
+        <Accordion.Header>
+          <Accordion.HeaderTitle>
+            <Typography>Change configuration item</Typography>
+          </Accordion.HeaderTitle>
+        </Accordion.Header>
+        <Accordion.Panel>
+          <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
+            {error && (
+              <div>
+                <Alert type="danger">
+                  <Typography>Failed to change Configuration Item. {getFetchErrorMessage(error)}</Typography>
+                </Alert>
+              </div>
+            )}
+            <AppConfigConfigurationItem
+              configurationItem={Number(configurationItem)}
+              configurationItemChangeCallback={setNewCI}
+              disabled={isLoading}
+            />
+            <div>
+              {isLoading ? (
+                <>
+                  <CircularProgress size={24} /> Updating…
+                </>
+              ) : (
+                <Button color="danger" type="submit" disabled={!newCI || newCI?.appId === Number(configurationItem)}>
+                  Change configuration item
+                </Button>
+              )}
+            </div>
+          </form>
+        </Accordion.Panel>
+      </Accordion.Item>
+    </Accordion>
+  )
+}

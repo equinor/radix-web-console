@@ -36,6 +36,7 @@ export default defineConfig({
     sourcemap: true,
     outDir: "build",
     rollupOptions: {
+      // Exclude dev.* components from the main bundle, as they are only used in development and should be lazy-loaded when accessed
       external: (source) => !!devComponentRegex.exec(source),
     },
   },
