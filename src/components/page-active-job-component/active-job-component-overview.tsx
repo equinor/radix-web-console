@@ -4,7 +4,7 @@ import {
   singleJobListExpandedKey,
   useLocalStorage,
 } from '../../hooks/use-local-storage'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import {
   useGetBatchesQuery,

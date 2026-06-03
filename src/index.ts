@@ -2,7 +2,7 @@ import type React from 'react'
 import { createRoot } from 'react-dom/client'
 
 import defaultEntry from './init/entry-default'
-import { routes } from './routes'
+import { routes } from './router/routes'
 
 import './style.css'
 

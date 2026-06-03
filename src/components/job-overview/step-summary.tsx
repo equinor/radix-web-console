@@ -3,7 +3,7 @@ import { time } from '@equinor/eds-icons'
 import type { FunctionComponent } from 'react'
 import { Link } from 'react-router'
 
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import type { Step } from '../../store/radix-api'
 import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime'
 import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline'

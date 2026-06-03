@@ -2,7 +2,7 @@ import { Accordion, Button, CircularProgress, List, TextField, Typography } from
 import { type ChangeEvent, type FormEvent, type FunctionComponent, useState } from 'react'
 import { Link } from 'react-router'
 
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { routeWithParams } from '../../utils/string'

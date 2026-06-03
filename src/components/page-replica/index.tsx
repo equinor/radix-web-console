@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
 import { replicaEventListExpandedKey, useLocalStorage } from '../../hooks/use-local-storage'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { getReplicaLogStreamUrl } from '../../store/eventstream-log-api'
 import { radixApi, useGetEnvironmentQuery, useGetReplicaEventsQuery } from '../../store/radix-api'

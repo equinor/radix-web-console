@@ -5,7 +5,7 @@ import { Component } from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
 import { LazyLoadFallback } from '../components/lazy-load-fallback'
-import { routes } from '../routes'
+import { routes } from '../router/routes'
 import store from '../store/store'
 
 type IntegrationType = {

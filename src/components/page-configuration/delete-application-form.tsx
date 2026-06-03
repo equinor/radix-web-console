@@ -13,7 +13,7 @@ import {
   knownApplicationsKey,
   useMsalAccountLocalStorage,
 } from '../../hooks/use-local-storage'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { useDeleteApplicationMutation } from '../../store/radix-api'
 
 interface Props {

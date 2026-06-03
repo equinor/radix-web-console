@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react'
 import { deploymentJobComponentEnvVarsListExpandedKey, useLocalStorage } from '../../hooks/use-local-storage'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetDeploymentQuery } from '../../store/radix-api'
 import { routeWithParams, smallDeploymentName } from '../../utils/string'

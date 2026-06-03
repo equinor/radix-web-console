@@ -20,7 +20,7 @@ import { RestartBatch } from './restart-batch'
 
 import './style.css'
 import { batchJobListExpandedKey, useLocalStorage } from '../../../hooks/use-local-storage'
-import { routes } from '../../../routes'
+import { routes } from '../../../router/routes'
 
 function isBatchStoppable(status: ScheduledBatchSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running'

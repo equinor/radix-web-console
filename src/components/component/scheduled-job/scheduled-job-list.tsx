@@ -25,7 +25,7 @@ import { Payload } from './payload'
 import { RestartJob } from './restart-job'
 
 import '../style.css'
-import { routes } from '../../../routes'
+import { routes } from '../../../router/routes'
 
 function isJobStoppable(status: ScheduledJobSummary['status']): boolean {
   return status === 'Waiting' || status === 'Running'

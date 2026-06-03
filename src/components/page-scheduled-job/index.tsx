@@ -1,6 +1,6 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import { type FunctionComponent, useMemo } from 'react'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { type ReplicaSummary, useGetJobQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { getEnvsUrl } from '../../utils/routing'

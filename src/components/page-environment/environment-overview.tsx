@@ -1,7 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react'
 import { github, trending_up } from '@equinor/eds-icons'
 import { Link } from 'react-router'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import {
   radixApi,

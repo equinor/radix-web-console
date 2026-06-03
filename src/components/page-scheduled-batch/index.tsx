@@ -1,4 +1,4 @@
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetBatchQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'

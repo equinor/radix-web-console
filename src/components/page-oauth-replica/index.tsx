@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { getOauthAuxiliaryLogStreamUrl } from '../../store/eventstream-log-api'
 import { radixApi, useGetEnvironmentQuery } from '../../store/radix-api'

@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationJobQuery } from '../../store/radix-api'
 import { getPipelineStepDescription, getPipelineStepTitle } from '../../utils/pipeline'

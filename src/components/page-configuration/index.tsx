@@ -1,5 +1,5 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { type ApplicationRegistration, radixApi, useGetDeployKeyAndSecretQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'

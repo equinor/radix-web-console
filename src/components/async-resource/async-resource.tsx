@@ -3,7 +3,7 @@ import { type PropsWithChildren, type ReactNode, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 
 import { externalUrls } from '../../externalUrls'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import type { FetchQueryResult } from '../../store/types'
 import { getFetchErrorData } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'

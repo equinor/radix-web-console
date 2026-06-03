@@ -30,6 +30,7 @@ export function copyToTextFile(filename: string, content: string): void {
   atag.click()
 }
 
+// TODO: Could this have been done with generate path?
 export function routeWithParams(
   route: string,
   params: Record<string, string | number | boolean>,

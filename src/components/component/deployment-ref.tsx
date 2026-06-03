@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
 import { Link } from 'react-router'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { routeWithParams, smallDeploymentName } from '../../utils/string'
 
 interface DeploymentRefProps {

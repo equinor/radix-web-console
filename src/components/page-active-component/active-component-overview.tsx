@@ -1,5 +1,5 @@
 import type { FunctionComponent } from 'react'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery, useGetComponentEventsQuery, useGetEnvironmentQuery } from '../../store/radix-api'
 import { getEnvsUrl } from '../../utils/routing'

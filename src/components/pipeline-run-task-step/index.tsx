@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import { useGetTektonPipelineRunTaskStepQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { routeWithParams, smallJobName } from '../../utils/string'
