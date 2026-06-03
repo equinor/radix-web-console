@@ -1,6 +1,6 @@
 import { Breadcrumbs } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 export interface BreadcrumbProps {
   links: Readonly<Array<{ label: string; to?: string }>>

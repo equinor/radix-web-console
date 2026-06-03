@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
 
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { routes } from '../../routes'
 import { HomeIcon } from '../home-icon'
 

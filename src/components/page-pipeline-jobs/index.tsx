@@ -1,6 +1,6 @@
 import { Button, Icon } from '@equinor/eds-core-react'
 import { add } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationJobsQuery } from '../../store/radix-api'

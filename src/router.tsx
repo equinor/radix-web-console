@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router'
 import * as PageApplication from './components/app-overview'
 /** Pages */
 import * as PageAbout from './components/page-about'

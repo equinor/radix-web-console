@@ -14,7 +14,7 @@ import {
 } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
 import { type FunctionComponent, forwardRef } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router'
 
 import { configVariables } from '../../utils/config'
 import { urlToAppMonitoring } from '../../utils/monitoring'

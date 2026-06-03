@@ -1,6 +1,6 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FormEvent, useId, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 
 import { pollingInterval } from '../../store/defaults'
 import {

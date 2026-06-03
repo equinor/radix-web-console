@@ -1,6 +1,6 @@
 import { Accordion, Button, CircularProgress, List, TextField, Typography } from '@equinor/eds-core-react'
 import { type ChangeEvent, type FormEvent, type FunctionComponent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import { routes } from '../../routes'
 import { useModifyRegistrationDetailsMutation } from '../../store/radix-api'

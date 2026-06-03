@@ -1,7 +1,7 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
 import { time } from '@equinor/eds-icons'
 import type { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import { routes } from '../../routes'
 import type { Step } from '../../store/radix-api'

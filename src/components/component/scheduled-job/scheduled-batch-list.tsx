@@ -2,7 +2,7 @@ import { Accordion, Icon, Menu, Table, Typography } from '@equinor/eds-core-reac
 import { chevron_down, chevron_up, delete_to_trash, replay, stop } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
 import { Fragment, useCallback, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { type ScheduledBatchSummary, useDeleteBatchMutation, useStopBatchMutation } from '../../../store/radix-api'
 import { promiseHandler } from '../../../utils/promise-handler'
 import { getScheduledBatchUrl } from '../../../utils/routing'

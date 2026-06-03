@@ -1,6 +1,6 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react'
 import { type PropsWithChildren, type ReactNode, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router'
 
 import { externalUrls } from '../../externalUrls'
 import { routes } from '../../routes'

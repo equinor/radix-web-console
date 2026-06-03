@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
 import { link, send } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import type { DeploymentSummary } from '../../store/radix-api'
 import { getAppDeploymentUrl } from '../../utils/routing'
 import { RelativeToNow } from '../time/relative-to-now'

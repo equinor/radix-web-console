@@ -1,6 +1,6 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react'
 import { info_circle } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetDeploymentQuery } from '../../store/radix-api'

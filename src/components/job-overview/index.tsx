@@ -1,6 +1,6 @@
 import { Button, Checkbox, CircularProgress, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { useInterval } from '../../hooks/use-interval'
 import { routes } from '../../routes'
 import { pollingInterval } from '../../store/defaults'

@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
 import { github } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { routes } from '../../routes'
 import type { Deployment } from '../../store/radix-api'
 import { routeWithParams, smallJobName } from '../../utils/string'

@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import { routes } from '../../routes'
 import type { Component, Deployment } from '../../store/radix-api'
 import { routeWithParams } from '../../utils/string'

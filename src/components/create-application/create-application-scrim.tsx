@@ -1,7 +1,7 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react'
 import { add } from '@equinor/eds-icons'
 import { useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router'
 import { knownApplicationsKey, useMsalAccountLocalStorage } from '../../hooks/use-local-storage'
 import { routes } from '../../routes'
 import type { ApplicationRegistration, DeployKeyAndSecret } from '../../store/radix-api'
