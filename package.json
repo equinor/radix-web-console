@@ -8,9 +8,9 @@
     "node": ">=24.0.0"
   },
   "scripts": {
-    "start": "vite",
     "dev": "vite",
-    "build": "tsc --allowSyntheticDefaultImports --skipLibCheck & vite build",
+    "start": "vite preview",
+    "build": "tsc --allowSyntheticDefaultImports --skipLibCheck && vite build",
     "test": "vitest watch",
     "test:no-watch": "vitest run",
     "test:coverage": "vitest --coverage",
