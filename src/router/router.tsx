@@ -1,11 +1,11 @@
 import { createBrowserRouter, Navigate } from 'react-router'
 import RootLayout from '../layouts/root/RootLayout'
 import { routes, routeTree } from './routes'
-import { buildRouteObjects } from './routes.internal'
+import { buildRouteObjects } from './routes.utils'
 
 export const router = createBrowserRouter([
   {
-    path: '/',
+    path: routes.home,
     Component: RootLayout,
     children: [
       { index: true, element: <Navigate to={routes.apps} replace /> },

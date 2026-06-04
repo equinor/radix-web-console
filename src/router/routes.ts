@@ -21,12 +21,14 @@ import ScheduledBatchPage from '../pages/scheduled-batch/ScheduledBatchPage'
 import ScheduledJobPage from '../pages/scheduled-job/ScheduledJobPage'
 import SessionExpiredPage from '../pages/session-expired/SessionExpiredPage'
 import StepPage from '../pages/step/StepPage'
-import { buildPathMap, type RouteNode } from './routes.internal'
+import type { RouteTree, StaticRoutes } from './router.types'
+import { buildPathMap } from './routes.utils'
 
 /**
  * Tree of routes mounted under the React Router root layout.
- * To add a route: drop a node anywhere in the tree. The exported `routes` map
- * and the React Router config in `router.tsx` are derived from this tree.
+ *
+ * To add a route, insert a node with a unique `key` and a relative `path`.
+ * Both the `routes` map and the React Router config are derived from this tree.
  *
  * @internal - this constant should not be imported directly, use `routes` instead which includes static routes as well.
  */
@@ -131,23 +133,26 @@ export const routeTree = [
       },
     ],
   },
-] as const satisfies readonly RouteNode[] // Needed to preserve literal types for `key` and `path` for type inference in `buildPathMap`
+] as const satisfies RouteTree
 
 /**
  * Standalone paths that are not part of the router tree.
+ * This is used for special routes that don't fit into the usual layout.
+ * Normally this is not the preferred way to add routes, but it's available if needed for edge cases.
  *
- * @internal - This constant should not be imported directly, use `routes` instead which includes these.
+ * @internal - This constant should not be imported directly, use `routes` instead which includes these and the tree routes together.
  */
 const staticRoutes = {
   home: '/',
   devComponent: '/dev-component/(.*)',
   devIntegration: '/dev-integration/(.*)',
-} as const
+} as const satisfies StaticRoutes
 
 /**
  * Absolute URL templates keyed by route name.
+ * Used for generating links and route matching patterns throughout the app.
  *
- * @example
+ * @example output of `routes`:
  *     {
  *        app: '/applications/:appName',
  *        appConfig: '/applications/:appName/config',
