@@ -14,7 +14,7 @@ import { withRouteParams } from '../../utils/router'
 
 const LATEST_JOBS_LIMIT = 5
 
-export function AppOverviewPage({ appName }: { appName: string }) {
+function AppOverviewPage({ appName }: { appName: string }) {
   const isPlayground =
     Object.values(configVariables.CLUSTERS).find(({ baseUrl }) => baseUrl === configVariables.RADIX_DNS_ZONE)
       ?.isPlayground ?? false

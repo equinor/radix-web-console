@@ -17,7 +17,7 @@ export interface Props {
   stepName: string
 }
 
-export function PipelineRunTaskStepPage({ appName, jobName, pipelineRunName, taskName, stepName }: Props) {
+function PipelineRunTaskStepPage({ appName, jobName, pipelineRunName, taskName, stepName }: Props) {
   const { data: taskStep, ...stepState } = useGetTektonPipelineRunTaskStepQuery(
     { appName, jobName, pipelineRunName, taskName, stepName },
     {

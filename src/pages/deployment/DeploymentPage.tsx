@@ -8,7 +8,7 @@ type Props = {
   deploymentName: string
 }
 
-export function DeploymentPage({ appName, deploymentName }: Props) {
+function DeploymentPage({ appName, deploymentName }: Props) {
   return (
     <>
       <DocumentTitle title={`Deployment ${smallDeploymentName(deploymentName)}`} />

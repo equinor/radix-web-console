@@ -7,7 +7,7 @@ type Props = {
   envName: string
   jobComponentName: string
 }
-export function ActiveJobComponentPage({ appName, envName, jobComponentName }: Props) {
+function ActiveJobComponentPage({ appName, envName, jobComponentName }: Props) {
   return (
     <>
       <DocumentTitle title={`${jobComponentName} in ${envName}`} />

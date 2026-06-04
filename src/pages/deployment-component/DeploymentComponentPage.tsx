@@ -8,7 +8,7 @@ export interface Props {
   componentName: string
 }
 
-export function DeploymentComponentPage({ appName, deploymentName, componentName }: Props) {
+function DeploymentComponentPage({ appName, deploymentName, componentName }: Props) {
   return (
     <>
       <DocumentTitle title={`Component ${componentName}`} />

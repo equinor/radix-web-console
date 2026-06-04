@@ -9,7 +9,7 @@ import { withRouteParams } from '../../utils/router'
 import { routeWithParams } from '../../utils/string'
 
 type Props = { appName: string }
-export function EnvironmentsPage({ appName }: Props) {
+function EnvironmentsPage({ appName }: Props) {
   const { data: application, ...state } = useGetApplicationQuery({ appName }, { skip: !appName, pollingInterval })
 
   return (

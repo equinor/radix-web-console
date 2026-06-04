@@ -7,7 +7,7 @@ type Props = {
   deploymentName: string
   jobComponentName: string
 }
-export function DeploymentJobComponentPage({ appName, deploymentName, jobComponentName }: Props) {
+function DeploymentJobComponentPage({ appName, deploymentName, jobComponentName }: Props) {
   return (
     <>
       <DocumentTitle title={`Job ${jobComponentName}`} />

@@ -6,7 +6,7 @@ type Props = {
   appName: string
   envName: string
 }
-export function EnvironmentPage({ appName, envName }: Props) {
+function EnvironmentPage({ appName, envName }: Props) {
   return (
     <>
       <DocumentTitle title={`${envName} environment`} />

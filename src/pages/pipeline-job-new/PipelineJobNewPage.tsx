@@ -29,7 +29,7 @@ function JobsLink(props: { appName: string }) {
 interface Props {
   appName: string
 }
-export function PipelineJobNewPage({ appName }: Props) {
+function PipelineJobNewPage({ appName }: Props) {
   const [createdJob, setCreatedJob] = useState<string>()
   const dispatch = useDispatch()
 

@@ -14,7 +14,7 @@ import ApplicationAlerting from './components/ApplicationAlerting'
 
 import './style.css'
 
-export function PipelineJobsPage({ appName }: { appName: string }) {
+function PipelineJobsPage({ appName }: { appName: string }) {
   const { data: jobs, ...state } = useGetApplicationJobsQuery({ appName }, { skip: !appName, pollingInterval })
 
   return (

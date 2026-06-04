@@ -3,24 +3,35 @@ import type { RouteObject } from 'react-router'
 
 /**
  * One node in the route tree.
- *
- * - `path`        — relative URL segment (no leading slash).
- * - `Component`   — rendered for this route. If `children` exist, this acts
- *                   as the layout (must contain an `<Outlet />`).
- * - `index`       — page rendered at this route's exact URL when it has
- *                   children. Mounted as `{ index: true, Component: index }`.
- * - `key`         — stable identifier exposed via the `routes` map so that
- *                   consumers can do `routes.appConfig` etc.
  */
 export type RouteNode = {
+  /**
+   * Stable identifier for this route, used as the key in the final `routes` map.
+   */
   readonly key: string
+  /**
+   * Relative URL segment (no leading slash).
+   */
   readonly path: string
+  /**
+   * Component to render at this route. If the node has children, this will be a layout component; otherwise, a page component.
+   */
   readonly Component?: ComponentType
+  /**
+   * Component to render at this route's exact URL when it has children.
+   * This allows a layout route to also have a page at its own URL, instead of just rendering the first child.
+   */
   readonly index?: ComponentType
+  /**
+   * Child routes, which will be rendered inside this route's `Component` if present.
+   * Each child node's `path` is relative to this node's `path`.
+   */
   readonly children?: readonly RouteNode[]
 }
 
-/** Recursively collect every `key` (and descendants') from a tree. */
+/**
+ * Recursively collect every `key` (and descendants') from a tree.
+ */
 type TreeKeys<T> = T extends readonly (infer N)[]
   ? N extends { readonly key: infer K extends string }
     ? K | (N extends { readonly children: readonly RouteNode[] } ? TreeKeys<N['children']> : never)
@@ -39,18 +50,25 @@ export type RouteMap<Tree extends readonly RouteNode[], Statics extends Readonly
  */
 export function buildPathMap<Tree extends readonly RouteNode[], Statics extends Readonly<Record<string, string>>>(
   tree: Tree,
-  statics: Statics
+  staticRoutes: Statics
 ): RouteMap<Tree, Statics> {
-  const out: Record<string, string> = { ...statics }
-  walk(tree, '', out)
-  return out as RouteMap<Tree, Statics>
+  const pathsByKey: Record<string, string> = { ...staticRoutes }
+  collectAbsolutePaths(tree, '', pathsByKey)
+  return pathsByKey as RouteMap<Tree, Statics>
 }
 
-function walk(nodes: readonly RouteNode[], parent: string, out: Record<string, string>): void {
-  for (const n of nodes) {
-    const absolute = `${parent}/${n.path}`
-    out[n.key] = absolute
-    if (n.children) walk(n.children, absolute, out)
+/**
+ * Helper for `buildPathMap` to recursively walk the tree and collect absolute paths.
+ */
+function collectAbsolutePaths(
+  nodes: readonly RouteNode[],
+  parentPath: string,
+  pathsByKey: Record<string, string>
+): void {
+  for (const node of nodes) {
+    const absolutePath = `${parentPath}/${node.path}`
+    pathsByKey[node.key] = absolutePath
+    if (node.children) collectAbsolutePaths(node.children, absolutePath, pathsByKey)
   }
 }
 
@@ -60,14 +78,14 @@ function walk(nodes: readonly RouteNode[], parent: string, out: Record<string, s
  * recursed.
  */
 export function buildRouteObjects(nodes: readonly RouteNode[]): RouteObject[] {
-  return nodes.map((n) => {
-    const children: RouteObject[] = []
-    if (n.index) children.push({ index: true, Component: n.index })
-    if (n.children) children.push(...buildRouteObjects(n.children))
+  return nodes.map((node) => {
+    const childRoutes: RouteObject[] = []
+    if (node.index) childRoutes.push({ index: true, Component: node.index })
+    if (node.children) childRoutes.push(...buildRouteObjects(node.children))
     return {
-      path: n.path,
-      Component: n.Component,
-      ...(children.length ? { children } : {}),
+      path: node.path,
+      Component: node.Component,
+      ...(childRoutes.length ? { children: childRoutes } : {}),
     }
   })
 }

@@ -32,7 +32,7 @@ function getConfigBranchUrl({ configBranch, repository }: ApplicationRegistratio
   return `${repository}/tree/${getConfigBranch(configBranch)}`
 }
 
-export function ConfigurationPage({ appName }: { appName: string }) {
+function ConfigurationPage({ appName }: { appName: string }) {
   const { data: application, refetch, ...reqState } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval })
   const registration = application?.registration
 

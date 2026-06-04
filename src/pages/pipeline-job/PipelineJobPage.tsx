@@ -6,7 +6,7 @@ type Props = {
   appName: string
   jobName: string
 }
-export function PipelineJobPage({ appName, jobName }: Props) {
+function PipelineJobPage({ appName, jobName }: Props) {
   return (
     <>
       <DocumentTitle title={`Pipeline Job ${jobName}`} />

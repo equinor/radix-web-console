@@ -20,7 +20,7 @@ interface Props {
   replicaName: string
 }
 
-export function OAuthAuxiliaryReplicaPage({ appName, envName, componentName, type, replicaName }: Props) {
+function OAuthAuxiliaryReplicaPage({ appName, envName, componentName, type, replicaName }: Props) {
   const environmentState = useGetEnvironmentQuery({ appName, envName }, { skip: !appName || !envName, pollingInterval })
   const [getLog] = radixApi.endpoints.getOAuthPodLog.useLazyQuery()
   const eventStreamUrl = getOauthAuxiliaryLogStreamUrl(appName, envName, componentName, type, replicaName)
