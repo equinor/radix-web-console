@@ -80,9 +80,6 @@
         "noRedundantRoles": "off",
         "useKeyWithClickEvents": "off",
         "noStaticElementInteractions": "off"
-      },
-      "nursery": {
-        "noFloatingPromises": "error"
       }
     }
   }
