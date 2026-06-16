@@ -84,7 +84,7 @@ export const ComponentIdentity: FunctionComponent<{
         {component.oauth2.identity && <AzureIdentityLink azure={component.oauth2.identity.azure} />}
       </Typography>
     )}
-    {component.horizontalScalingSummary?.triggers
+    {(component.horizontalScalingSummary?.triggers ?? [])
       .filter((trigger) => trigger.identity?.azure)
       .map((trigger, i) => (
         <Typography key={i} as="span">
