@@ -267,7 +267,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         )}
                       </>
                     )}
-                    {(job.gitRef || job.branch || job.commitID) && (
+                    {(job.gitRef || job.branch || job.resolvedCommitID) && (
                       <Typography>
                         Built from{' '}
                         {(job.gitRef || job.branch) && (
@@ -275,10 +275,10 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                             {job.gitRefType ?? 'branch'} <strong>{job.gitRef ?? job.branch}</strong>
                           </>
                         )}
-                        {job.commitID && (
+                        {job.resolvedCommitID && (
                           <>
-                            {' commit '}
-                            <CommitHash commit={job.commitID} repo={application?.registration?.repository} />
+                            {(job.gitRef || job.branch) ? ' commit ' : 'commit '}
+                            <CommitHash commit={job.resolvedCommitID} repo={application?.registration?.repository} />
                           </>
                         )}
                       </Typography>
@@ -316,6 +316,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                 {(job.deployments || job.components) && (
                   <>
                     <Typography variant="h4">Artefacts</Typography>
+                    {/* // */}
                     <div className="grid grid--gap-medium">
                       {job.deployments?.map((deployment) => (
                         <Typography key={deployment.name}>
@@ -341,6 +342,15 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                           >
                             {deployment.environment}
                           </Typography>
+                          {deployment.gitCommitHash && (
+                            <>
+                              {' commit '}
+                              <CommitHash
+                                commit={deployment.gitCommitHash}
+                                repo={application?.registration?.repository}
+                              />
+                            </>
+                          )}
                         </Typography>
                       ))}
                       {job.components && (

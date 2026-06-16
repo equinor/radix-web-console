@@ -2940,7 +2940,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-    
+
     required: */
   webhookUrl?: string | null;
 };
@@ -3237,8 +3237,10 @@ export type Job = {
   branch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
+  /** ResolvedCommitID the resolved commit ID */
+  resolvedCommitID?: string;
   /** Components (array of ComponentSummary) created by the job
-    
+
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
