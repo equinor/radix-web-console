@@ -16,7 +16,6 @@ import { Typography } from '@equinor/eds-core-react'
 import { slowPollingInterval } from '../../store/defaults'
 import { ComponentDeploymentGitHubAttributes } from '../component/component-deployment-github-attributes'
 import { DeploymentRef } from '../component/deployment-ref'
-import { IngressAllowList } from '../component/ingress-allow-list'
 import { ExternalLink } from '../link/external-link'
 import { ResourceRequirements } from '../resource-requirements'
 import { Runtime } from '../runtime'
@@ -64,7 +63,7 @@ export const Overview = ({
           </Typography>
           <DeploymentRef appName={appName} deploymentName={deployment?.name ?? ''} />
           <ComponentDeploymentGitHubAttributes deployComponent={component} deployment={deployment} />
-          {component && deployment && <ComponentIdentity component={component} deployment={deployment} />}
+          {component && deployment && <ComponentIdentity component={component} />}
         </div>
 
         <div className="grid grid--gap-medium">
@@ -85,9 +84,6 @@ export const Overview = ({
           {dnsAliasUrls && dnsAliasUrls.length > 0 && <DNSAliases urls={dnsAliasUrls} title={'DNS aliases'} />}
           {dnsExternalAliasUrls && dnsExternalAliasUrls.length > 0 && (
             <DNSAliases urls={dnsExternalAliasUrls} title={'DNS external aliases'} />
-          )}
-          {component.ports?.some(({ isPublic }) => isPublic) && (
-            <IngressAllowList allowedIpRanges={component.network?.ingress?.public?.allow} />
           )}
           <ComponentPorts ports={component.ports ?? []} />
           {component.runtime && (
