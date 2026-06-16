@@ -277,7 +277,8 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         )}
                         {job.resolvedCommitID && (
                           <>
-                            {(job.gitRef || job.branch) ? ' commit ' : 'commit '}
+                            {(job.gitRef || job.branch) && ' '}
+                            {'commit '}
                             <CommitHash commit={job.resolvedCommitID} repo={application?.registration?.repository} />
                           </>
                         )}
