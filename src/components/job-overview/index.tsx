@@ -267,7 +267,7 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                         )}
                       </>
                     )}
-                    {(job.gitRef || job.branch || job.resolvedCommitID) && (
+                    {(job.gitRef || job.branch || job.commitID) && (
                       <Typography>
                         Built from{' '}
                         {(job.gitRef || job.branch) && (
@@ -275,11 +275,11 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                             {job.gitRefType ?? 'branch'} <strong>{job.gitRef ?? job.branch}</strong>
                           </>
                         )}
-                        {job.resolvedCommitID && (
+                        {job.commitID && (
                           <>
                             {(job.gitRef || job.branch) && ' '}
                             {'commit '}
-                            <CommitHash commit={job.resolvedCommitID} repo={application?.registration?.repository} />
+                            <CommitHash commit={job.commitID} repo={application?.registration?.repository} />
                           </>
                         )}
                       </Typography>

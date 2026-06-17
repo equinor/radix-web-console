@@ -1054,6 +1054,18 @@ const injectedRtkApi = api.injectEndpoints({
     getConfiguration: build.query<GetConfigurationApiResponse, GetConfigurationApiArg>({
       query: () => ({ url: `/configuration` }),
     }),
+    handleGithubWebhook: build.mutation<HandleGithubWebhookApiResponse, HandleGithubWebhookApiArg>({
+      query: (queryArg) => ({
+        url: `/webhooks/github`,
+        method: "POST",
+        headers: {
+          "X-GitHub-Event": queryArg["X-GitHub-Event"],
+        },
+        params: {
+          appName: queryArg.appName,
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -2300,6 +2312,13 @@ export type GetApplicationResourcesUtilizationApiArg = {
 export type GetConfigurationApiResponse =
   /** status 200 Successful operation */ ClusterConfigurationHoldsClusterConfigurationEnvironment;
 export type GetConfigurationApiArg = void;
+export type HandleGithubWebhookApiResponse = unknown;
+export type HandleGithubWebhookApiArg = {
+  /** The type of GitHub event (e.g., push, pull_request) */
+  "X-GitHub-Event": string;
+  /** The name of the application associated with the webhook event */
+  appName?: string;
+};
 export type TlsAutomation = {
   /** Message is a human readable description of the reason for the status */
   message?: string;
@@ -2388,16 +2407,6 @@ export type AzureIdentity = {
 };
 export type Identity = {
   azure?: AzureIdentity;
-};
-export type IngressPublic = {
-  /** List of allowed IP addresses or CIDRs. All traffic is allowed if list is empty. */
-  allow: string[];
-};
-export type Ingress = {
-  public?: IngressPublic;
-};
-export type Network = {
-  ingress?: Ingress;
 };
 export type Notifications = {
   /** Webhook is a URL for notification about internal events or changes. The URL should be of a Radix component or job-component, with not public port. */
@@ -2515,7 +2524,6 @@ export type Component = {
   image: string;
   /** Name the component */
   name: string;
-  network?: Network;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
   /** Ports defines the port number and protocol that a component is exposed for internally in environment */
@@ -2677,7 +2685,6 @@ export type Secret = {
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
     csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
-    client-cert-auth SecretTypeClientCertificateAuth
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | "generic"
@@ -2685,7 +2692,6 @@ export type Secret = {
     | "csi-azure-blob-volume"
     | "csi-azure-key-vault-creds"
     | "csi-azure-key-vault-item"
-    | "client-cert-auth"
     | "oauth2-proxy";
   /** Updated timestamp of the last change */
   updated?: string;
@@ -2940,7 +2946,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-
+    
     required: */
   webhookUrl?: string | null;
 };
@@ -3016,16 +3022,6 @@ export type AzureKeyVaultSecretVersion = {
   /** Version of the secret */
   version: string;
 };
-export type IngressRule = {
-  /** The host name of the ingress */
-  host?: string;
-  /** The path of the ingress */
-  path?: string;
-  /** The port of the ingress */
-  port?: number;
-  /** The service name of the ingress */
-  service?: string;
-};
 export type PodState = {
   /** Specifies whether the first container has passed its readiness probe. */
   ready?: boolean;
@@ -3035,8 +3031,6 @@ export type PodState = {
   started?: boolean | null;
 };
 export type ObjectState = {
-  /** Details about the ingress rules for an ingress related event */
-  ingressRules?: IngressRule[];
   pod?: PodState;
 };
 export type Event = {
@@ -3237,10 +3231,8 @@ export type Job = {
   branch?: string;
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
-  /** ResolvedCommitID the resolved commit ID */
-  resolvedCommitID?: string;
   /** Components (array of ComponentSummary) created by the job
-
+    
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
@@ -3666,4 +3658,5 @@ export const {
   useStopApplicationMutation,
   useGetApplicationResourcesUtilizationQuery,
   useGetConfigurationQuery,
+  useHandleGithubWebhookMutation,
 } = injectedRtkApi;
