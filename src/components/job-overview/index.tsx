@@ -317,7 +317,6 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                 {(job.deployments || job.components) && (
                   <>
                     <Typography variant="h4">Artefacts</Typography>
-                    {/* // */}
                     <div className="grid grid--gap-medium">
                       {job.deployments?.map((deployment) => (
                         <Typography key={deployment.name}>
