@@ -2,7 +2,7 @@ import { Accordion, Typography } from '@equinor/eds-core-react'
 import { isNil } from 'lodash-es'
 import type {
   HorizontalScalingSummary as HorizontalScalingSummaryModel,
-  HorizontalScalingSummaryTriggerStatus,
+  HorizontalScalingSummaryTrigger,
 } from '../../store/radix-api'
 import { pluraliser } from '../../utils/string'
 import { Alert } from '../alert'
@@ -81,7 +81,7 @@ export const HorizontalScalingSummary = ({ summary }: Props) => (
 )
 
 type TriggerStatusProps = {
-  trigger: HorizontalScalingSummaryTriggerStatus
+  trigger: HorizontalScalingSummaryTrigger
 }
 const TriggerStatus = ({ trigger }: TriggerStatusProps) => {
   let unitFn = pluraliser('%', '%')

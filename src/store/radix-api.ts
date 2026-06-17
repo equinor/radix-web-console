@@ -2360,11 +2360,26 @@ export type ExternalDns = {
   fqdn: string;
   tls: Tls;
 };
-export type HorizontalScalingSummaryTriggerStatus = {
+export type AzureIdentity = {
+  /** The Azure Key Vaults names, which use Azure Identity */
+  azureKeyVaults?: string[];
+  /** ClientId is the client ID of an Azure User Assigned Managed Identity
+    or the application ID of an Azure AD Application Registration */
+  clientId: string;
+  /** The namespace to use when configuring Kubernetes Federation Credentials for the identity */
+  namespace: string;
+  /** The Service Account name to use when configuring Kubernetes Federation Credentials for the identity */
+  serviceAccountName: string;
+};
+export type Identity = {
+  azure?: AzureIdentity;
+};
+export type HorizontalScalingSummaryTrigger = {
   /** CurrentUtilization is the last measured utilization */
   currentUtilization?: string;
   /** Error contains short description if trigger have problems */
   error?: string;
+  identity?: Identity;
   /** Name of trigger */
   name?: string;
   /** TargetUtilization  is the average target across replicas */
@@ -2375,10 +2390,6 @@ export type HorizontalScalingSummaryTriggerStatus = {
 export type HorizontalScalingSummary = {
   /** CooldownPeriod in seconds. From radixconfig.yaml */
   cooldownPeriod?: number;
-  /** Deprecated: Component current average CPU utilization over all pods, represented as a percentage of requested CPU. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  currentCPUUtilizationPercentage?: number;
-  /** Deprecated: Component current average memory utilization over all pods, represented as a percentage of requested memory. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  currentMemoryUtilizationPercentage?: number;
   /** CurrentReplicas returns the current number of replicas */
   currentReplicas: number;
   /** DesiredReplicas returns the target number of replicas across all triggers */
@@ -2389,24 +2400,8 @@ export type HorizontalScalingSummary = {
   minReplicas?: number;
   /** PollingInterval in seconds. From radixconfig.yaml */
   pollingInterval?: number;
-  /** Deprecated: Component target average CPU utilization over all pods. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  targetCPUUtilizationPercentage?: number;
-  /** Deprecated: Component target average memory utilization over all pods. use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  targetMemoryUtilizationPercentage?: number;
   /** Triggers lists status of all triggers found in radixconfig.yaml */
-  triggers: HorizontalScalingSummaryTriggerStatus[];
-};
-export type AzureIdentity = {
-  /** The Azure Key Vaults names, which use Azure Identity */
-  azureKeyVaults?: string[];
-  /** ClientId is the client ID of an Azure User Assigned Managed Identity
-    or the application ID of an Azure AD Application Registration */
-  clientId: string;
-  /** The Service Account name to use when configuring Kubernetes Federation Credentials for the identity */
-  serviceAccountName: string;
-};
-export type Identity = {
-  azure?: AzureIdentity;
+  triggers: HorizontalScalingSummaryTrigger[];
 };
 export type Notifications = {
   /** Webhook is a URL for notification about internal events or changes. The URL should be of a Radix component or job-component, with not public port. */
@@ -2946,7 +2941,7 @@ export type AlertingConfig = {
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
     Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-    
+
     required: */
   webhookUrl?: string | null;
 };
@@ -3232,7 +3227,7 @@ export type Job = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Components (array of ComponentSummary) created by the job
-    
+
     Deprecated: Inspect each deployment to get list of components created by the job */
   components?: ComponentSummary[];
   /** Created timestamp */
