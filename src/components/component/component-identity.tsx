@@ -1,15 +1,14 @@
 import { List, Popover, Typography } from '@equinor/eds-core-react'
 import { type FunctionComponent, type SyntheticEvent, useEffect, useRef, useState } from 'react'
 
-import type { AzureIdentity as AzureIdentityModel, Component, Deployment } from '../../store/radix-api'
+import type { AzureIdentity as AzureIdentityModel, Component } from '../../store/radix-api'
 import { useGetConfigurationQuery } from '../../store/radix-api'
 import { AzureIdentity } from '../identity/azure-identity'
 
 const AzureIdentityLink: FunctionComponent<{
-  namespace: string
   azure: AzureIdentityModel
   allowManagedIdentity?: boolean
-}> = ({ namespace, azure: { clientId, serviceAccountName, azureKeyVaults }, allowManagedIdentity }) => {
+}> = ({ azure: { clientId, namespace, serviceAccountName, azureKeyVaults }, allowManagedIdentity }) => {
   const [popoverOpen, setPopoverOpen] = useState(false)
   const containerRef = useRef<HTMLElement>(null)
 
@@ -69,28 +68,32 @@ const AzureIdentityLink: FunctionComponent<{
 
 export const ComponentIdentity: FunctionComponent<{
   component: Component
-  deployment: Deployment
-}> = ({ component, deployment }) => (
+}> = ({ component }) => (
   <>
     {component.identity?.azure && (
       <Typography as="span">
         Identity enabled for{' '}
         {component.identity?.azure && (
-          <AzureIdentityLink
-            namespace={deployment.namespace}
-            azure={component.identity.azure}
-            allowManagedIdentity={true}
-          />
+          <AzureIdentityLink azure={component.identity.azure} allowManagedIdentity={true} />
         )}
       </Typography>
     )}
     {component.oauth2?.identity?.azure && (
       <Typography as="span">
         OAuth2 identity enabled for{' '}
-        {component.oauth2.identity && (
-          <AzureIdentityLink namespace={deployment.namespace} azure={component.oauth2.identity.azure} />
-        )}
+        {component.oauth2.identity && <AzureIdentityLink azure={component.oauth2.identity.azure} />}
       </Typography>
     )}
+    {(component.horizontalScalingSummary?.triggers ?? [])
+      .filter((trigger) => trigger.identity?.azure)
+      .map((trigger, i) => (
+        <Typography key={i} as="span">
+          Horizontal scaling trigger{' '}
+          <Typography bold as="span">
+            {trigger.name}
+          </Typography>{' '}
+          identity enabled for {trigger.identity?.azure && <AzureIdentityLink azure={trigger.identity.azure} />}
+        </Typography>
+      ))}
   </>
 )

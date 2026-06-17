@@ -5,10 +5,6 @@ const testData: Array<HorizontalScalingSummaryModel> = [
   {
     minReplicas: 4,
     maxReplicas: 20,
-    currentCPUUtilizationPercentage: 13,
-    targetCPUUtilizationPercentage: 37,
-    currentMemoryUtilizationPercentage: 16,
-    targetMemoryUtilizationPercentage: 30,
     currentReplicas: 5,
     desiredReplicas: 12,
     triggers: [],
@@ -16,10 +12,6 @@ const testData: Array<HorizontalScalingSummaryModel> = [
   {
     minReplicas: 2,
     maxReplicas: 0,
-    currentCPUUtilizationPercentage: 0,
-    targetCPUUtilizationPercentage: 73,
-    currentMemoryUtilizationPercentage: 19,
-    targetMemoryUtilizationPercentage: 50,
     currentReplicas: 3,
     desiredReplicas: 0,
     triggers: [],
@@ -27,10 +19,6 @@ const testData: Array<HorizontalScalingSummaryModel> = [
   {
     minReplicas: 1,
     maxReplicas: 6,
-    currentCPUUtilizationPercentage: 0,
-    targetCPUUtilizationPercentage: 0,
-    currentMemoryUtilizationPercentage: 61,
-    targetMemoryUtilizationPercentage: 62,
     currentReplicas: 2,
     desiredReplicas: 3,
     triggers: [],

@@ -1,4 +1,4 @@
-import { List, Table } from '@equinor/eds-core-react'
+import { Table } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
 
 import type { Event } from '../../store/radix-api'
@@ -38,28 +38,6 @@ export const EventSummary: FunctionComponent<EventSummaryProps> = ({ event }) =>
       {event.reason} - {event.message}
       {(event.involvedObjectState?.pod?.restartCount ?? 0) > 0 && (
         <>. Restarted {event.involvedObjectState!.pod!.restartCount} times</>
-      )}
-      {event.involvedObjectState?.ingressRules && (
-        <>
-          <List>
-            {event.involvedObjectState?.ingressRules.map((ingressRule) => (
-              <List.Item key={`${ingressRule.host}-${ingressRule.service}`}>
-                {ingressRule.host}
-                {ingressRule.service && (
-                  <>
-                    ,<br /> Component: {ingressRule.service}
-                  </>
-                )}
-                {ingressRule.port && (
-                  <>
-                    ,<br />
-                    Port: {ingressRule.port}
-                  </>
-                )}
-              </List.Item>
-            ))}
-          </List>
-        </>
       )}
     </Table.Cell>
   </Table.Row>

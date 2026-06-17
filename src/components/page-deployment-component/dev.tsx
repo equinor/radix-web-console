@@ -91,13 +91,6 @@ const testData: Array<
           type: 'component',
           status: 'Stopped',
           ports: [{ name: 'http', port: 3003, isPublic: true }],
-          network: {
-            ingress: {
-              public: {
-                allow: ['100.1.1.1', '200.1.1.1/32'],
-              },
-            },
-          },
           replicaList: [
             {
               name: 'server-6ff44564cb-f45q9',
