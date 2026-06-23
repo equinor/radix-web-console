@@ -16,11 +16,6 @@ const secretGrouping = Object.freeze<Array<SecretTableGroup>>([
     types: ['generic'],
   },
   {
-    title: 'TLS Client Certificate',
-    Component: GenericSecrets,
-    types: ['client-cert-auth'],
-  },
-  {
     title: 'Volume Mounts',
     Component: VolumeMountSecrets,
     types: ['csi-azure-blob-volume', 'azure-blob-fuse-volume'],

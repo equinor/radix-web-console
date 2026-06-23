@@ -3,7 +3,6 @@ import { ComponentDeploymentGitHubAttributes } from '../../../components/compone
 import { ComponentIdentity } from '../../../components/component/component-identity'
 import { ComponentPorts } from '../../../components/component/component-ports'
 import { DeploymentRef } from '../../../components/component/deployment-ref'
-import { IngressAllowList } from '../../../components/component/ingress-allow-list'
 import { DockerImage } from '../../../components/docker-image'
 import { ExternalLink } from '../../../components/link/external-link'
 import { ResourceRequirements } from '../../../components/resource-requirements'
@@ -65,7 +64,7 @@ export const Overview = ({
           </Typography>
           <DeploymentRef appName={appName} deploymentName={deployment?.name ?? ''} />
           <ComponentDeploymentGitHubAttributes deployComponent={component} deployment={deployment} />
-          {component && deployment && <ComponentIdentity component={component} deployment={deployment} />}
+          {component && deployment && <ComponentIdentity component={component} />}
         </div>
 
         <div className="grid grid--gap-medium">
@@ -86,9 +85,6 @@ export const Overview = ({
           {dnsAliasUrls && dnsAliasUrls.length > 0 && <DNSAliases urls={dnsAliasUrls} title={'DNS aliases'} />}
           {dnsExternalAliasUrls && dnsExternalAliasUrls.length > 0 && (
             <DNSAliases urls={dnsExternalAliasUrls} title={'DNS external aliases'} />
-          )}
-          {component.ports?.some(({ isPublic }) => isPublic) && (
-            <IngressAllowList allowedIpRanges={component.network?.ingress?.public?.allow} />
           )}
           <ComponentPorts ports={component.ports ?? []} />
           {component.runtime && (

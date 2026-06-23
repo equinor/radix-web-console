@@ -27,7 +27,7 @@ export const Overview = ({ appName, component, deployment }: Props) => (
         </Typography>
         <DeploymentRef appName={appName} deploymentName={deployment?.name ?? ''} />
         <ComponentDeploymentGitHubAttributes deployComponent={component} deployment={deployment} />
-        {component && deployment && <ComponentIdentity component={component} deployment={deployment} />}
+        {component && deployment && <ComponentIdentity component={component} />}
       </div>
       <div className="grid grid--gap-medium">
         <ComponentPorts ports={component.ports ?? []} />

@@ -1054,6 +1054,18 @@ const injectedRtkApi = api.injectEndpoints({
     getConfiguration: build.query<GetConfigurationApiResponse, GetConfigurationApiArg>({
       query: () => ({ url: `/configuration` }),
     }),
+    handleGithubWebhook: build.mutation<HandleGithubWebhookApiResponse, HandleGithubWebhookApiArg>({
+      query: (queryArg) => ({
+        url: `/webhooks/github`,
+        method: "POST",
+        headers: {
+          "X-GitHub-Event": queryArg["X-GitHub-Event"],
+        },
+        params: {
+          appName: queryArg.appName,
+        },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -2300,6 +2312,13 @@ export type GetApplicationResourcesUtilizationApiArg = {
 export type GetConfigurationApiResponse =
   /** status 200 Successful operation */ ClusterConfigurationHoldsClusterConfigurationEnvironment;
 export type GetConfigurationApiArg = void;
+export type HandleGithubWebhookApiResponse = unknown;
+export type HandleGithubWebhookApiArg = {
+  /** The type of GitHub event (e.g., push, pull_request) */
+  "X-GitHub-Event": string;
+  /** The name of the application associated with the webhook event */
+  appName?: string;
+};
 export type TlsAutomation = {
   /** Message is a human readable description of the reason for the status */
   message?: string;
@@ -2341,11 +2360,26 @@ export type ExternalDns = {
   fqdn: string;
   tls: Tls;
 };
-export type HorizontalScalingSummaryTriggerStatus = {
+export type AzureIdentity = {
+  /** The Azure Key Vaults names, which use Azure Identity */
+  azureKeyVaults?: string[];
+  /** ClientId is the client ID of an Azure User Assigned Managed Identity
+    or the application ID of an Azure AD Application Registration */
+  clientId: string;
+  /** The namespace to use when configuring Kubernetes Federation Credentials for the identity */
+  namespace: string;
+  /** The Service Account name to use when configuring Kubernetes Federation Credentials for the identity */
+  serviceAccountName: string;
+};
+export type Identity = {
+  azure?: AzureIdentity;
+};
+export type HorizontalScalingSummaryTrigger = {
   /** CurrentUtilization is the last measured utilization */
   currentUtilization?: string;
   /** Error contains short description if trigger have problems */
   error?: string;
+  identity?: Identity;
   /** Name of trigger */
   name?: string;
   /** TargetUtilization  is the average target across replicas */
@@ -2356,10 +2390,6 @@ export type HorizontalScalingSummaryTriggerStatus = {
 export type HorizontalScalingSummary = {
   /** CooldownPeriod in seconds. From radixconfig.yaml */
   cooldownPeriod?: number;
-  /** Deprecated: Component current average CPU utilization over all pods, represented as a percentage of requested CPU. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  currentCPUUtilizationPercentage?: number;
-  /** Deprecated: Component current average memory utilization over all pods, represented as a percentage of requested memory. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  currentMemoryUtilizationPercentage?: number;
   /** CurrentReplicas returns the current number of replicas */
   currentReplicas: number;
   /** DesiredReplicas returns the target number of replicas across all triggers */
@@ -2370,34 +2400,8 @@ export type HorizontalScalingSummary = {
   minReplicas?: number;
   /** PollingInterval in seconds. From radixconfig.yaml */
   pollingInterval?: number;
-  /** Deprecated: Component target average CPU utilization over all pods. Use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  targetCPUUtilizationPercentage?: number;
-  /** Deprecated: Component target average memory utilization over all pods. use Triggers instead. Will be removed from Radix API 2025-01-01. */
-  targetMemoryUtilizationPercentage?: number;
   /** Triggers lists status of all triggers found in radixconfig.yaml */
-  triggers: HorizontalScalingSummaryTriggerStatus[];
-};
-export type AzureIdentity = {
-  /** The Azure Key Vaults names, which use Azure Identity */
-  azureKeyVaults?: string[];
-  /** ClientId is the client ID of an Azure User Assigned Managed Identity
-    or the application ID of an Azure AD Application Registration */
-  clientId: string;
-  /** The Service Account name to use when configuring Kubernetes Federation Credentials for the identity */
-  serviceAccountName: string;
-};
-export type Identity = {
-  azure?: AzureIdentity;
-};
-export type IngressPublic = {
-  /** List of allowed IP addresses or CIDRs. All traffic is allowed if list is empty. */
-  allow: string[];
-};
-export type Ingress = {
-  public?: IngressPublic;
-};
-export type Network = {
-  ingress?: Ingress;
+  triggers: HorizontalScalingSummaryTrigger[];
 };
 export type Notifications = {
   /** Webhook is a URL for notification about internal events or changes. The URL should be of a Radix component or job-component, with not public port. */
@@ -2515,7 +2519,6 @@ export type Component = {
   image: string;
   /** Name the component */
   name: string;
-  network?: Network;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
   /** Ports defines the port number and protocol that a component is exposed for internally in environment */
@@ -2677,7 +2680,6 @@ export type Secret = {
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
     csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
-    client-cert-auth SecretTypeClientCertificateAuth
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
     | "generic"
@@ -2685,7 +2687,6 @@ export type Secret = {
     | "csi-azure-blob-volume"
     | "csi-azure-key-vault-creds"
     | "csi-azure-key-vault-item"
-    | "client-cert-auth"
     | "oauth2-proxy";
   /** Updated timestamp of the last change */
   updated?: string;
@@ -3016,16 +3017,6 @@ export type AzureKeyVaultSecretVersion = {
   /** Version of the secret */
   version: string;
 };
-export type IngressRule = {
-  /** The host name of the ingress */
-  host?: string;
-  /** The path of the ingress */
-  path?: string;
-  /** The port of the ingress */
-  port?: number;
-  /** The service name of the ingress */
-  service?: string;
-};
 export type PodState = {
   /** Specifies whether the first container has passed its readiness probe. */
   ready?: boolean;
@@ -3035,8 +3026,6 @@ export type PodState = {
   started?: boolean | null;
 };
 export type ObjectState = {
-  /** Details about the ingress rules for an ingress related event */
-  ingressRules?: IngressRule[];
   pod?: PodState;
 };
 export type Event = {
@@ -3664,4 +3653,5 @@ export const {
   useStopApplicationMutation,
   useGetApplicationResourcesUtilizationQuery,
   useGetConfigurationQuery,
+  useHandleGithubWebhookMutation,
 } = injectedRtkApi;

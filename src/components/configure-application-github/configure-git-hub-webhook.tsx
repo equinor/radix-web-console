@@ -18,8 +18,8 @@ export function ConfigureGitHubWebhook({ repository, appName, sharedSecret }: Pr
         <List variant="numbered">
           <List.Item>
             Copy your <em>Payload URL</em>
-            <code>{`https://webhook.${radixZoneDNS}/events/github?appName=${appName}`}</code>{' '}
-            <CompactCopyButton content={`https://webhook.${radixZoneDNS}/events/github?appName=${appName}`} />
+            <code>{`https://api.${radixZoneDNS}/api/v1/webhooks/github?appName=${appName}`}</code>{' '}
+            <CompactCopyButton content={`https://api.${radixZoneDNS}/api/v1/webhooks/github?appName=${appName}`} />
           </List.Item>
           <List.Item>
             Open the <ExternalLink href={`${repository}/settings/hooks/new`}>Add Webhook page</ExternalLink> and add
