@@ -1,4 +1,4 @@
-import react from '@vitejs/plugin-react-swc'
+import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 import packageJson from './package.json'
 
@@ -35,7 +35,7 @@ export default defineConfig({
   build: {
     sourcemap: true,
     outDir: 'build',
-    rollupOptions: {
+    rolldownOptions: {
       // Exclude dev.* components from the main bundle, as they are only used in development and should be lazy-loaded when accessed
       external: (source) => !!devComponentRegex.exec(source),
     },
