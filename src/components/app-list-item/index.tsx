@@ -3,9 +3,9 @@ import { error_outlined, star_filled, star_outlined } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
 import { formatDistanceToNow } from 'date-fns'
 import type { MouseEvent, PropsWithChildren } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import {
   type Environment,
   type JobSummary,

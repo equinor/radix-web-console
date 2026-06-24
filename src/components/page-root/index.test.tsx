@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
-import { router } from '../../router'
+import { router } from '../../router/router'
 import store from '../../store/store'
 import { PageRouter } from '.'
 

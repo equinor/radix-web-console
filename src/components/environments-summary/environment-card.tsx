@@ -1,7 +1,7 @@
 import { Chip, CircularProgress, Divider, Icon, Typography } from '@equinor/eds-core-react'
 import { github } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
-import { routes } from '../../routes'
+import { Link } from 'react-router'
+import { routes } from '../../router/routes'
 import { pollingInterval, slowPollingInterval } from '../../store/defaults'
 import {
   type Component,

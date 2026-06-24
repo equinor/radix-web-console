@@ -5,8 +5,9 @@ import { Component } from 'react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
 import { LazyLoadFallback } from '../components/lazy-load-fallback'
-import { routes } from '../routes'
+import { routes } from '../router/routes'
 import store from '../store/store'
+import { DEV_LOOKUP_FOLDERS } from './dev-folders.consts'
 
 type IntegrationType = {
   injectMockSocketServers: (servers: { rr: Server; ra: Server }) => void
@@ -62,12 +63,14 @@ class IntegrationComponent extends Component<{ component?: string }, { content: 
   }
 
   private async fetchModule(component: string): Promise<IntegrationType> {
-    for (const ext of ['jsx', 'tsx']) {
-      try {
-        const path = `../components/${component}/integration.${ext}`
-        return await import(/* @vite-ignore */ path).then((module: IntegrationType) => module)
-      } catch (_) {
-        /* empty */
+    for (const folder of DEV_LOOKUP_FOLDERS) {
+      for (const ext of ['jsx', 'tsx']) {
+        try {
+          const path = `../${folder}/${component}/integration.${ext}`
+          return await import(/* @vite-ignore */ path).then((module: IntegrationType) => module)
+        } catch (_) {
+          /* empty */
+        }
       }
     }
 

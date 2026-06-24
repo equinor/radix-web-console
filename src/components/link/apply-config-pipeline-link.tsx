@@ -1,7 +1,7 @@
 import { Button, Typography } from '@equinor/eds-core-react'
 import type { PropsWithChildren } from 'react'
-import { Link } from 'react-router-dom'
-import { routes } from '../../routes'
+import { Link } from 'react-router'
+import { routes } from '../../router/routes'
 import { routeWithParams } from '../../utils/string'
 
 type Props = { appName: string; button?: boolean }
