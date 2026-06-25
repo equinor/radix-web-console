@@ -3,7 +3,7 @@
     "editor.rulers": [
         80
     ],
-    "editor.tabSize": 2,
+    "editor.tabSize": 4,
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,
@@ -13,5 +13,10 @@
     },
     "files.insertFinalNewline": true,
     "files.trimTrailingWhitespace": true,
-    "eslint.enable": true
+    "eslint.enable": true,
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "biomejs.biome",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports.biome": "explicit"
+    },
 }

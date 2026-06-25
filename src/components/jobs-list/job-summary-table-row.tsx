@@ -1,8 +1,8 @@
 import { Table, Tooltip } from '@equinor/eds-core-react'
 import { type FunctionComponent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
-import { routes } from '../../routes'
+import { routes } from '../../router/routes'
 import type { JobSummary } from '../../store/radix-api'
 import { copyToClipboard, routeWithParams } from '../../utils/string'
 import { CommitHash } from '../commit-hash'

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 
 import { MsalAuthProvider } from '../components/msal-auth-context/msal-auth-provider'
 import { PageRouter } from '../components/page-root'
-import { router } from '../router'
+import { router } from '../router/router'
 import store from '../store/store'
 import { msalConfig } from './msal-config'
 

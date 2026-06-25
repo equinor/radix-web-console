@@ -1,7 +1,7 @@
 import { NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FunctionComponent, useId, useMemo } from 'react'
 
-import { useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router'
 import { pollingInterval } from '../../store/defaults'
 import { type Application, useGetApplicationQuery } from '../../store/radix-api'
 import { PipelineFormApplyConfig } from './pipeline-form-apply-config'

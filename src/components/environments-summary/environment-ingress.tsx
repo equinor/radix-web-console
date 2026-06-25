@@ -1,6 +1,6 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
 import { type IconData, link, memory } from '@equinor/eds-icons'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import type { Component } from '../../store/radix-api'
 import { getActiveComponentUrl, getActiveJobComponentUrl } from '../../utils/routing'
 import { ExternalLink } from '../link/external-link'

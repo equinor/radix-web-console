@@ -1,7 +1,7 @@
 import { Icon, type IconProps, Popover, Typography } from '@equinor/eds-core-react'
 import { info_circle } from '@equinor/eds-icons'
 import { type FunctionComponent, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 import type { ReplicaSummary } from '../../store/radix-api'
 import { smallReplicaName } from '../../utils/string'
 

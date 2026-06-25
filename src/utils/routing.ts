@@ -1,6 +1,6 @@
 import { type ComponentClass, createElement, type FunctionComponent, type ReactElement } from 'react'
-import { useParams } from 'react-router-dom'
-import { routes } from '../routes'
+import { useParams } from 'react-router'
+import { routes } from '../router/routes'
 import { getValidatedOAuthType } from './oauth'
 import { routeWithParams } from './string'
 

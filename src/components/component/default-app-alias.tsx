@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
 import type { ApplicationAlias } from '../../store/radix-api'
 import { getActiveComponentUrl, getEnvUrl } from '../../utils/routing'

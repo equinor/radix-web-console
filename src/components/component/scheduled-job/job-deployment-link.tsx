@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router'
 
-import { routes } from '../../../routes'
+import { routes } from '../../../router/routes'
 import { getAppDeploymentUrl } from '../../../utils/routing'
 import { routeWithParams } from '../../../utils/string'
 

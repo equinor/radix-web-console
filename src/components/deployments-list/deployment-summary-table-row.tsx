@@ -1,6 +1,6 @@
 import { Table, Typography } from '@equinor/eds-core-react'
-import { Link } from 'react-router-dom'
-import { routes } from '../../routes'
+import { Link } from 'react-router'
+import { routes } from '../../router/routes'
 import type { DeploymentSummary } from '../../store/radix-api'
 import { routeWithParams, smallDeploymentName } from '../../utils/string'
 import { CommitHash } from '../commit-hash'
