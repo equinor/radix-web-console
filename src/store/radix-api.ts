@@ -2588,10 +2588,8 @@ export type Deployment = {
   status: "Reconciling" | "Ready" | "Failed" | "Inactive";
   /** StatusReason contains details when deployment status is Failed */
   statusReason?: string;
-  /** Defaults to true and requires useBuildKit to have an effect. */
+  /** Defaults to true. */
   useBuildCache?: boolean | null;
-  /** Enables BuildKit when building Dockerfile. */
-  useBuildKit?: boolean | null;
 };
 export type ComponentSummary = {
   /** CommitID the commit ID of the branch to build
@@ -2653,10 +2651,8 @@ export type DeploymentSummary = {
   status: "Reconciling" | "Ready" | "Failed" | "Inactive";
   /** StatusReason contains details when deployment status is Failed */
   statusReason?: string;
-  /** Defaults to true and requires useBuildKit to have an effect. */
+  /** Defaults to true. */
   useBuildCache?: boolean | null;
-  /** Enables BuildKit when building Dockerfile. */
-  useBuildKit?: boolean | null;
 };
 export type Secret = {
   /** Component name of the component having the secret */
@@ -2756,10 +2752,8 @@ export type JobSummary = {
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
   triggeredFromWebhook: boolean;
-  /** Defaults to true and requires useBuildKit to have an effect. */
+  /** Defaults to true. */
   useBuildCache?: boolean | null;
-  /** Enables BuildKit when building Dockerfile. */
-  useBuildKit?: boolean | null;
 };
 export type ApplicationSummary = {
   /** Environments List of environments for this application */
@@ -2862,10 +2856,8 @@ export type Application = {
   /** Name the name of the application */
   name: string;
   registration: ApplicationRegistration;
-  /** UseBuildCache if build cache is used for building the application. Applicable when UseBuildKit is true. Default is true. */
+  /** UseBuildCache if build cache is used for building the application. Defaults to true. */
   useBuildCache: boolean;
-  /** UseBuildKit if buildkit is used for building the application */
-  useBuildKit: boolean;
   /** UserIsAdmin if user is member of application's admin groups */
   userIsAdmin: boolean;
 };
@@ -3277,10 +3269,8 @@ export type Job = {
   triggeredBy?: string;
   /** TriggeredFromWebhook If true, the job was triggered from a webhook */
   triggeredFromWebhook: boolean;
-  /** Defaults to true and requires useBuildKit to have an effect. */
+  /** Defaults to true. */
   useBuildCache?: boolean | null;
-  /** Enables BuildKit when building Dockerfile. */
-  useBuildKit?: boolean | null;
 };
 export type PipelineRun = {
   /** Ended timestamp */

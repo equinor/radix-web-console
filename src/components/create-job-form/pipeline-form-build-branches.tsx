@@ -28,8 +28,7 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
   const branches = useGetApplicationBranches(application)
   const hasBranches = Object.keys(branches).length > 0
   const [filteredBranches, setFilteredBranches] = useState<string[]>([])
-  const useBuildCache = application.useBuildKit && application.useBuildCache
-  const [overrideUseBuildCache, setOverrideUseBuildCache] = useState<boolean>(useBuildCache)
+  const [overrideUseBuildCache, setOverrideUseBuildCache] = useState<boolean>(application.useBuildCache)
   const [refreshBuildCache, setRefreshBuildCache] = useState<boolean>(false)
   const branchSelectId = useId()
   const toEnvironmentSelect = useId()
@@ -79,13 +78,11 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
 
     const pipelineParametersBuild: PipelineParametersBuild = {
       branch: buildBranch,
-      toEnvironment,
+      toEnvironment: toEnvironment,
+      refreshBuildCache: refreshBuildCache,
     }
-    if (application.useBuildKit) {
-      if (useBuildCache !== overrideUseBuildCache) {
-        pipelineParametersBuild.overrideUseBuildCache = overrideUseBuildCache
-      }
-      pipelineParametersBuild.refreshBuildCache = refreshBuildCache
+    if (application.useBuildCache !== overrideUseBuildCache) {
+      pipelineParametersBuild.overrideUseBuildCache = overrideUseBuildCache
     }
     const body = {
       appName: application.name,
@@ -192,27 +189,20 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
             )}
           </>
         )}
-        {application.useBuildKit && (
-          <>
-            <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
-              Build Kit enabled
-            </Typography>
-            <div className="checkbox-group">
-              <Checkbox
-                label="Use Build Cache"
-                name="overrideUseBuildCache"
-                checked={overrideUseBuildCache}
-                onChange={() => setOverrideUseBuildCache(!overrideUseBuildCache)}
-              />
-              <Checkbox
-                label="Refresh Build Cache"
-                name="refreshBuildCache"
-                checked={refreshBuildCache}
-                onChange={() => setRefreshBuildCache(!refreshBuildCache)}
-              />
-            </div>
-          </>
-        )}
+        <div className="checkbox-group">
+          <Checkbox
+            label="Use Build Cache"
+            name="overrideUseBuildCache"
+            checked={overrideUseBuildCache}
+            onChange={() => setOverrideUseBuildCache(!overrideUseBuildCache)}
+          />
+          <Checkbox
+            label="Refresh Build Cache"
+            name="refreshBuildCache"
+            checked={refreshBuildCache}
+            onChange={() => setRefreshBuildCache(!refreshBuildCache)}
+          />
+        </div>
         <div className="o-action-bar">
           {createJobState.isLoading && (
             <div>
