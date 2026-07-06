@@ -33,7 +33,7 @@ function getStopButtonText(status: Job['status']): string {
 }
 
 function getBuildCacheStatus(job: Job | undefined): string {
-  if (!job || job.useBuildKit !== true) {
+  if (!job) {
     return ''
   }
   const statuses = []
@@ -252,20 +252,10 @@ export const JobOverview = ({ appName, jobName }: Props) => {
                       Triggered {job.triggeredFromWebhook && <strong>from GitHub webhook</strong>} by{' '}
                       <strong>{job.triggeredBy || 'N/A'}</strong>
                     </Typography>
-                    {(job.pipeline === 'build-deploy' || job.pipeline === 'build') && (
-                      <>
-                        <Typography>
-                          Build Kit{' '}
-                          <strong>
-                            {job.useBuildKit == null ? 'unknown' : job.useBuildKit === true ? 'used' : 'not used'}
-                          </strong>
-                        </Typography>
-                        {job.useBuildKit === true && buildCacheStatus.length > 0 && (
-                          <Typography>
-                            Build Cache <strong>{buildCacheStatus}</strong>
-                          </Typography>
-                        )}
-                      </>
+                    {(job.pipeline === 'build-deploy' || job.pipeline === 'build') && buildCacheStatus.length > 0 && (
+                      <Typography>
+                        Build Cache <strong>{buildCacheStatus}</strong>
+                      </Typography>
                     )}
                     {(job.gitRef || job.branch || job.commitID) && (
                       <Typography>
