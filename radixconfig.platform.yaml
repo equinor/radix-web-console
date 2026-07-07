@@ -3,8 +3,6 @@ kind: RadixApplication
 metadata:
   name: radix-web-console
 spec:
-  build:
-    useBuildKit: true
   dnsAlias:
     - alias: "console"
       component: web

@@ -92,7 +92,6 @@ export default (
             application={{
               environments: x,
               userIsAdmin: true,
-              useBuildKit: false,
               useBuildCache: false,
               name: 'any-name',
               registration: {
