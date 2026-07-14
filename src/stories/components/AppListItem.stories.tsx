@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { addMinutes } from 'date-fns'
 import { AppListItem } from '../../components/app-list-item'
 
+/** A row in the applications list showing an app's name, favourite state, latest job status, vulnerabilities and resource utilization. */
 const meta = {
   title: 'Components/AppListItem',
   component: AppListItem,

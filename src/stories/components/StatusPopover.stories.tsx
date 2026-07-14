@@ -3,6 +3,7 @@ import { info_circle } from '@equinor/eds-icons'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { StatusPopover } from '../../components/status-popover/status-popover'
 
+/** A colored status chip that reveals additional detail in a popover on hover/click; the popover can be disabled. */
 const meta = {
   title: 'Components/StatusPopover',
   component: StatusPopover,

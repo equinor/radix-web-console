@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ImageHubSecretStatusBadge } from '../../../components/status-badges/image-hub-secret-status-badge'
+import {
+  ImageHubSecretBadgeTemplates,
+  ImageHubSecretStatusBadge,
+} from '../../../components/status-badges/image-hub-secret-status-badge'
 
-const statuses = ['Pending', 'Consistent'] as const
+const statuses = Object.keys(ImageHubSecretBadgeTemplates)
 
+/** Badge that shows whether a private image hub secret is set (`Consistent`) or still `Pending`. */
 const meta = {
   title: 'Components/Status Badges/Image Hub Secret',
   component: ImageHubSecretStatusBadge,

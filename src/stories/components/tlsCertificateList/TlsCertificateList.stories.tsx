@@ -7,6 +7,7 @@ import {
   singleCertificate,
 } from './tlsCertificateList.mock'
 
+/** Expandable list that inspects a TLS certificate chain, showing subject, issuer, validity and subject alternative names. */
 const meta = {
   title: 'Components/TlsCertificateList',
   component: TLSCertificateList,

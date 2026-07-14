@@ -7,6 +7,11 @@ import { ConfigureGitHubWebhook } from '../../components/configure-application-g
 // both components' props and the render consumes them (controls drive both).
 type Args = ComponentProps<typeof ConfigureDeployKey> & ComponentProps<typeof ConfigureGitHubWebhook>
 
+/**
+ * Onboarding guide shown when connecting an application to GitHub. It composes two
+ * sibling steps: adding a deploy key (`ConfigureDeployKey`) so Radix can clone the
+ * repository, and adding a webhook (`ConfigureGitHubWebhook`) so pushes trigger builds.
+ */
 const meta = {
   title: 'Components/ConfigureApplicationGithub',
   component: ConfigureDeployKey,

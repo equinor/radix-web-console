@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { JobsList } from '../../../components/jobs-list'
 import { mockedJobs } from './jobsList.mock'
 
+/** Sortable table of an application's pipeline jobs across every status and pipeline type, with an optional row `limit`. */
 const meta = {
   title: 'Components/JobsList',
   component: JobsList,

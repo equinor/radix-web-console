@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { expect, waitFor, within } from 'storybook/test'
 import { LoadingButton } from '../../components/button/loading-button'
 
+/** Button that shows a spinner and disables itself while its async `onClick` handler is running. */
 const meta = {
   title: 'Components/LoadingButton',
   component: LoadingButton,
   tags: ['autodocs'],
-  //   args: { onClick: fn() },
 } satisfies Meta<typeof LoadingButton>
 
 export default meta

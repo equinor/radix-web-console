@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Breadcrumb } from '../../components/breadcrumb'
 
+/** Navigational breadcrumb trail; the final entry (without a `to`) marks the current page. */
 const meta = {
   title: 'Components/Breadcrumb',
   component: Breadcrumb,

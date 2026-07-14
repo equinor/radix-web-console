@@ -1,19 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { RadixJobConditionBadge } from '../../../components/status-badges/radix-job-condition-badge'
+import {
+  JobConditionBadgeTemplates,
+  RadixJobConditionBadge,
+} from '../../../components/status-badges/radix-job-condition-badge'
 
-const statuses = [
-  'Waiting',
-  'Queued',
-  'Running',
-  'Succeeded',
-  'Completed',
-  'Stopping',
-  'Stopped',
-  'Active',
-  'StoppedNoChanges',
-  'Failed',
-] as const
+const statuses = Object.keys(JobConditionBadgeTemplates)
 
+/** Badge that shows the condition of a Radix pipeline job (e.g. Queued, Running, Succeeded, Failed). */
 const meta = {
   title: 'Components/Status Badges/Radix Job Condition',
   component: RadixJobConditionBadge,

@@ -1,21 +1,14 @@
 import { coffee } from '@equinor/eds-icons'
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { GenericStatusBadge } from '../../../components/status-badges/generic-status-badge'
+import { GenericBadgeTemplates, GenericStatusBadge } from '../../../components/status-badges/generic-status-badge'
 
-const types = [
-  'running',
-  'danger',
-  'failed',
-  'queued',
-  'waiting',
-  'stopped',
-  'stoppednochanges',
-  'success',
-  'succeeded',
-  'unknown',
-  'warning',
-] as const
+const types = Object.keys(GenericBadgeTemplates)
 
+/**
+ * Low-level, reusable status badge driven by a `type` (which controls the color and
+ * default icon) and free-form `children` label. It is the building block the more
+ * specific status badges are built on, and accepts a `customIconData` override.
+ */
 const meta = {
   title: 'Components/Status Badges/Generic',
   component: GenericStatusBadge,

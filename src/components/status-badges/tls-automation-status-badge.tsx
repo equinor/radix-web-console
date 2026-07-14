@@ -5,7 +5,10 @@ import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-bad
 
 type Status = TlsAutomation['status'] | 'Unknown'
 
-const BadgeTemplates: Record<Status, Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>> = {
+export const TLSAutomationBadgeTemplates: Record<
+  Status,
+  Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>
+> = {
   Pending: {
     type: 'warning',
     icon: <Icon data={time} />,
@@ -28,7 +31,7 @@ type Props = {
   status: Status
 }
 export function TLSAutomationStatusBadge({ status }: Props) {
-  const { type, icon, text } = BadgeTemplates[status]
+  const { type, icon, text } = TLSAutomationBadgeTemplates[status]
 
   return (
     <StatusBadgeTemplate type={type} icon={icon}>

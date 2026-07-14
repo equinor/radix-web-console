@@ -5,6 +5,10 @@ type Status = React.ComponentProps<typeof PipelineRunStatusBadge>['status']
 
 const statuses = Object.keys(BadgeTemplates) as Array<Status>
 
+/**
+ * Badge for a Tekton `PipelineRun`. It maps ~60 Tekton statuses onto a handful of
+ * visuals, so use the Playground/AllStatuses stories to inspect every individual status.
+ */
 const meta = {
   title: 'Components/Status Badges/Pipeline Run',
   component: PipelineRunStatusBadge,

@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { TLSAutomationStatusBadge } from '../../../components/status-badges/tls-automation-status-badge'
+import {
+  TLSAutomationBadgeTemplates,
+  TLSAutomationStatusBadge,
+} from '../../../components/status-badges/tls-automation-status-badge'
 
-const statuses = ['Pending', 'Success', 'Failed', 'Unknown'] as const
+const statuses = Object.keys(TLSAutomationBadgeTemplates)
 
+/** Badge that shows the state of automated (ACME) TLS certificate provisioning (Pending, Success, Failed or Unknown). */
 const meta = {
   title: 'Components/Status Badges/TLS Automation',
   component: TLSAutomationStatusBadge,

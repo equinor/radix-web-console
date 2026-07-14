@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ComponentStatusBadge } from '../../../components/status-badges/component-status-badge'
+import { ComponentBadgeTemplates, ComponentStatusBadge } from '../../../components/status-badges/component-status-badge'
 
-const statuses = ['Reconciling', 'Restarting', 'Stopped', 'Outdated', 'Consistent'] as const
+const statuses = Object.keys(ComponentBadgeTemplates)
 
+/** Badge that shows the reconciliation state of an application component (e.g. Consistent, Reconciling, Outdated). */
 const meta = {
   title: 'Components/Status Badges/Component',
   component: ComponentStatusBadge,

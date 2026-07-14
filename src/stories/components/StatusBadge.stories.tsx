@@ -3,6 +3,7 @@ import { coffee } from '@equinor/eds-icons'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { StatusBadgeTemplate } from '../../components/status-badges/status-badge-template'
 
+/** Presentational badge primitive: a colored chip with an optional icon and label. All status badges render through this template. */
 const meta = {
   title: 'Components/Status Badges/Template',
   component: StatusBadgeTemplate,

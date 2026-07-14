@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { ExternalDNSList } from '../../../components/external-dns-list'
 import { mockedExternalDnsList } from './externalDnsList.mock'
 
+/** Expandable list of external DNS aliases with their TLS certificates, covering manual and automated (ACME) certificate management. */
 const meta = {
   title: 'Components/ExternalDnsList',
   component: ExternalDNSList,

@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ProgressStatusBadge } from '../../../components/status-badges/progress-status-badge'
+import { ProgressBadgeTemplates, ProgressStatusBadge } from '../../../components/status-badges/progress-status-badge'
 
-const statuses = ['Running', 'Active', 'Succeeded', 'Completed', 'Failed', 'Waiting', 'Stopping', 'Stopped'] as const
+const statuses = Object.keys(ProgressBadgeTemplates)
 
+/** Badge that shows the progress state of a running task (e.g. Running, Succeeded, Failed, Stopped). */
 const meta = {
   title: 'Components/Status Badges/Progress',
   component: ProgressStatusBadge,

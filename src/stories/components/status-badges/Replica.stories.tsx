@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ReplicaStatusBadge } from '../../../components/status-badges/replica-status-badge'
+import { ReplicaBadgeTemplates, ReplicaStatusBadge } from '../../../components/status-badges/replica-status-badge'
 
-const statuses = ['Pending', 'Failed', 'Failing', 'Succeeded', 'Running', 'Starting', 'Stopped', 'Terminated'] as const
+const statuses = Object.keys(ReplicaBadgeTemplates)
 
+/** Badge that shows the runtime status of a single replica/pod (e.g. Running, Starting, Failing, Terminated). */
 const meta = {
   title: 'Components/Status Badges/Replica',
   component: ReplicaStatusBadge,

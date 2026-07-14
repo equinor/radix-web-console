@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { DeploymentStatusBadge } from '../../../components/status-badges/deployment-status-badge'
+import {
+  DeploymentBadgeTemplates,
+  DeploymentStatusBadge,
+} from '../../../components/status-badges/deployment-status-badge'
 
-const statuses = ['Reconciling', 'Failed', 'Inactive', 'Ready'] as const
+const statuses = Object.keys(DeploymentBadgeTemplates)
 
+/** Badge that shows the status of a deployment (Ready, Reconciling, Inactive or Failed). */
 const meta = {
   title: 'Components/Status Badges/Deployment',
   component: DeploymentStatusBadge,

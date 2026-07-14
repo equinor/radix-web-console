@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { DeploymentList } from '../../../components/deployments-list'
 import { mockedDeployments, repository } from './deploymentList.mock'
 
+/** Sortable table of an application's deployments, with variants for rendering inside an environment and for limiting the number of rows. */
 const meta = {
   title: 'Components/DeploymentList',
   component: DeploymentList,

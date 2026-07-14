@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ComponentSecretStatusBadge } from '../../../components/status-badges/component-secret-status-badge'
+import {
+  ComponentSecretBadgeTemplates,
+  ComponentSecretStatusBadge,
+} from '../../../components/status-badges/component-secret-status-badge'
 
-const statuses = ['Pending', 'Consistent', 'NotAvailable'] as const
+const statuses = Object.keys(ComponentSecretBadgeTemplates)
 
+/** Badge that shows the status of a component secret (Consistent, Pending or NotAvailable), falling back to "Unsupported". */
 const meta = {
   title: 'Components/Status Badges/Component Secret',
   component: ComponentSecretStatusBadge,

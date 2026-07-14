@@ -8,6 +8,7 @@ type Status = React.ComponentProps<typeof RadixJobSubPipelineStepConditionBadge>
 
 const statuses = Object.keys(JobSubPipelineStepConditionBadgeTemplates) as Array<Status>
 
+/** Badge that shows the condition of a single Tekton sub-pipeline step within a Radix job (Waiting, Running, Succeeded, Failed). */
 const meta = {
   title: 'Components/Status Badges/Radix Job Sub-Pipeline Step',
   component: RadixJobSubPipelineStepConditionBadge,

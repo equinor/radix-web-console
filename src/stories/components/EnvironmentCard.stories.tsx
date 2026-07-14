@@ -81,6 +81,7 @@ const baseArgs: EnvironmentCardLayoutProps = {
   utilization: utilization(0.4, 400),
 }
 
+/** Summary card for a single application environment: its status, active deployment, components, resource utilization and vulnerabilities. */
 const meta = {
   title: 'Components/Environment Card',
   component: EnvironmentCardLayout,

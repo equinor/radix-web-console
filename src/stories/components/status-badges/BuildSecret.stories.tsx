@@ -1,8 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { BuildSecretStatusBadge } from '../../../components/status-badges/build-secret-status-badge'
+import {
+  BuildSecretBadgeTemplates,
+  BuildSecretStatusBadge,
+} from '../../../components/status-badges/build-secret-status-badge'
 
-const statuses = ['Pending', 'Consistent'] as const
+const statuses = Object.keys(BuildSecretBadgeTemplates)
 
+/** Badge that shows whether a build secret has been provided (`Consistent`) or is still `Pending`. */
 const meta = {
   title: 'Components/Status Badges/Build Secret',
   component: BuildSecretStatusBadge,

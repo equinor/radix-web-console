@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 import { EventsList } from '../../../components/events-list'
 import { mockedEvents } from './eventList.mock'
 
+/** Collapsible table of Radix/Kubernetes events, used to surface warnings and activity for a resource. */
 const meta = {
   title: 'Components/EventList',
   component: EventsList,

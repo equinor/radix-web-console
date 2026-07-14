@@ -2,6 +2,7 @@ import { Button, Typography } from '@equinor/eds-core-react'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { Alert } from '../../components/alert'
 
+/** Inline alert/notice with an intent `type` (info, success, warning, danger), optional actions and rich children. */
 const meta = {
   title: 'Components/Alert',
   component: Alert,

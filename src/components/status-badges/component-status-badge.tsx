@@ -6,7 +6,7 @@ import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-bad
 
 type ComponentStatus = Required<AuxiliaryResourceDeployment | Component>['status']
 
-const BadgeTemplates = {
+export const ComponentBadgeTemplates = {
   Reconciling: { icon: <CircularProgress /> },
   Restarting: { icon: <CircularProgress /> },
   Stopped: { icon: <Icon data={stop} /> },
@@ -16,4 +16,4 @@ const BadgeTemplates = {
 
 export const ComponentStatusBadge: FunctionComponent<{
   status: ComponentStatus
-}> = ({ status }) => <StatusBadgeTemplate {...BadgeTemplates[status]}>{status}</StatusBadgeTemplate>
+}> = ({ status }) => <StatusBadgeTemplate {...ComponentBadgeTemplates[status]}>{status}</StatusBadgeTemplate>

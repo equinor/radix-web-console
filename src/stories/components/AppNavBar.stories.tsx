@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AppNavbar } from '../../components/app-navbar'
 
+/** Sidebar navigation for a single application, linking to its environments, jobs, configuration and other sections. */
 const meta = {
   title: 'Components/AppNavBar',
   component: AppNavbar,
