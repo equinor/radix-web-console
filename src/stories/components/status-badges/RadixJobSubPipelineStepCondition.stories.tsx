@@ -15,20 +15,18 @@ const meta = {
   argTypes: {
     status: { control: 'select', options: statuses },
   },
+  args: {
+    status: 'Running',
+  },
 } satisfies Meta<typeof RadixJobSubPipelineStepConditionBadge>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// Like Pipeline Run, this maps many statuses onto a few visuals. Named stories
-// cover the distinct visuals; Playground and AllStatuses expose every status.
 export const Waiting: Story = { args: { status: 'Waiting' } }
 export const Running: Story = { args: { status: 'Running' } }
 export const Succeeded: Story = { args: { status: 'Succeeded' } }
 export const Failed: Story = { args: { status: 'Failed' } }
-
-/** Pick any status from the control. */
-export const Playground: Story = { args: { status: 'Running' } }
 
 /** Every status rendered at once. */
 export const AllStatuses: Story = {
