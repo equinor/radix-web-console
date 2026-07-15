@@ -1,7 +1,7 @@
     import { FC, ReactNode } from 'react';
     import { BrowserRouter } from 'react-router';
 
-    export interface RouterDecoratorProps {
+    interface RouterDecoratorProps {
         children: ReactNode;
     }
     const RouterDecorator: FC<RouterDecoratorProps> = ({ children }) => {

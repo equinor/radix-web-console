@@ -16,20 +16,29 @@ export const Default: Story = {
   args: {
     children: 'Click me to start loading',
     onClick: async () => {
-      await asyncTimeout(1000)
+      await asyncTimeout(300)
     },
   },
-  play: async ({ canvas }) => {
+  play: async ({ canvas, userEvent, step }) => {
     const button = canvas.getByRole('button', {
       name: 'Click me to start loading',
     })
 
-    await button.click()
+    await step('Click the button to start loading', async () => {
+      await userEvent.click(button)
+    })
 
-    const spinner = within(button).getByRole('progressbar')
-    await expect(spinner).toBeVisible()
+    await step('Expect the spinner to be visible', async () => {
+      const spinner = within(button).queryByRole('progressbar')
+      await expect(spinner).toBeVisible()
+    })
 
-    await waitFor(() => expect(canvas.queryByRole('progressbar')).not.toBeInTheDocument())
+    await step('Wait for the spinner to disappear', async () => {
+      await waitFor(() => {
+        const spinner = within(button).queryByRole('progressbar')
+        expect(spinner).toBeNull()
+      })
+    })
   },
 }
 
