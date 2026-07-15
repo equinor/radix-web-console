@@ -4,11 +4,10 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "jsx": "react-jsx",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "moduleDetection": "force",
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": false,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -19,9 +18,10 @@
     "noImplicitOverride": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
-    "types": ["vitest/globals"]
+    "types": ["vitest/globals"],
+    "allowImportingTsExtensions": true
   },
-  "include": ["./src/**/*"],
+  "include": ["./src/**/*", "./.storybook/**/*"],
   "exclude": ["node_modules", "build", "storybook-static"],
   "references": [
     {
