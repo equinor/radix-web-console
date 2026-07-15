@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "start": "vite preview",
+    "preview": "vite preview",
     "build": "tsc --allowSyntheticDefaultImports --skipLibCheck && vite build",
     "test": "vitest watch",
     "test:no-watch": "vitest run",
