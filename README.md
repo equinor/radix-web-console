@@ -21,7 +21,7 @@ Good news: for development, you only need [Docker](https://store.docker.com/sear
 
     docker-compose up
 
-This builds a Docker image `radix-web`, runs it in the container `radix-web_container`, mounts the local directory into `/app` in the container, and runs the `npm start` script, which watches for changes and serves the app on port 3000 (the debugger also runs on port 9222). A few other containers also start up, related to authentication. For authenticated calls to the API to work, you should access the application on [port 8000](http://localhost:8000) instead of 3000.
+This builds a Docker image `radix-web`, runs it in the container `radix-web_container`, mounts the local directory into `/app` in the container, and runs the `npm run dev` script, which watches for changes and serves the app on port 3000 (the debugger also runs on port 9222). A few other containers also start up, related to authentication. For authenticated calls to the API to work, you should access the application on [port 8000](http://localhost:8000) instead of 3000.
 
 Stop docker-compose with Ctrl+C, but also run `docker-compose down` to clean the Docker state.
 
@@ -46,9 +46,9 @@ If you need to nuke `node_modules` you can stop the container and run:
 
 ### Without Docker
 
-If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm start` with `VITE_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
+If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm run dev` with `VITE_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
 
-`VITE_RADIX_API_BASE_URI=127.0.0.1:3002 npm start`
+`VITE_RADIX_API_BASE_URI=127.0.0.1:3002 npm run dev`
 
 Radix-API *must* run with `--useOutClusterClient=false` for this to work.
 
