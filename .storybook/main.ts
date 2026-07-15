@@ -10,6 +10,9 @@ const config: StorybookConfig = {
     "@storybook/addon-docs",
     "@storybook/addon-vitest"
   ],
-  "framework": "@storybook/react-vite"
+  "framework": "@storybook/react-vite",
+   core: {
+    disableTelemetry: true, // Opt out of storybook collecting telemetry data
+  },
 };
 export default config;
