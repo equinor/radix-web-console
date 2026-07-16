@@ -1,0 +1,101 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Guidelines" />
+
+# Guidelines
+
+Welcome to the Radix Web Console component library. This page explains how the
+Storybook is organized and the conventions we follow when writing stories.
+
+## Storybook categories
+
+This Storybook is divided into 4 different categories, based on what a component
+_does_ rather than where it lives in the codebase:
+
+- **Primitives** — Small, presentational building blocks driven entirely by
+  their props. They hold no data-fetching or business logic and are safe to
+  reuse anywhere. Examples: `Alert`, `Breadcrumb`, `Code`, `Loading Button` and
+  the `Status Badges`.
+- **Data Display** — Components that render a data model (usually shapes from
+  `store/radix-api`) as a list, table or card. They take their data as props, so
+  stories provide it through co-located `*.mock.ts` files. Examples:
+  `Deployment List`, `Jobs List`, `Event List`, `Environment Card`.
+- **Domain** — Larger, composite feature UI that ties several pieces together
+  for a specific part of the product. Examples: `App Nav Bar`, `Alerting`,
+  `Configure Application GitHub`.
+- **Overlays** — Components that float above the page, such as popovers,
+  tooltips and scrims. Example: `Status Popover`.
+
+A component's category is set through its story `title`, e.g.
+`title: 'Primitives/Alert'`. The path before the last `/` decides the category
+(and any sub-grouping, like `Primitives/Status Badges/...`).
+
+## Where stories live
+
+Stories are **co-located** with the component they document. A component's story
+sits next to its source file and uses a relative import:
+
+```
+src/components/alert/
+  index.tsx            // the component
+  index.stories.tsx    // its stories
+  style.css
+```
+
+For components made of several files, name the story after the file it
+documents (for example `code/code.stories.tsx` and `code/log.stories.tsx`).
+Mock data lives alongside the story as a kebab-case `*.mock.ts` file (for
+example `deployments-list/deployment-list.mock.ts`).
+
+> **Future direction:** we want to move away from `index.*` files, which are
+> hard to search. New React components should be named in PascalCase after the
+> component itself, and the story should share that name — for example
+> `Alert.tsx` and `Alert.stories.tsx`. Until the existing files are migrated,
+> follow the pattern of the component you are working next to.
+
+## Writing a story
+
+A minimal story defines a typed `meta` and one or more `Story` exports:
+
+```tsx
+import type { Meta, StoryObj } from '@storybook/react-vite'
+import { Alert } from '.'
+
+/** Short description of the component; this renders in the Docs tab. */
+const meta = {
+  title: 'Primitives/Alert',
+  component: Alert,
+  tags: ['autodocs'],
+} satisfies Meta<typeof Alert>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+export const Default: Story = {
+  args: { children: 'Hello world' },
+}
+```
+
+Conventions we follow:
+
+- **Use `tags: ['autodocs']`** so every component gets a generated Docs page.
+- **Add a one-line JSDoc above `meta`** describing the component, and above
+  individual stories to explain non-obvious variants. These comments render as
+  documentation.
+- **Cover the edge cases, not just the happy path.** Prefer stories such as
+  `Empty`, `Loading`, `Error`, `LongContent` and `Truncated` — these surface the
+  bugs the default view hides.
+- **Drive components through `args`.** Keep `render` functions for cases that
+  need composition (for example wrapping a component in a layout).
+- **Type mock data against the API models** in `store/radix-api` so stories
+  break when the contract changes.
+- **Keep accessibility green.** The a11y addon runs against every story; fix
+  violations rather than ignoring them.
+
+## What belongs in Storybook
+
+A component earns a story when its output is a pure function of its props. If a
+component fetches its own data, reads the router, or needs auth context, either
+split it into a presentational part that _can_ be storied, or leave it out — the
+mocking effort rarely pays off for whole pages and containers.
+
