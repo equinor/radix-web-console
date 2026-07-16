@@ -92,6 +92,18 @@ You can now merge `master` into `release`:
 
 Radix will build and deploy the new version.
 
+## Storybook
+
+Components are documented and previewed with [Storybook](https://storybook.js.org/). Start by reading the **Guidelines** page in the Storybook sidebar for how stories are organized. Not all components are available through storybook.
+
+Run it locally:
+
+    npm run storybook
+
+Build a static version:
+
+    npm run build-storybook
+
 ## Folder structure
 
 The base directory is organised as defined by Create React App. Within `/src`, however:
