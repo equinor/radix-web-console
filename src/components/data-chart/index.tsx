@@ -4,7 +4,7 @@ import { Chart } from 'react-google-charts'
 import { ScrimPopup } from '../scrim-popup'
 
 import './style.css'
-import type { ChartWrapperOptions } from 'react-google-charts/dist/types'
+import type { ChartWrapperOptions } from 'react-google-charts'
 import { externalUrls } from '../../externalUrls'
 import { useGetUptimeQuery } from '../../store/uptime-api'
 import { ExternalLink } from '../link/external-link'

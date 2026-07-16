@@ -6,7 +6,10 @@ import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-bad
 
 type JobSchedulerProgressStatus = ScheduledBatchSummary['status'] | ScheduledJobSummary['status']
 
-const BadgeTemplates: Record<JobSchedulerProgressStatus, Pick<StatusBadgeTemplateProps, 'icon' | 'type'>> = {
+export const ProgressBadgeTemplates: Record<
+  JobSchedulerProgressStatus,
+  Pick<StatusBadgeTemplateProps, 'icon' | 'type'>
+> = {
   Running: { icon: <Icon data={run} /> },
   Active: { icon: <Icon data={time} /> },
   Succeeded: { icon: <Icon data={check} /> },
@@ -20,5 +23,7 @@ const BadgeTemplates: Record<JobSchedulerProgressStatus, Pick<StatusBadgeTemplat
 export const ProgressStatusBadge: FunctionComponent<{
   status: JobSchedulerProgressStatus
 }> = ({ status }) => (
-  <StatusBadgeTemplate {...BadgeTemplates[status]}>{status === 'Active' ? 'Starting' : status}</StatusBadgeTemplate>
+  <StatusBadgeTemplate {...ProgressBadgeTemplates[status]}>
+    {status === 'Active' ? 'Starting' : status}
+  </StatusBadgeTemplate>
 )

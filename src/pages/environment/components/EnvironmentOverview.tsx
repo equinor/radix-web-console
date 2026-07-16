@@ -8,7 +8,7 @@ import { CommitHash } from '../../../components/commit-hash'
 import { DefaultAppAlias } from '../../../components/component/default-app-alias'
 import { DNSAliases } from '../../../components/component/dns-aliases'
 import { GitCommitTags } from '../../../components/component/git-commit-tags'
-import { DeploymentsList } from '../../../components/deployments-list'
+import { DeploymentListContainer } from '../../../components/deployments-list'
 import { EventsList } from '../../../components/events-list'
 import { GitTagLinks } from '../../../components/git-tags/git-tag-links'
 import { ExternalLink } from '../../../components/link/external-link'
@@ -241,7 +241,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
             {environment.deployments && (
               <div className="grid grid--gap-medium">
                 <Typography variant="h4">Previous deployments</Typography>
-                <DeploymentsList
+                <DeploymentListContainer
                   inEnv
                   appName={appName}
                   deployments={environment.deployments.filter(({ activeTo }) => !!activeTo)}

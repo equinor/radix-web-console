@@ -5,7 +5,7 @@ import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-bad
 
 type DeploymentStatus = Required<Deployment | DeploymentSummary>['status']
 
-const BadgeTemplates = {
+export const DeploymentBadgeTemplates = {
   Reconciling: { icon: <CircularProgress /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Inactive: { type: 'none', icon: <Icon data={stop} /> },
@@ -13,5 +13,5 @@ const BadgeTemplates = {
 } satisfies Record<DeploymentStatus, StatusBadgeTemplateProps>
 
 export const DeploymentStatusBadge = ({ status }: { status: DeploymentStatus }) => (
-  <StatusBadgeTemplate {...BadgeTemplates[status]}>{status}</StatusBadgeTemplate>
+  <StatusBadgeTemplate {...DeploymentBadgeTemplates[status]}>{status}</StatusBadgeTemplate>
 )

@@ -5,7 +5,7 @@ import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-bad
 
 type Status = Required<ReplicaSummary>['replicaStatus']['status']
 
-const BadgeTemplates = {
+export const ReplicaBadgeTemplates = {
   Pending: { icon: <Icon data={time} /> },
   Failed: { type: 'danger', icon: <Icon data={error_outlined} /> },
   Failing: { type: 'danger', icon: <Icon data={error_outlined} /> },
@@ -20,5 +20,5 @@ type Props = {
   status: Status
 }
 export const ReplicaStatusBadge = ({ status }: Props) => (
-  <StatusBadgeTemplate {...BadgeTemplates[status]}>{status}</StatusBadgeTemplate>
+  <StatusBadgeTemplate {...ReplicaBadgeTemplates[status]}>{status}</StatusBadgeTemplate>
 )

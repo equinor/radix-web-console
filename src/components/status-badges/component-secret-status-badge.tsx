@@ -9,7 +9,7 @@ const Unsupported = {
   type: 'warning',
   icon: <Icon data={error_outlined} />,
 }
-const BadgeTemplates = {
+export const ComponentSecretBadgeTemplates = {
   Pending: { type: 'warning', icon: <Icon data={time} /> },
   Consistent: { icon: <Icon data={check} /> },
   NotAvailable: {
@@ -23,6 +23,6 @@ type Props = {
   status?: SecretStatus
 }
 export const ComponentSecretStatusBadge = ({ status }: Props) => {
-  const props = status ? BadgeTemplates[status] : Unsupported
+  const props = status ? ComponentSecretBadgeTemplates[status] : Unsupported
   return <StatusBadgeTemplate {...props}>{status}</StatusBadgeTemplate>
 }

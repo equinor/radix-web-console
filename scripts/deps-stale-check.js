@@ -10,6 +10,14 @@ const excludeChecksOnPackages = [
     name: 'ts-node',
     reason: 'dependency of @rtk-query/codegen-openapi cli',
   },
+  {
+    name: '@storybook/addon-a11y',
+    reason: 'used in Storybook, included in addons in storybook main.ts file',
+  },
+  {
+    name: '@storybook/addon-docs',
+    reason: 'used in Storybook, included in addons in storybook main.ts file',
+  },
 ]
 
 // -----------------------------------------------------------------------------

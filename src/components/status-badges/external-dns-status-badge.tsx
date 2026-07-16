@@ -5,7 +5,10 @@ import { StatusBadgeTemplate, type StatusBadgeTemplateProps } from './status-bad
 
 type Status = Tls['status']
 
-const BadgeTemplates: Record<Status, Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>> = {
+export const ExternalDNSBadgeTemplates: Record<
+  Status,
+  Readonly<Pick<StatusBadgeTemplateProps, 'icon' | 'type'> & { text?: string }>
+> = {
   Pending: { type: 'warning', icon: <Icon data={time} />, text: 'Missing' },
   Consistent: { icon: <Icon data={check} />, text: 'Valid' },
   Invalid: { type: 'danger', icon: <Icon data={error_outlined} /> },
@@ -15,7 +18,7 @@ type Props = {
   status: Status
 }
 export function ExternalDNSStatusBadge({ status }: Props) {
-  const { type, icon, text } = BadgeTemplates[status]
+  const { type, icon, text } = ExternalDNSBadgeTemplates[status]
 
   return (
     <StatusBadgeTemplate type={type} icon={icon}>
