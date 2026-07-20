@@ -1,0 +1,61 @@
+.banner {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--eds_spacing_small);
+  padding: var(--eds_spacing_medium);
+  padding-right: var(--eds_spacing_x_large);
+  border-radius: var(--eds_spacing_x_small);
+  border: 1px solid transparent;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--eds_spacing_small);
+    min-width: 0;
+    margin-top: 2px; /* Aligns the content with the icon. Icon is 24 px and text is 20px */
+  }
+
+  .icon {
+    flex-shrink: 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--eds_spacing_small);
+    margin-top: var(--eds_spacing_x_small);
+  }
+
+  .closeButton {
+    position: absolute;
+    top: var(--eds_spacing_x_small);
+    right: var(--eds_spacing_x_small);
+  }
+
+  /* Variant - Info */
+  &.info {
+    background-color: var(--eds_ui_background__info);
+    border-color: var(--eds_infographic_substitute__blue_overcast);
+
+    .icon {
+      fill: var(--eds_infographic_substitute__blue_ocean);
+    }
+    .closeButton {
+      color: var(--eds_infographic_substitute__blue_ocean);
+    }
+  }
+
+  /* Variant - Warning */
+  &.warning {
+    background-color: var(--eds_ui_background__warning);
+    border-color: var(--eds_interactive_warning__text);
+
+    .icon {
+      fill: var(--eds_interactive_warning__text);
+    }
+    .closeButton {
+      color: var(--eds_interactive_warning__text);
+    }
+  }
+}
