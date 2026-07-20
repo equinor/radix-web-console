@@ -15,7 +15,7 @@ const userHasConfirmedClusterMigrationUpdateKey = 'userHasConfirmedClusterMigrat
  * Once confirmed, the banner will not be shown again for that user.
  * TODO: This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
  */
-export const TemporaryMigrationBanner = ({ className }: { className?: string }) => {
+export const TemporaryClusterMigrationBanner = ({ className }: { className?: string }) => {
   const [isConfigUpdated, setIsConfigUpdated] = useLocalStorage(userHasConfirmedClusterMigrationUpdateKey, false)
   const [isVisible, setIsVisible] = useState(true)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
