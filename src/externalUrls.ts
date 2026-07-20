@@ -17,7 +17,7 @@ export const externalUrls = {
   resourcesDocs: 'https://radix.equinor.com/guides/resource-request/',
   kubernetesResourcesCpuUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu',
   kubernetesResourcesMemoryUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory',
-  // TODO: ##1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
+  // TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
   // TODO: Get correct link from backend (currently mocked)
   migrateFederatedCredentialsGuide: 'I_AM_A_FAKE_LINK_FOR_MIGRATION_GUIDE',
   cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,

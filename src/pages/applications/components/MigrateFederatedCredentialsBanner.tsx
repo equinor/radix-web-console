@@ -11,7 +11,7 @@ const hideMigrateFederatedCredentialsBanner = 'hideMigrateFederatedCredentialsBa
  * Temporary migration banner for all applications.
  * Informs users about the cluster migration and prompts them to update their configuration.
  * The banner will be displayed until the user hides the banner.
- * TODO: ##1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
+ * TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
  */
 export const MigrateFederatedCredentialsBanner = ({ className }: { className?: string }) => {
   const [isBannerDismissed, setIsBannerDismissed] = useState(false)

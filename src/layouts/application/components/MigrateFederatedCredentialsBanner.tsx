@@ -15,7 +15,7 @@ interface MigrateFederatedCredentialsBannerProps {
  * Informs users about the cluster migration and prompts them to update their configuration.
  * The banner will be displayed until the user confirms that they have updated their configuration.
  * Once confirmed, the banner will not be shown again for that user.
- * TODO: ##1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
+ * TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
  */
 export const MigrateFederatedCredentialsBanner = ({ currentApplication }: MigrateFederatedCredentialsBannerProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
