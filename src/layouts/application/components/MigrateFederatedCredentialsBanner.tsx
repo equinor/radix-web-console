@@ -80,7 +80,7 @@ export const MigrateFederatedCredentialsBanner = ({
             By confirming, you acknowledge that you have updated the <strong>{currentApplication}</strong> configuration
             and are aware of the cluster migration.
           </Typography>
-          <Typography>This banner will not be shown again once you confirm the update.</Typography>
+          <Typography>This message will not be shown again once you confirm the update.</Typography>
         </Dialog.CustomContent>
         <Dialog.Actions>
           <Button onClick={updateUserConfirmation}>I confirm</Button>
