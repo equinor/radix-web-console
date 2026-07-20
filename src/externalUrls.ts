@@ -17,6 +17,8 @@ export const externalUrls = {
   resourcesDocs: 'https://radix.equinor.com/guides/resource-request/',
   kubernetesResourcesCpuUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu',
   kubernetesResourcesMemoryUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory',
+  // TODO: ##1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
+  migrateFederatedCredentialsGuide: 'https://www.radix.equinor.com/guides/migrate-federated-credentials/',
   cveVulnerabilityInformation: (cve: string) => `https://cve.mitre.org/cgi-bin/cvename.cgi?name=${cve}`,
   cweVulnerabilityInformation: (cwe: string) => `https://cwe.mitre.org/data/definitions/${extractCweNumber(cwe)}.html`,
 } as const;
