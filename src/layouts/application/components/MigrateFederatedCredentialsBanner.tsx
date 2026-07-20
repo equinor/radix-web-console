@@ -7,7 +7,6 @@ import { externalUrls } from '../../../externalUrls'
 import { useFederatedCredentialsMigratedAnnotationMutation } from '../../../store/radix-api'
 
 interface MigrateFederatedCredentialsBannerProps {
-  className?: string
   currentApplication: string
 }
 
@@ -18,14 +17,11 @@ interface MigrateFederatedCredentialsBannerProps {
  * Once confirmed, the banner will not be shown again for that user.
  * TODO: ##1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
  */
-export const MigrateFederatedCredentialsBanner = ({
-  className,
-  currentApplication,
-}: MigrateFederatedCredentialsBannerProps) => {
-  const [federatedCredentialsMigratedAnnotation] = useFederatedCredentialsMigratedAnnotationMutation()
-
+export const MigrateFederatedCredentialsBanner = ({ currentApplication }: MigrateFederatedCredentialsBannerProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isUpdateConfirmed, setIsUpdateConfirmed] = useState(false) // TODO: Check if needed
+
+  const [confirmFederatedCredentialsMigrated] = useFederatedCredentialsMigratedAnnotationMutation()
 
   const closeDialog = () => {
     setIsDialogOpen(false)
@@ -33,7 +29,7 @@ export const MigrateFederatedCredentialsBanner = ({
 
   const updateUserConfirmation = async () => {
     try {
-      await federatedCredentialsMigratedAnnotation({ appName: currentApplication }).unwrap()
+      await confirmFederatedCredentialsMigrated({ appName: currentApplication }).unwrap()
       successToast('User confirmation updated successfully.')
       setIsUpdateConfirmed(true)
     } catch {
@@ -49,7 +45,7 @@ export const MigrateFederatedCredentialsBanner = ({
 
   return (
     <>
-      <Banner className={className} variant="warning">
+      <Banner variant="warning">
         <Banner.Title>Action required: {currentApplication} is not updated yet</Banner.Title>
         <Banner.Message>
           <strong>{currentApplication}</strong> still needs to be updated for our cluster migration. Update the

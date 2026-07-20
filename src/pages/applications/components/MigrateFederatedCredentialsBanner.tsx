@@ -14,14 +14,21 @@ const hideMigrateFederatedCredentialsBanner = 'hideMigrateFederatedCredentialsBa
  * TODO: ##1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
  */
 export const MigrateFederatedCredentialsBanner = ({ className }: { className?: string }) => {
-  const [isVisible, setIsVisible] = useState(true)
-  const [isConfigUpdated, setIsConfigUpdated] = useLocalStorage(hideMigrateFederatedCredentialsBanner, false)
+  const [isBannerDismissed, setIsBannerDismissed] = useState(false)
+  const [isBannerHiddenInLocalStorage, setIsBannerHiddenInLocalStorage] = useLocalStorage(
+    hideMigrateFederatedCredentialsBanner,
+    false
+  )
 
   const dismissBanner = () => {
-    setIsVisible(false)
+    setIsBannerDismissed(true)
   }
 
-  if (!isVisible || isConfigUpdated) {
+  const hideBannerInLocalStorage = () => {
+    setIsBannerHiddenInLocalStorage(true)
+  }
+
+  if (isBannerDismissed || isBannerHiddenInLocalStorage) {
     return null
   }
 
@@ -46,12 +53,7 @@ export const MigrateFederatedCredentialsBanner = ({ className }: { className?: s
         <Button href={externalUrls.migrateFederatedCredentialsGuide} target="_blank" rel="noopener noreferrer">
           Read migration guide
         </Button>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            setIsConfigUpdated(true)
-          }}
-        >
+        <Button variant="outlined" onClick={hideBannerInLocalStorage}>
           Do not show again
         </Button>
       </Banner.Actions>
