@@ -27,9 +27,9 @@ export const MigrateFederatedCredentialsBanner = ({ className }: { className?: s
 
   return (
     <Banner className={className} variant="warning" onDismiss={dismissBanner}>
-      <Banner.Title>Action required: Cluster migration</Banner.Title>
+      <Banner.Title>Action required: Update configuration</Banner.Title>
       <Banner.Message>
-        We're migrating our clusters. Update your configuration before 30 August 2026 to keep your applications running.
+        We're migrating our clusters. Update your configuration before 30 August 2026 to keep your application running.
         Applications that aren't updated will stop working. See the{' '}
         <Typography
           link
