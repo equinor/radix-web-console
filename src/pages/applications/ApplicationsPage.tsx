@@ -1,6 +1,6 @@
 import AppList from '../../components/app-list'
 import { DocumentTitle } from '../../components/document-title'
-import { MigrateFederatedCredentialsBanner } from './components/MigrateFederatedCredentialsBanner'
+import { MigrateFederatedCredentialsBanner } from '../../components/migrateFederatedCredentialsBanner/MigrateFederatedCredentialsBanner'
 
 import './style.css'
 

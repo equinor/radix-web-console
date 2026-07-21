@@ -6,7 +6,7 @@ import { Dialog } from './Dialog'
 /**
  * A modal dialog that overlays the page to present focused content or confirmations. It is built on top of the EDS Dialog component and provides additional styling and functionality.
  *
- * Visit https://storybook.eds.equinor.com/?path=/docs/eds-2-0-beta-feedback-dialog--docs for EDS documentation on the Dialog component.
+ * Visit https://storybook.eds.equinor.com/?path=/docs/feedback-dialog--docs for EDS documentation on the Dialog component.
  */
 const meta = {
   title: 'Primitives/Dialog',
@@ -47,7 +47,7 @@ export const Default: Story = {
           </Dialog.Header>
           <Dialog.CustomContent>
             <Typography>This is the content of the dialog.</Typography>
-          </Dialog.CustomContent>{' '}
+          </Dialog.CustomContent>
           <Dialog.Actions>
             <Button onClick={() => setOpen(false)}>Close</Button>
           </Dialog.Actions>
