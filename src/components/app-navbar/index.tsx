@@ -10,7 +10,6 @@ import {
   settings,
   star_filled,
   star_outlined,
-  warning_outlined,
   world,
 } from '@equinor/eds-icons'
 import { clsx } from 'clsx'

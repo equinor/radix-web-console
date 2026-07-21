@@ -18,16 +18,20 @@ interface DialogRootProps extends DialogProps {
  * Wrapper for EDS Dialog component that allows for custom styling and width.
  * It also provides compound components for the dialog's title, header, content, and actions.
  */
-const DialogRoot = forwardRef<HTMLDivElement, DialogRootProps>(
-  ({ className, width, contentAutoGap, ...props }, ref) => (
+const DialogRoot = forwardRef<HTMLDivElement, DialogRootProps>((props, ref) => {
+  const { className, width, contentAutoGap, ...restProps } = props
+
+  const style = { '--contentWidth': width } as React.CSSProperties
+
+  return (
     <EDSDialog
       ref={ref}
       className={clsx(styles.dialog, { [styles.contentAutoGap]: contentAutoGap }, className)}
-      {...props}
-      style={{ '--contentWidth': width }}
+      {...restProps}
+      style={style}
     />
   )
-)
+})
 DialogRoot.displayName = 'Dialog'
 
 /** Override for Dialog.Actions */
