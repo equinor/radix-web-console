@@ -11,15 +11,12 @@ import { MigrateFederatedCredentialsBanner } from './components/MigrateFederated
 export function ApplicationLayout({ appName }: { appName: string }) {
   const { data: application, isSuccess } = useGetApplicationQuery({ appName }, { pollingInterval })
 
-  // TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
-  // TODO: Get correct bool from backend (currently mocked)
-  const showMigrationBanner = !application?.userHasConfirmedClusterMigrationUpdate
-
   return (
     <LayoutApp appName={appName}>
       <DocumentTitle title={appName} />
       <div className="o-layout-constrained">
-        {showMigrationBanner && <MigrateFederatedCredentialsBanner currentApplication={appName} />}
+        {/** TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations. */}
+        <MigrateFederatedCredentialsBanner currentApplication={appName} />
 
         {isSuccess && !application?.userIsAdmin && (
           <Alert type="warning">

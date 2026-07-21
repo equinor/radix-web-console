@@ -2807,10 +2807,6 @@ export type ApplicationRegistration = {
   adGroups: string[];
   /** AdUsers the users/service-principals that should be able to access the application */
   adUsers: string[];
-  /** Annotations of the RadixRegistration resource */
-  annotations?: {
-    [key: string]: string;
-  };
   /** AppID the unique application ID, which is a ULID */
   appId: string;
   /** ConfigBranch information */
@@ -2821,6 +2817,8 @@ export type ApplicationRegistration = {
   configurationItem?: string;
   /** Owner of the application (email). Can be a single person or a shared group email */
   creator: string;
+  /** HasMigratedFederatedCredential indicates whether federated credential annotation exists */
+  hasMigratedFederatedCredential: boolean;
   /** Name the unique name of the Radix application */
   name: string;
   /** Owner of the application (email). Can be a single person or a shared group email */

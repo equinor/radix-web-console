@@ -1,10 +1,17 @@
 import { Button, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Banner } from '../../../components/banner/Banner'
 import { Dialog } from '../../../components/dialog/Dialog'
 import { errorToast, successToast } from '../../../components/global-top-nav/styled-toaster'
 import { externalUrls } from '../../../externalUrls'
-import { useFederatedCredentialsMigratedAnnotationMutation } from '../../../store/radix-api'
+import { pollingInterval } from '../../../store/defaults'
+import {
+  radixApi,
+  useFederatedCredentialsMigratedAnnotationMutation,
+  useGetApplicationQuery,
+} from '../../../store/radix-api'
+import type { AppDispatch } from '../../../store/store'
 
 interface MigrateFederatedCredentialsBannerProps {
   currentApplication: string
@@ -12,40 +19,57 @@ interface MigrateFederatedCredentialsBannerProps {
 
 /**
  * Temporary migration banner for a specific application.
+ * Component mixes presentational and container logic, but is kept together for simplicity since it is temporary.
+ *
  * Informs users about the cluster migration and prompts them to update their configuration.
  * The banner will be displayed until the user confirms that they have updated their configuration.
  * Once confirmed, the banner will not be shown again for that user.
  * TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations.
  */
 export const MigrateFederatedCredentialsBanner = ({ currentApplication }: MigrateFederatedCredentialsBannerProps) => {
+  const [isDismissed, setIsDismissed] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isUpdateConfirmed, setIsUpdateConfirmed] = useState(false) // TODO: Check if needed
 
-  const [confirmFederatedCredentialsMigrated] = useFederatedCredentialsMigratedAnnotationMutation()
+  const dispatch = useDispatch<AppDispatch>()
+  const { data: application, isLoading } = useGetApplicationQuery({ appName: currentApplication }, { pollingInterval })
+  const [confirmFederatedCredentialsUpdated] = useFederatedCredentialsMigratedAnnotationMutation()
 
   const closeDialog = () => {
     setIsDialogOpen(false)
   }
 
+  const dismissBanner = () => {
+    setIsDismissed(true)
+  }
+
   const updateUserConfirmation = async () => {
+    // Optimistically update
+    const patch = dispatch(
+      radixApi.util.updateQueryData('getApplication', { appName: currentApplication }, (draft) => {
+        draft.registration.hasMigratedFederatedCredential = true
+      })
+    )
+
     try {
-      await confirmFederatedCredentialsMigrated({ appName: currentApplication }).unwrap()
+      await confirmFederatedCredentialsUpdated({ appName: currentApplication }).unwrap()
       successToast('User confirmation updated successfully.')
-      setIsUpdateConfirmed(true)
     } catch {
+      patch.undo()
       errorToast('Failed to update user confirmation.')
     } finally {
       closeDialog()
     }
   }
 
-  if (isUpdateConfirmed) {
+  const hasMigratedFederatedCredential = application?.registration?.hasMigratedFederatedCredential
+
+  if (isLoading || isDismissed || hasMigratedFederatedCredential) {
     return null
   }
 
   return (
     <>
-      <Banner variant="warning">
+      <Banner variant="warning" onDismiss={dismissBanner}>
         <Banner.Title>Action required: {currentApplication} is not updated yet</Banner.Title>
         <Banner.Message>
           <strong>{currentApplication}</strong> still needs to be updated for our cluster migration. Update the
