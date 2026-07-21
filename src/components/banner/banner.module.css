@@ -35,27 +35,27 @@
 
   /* Variant - Info */
   &.info {
-    background-color: var(--eds_ui_background__info);
-    border-color: var(--eds_infographic_substitute__blue_overcast);
+    background-color: var(--temp-eds-2-color-info-2);
+    border-color: var(--temp-eds-2-color-info-7);
 
     .icon {
-      fill: var(--eds_infographic_substitute__blue_ocean);
+      fill: var(--temp-eds-2-color-info-12);
     }
     .closeButton {
-      color: var(--eds_infographic_substitute__blue_ocean);
+      color: var(--temp-eds-2-color-info-12);
     }
   }
 
   /* Variant - Warning */
   &.warning {
-    background-color: var(--eds_ui_background__warning);
-    border-color: var(--eds_interactive_warning__text);
+    background-color: var(--temp-eds-2-color-warning-2);
+    border-color: var(--temp-eds-2-color-warning-7);
 
     .icon {
-      fill: var(--eds_interactive_warning__text);
+      fill: var(--temp-eds-2-color-warning-12);
     }
     .closeButton {
-      color: var(--eds_interactive_warning__text);
+      color: var(--temp-eds-2-color-warning-12);
     }
   }
 }
