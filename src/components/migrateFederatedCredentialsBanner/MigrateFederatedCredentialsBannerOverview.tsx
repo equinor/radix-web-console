@@ -1,7 +1,8 @@
-import { Button, Typography } from '@equinor/eds-core-react'
+import { Button } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { useLocalStorage } from '../../hooks/use-local-storage'
 import { Banner } from '../banner/Banner'
+import { ExternalLink } from '../link/external-link'
 import {
   hideMigrateFederatedCredentialsBanner,
   migrateFederatedCredentialsGuideUrl,
@@ -36,18 +37,10 @@ export const MigrateFederatedCredentialsBannerOverview = ({ className }: { class
     <Banner className={className} variant="info" onDismiss={dismissBanner}>
       <Banner.Title>Scheduled migration</Banner.Title>
       <Banner.Message>
-        We're migrating our clusters. Update your configuration before 30 August 2026 to keep your application running.
-        Applications that aren't updated will stop working. See the{' '}
-        <Typography
-          link
-          href={migrateFederatedCredentialsGuideUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          color="inherit"
-        >
-          migration guide
-        </Typography>{' '}
-        for details.
+        We're migrating our clusters. Read the{' '}
+        <ExternalLink href={migrateFederatedCredentialsGuideUrl}>migration guide</ExternalLink> to verify whether your
+        applications are affected by the migrations. If they are affected, update your configuration before 30 August
+        2026 to keep your applications running.
       </Banner.Message>
       <Banner.Actions>
         <Button href={migrateFederatedCredentialsGuideUrl} target="_blank" rel="noopener noreferrer">

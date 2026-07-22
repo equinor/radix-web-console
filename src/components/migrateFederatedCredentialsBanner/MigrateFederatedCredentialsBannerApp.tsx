@@ -11,6 +11,7 @@ import type { AppDispatch } from '../../store/store'
 import { Banner } from '../banner/Banner'
 import { Dialog } from '../dialog/Dialog'
 import { errorToast, successToast } from '../global-top-nav/styled-toaster'
+import { ExternalLink } from '../link/external-link'
 import { migrateFederatedCredentialsGuideUrl } from './migrateFederatedCredentialsBanner.const'
 
 interface MigrateFederatedCredentialsBannerAppProps {
@@ -74,37 +75,27 @@ export const MigrateFederatedCredentialsBannerApp = ({
   return (
     <>
       <Banner variant="warning" onDismiss={dismissBanner} className={className}>
-        <Banner.Title>Action required: {currentApplication} is not updated yet</Banner.Title>
+        <Banner.Title>Action Required: Check migration readiness</Banner.Title>
         <Banner.Message>
-          <strong>{currentApplication}</strong> still needs to be updated for our cluster migration. Update the
-          configuration before 30 August 2026 to keep it running. Applications that aren't updated will stop working.
-          See the{' '}
-          <Typography
-            link
-            href={migrateFederatedCredentialsGuideUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            color="inherit"
-          >
-            migration guide
-          </Typography>{' '}
-          for details.
+          Please read the <ExternalLink href={migrateFederatedCredentialsGuideUrl}>migration guide</ExternalLink> to see
+          if the cluster migration applies to {currentApplication}, then confirm by 30 August 2026 once you have
+          reviewed or updated the configuration.
         </Banner.Message>
         <Banner.Actions>
-          <Button onClick={() => setIsDialogOpen(true)}>Mark application as updated</Button>
+          <Button onClick={() => setIsDialogOpen(true)}>Confirm review</Button>
         </Banner.Actions>
       </Banner>
 
       <Dialog open={isDialogOpen} isDismissable onClose={closeDialog} contentAutoGap>
         <Dialog.Header>
-          <Dialog.Title>Confirm configuration update</Dialog.Title>
+          <Dialog.Title>Confirm configuration review</Dialog.Title>
         </Dialog.Header>
         <Dialog.CustomContent>
           <Typography>
-            By confirming, you acknowledge that you have updated the <strong>{currentApplication}</strong> configuration
-            and are aware of the cluster migration.
+            Confirm that you have reviewed the <strong>{currentApplication}</strong> configuration and updated it, if
+            needed, for the cluster migration.
           </Typography>
-          <Typography>This message will not be shown again once you confirm the update.</Typography>
+          <Typography>After you confirm, this message will not be shown again.</Typography>
         </Dialog.CustomContent>
         <Dialog.Actions>
           <Button onClick={updateUserConfirmation}>I confirm</Button>
