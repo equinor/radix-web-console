@@ -78,7 +78,7 @@ export const MigrateFederatedCredentialsBannerApp = ({
         <Banner.Title>Action Required: Check migration readiness</Banner.Title>
         <Banner.Message>
           Please read the <ExternalLink href={migrateFederatedCredentialsGuideUrl}>migration guide</ExternalLink> to see
-          if the cluster migration applies to {currentApplication}, then confirm by 30 August 2026 once you have
+          if the cluster migration applies to {currentApplication}, then confirm by 31 August 2026 once you have
           reviewed or updated the configuration.
         </Banner.Message>
         <Banner.Actions>

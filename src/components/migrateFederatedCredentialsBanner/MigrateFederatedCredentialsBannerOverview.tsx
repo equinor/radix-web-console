@@ -39,7 +39,7 @@ export const MigrateFederatedCredentialsBannerOverview = ({ className }: { class
       <Banner.Message>
         We're migrating our clusters. Read the{' '}
         <ExternalLink href={migrateFederatedCredentialsGuideUrl}>migration guide</ExternalLink> to verify whether your
-        applications are affected by the migrations. If they are affected, update your configuration before 30 August
+        applications are affected by the migrations. If they are affected, update your configuration before 31 August
         2026 to keep your applications running.
       </Banner.Message>
       <Banner.Actions>
