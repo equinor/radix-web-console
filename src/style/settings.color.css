@@ -149,6 +149,15 @@
   --color-severity-unknown-light: #ffe7cc;
   --color-severity-none: #565656;
   --color-severity-none-light: #dcdcdc;
+
+  /* TODO: Should be from EDS 2.0, but it is recommended to wait before using 2.0 tokens */
+  --temp-eds-2-color-warning-2: #fffcf0;
+  --temp-eds-2-color-warning-7: #e89959;
+  --temp-eds-2-color-warning-12: #8a4100;
+
+  --temp-eds-2-color-info-2: #f4ffff;
+  --temp-eds-2-color-info-7: #6fb6e9;
+  --temp-eds-2-color-info-12: #015e8d;
 }
 
 .cluster-type--playground:root {

@@ -44,3 +44,4 @@ export default getStore() // global store
 
 export type RootStore = typeof store
 export type RootState = ReturnType<RootStore['getState']>
+export type AppDispatch = RootStore['dispatch']

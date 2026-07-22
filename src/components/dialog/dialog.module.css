@@ -1,0 +1,26 @@
+/*
+* EDS overwrite: Widen the dialog beyond the narrow EDS default
+* Double class to increase specificity and override EDS styles
+*/
+.dialog.dialog {
+  --contentWidth: 32rem;
+  width: min(var(--contentWidth), calc(100vw - 2 * var(--eds_spacing_large)));
+
+  /* EDS overwrite: Allows smaller custom content */
+  .customContent {
+    min-height: 1rem;
+  }
+
+  /* EDS overwrite: Add default gap between action buttons */
+  .actions {
+    display: flex;
+    gap: var(--eds_spacing_small);
+  }
+
+  /** Allows custom content to have a medium gap when contentAutoGap is enabled */
+  &.contentAutoGap .customContent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--eds_spacing_medium);
+  }
+}
