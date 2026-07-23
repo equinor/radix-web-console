@@ -48,14 +48,14 @@ export interface AppListItemProps {
   handler: FavouriteClickedHandler
   isPlaceholder?: boolean
   isFavourite?: boolean
+  isLoading: boolean
   showStatus?: boolean
   isDeleted?: boolean
-  isLoading: boolean
 }
 
 const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = ['critical', 'high']
 
-export const AppListItem = ({ isLoading, ...props }: AppListItemProps) => {
+export const AppListItemContainer = ({ isLoading, ...props }: AppListItemProps) => {
   const { data: vulnerabilitySummary, isLoading: isVulnSummaryLoading } = useGetApplicationVulnerabilitySummariesQuery(
     { appName: props.appName },
     { pollingInterval: 0, skip: !props.showStatus }
@@ -67,7 +67,7 @@ export const AppListItem = ({ isLoading, ...props }: AppListItemProps) => {
   )
 
   return (
-    <AppListItemLayout
+    <AppListItem
       utilization={utilization}
       vulnerabilitySummary={vulnerabilitySummary}
       isLoading={isUtilizationLoading || isVulnSummaryLoading || isLoading}
@@ -90,7 +90,7 @@ export type AppListItemLayoutProps = {
   vulnerabilitySummary?: ApplicationVulnerabilities
 }
 
-export const AppListItemLayout = ({
+export const AppListItem = ({
   latestJob,
   environments,
   isDeleted,
@@ -139,56 +139,54 @@ export const AppListItemLayout = ({
           </div>
 
           {showStatus && (
-            <>
-              <div className="grid grid--gap-small app-list-status">
-                <div className="app-list-status--last-job grid--gap-small">
-                  {isDeleted && !isLoading && (
+            <div className="grid grid--gap-small app-list-status">
+              <div className="app-list-status--last-job grid--gap-small">
+                {isDeleted && !isLoading && (
+                  <div>
+                    <Tooltip title="This application does not exist">
+                      <Icon data={error_outlined} />
+                    </Tooltip>
+                  </div>
+                )}
+                {(!isDeleted || isLoading) && (
+                  <>
                     <div>
-                      <Tooltip title="This application does not exist">
-                        <Icon data={error_outlined} />
-                      </Tooltip>
+                      {time && (
+                        <Typography style={{ fontWeight: 400 }}>
+                          {formatDistanceToNow(new Date(time), {
+                            addSuffix: true,
+                          })}
+                        </Typography>
+                      )}
                     </div>
-                  )}
-                  {(!isDeleted || isLoading) && (
-                    <>
-                      <div>
-                        {time && (
-                          <Typography style={{ fontWeight: 400 }}>
-                            {formatDistanceToNow(new Date(time), {
-                              addSuffix: true,
-                            })}
-                          </Typography>
-                        )}
-                      </div>
 
-                      <div className="grid grid--gap-x-small grid--auto-columns">
-                        {(latestJobIsChanging || isLoading) && (
-                          <CircularProgress
-                            // @ts-expect-error the other status icons are 22px, we should match it
-                            size={22}
-                          />
-                        )}
+                    <div className="grid grid--gap-x-small grid--auto-columns">
+                      {(latestJobIsChanging || isLoading) && (
+                        <CircularProgress
+                          // @ts-expect-error the other status icons are 22px, we should match it
+                          size={22}
+                        />
+                      )}
 
-                        {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
-                          <EnvironmentVulnerabilityIndicator
-                            title="Vulnerabilities"
-                            size={22}
-                            summary={filterFields(vulnerabilities, visibleKeys)}
-                            visibleKeys={visibleKeys}
-                          />
-                        )}
+                      {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
+                        <EnvironmentVulnerabilityIndicator
+                          title="Vulnerabilities"
+                          size={22}
+                          summary={filterFields(vulnerabilities, visibleKeys)}
+                          visibleKeys={visibleKeys}
+                        />
+                      )}
 
-                        <UtilizationPopover path={''} utilization={utilization} minimumSeverity={Severity.Warning} />
+                      <UtilizationPopover path={''} utilization={utilization} minimumSeverity={Severity.Warning} />
 
-                        {statusElements && (
-                          <EnvironmentCardStatus title="Application status" statusElements={statusElements} />
-                        )}
-                      </div>
-                    </>
-                  )}
-                </div>
+                      {statusElements && (
+                        <EnvironmentCardStatus title="Application status" statusElements={statusElements} />
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>

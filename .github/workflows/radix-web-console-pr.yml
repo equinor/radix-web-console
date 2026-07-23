@@ -27,6 +27,7 @@ jobs:
         with:
           node-version-file: "package.json"
       - run: npm ci
+      - run: npx playwright install --with-deps chromium
       - run: CI=true TZ=Europe/Oslo npm run test:no-watch
 
   deps:

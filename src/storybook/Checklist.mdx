@@ -1,0 +1,41 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Checklist" />
+
+# Checklist
+
+When creating or migrating a component there are several things to check before
+merging. Use this list as a final review pass — the
+[Guidelines](?path=/docs/guidelines--docs) page explains the conventions behind
+each point.
+
+## All components
+
+- [ ] The story lives next to the component and follows the naming convention
+      (`Component.stories.tsx`).
+- [ ] `meta` has a `title` that places the component in the right category
+      (`Primitives`, `Data Display`, `Domain` or `Overlays`).
+- [ ] `tags: ['autodocs']` is set so a Docs page is generated.
+- [ ] A one-line JSDoc above `meta` describes the component; non-obvious stories
+      have their own JSDoc explaining the variant.
+- [ ] All props are covered in Storybook, either through `args`/controls or
+      dedicated stories.
+- [ ] Edge cases are covered, not just the happy path (e.g. `Empty`, `Loading`,
+      `Error`, `LongContent`, `Truncated`).
+- [ ] Mock data is typed against the API models in `store/radix-api` and lives
+      in a co-located `*.mock.ts` file.
+- [ ] Interactions are covered inside the `play()` function.
+- [ ] Component passes accessibility checks (open Storybook and run the tests
+      locally to verify).
+
+## Composite (compound) components only
+
+- [ ] All composite subcomponents are registered under `subcomponents` in the
+      story.
+- [ ] All composite subcomponents render as `Component.SubComponent` when used
+      in examples.
+- [ ] All subcomponents are exported. This helps autodocs figure out props for
+      the documentation.
+- [ ] Props that are composed through subcomponents (e.g. `children`) or wired
+      up by the story (e.g. `open`/`onClose`) are hidden from the controls table
+      via `argTypes: { … control: false }`.

@@ -1,3 +1,7 @@
 .o-layout-single.applications {
   padding: var(--eds_spacing_medium);
 }
+
+.temporary-migration-banner {
+  margin-bottom: var(--eds_spacing_medium);
+}

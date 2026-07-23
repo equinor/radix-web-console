@@ -758,6 +758,28 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    getApplicationEvents: build.query<GetApplicationEventsApiResponse, GetApplicationEventsApiArg>({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/events`,
+        headers: {
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
+        },
+      }),
+    }),
+    federatedCredentialsMigratedAnnotation: build.mutation<
+      FederatedCredentialsMigratedAnnotationApiResponse,
+      FederatedCredentialsMigratedAnnotationApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/applications/${queryArg.appName}/federated-credentials-migrated`,
+        method: "PATCH",
+        headers: {
+          "Impersonate-User": queryArg["Impersonate-User"],
+          "Impersonate-Group": queryArg["Impersonate-Group"],
+        },
+      }),
+    }),
     getApplicationJobs: build.query<GetApplicationJobsApiResponse, GetApplicationJobsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs`,
@@ -1986,6 +2008,24 @@ export type GetEnvironmentResourcesUtilizationApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
+export type GetApplicationEventsApiResponse = /** status 200 Successful get application events */ Event[];
+export type GetApplicationEventsApiArg = {
+  /** Name of the application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  "Impersonate-User"?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
+  "Impersonate-Group"?: string;
+};
+export type FederatedCredentialsMigratedAnnotationApiResponse = unknown;
+export type FederatedCredentialsMigratedAnnotationApiArg = {
+  /** name of application */
+  appName: string;
+  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
+  "Impersonate-User"?: string;
+  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
+  "Impersonate-Group"?: string;
+};
 export type GetApplicationJobsApiResponse = /** status 200 Successful operation */ JobSummary[];
 export type GetApplicationJobsApiArg = {
   /** name of Radix application */
@@ -2777,6 +2817,8 @@ export type ApplicationRegistration = {
   configurationItem?: string;
   /** Owner of the application (email). Can be a single person or a shared group email */
   creator: string;
+  /** HasMigratedFederatedCredential indicates whether federated credential annotation exists */
+  hasMigratedFederatedCredential: boolean;
   /** Name the unique name of the Radix application */
   name: string;
   /** Owner of the application (email). Can be a single person or a shared group email */
@@ -3615,6 +3657,8 @@ export const {
   useStartEnvironmentMutation,
   useStopEnvironmentMutation,
   useGetEnvironmentResourcesUtilizationQuery,
+  useGetApplicationEventsQuery,
+  useFederatedCredentialsMigratedAnnotationMutation,
   useGetApplicationJobsQuery,
   useGetApplicationJobQuery,
   useGetPipelineJobStepLogsQuery,

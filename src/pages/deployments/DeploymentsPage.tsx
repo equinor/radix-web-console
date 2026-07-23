@@ -1,6 +1,6 @@
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
-import { DeploymentsList } from '../../components/deployments-list'
+import { DeploymentListContainer } from '../../components/deployments-list'
 import { DocumentTitle } from '../../components/document-title'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
@@ -19,7 +19,7 @@ function DeploymentsPage({ appName }: Props) {
         links={[{ label: appName, to: routeWithParams(routes.app, { appName }) }, { label: 'Deployments' }]}
       />
       <AsyncResource asyncState={state}>
-        <DeploymentsList appName={appName} deployments={deployments} />
+        <DeploymentListContainer appName={appName} deployments={deployments} />
       </AsyncResource>
     </>
   )

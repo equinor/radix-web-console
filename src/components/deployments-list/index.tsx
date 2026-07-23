@@ -9,17 +9,21 @@ import { DeploymentSummaryTableRow } from './deployment-summary-table-row'
 
 import './style.css'
 
-export interface DeploymentsListProps {
+export interface DeploymentListProps {
   appName: string
   deployments?: Readonly<Array<DeploymentSummary>>
   limit?: number
   inEnv?: boolean
+  repository?: string
 }
 
-export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({ appName, deployments, limit, inEnv }) => {
-  const { data } = useGetApplicationQuery({ appName }, { pollingInterval })
-  const repo = data?.registration?.repository
-
+export const DeploymentList: FunctionComponent<DeploymentListProps> = ({
+  appName,
+  deployments,
+  limit,
+  inEnv,
+  repository,
+}) => {
   const [sortedData, setSortedData] = useState(deployments || [])
   const [dateSort, setDateSort] = useState<SortDirection>('descending')
   const [envSort, setEnvSort] = useState<SortDirection>()
@@ -66,7 +70,7 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({ appNa
             </Table.Head>
             <Table.Body>
               {sortedData.map((x, i) => (
-                <DeploymentSummaryTableRow key={i} appName={appName} deployment={x} inEnv={inEnv} repo={repo} />
+                <DeploymentSummaryTableRow key={i} appName={appName} deployment={x} inEnv={inEnv} repo={repository} />
               ))}
             </Table.Body>
           </Table>
@@ -80,5 +84,26 @@ export const DeploymentsList: FunctionComponent<DeploymentsListProps> = ({ appNa
         </div>
       )}
     </div>
+  )
+}
+
+export interface DeploymentListContainerProps {
+  appName: string
+  deployments?: Readonly<Array<DeploymentSummary>>
+  limit?: number
+  inEnv?: boolean
+}
+
+export const DeploymentListContainer: FunctionComponent<DeploymentListContainerProps> = ({
+  appName,
+  deployments,
+  limit,
+  inEnv,
+}) => {
+  const { data } = useGetApplicationQuery({ appName }, { pollingInterval })
+  const repository = data?.registration?.repository
+
+  return (
+    <DeploymentList appName={appName} deployments={deployments} limit={limit} inEnv={inEnv} repository={repository} />
   )
 }

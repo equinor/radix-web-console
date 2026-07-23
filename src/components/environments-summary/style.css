@@ -28,8 +28,8 @@
 }
 
 .env_card_content {
-  padding: 0 var(--eds_spacing_medium);
-  margin-bottom: var(--eds_spacing_medium);
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
 }
 
 .env_card_tags {

@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 
 import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
 import { dataSorter, sortCompareString } from '../../utils/sort-utils'
-import { AppListItem } from '../app-list-item'
+import { AppListItemContainer } from '../app-list-item'
 import CreateApplication from '../create-application'
 
 import './style.css'
@@ -25,7 +25,7 @@ import { Alert } from '../alert'
 const LoadingCards = ({ amount }: { amount: number }) => (
   <div className="app-list__list loading">
     {[...Array(amount || 1)].map((_, i) => (
-      <AppListItem key={i} appName={''} handler={(e) => e.preventDefault()} isPlaceholder isLoading={false} />
+      <AppListItemContainer key={i} appName={''} handler={(e) => e.preventDefault()} isPlaceholder isLoading={false} />
     ))}
   </div>
 )
@@ -107,97 +107,93 @@ export default function AppList() {
       </div>
       <div className="app-list">
         {favouriteNames?.length > 0 ? (
-          <>
-            <div className="grid grid--gap-medium app-list--section">
-              <div className="app-list__list">
-                {favouriteNames.map((appName) => {
-                  const app = favsData?.find((a) => a.name === appName)
-                  return (
-                    <AppListItem
-                      key={appName}
-                      appName={appName}
-                      isDeleted={!app}
-                      environments={app?.environments}
-                      latestJob={app?.latestJob}
-                      handler={(e) => {
-                        changeFavouriteApplication(appName, false)
-                        e.preventDefault()
-                      }}
-                      isFavourite
-                      showStatus
-                      isLoading={favsState.isLoading}
-                    />
-                  )
-                })}
-              </div>
+          <div className="grid grid--gap-medium app-list--section">
+            <div className="app-list__list">
+              {favouriteNames.map((appName) => {
+                const app = favsData?.find((a) => a.name === appName)
+                return (
+                  <AppListItemContainer
+                    key={appName}
+                    appName={appName}
+                    isDeleted={!app}
+                    environments={app?.environments}
+                    latestJob={app?.latestJob}
+                    handler={(e) => {
+                      changeFavouriteApplication(appName, false)
+                      e.preventDefault()
+                    }}
+                    isFavourite
+                    showStatus
+                    isLoading={favsState.isLoading}
+                  />
+                )
+              })}
             </div>
-          </>
+          </div>
         ) : (
           <Typography>No favourites</Typography>
         )}
-        <>
-          <div className="applications-list-title-actions">
-            <Typography variant="body_short_bold">All applications</Typography>
-            <Button
-              className={'action--justify-end'}
-              variant="outlined"
-              color="primary"
-              disabled={showAppsQueryState.isLoading || showAppsQueryState.isFetching}
-              onClick={refreshKnownApps}
-            >
-              {showAppsQueryState.isLoading || showAppsQueryState.isFetching ? (
-                <CircularProgress size={16} />
-              ) : (
-                <Icon data={refresh} />
-              )}
-              Refresh list
-            </Button>
-          </div>
-          {showAppsQueryState.isError && (
-            <div>
-              <Alert type="danger">Failed to load applications. {getFetchErrorMessage(showAppsQueryState.error)}</Alert>
-            </div>
-          )}
-          <div className="grid grid--gap-medium app-list--section">
-            {knownAppNames?.length > 0 ? (
-              <div className="app-list__list">
-                {knownApps.map((app) => {
-                  return (
-                    <AppListItem
-                      key={app.name}
-                      appName={app.name}
-                      handler={(e) => {
-                        changeFavouriteApplication(app.name, !app.isFavourite)
-                        e.preventDefault()
-                      }}
-                      isFavourite={app.isFavourite}
-                      isLoading={false}
-                    />
-                  )
-                })}
-              </div>
+        <div className="applications-list-title-actions">
+          <Typography variant="body_short_bold">All applications</Typography>
+          <Button
+            className={'action--justify-end'}
+            variant="outlined"
+            color="primary"
+            disabled={showAppsQueryState.isLoading || showAppsQueryState.isFetching}
+            onClick={refreshKnownApps}
+          >
+            {showAppsQueryState.isLoading || showAppsQueryState.isFetching ? (
+              <CircularProgress size={16} />
             ) : (
-              <>
-                {showAppsQueryState.status === QueryStatus.fulfilled || knowAppNamesLastRefresh > 0 ? (
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: 'var(--eds_spacing_medium)',
-                    }}
-                  >
-                    <Typography variant="h3">No applications yet</Typography>
-                    <Typography>Applications that you create (or have access to) appear here</Typography>
-                    <CreateApplication />
-                  </div>
-                ) : (
-                  <LoadingCards amount={6} />
-                )}
-              </>
+              <Icon data={refresh} />
             )}
+            Refresh list
+          </Button>
+        </div>
+        {showAppsQueryState.isError && (
+          <div>
+            <Alert type="danger">Failed to load applications. {getFetchErrorMessage(showAppsQueryState.error)}</Alert>
           </div>
-        </>
+        )}
+        <div className="grid grid--gap-medium app-list--section">
+          {knownAppNames?.length > 0 ? (
+            <div className="app-list__list">
+              {knownApps.map((app) => {
+                return (
+                  <AppListItemContainer
+                    key={app.name}
+                    appName={app.name}
+                    handler={(e) => {
+                      changeFavouriteApplication(app.name, !app.isFavourite)
+                      e.preventDefault()
+                    }}
+                    isFavourite={app.isFavourite}
+                    isLoading={false}
+                  />
+                )
+              })}
+            </div>
+          ) : (
+            <>
+              {showAppsQueryState.status === QueryStatus.fulfilled || knowAppNamesLastRefresh > 0 ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: 'var(--eds_spacing_medium)',
+                  }}
+                >
+                  <Typography variant="h3">No applications yet</Typography>
+                  <Typography>Applications that you create (or have access to) appear here</Typography>
+                  <CreateApplication />
+                </div>
+              ) : (
+                <LoadingCards amount={6} />
+              )}
+            </>
+          )}
+        </div>
       </div>
     </article>
   )
