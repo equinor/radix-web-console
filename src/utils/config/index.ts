@@ -18,7 +18,7 @@ export const configVariables = {
   OAUTH2_CLIENT_ID: getVariable('OAUTH2_CLIENT_ID', '5687b237-eda3-4ec3-a2a1-023e85a2bd84'),
   OAUTH2_AUTHORITY: getVariable(
     'OAUTH2_AUTHORITY',
-    'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0'
+    'https://login.microsoftonline.com/3aa4a235-b6e2-48d5-9195-7fcf05b459b0/v2.0'
   ),
   RADIXAPI_SCOPES: getVariable(
     'RADIXAPI_SCOPES',
