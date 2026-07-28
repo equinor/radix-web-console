@@ -35,6 +35,7 @@ export function MsalAuthProvider({ children }: PropsWithChildren) {
       forceUpdate()
     }
   }, [activeAccount, dispatch])
+  
 
   const ctx = useMemo(() => {
     if (!activeAccount) {

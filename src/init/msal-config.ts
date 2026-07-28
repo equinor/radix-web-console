@@ -7,7 +7,6 @@ export const msalConfig: Configuration = {
     authority: configVariables.OAUTH2_AUTHORITY,
     knownAuthorities: [new URL(configVariables.OAUTH2_AUTHORITY).host],
     protocolMode: ProtocolMode.OIDC,
-
     OIDCOptions: {
       serverResponseType: ServerResponseType.QUERY,
     },
