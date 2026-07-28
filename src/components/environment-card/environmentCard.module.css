@@ -1,0 +1,40 @@
+.environmentCard {
+  background-color: var(--eds_ui_background__default);
+
+  box-shadow:
+    0 2px 4px 0 rgba(0, 0, 0, 0.14),
+    0 4px 5px 0 rgba(0, 0, 0, 0.12),
+    0 1px 10px 0 rgba(0, 0, 0, 0.2);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--eds_ui_background__medium);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+
+    .icon {
+      fill: var(--eds_interactive_primary__resting);
+      margin-right: 0.25rem;
+    }
+    .secondaryText {
+      color: var(--eds_text_static_icons__tertiary);
+    }
+  }
+
+  .footer {
+    --eds_button__padding_x: 0.5rem;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5rem;
+  }
+}
