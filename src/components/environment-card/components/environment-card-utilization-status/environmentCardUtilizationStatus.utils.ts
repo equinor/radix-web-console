@@ -21,7 +21,10 @@ export const flattenReplicaUtilization = (
   )
 
 export const getHighestSeverity = (a: SeverityWithReason, b: SeverityWithReason): SeverityWithReason =>
-  a.severity > b.severity ? a : b
+  SeverityMap[a.severity].rank > SeverityMap[b.severity].rank ? a : b
+
+export const isSeverityAtLeast = (severity: Severity, minimum: Severity): boolean =>
+  SeverityMap[severity].rank >= SeverityMap[minimum].rank
 
 const severityForRatio = (ratio: number, { low, high, max }: Thresholds): Severity => {
   if (ratio > max) return 'Critical'
@@ -30,14 +33,16 @@ const severityForRatio = (ratio: number, { low, high, max }: Thresholds): Severi
   return 'None'
 }
 
-const createSeverityWithReason = (value: number, severity: Severity): SeverityWithReason => ({
-  severity,
-  value,
-  reason:
-    severity !== 'None'
-      ? `${SeverityMap[severity].label}: ${(value * 100).toFixed()}% of requested`
-      : SeverityMap[severity].label,
-})
+const createSeverityWithReason = (value: number, severity: Severity): SeverityWithReason => {
+  const label = SeverityMap[severity].label
+
+  if (severity === 'None') {
+    return { severity, value, reason: label }
+  }
+
+  const percentOfRequested = `${(value * 100).toFixed()}% of requested`
+  return { severity, value, reason: `${label}: ${percentOfRequested}` }
+}
 
 const noAlert = createSeverityWithReason(0, 'None')
 

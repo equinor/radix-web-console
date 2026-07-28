@@ -1,4 +1,8 @@
 .environmentCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
   background-color: var(--eds_ui_background__default);
 
   box-shadow:
@@ -16,6 +20,7 @@
 
   .body {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;

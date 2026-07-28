@@ -4,7 +4,12 @@ import { StatusBadgeTemplate } from '../../../status-badges/status-badge-templat
 import { StatusPopover } from '../../../status-popover/status-popover'
 import { SeverityMap } from './environmentCardUtilizationStatus.const'
 import type { ReplicaUtilization, Severity } from './environmentCardUtilizationStatus.types'
-import { getHighestCPUAlert, getHighestMemoryAlert, getHighestSeverity } from './environmentCardUtilizationStatus.utils'
+import {
+  getHighestCPUAlert,
+  getHighestMemoryAlert,
+  getHighestSeverity,
+  isSeverityAtLeast,
+} from './environmentCardUtilizationStatus.utils'
 
 export interface EnvironmentCardUtilizationStatusProps {
   replicas: ReplicaUtilization[]
@@ -19,9 +24,13 @@ export const EnvironmentCardUtilizationStatus = ({
 }: EnvironmentCardUtilizationStatusProps) => {
   const highestMemoryAlert = getHighestMemoryAlert(replicas)
   const highestCPUAlert = getHighestCPUAlert(replicas)
-  const severity = getHighestSeverity(highestMemoryAlert, highestCPUAlert)
 
-  if (minimumSeverity !== undefined && severity.severity < minimumSeverity) {
+  const highestAlertTotal = getHighestSeverity(highestMemoryAlert, highestCPUAlert)
+
+  const isBelowMinimumSeverity =
+    minimumSeverity !== undefined && !isSeverityAtLeast(highestAlertTotal.severity, minimumSeverity)
+
+  if (isBelowMinimumSeverity) {
     return null
   }
 
@@ -29,11 +38,11 @@ export const EnvironmentCardUtilizationStatus = ({
     <StatusPopover
       icon={<Icon data={pressure} />}
       title="Resource Utilization Status"
-      label={showLabel ? SeverityMap[severity.severity].label : undefined}
-      type={SeverityMap[severity.severity].type}
-      disablePopover={severity.severity === 'None'}
+      label={showLabel ? SeverityMap[highestAlertTotal.severity].label : undefined}
+      type={SeverityMap[highestAlertTotal.severity].type}
+      disablePopover={highestAlertTotal.severity === 'None'}
     >
-      <div className={'grid grid--gap-small'}>
+      <div className="">
         <StatusBadgeTemplate type={SeverityMap[highestMemoryAlert.severity].type}>
           Memory {highestMemoryAlert.reason}
         </StatusBadgeTemplate>

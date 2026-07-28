@@ -9,8 +9,8 @@ export const MemoryThresholds: Thresholds = {
 }
 
 export const SeverityMap = {
-  None: { label: 'Normal Utilization', type: 'default' },
-  Information: { label: 'Low Utilization', type: 'default' },
-  Warning: { label: 'High Utilization', type: 'warning' },
-  Critical: { label: 'Critical Utilization', type: 'danger' },
-} satisfies Record<Severity, { label: string; type: StatusPopoverType }>
+  None: { rank: 0, label: 'Normal Utilization', type: 'default' },
+  Information: { rank: 1, label: 'Low Utilization', type: 'default' },
+  Warning: { rank: 2, label: 'High Utilization', type: 'warning' },
+  Critical: { rank: 3, label: 'Critical Utilization', type: 'danger' },
+} satisfies Record<Severity, { rank: number; label: string; type: StatusPopoverType }>
