@@ -18,4 +18,3 @@ export const msalConfig: Configuration = {
     protocolMode: ProtocolMode.OIDC,
   },
 }
-console.log('MSAL Config:', msalConfig)
