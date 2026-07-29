@@ -1,13 +1,11 @@
 import { type Configuration, ProtocolMode, ResponseMode } from '@azure/msal-browser'
 import { configVariables } from '../utils/config'
 
-const knownAuthorities = configVariables.OAUTH2_KNOWN_AUTHORITIES.split(' ').filter(Boolean)
-
 export const msalConfig: Configuration = {
   auth: {
     clientId: configVariables.OAUTH2_CLIENT_ID,
     authority: configVariables.OAUTH2_AUTHORITY,
-    knownAuthorities: knownAuthorities,
+    knownAuthorities: configVariables.OAUTH2_KNOWN_AUTHORITIES.split(' ').filter(Boolean), // Remove empty strings from the array
     OIDCOptions: {
       responseMode: ResponseMode.QUERY,
     },
@@ -20,3 +18,4 @@ export const msalConfig: Configuration = {
     protocolMode: ProtocolMode.OIDC,
   },
 }
+console.log('MSAL Config:', msalConfig)
