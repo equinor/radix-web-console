@@ -81,7 +81,7 @@ describe('getBuildSource', () => {
     expect(source).toEqual({
       type: 'not-built-yet',
       subtitle: '(Built from release-.*)',
-      label: 'Will build from branch release-.*',
+      label: 'Will build automatically',
       icon: github,
     })
   })

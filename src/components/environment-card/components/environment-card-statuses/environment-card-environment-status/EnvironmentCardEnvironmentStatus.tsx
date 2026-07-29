@@ -1,8 +1,9 @@
 import { Icon } from '@equinor/eds-core-react'
 import { upperFirst } from 'lodash-es'
-import type { EnvironmentStatusElement } from '../../../environment-card/components/EnvironmentCardStatuses'
-import { StatusBadgeTemplate } from '../../../status-badges/status-badge-template'
-import { StatusPopover } from '../../../status-popover/status-popover'
+import { memo } from 'react'
+import { StatusBadgeTemplate } from '../../../../status-badges/status-badge-template'
+import { StatusPopover } from '../../../../status-popover/status-popover'
+import type { EnvironmentStatusElements } from './environmentCardEnvironmentStatus.types'
 import {
   getIconForEnvironmentStatus,
   getMostSevereStatus,
@@ -10,11 +11,11 @@ import {
 } from './environmentCardEnvironmentStatus.utils'
 
 interface EnvironmentCardEnvironmentStatusProps {
-  statusElements: EnvironmentStatusElement
+  statusElements: EnvironmentStatusElements
 }
 
-export const EnvironmentCardEnvironmentStatus = ({ statusElements }: EnvironmentCardEnvironmentStatusProps) => {
-  const entries = Object.entries(statusElements)
+export const EnvironmentCardEnvironmentStatusComponent = (props: EnvironmentCardEnvironmentStatusProps) => {
+  const entries = Object.entries(props.statusElements)
 
   if (entries.length === 0) {
     return null
@@ -40,3 +41,5 @@ export const EnvironmentCardEnvironmentStatus = ({ statusElements }: Environment
     </StatusPopover>
   )
 }
+
+export const EnvironmentCardEnvironmentStatus = memo(EnvironmentCardEnvironmentStatusComponent)

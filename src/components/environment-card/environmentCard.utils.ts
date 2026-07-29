@@ -3,9 +3,11 @@ import type { Component } from '../../store/radix-api'
 import type {
   BranchInfo,
   EnvironmentCardBuildSource,
-  EnvironmentCardPublicComponent,
+  PublicComponent,
   PublicComponentsView,
 } from './environmentCard.types'
+
+export type { PublicComponent } from './environmentCard.types'
 
 /** Component environment variable that, when present, exposes a public URL. */
 export const URL_VAR_NAME = 'RADIX_PUBLIC_DOMAIN_NAME'
@@ -16,7 +18,7 @@ export const MAX_VISIBLE_PUBLIC_COMPONENTS = 2
  * Derives the publicly reachable components from raw component data by keeping
  * only those exposing a public URL through the {@link URL_VAR_NAME} variable.
  */
-export const getPublicComponents = (components: ReadonlyArray<Component> = []): EnvironmentCardPublicComponent[] =>
+export const getPublicComponents = (components: ReadonlyArray<Component> = []): PublicComponent[] =>
   components
     .filter((component) => component.variables?.[URL_VAR_NAME])
     .map((component) => ({
@@ -89,7 +91,7 @@ export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource =
  * ready to render "(+N more)" subtitle when some are collapsed.
  */
 export const getPublicComponentsView = (
-  components: ReadonlyArray<EnvironmentCardPublicComponent> = [],
+  components: ReadonlyArray<PublicComponent> = [],
   max: number = MAX_VISIBLE_PUBLIC_COMPONENTS
 ): PublicComponentsView => {
   const visible = components.slice(0, max)

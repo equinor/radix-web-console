@@ -11,6 +11,9 @@ export interface AlertProps {
   type?: AlertType
 }
 
+/**
+ * @deprecated Use the `Banner` component instead to better match EDS.
+ */
 export const Alert: FunctionComponent<PropsWithChildren<AlertProps>> = ({
   children,
   actions,

@@ -1,9 +1,9 @@
 import { Icon } from '@equinor/eds-core-react'
 import { pressure } from '@equinor/eds-icons'
-import { StatusBadgeTemplate } from '../../../status-badges/status-badge-template'
-import { StatusPopover } from '../../../status-popover/status-popover'
-import { SeverityMap } from './environmentCardUtilizationStatus.const'
-import type { ReplicaUtilization, Severity } from './environmentCardUtilizationStatus.types'
+import { StatusBadgeTemplate } from '../../../../status-badges/status-badge-template'
+import { StatusPopover } from '../../../../status-popover/status-popover'
+import { MINIMUM_SEVERITY, SEVERITY_MAP } from './environmentCardUtilizationStatus.const'
+import type { ReplicaUtilization } from './environmentCardUtilizationStatus.types'
 import {
   getHighestCPUAlert,
   getHighestMemoryAlert,
@@ -14,21 +14,16 @@ import {
 export interface EnvironmentCardUtilizationStatusProps {
   replicas: ReplicaUtilization[]
   showLabel?: boolean
-  minimumSeverity?: Severity
 }
 
-export const EnvironmentCardUtilizationStatus = ({
-  replicas,
-  showLabel,
-  minimumSeverity,
-}: EnvironmentCardUtilizationStatusProps) => {
+export const EnvironmentCardUtilizationStatus = ({ replicas, showLabel }: EnvironmentCardUtilizationStatusProps) => {
   const highestMemoryAlert = getHighestMemoryAlert(replicas)
   const highestCPUAlert = getHighestCPUAlert(replicas)
 
   const highestAlertTotal = getHighestSeverity(highestMemoryAlert, highestCPUAlert)
 
   const isBelowMinimumSeverity =
-    minimumSeverity !== undefined && !isSeverityAtLeast(highestAlertTotal.severity, minimumSeverity)
+    MINIMUM_SEVERITY !== undefined && !isSeverityAtLeast(highestAlertTotal.severity, MINIMUM_SEVERITY)
 
   if (isBelowMinimumSeverity) {
     return null
@@ -38,15 +33,15 @@ export const EnvironmentCardUtilizationStatus = ({
     <StatusPopover
       icon={<Icon data={pressure} />}
       title="Resource Utilization Status"
-      label={showLabel ? SeverityMap[highestAlertTotal.severity].label : undefined}
-      type={SeverityMap[highestAlertTotal.severity].type}
+      label={showLabel ? SEVERITY_MAP[highestAlertTotal.severity].label : undefined}
+      type={SEVERITY_MAP[highestAlertTotal.severity].type}
       disablePopover={highestAlertTotal.severity === 'None'}
     >
       <div className="">
-        <StatusBadgeTemplate type={SeverityMap[highestMemoryAlert.severity].type}>
+        <StatusBadgeTemplate type={SEVERITY_MAP[highestMemoryAlert.severity].type}>
           Memory {highestMemoryAlert.reason}
         </StatusBadgeTemplate>
-        <StatusBadgeTemplate type={SeverityMap[highestCPUAlert.severity].type}>
+        <StatusBadgeTemplate type={SEVERITY_MAP[highestCPUAlert.severity].type}>
           CPU {highestCPUAlert.reason}
         </StatusBadgeTemplate>
       </div>

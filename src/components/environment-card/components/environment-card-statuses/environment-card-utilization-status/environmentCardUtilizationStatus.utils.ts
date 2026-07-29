@@ -1,4 +1,4 @@
-import { CpuThresholds, MemoryThresholds, SeverityMap } from './environmentCardUtilizationStatus.const'
+import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './environmentCardUtilizationStatus.const'
 import type {
   ReplicaUtilization,
   ReplicaUtilizationResponse,
@@ -20,11 +20,20 @@ export const flattenReplicaUtilization = (
     )
   )
 
+/** Extracts the replica utilizations belonging to a single environment. */
+export const getEnvironmentReplicas = (
+  data: ReplicaUtilizationResponse | undefined,
+  environmentName: string
+): ReplicaUtilization[] =>
+  flattenReplicaUtilization(data)
+    .filter(({ key }) => key.startsWith(`${environmentName}.`))
+    .map(({ replica }) => replica)
+
 export const getHighestSeverity = (a: SeverityWithReason, b: SeverityWithReason): SeverityWithReason =>
-  SeverityMap[a.severity].rank > SeverityMap[b.severity].rank ? a : b
+  SEVERITY_MAP[a.severity].rank > SEVERITY_MAP[b.severity].rank ? a : b
 
 export const isSeverityAtLeast = (severity: Severity, minimum: Severity): boolean =>
-  SeverityMap[severity].rank >= SeverityMap[minimum].rank
+  SEVERITY_MAP[severity].rank >= SEVERITY_MAP[minimum].rank
 
 const severityForRatio = (ratio: number, { low, high, max }: Thresholds): Severity => {
   if (ratio > max) return 'Critical'
@@ -34,7 +43,7 @@ const severityForRatio = (ratio: number, { low, high, max }: Thresholds): Severi
 }
 
 const createSeverityWithReason = (value: number, severity: Severity): SeverityWithReason => {
-  const label = SeverityMap[severity].label
+  const label = SEVERITY_MAP[severity].label
 
   if (severity === 'None') {
     return { severity, value, reason: label }
@@ -57,7 +66,7 @@ const getHighestAlert = (
   }, noAlert)
 
 export const getHighestCPUAlert = (replicas: ReplicaUtilization[]): SeverityWithReason =>
-  getHighestAlert(replicas, (replica) => replica.cpuAverage / replica.cpuRequests, CpuThresholds)
+  getHighestAlert(replicas, (replica) => replica.cpuAverage / replica.cpuRequests, CPU_THRESHOLDS)
 
 export const getHighestMemoryAlert = (replicas: ReplicaUtilization[]): SeverityWithReason =>
-  getHighestAlert(replicas, (replica) => replica.memoryMaximum / replica.memoryRequests, MemoryThresholds)
+  getHighestAlert(replicas, (replica) => replica.memoryMaximum / replica.memoryRequests, MEMORY_THRESHOLDS)

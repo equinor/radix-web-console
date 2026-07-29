@@ -38,11 +38,6 @@ export const EnvironmentCardContainer = ({ application, environment }: Environme
     { pollingInterval: slowPollingInterval }
   )
 
-  // TODO: Fix loading
-  if (areComponentsLoading) {
-    return <div>Loading...</div>
-  }
-
   const pipelineJobUrl = activeDeployment?.createdByJob
     ? routeWithParams(routes.appJob, {
         appName: application.name,
@@ -65,6 +60,7 @@ export const EnvironmentCardContainer = ({ application, environment }: Environme
   })
   return (
     <EnvironmentCard
+      isLoading={areComponentsLoading}
       environment={{ name: environment.name, url: environmentUrl }}
       publicComponents={getPublicComponentsView(getPublicComponents(components))}
       activeDeployment={

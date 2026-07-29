@@ -5,7 +5,6 @@ import { FutureApplicationCost } from '../../components/application-future-cost'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { DefaultAppAlias } from '../../components/component/default-app-alias'
 import { DNSAliases } from '../../components/component/dns-aliases'
-import { EnvironmentCard } from '../../components/environment-card/EnvironmentCard'
 import { EnvironmentCardContainer } from '../../components/environment-card/EnvironmentCardContainer'
 import { EnvironmentsSummary } from '../../components/environments-summary'
 import { JobsList } from '../../components/jobs-list'
@@ -45,19 +44,12 @@ function AppOverviewPage({ appName }: { appName: string }) {
         {appAlias && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
         {dnsAliases && <DNSAliases appName={appName} dnsAliases={dnsAliases} title={'DNS aliases'} />}
         {DNSAliases && <DNSAliases appName={appName} dnsAliases={dnsExternalAliases} title={'DNS external aliases'} />}
-        <span className="grid grid--gap-small">
+
+        <div className="grid grid--gap-small">
           <Typography variant="h4">Environments</Typography>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
-            {application?.environments?.map((environment) => (
-              <EnvironmentCardContainer
-                key={environment.name}
-                application={{ name: appName, registration: application?.registration }}
-                environment={environment}
-              />
-            ))}{' '}
-          </div>
-          {/* {application && <EnvironmentsSummary application={application} />} */}
-        </span>
+          {application && <EnvironmentsSummary application={application} />}
+        </div>
+
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>
     </main>
