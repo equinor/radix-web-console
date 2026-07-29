@@ -40,6 +40,8 @@ export const configVariables = {
   CLUSTERS: JSON.parse(getVariable('CLUSTERS', DefaultClusters)) as ClustersType,
 }
 
+console.log(configVariables)
+
 function getVariable(key: string, defaultVariable: string): string {
   const envVar = window.injectEnv?.[key]
   if (envVar === undefined || envVar.startsWith('${')) {
