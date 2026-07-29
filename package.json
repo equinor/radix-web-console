@@ -31,8 +31,8 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@azure/msal-browser": "^4.28.1",
-    "@azure/msal-react": "^3.0.25",
+    "@azure/msal-browser": "^5.17.1",
+    "@azure/msal-react": "^5.5.3",
     "@equinor/eds-core-react": "^2.3.2",
     "@equinor/eds-icons": "^1.2.0",
     "@microsoft/microsoft-graph-client": "^3.0.7",
