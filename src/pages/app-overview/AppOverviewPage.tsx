@@ -5,8 +5,7 @@ import { FutureApplicationCost } from '../../components/application-future-cost'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { DefaultAppAlias } from '../../components/component/default-app-alias'
 import { DNSAliases } from '../../components/component/dns-aliases'
-import { EnvironmentCardContainer } from '../../components/environment-card/EnvironmentCardContainer'
-import { EnvironmentsSummary } from '../../components/environments-summary'
+import { EnvironmentCardList } from '../../components/EnvironmentList/EnvironmentList'
 import { JobsList } from '../../components/jobs-list'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
@@ -47,7 +46,7 @@ function AppOverviewPage({ appName }: { appName: string }) {
 
         <div className="grid grid--gap-small">
           <Typography variant="h4">Environments</Typography>
-          {application && <EnvironmentsSummary application={application} />}
+          {application && <EnvironmentCardList application={application} />}
         </div>
 
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />

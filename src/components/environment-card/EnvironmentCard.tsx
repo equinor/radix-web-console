@@ -1,4 +1,4 @@
-import { Button, Icon } from '@equinor/eds-core-react'
+import { Button, Icon, Typography } from '@equinor/eds-core-react'
 import { arrow_forward } from '@equinor/eds-icons'
 import { Link } from 'react-router'
 import { ActiveDeploymentInfo } from './components/ActiveDeploymentInfo'
@@ -34,16 +34,22 @@ export const EnvironmentCard = (props: EnvironmentCardProps) => {
   return (
     <article className={styles.environmentCard}>
       <header className={styles.header}>
-        <span>{environment.name}</span>
-        <div>
-          <EnvironmentCardStatuses
-            environmentName={environment.name}
-            deploymentStatus={activeDeployment?.status}
-            components={statuses.components}
-            envScan={statuses.envScan}
-            utilization={statuses.utilization}
-          />
+        <div className={styles.title}>
+          <span>{environment.name}</span>
+          {environment.isOrphan && (
+            <Typography group="ui" variant="chip__badge" token={{ fontStyle: 'italic' }}>
+              Orphan environment
+            </Typography>
+          )}
         </div>
+
+        <EnvironmentCardStatuses
+          environmentName={environment.name}
+          deploymentStatus={activeDeployment?.status}
+          components={statuses.components}
+          envScan={statuses.envScan}
+          utilization={statuses.utilization}
+        />
       </header>
 
       <div className={styles.body}>

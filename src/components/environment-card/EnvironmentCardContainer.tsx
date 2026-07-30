@@ -14,7 +14,7 @@ import { getBuildSource, getPublicComponents, getPublicComponentsView } from './
 
 export type EnvironmentCardContainerProps = {
   application: Pick<Application, 'name' | 'registration'>
-  environment: Pick<EnvironmentSummary, 'name' | 'activeDeployment' | 'branchMapping'>
+  environment: Pick<EnvironmentSummary, 'name' | 'status' | 'activeDeployment' | 'branchMapping'>
 }
 
 export const EnvironmentCardContainer = ({ application, environment }: EnvironmentCardContainerProps) => {
@@ -58,10 +58,13 @@ export const EnvironmentCardContainer = ({ application, environment }: Environme
     appName: application.name,
     envName: environment.name,
   })
+
+  const isOrphanedEnvironment = environment.status === 'Orphan'
+
   return (
     <EnvironmentCard
       isLoading={areComponentsLoading}
-      environment={{ name: environment.name, url: environmentUrl }}
+      environment={{ name: environment.name, url: environmentUrl, isOrphan: isOrphanedEnvironment }}
       publicComponents={getPublicComponentsView(getPublicComponents(components))}
       activeDeployment={
         activeDeployment && deploymentName

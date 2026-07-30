@@ -6,21 +6,23 @@ import { Banner } from '../banner/Banner'
 import { EnvironmentCardContainer } from '../environment-card/EnvironmentCardContainer'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
 
-export type EnvironmentsSummaryProps = {
+export type EnvironmentListProps = {
   application: Application
 }
 
-export const EnvironmentsSummary = ({ application }: EnvironmentsSummaryProps) => {
+export const EnvironmentCardList = ({ application }: EnvironmentListProps) => {
   const hasEnvironments = application.environments && application.environments.length > 0
 
   return (
     <>
       {hasEnvironments ? (
-        <div className="grid grid--gap-medium grid--overview-columns">
+        <ul className="grid grid--gap-medium grid--overview-columns">
           {application?.environments?.map((environment) => (
-            <EnvironmentCardContainer key={environment.name} application={application} environment={environment} />
+            <li key={environment.name}>
+              <EnvironmentCardContainer application={application} environment={environment} />
+            </li>
           ))}
-        </div>
+        </ul>
       ) : (
         <Banner>
           <Banner.Message>

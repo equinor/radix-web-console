@@ -1,7 +1,7 @@
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
-import { EnvironmentsSummary } from '../../components/environments-summary'
+import { EnvironmentCardList } from '../../components/EnvironmentList/EnvironmentList'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
@@ -20,7 +20,7 @@ function EnvironmentsPage({ appName }: Props) {
       />
 
       <AsyncResource asyncState={state}>
-        {application && <EnvironmentsSummary application={application} />}
+        {application && <EnvironmentCardList application={application} />}
       </AsyncResource>
     </>
   )

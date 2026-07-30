@@ -42,6 +42,7 @@ export interface PublicComponentsView {
 export interface EnvironmentCardEnvironment {
   readonly name: string
   readonly url: string
+  readonly isOrphan?: boolean
 }
 
 export interface EnvironmentCardPublicComponents {

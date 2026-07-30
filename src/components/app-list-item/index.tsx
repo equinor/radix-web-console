@@ -24,7 +24,7 @@ import {
   EnvironmentCardStatus,
   type EnvironmentCardStatusMap,
   EnvironmentVulnerabilityIndicator,
-} from '../environments-summary/environment-card-status'
+} from '../EnvironmentList/environment-card-status'
 import {
   aggregateComponentReplicaStatus,
   aggregateComponentStatus,
@@ -33,7 +33,7 @@ import {
   EnvironmentStatus,
   environmentVulnerabilitySummarizer,
   type VulnerabilitySummary,
-} from '../environments-summary/environment-status-utils'
+} from '../EnvironmentList/environment-status-utils'
 
 import './style.css'
 import { slowPollingInterval } from '../../store/defaults'

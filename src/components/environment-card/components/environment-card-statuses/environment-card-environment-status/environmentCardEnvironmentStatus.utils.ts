@@ -5,7 +5,7 @@ import {
   aggregateComponentStatus,
   aggregateDeploymentStatus,
   EnvironmentStatus as EnvironmentStatusEnum,
-} from '../../../../environments-summary/environment-status-utils'
+} from '../../../../EnvironmentList/environment-status-utils'
 import type { StatusPopoverType } from '../../../../status-popover/status-popover'
 import type { EnvironmentStatus, EnvironmentStatusElements } from './environmentCardEnvironmentStatus.types'
 
