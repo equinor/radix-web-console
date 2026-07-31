@@ -1,5 +1,5 @@
-import type { StatusPopoverType } from '../../../../status-popover/status-popover'
-import type { Severity, Thresholds } from './environmentCardUtilizationStatus.types'
+import type { StatusPopoverType } from '../../../status-popover/status-popover'
+import type { Severity, Thresholds } from './utilizationStatusPopover.types'
 
 export const CPU_THRESHOLDS: Readonly<Thresholds> = { low: 0.2, high: 0.8, max: 1.0 }
 export const MEMORY_THRESHOLDS: Readonly<Thresholds> = {
@@ -14,5 +14,3 @@ export const SEVERITY_MAP = {
   Warning: { rank: 2, label: 'High Utilization', type: 'warning' },
   Critical: { rank: 3, label: 'Critical Utilization', type: 'danger' },
 } as const satisfies Record<Severity, { rank: number; label: string; type: StatusPopoverType }>
-
-export const MINIMUM_SEVERITY: Severity = 'Information'

@@ -16,16 +16,6 @@ export enum EnvironmentStatus {
 
 type EnvironmentStatusType = StatusBadgeTemplateType & StatusPopoverType & StatusTooltipTemplateType
 
-const ComponentStatusMap = {
-  Stopped: EnvironmentStatus.Stopped,
-  Consistent: EnvironmentStatus.Consistent,
-} as const
-
-const AuxiliaryResourceDeploymentStatusMap = {
-  Stopped: EnvironmentStatus.Stopped,
-  Consistent: EnvironmentStatus.Consistent,
-} as const
-
 const ReplicaStatusMap = {
   Running: EnvironmentStatus.Running,
   Starting: EnvironmentStatus.Starting,
@@ -47,20 +37,6 @@ export function aggregateDeploymentStatus(
     (agg, deployment) => Math.max(DeploymentStatusMap[deployment.status], agg),
     EnvironmentStatus.Consistent
   )
-}
-
-export function aggregateComponentStatus(components: Component[]): EnvironmentStatus {
-  return components.reduce<EnvironmentStatus>((obj, { status, oauth2 }) => {
-    const compStatus = status ?? 'unknown'
-    const oauth2Status = oauth2?.deployment.status ?? 'Consistent'
-    return Math.max(
-      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
-      ComponentStatusMap[compStatus] ?? EnvironmentStatus.Warning,
-      // @ts-expect-error ComponentStatusMap will fallback to Warning if undefined
-      AuxiliaryResourceDeploymentStatusMap[oauth2Status] ?? EnvironmentStatus.Warning,
-      obj
-    )
-  }, EnvironmentStatus.Consistent)
 }
 
 export function aggregateComponentReplicaStatus(components: Component[]): EnvironmentStatus {

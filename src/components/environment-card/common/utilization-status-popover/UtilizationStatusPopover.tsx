@@ -1,34 +1,42 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
 import { desktop_mac, pressure } from '@equinor/eds-icons'
-import { StatusBadgeTemplate } from '../../../../status-badges/status-badge-template'
-import { StatusPopover } from '../../../../status-popover/status-popover'
-import {
-  CPU_THRESHOLDS,
-  MEMORY_THRESHOLDS,
-  MINIMUM_SEVERITY,
-  SEVERITY_MAP,
-} from './environmentCardUtilizationStatus.const'
-import type { ReplicaUtilization } from './environmentCardUtilizationStatus.types'
+import type { ReplicaUtilization } from '../../../../store/radix-api'
+import { StatusBadgeTemplate } from '../../../status-badges/status-badge-template'
+import { StatusPopover } from '../../../status-popover/status-popover'
+import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './utilizationStatusPopover.const'
+import type { Severity } from './utilizationStatusPopover.types'
+
 import {
   getHighestCPUAlert,
   getHighestMemoryAlert,
   getHighestSeverity,
   isSeverityAtLeast,
-} from './environmentCardUtilizationStatus.utils'
+} from './utilizationStatusPopover.utils'
 
-export interface EnvironmentCardUtilizationStatusProps {
-  replicas: ReplicaUtilization[]
+export interface UtilizationStatusPopoverProps {
+  replicaUtilizations: ReplicaUtilization[]
   showLabel?: boolean
+  minimumSeverity?: Severity
 }
 
-export const EnvironmentCardUtilizationStatus = ({ replicas, showLabel }: EnvironmentCardUtilizationStatusProps) => {
-  const highestMemoryAlert = getHighestMemoryAlert(replicas)
-  const highestCPUAlert = getHighestCPUAlert(replicas)
+/**
+ * Displays a popover with the resource utilization status of the replicas.
+ * The popover shows the highest severity of CPU and Memory utilization across all replicas.
+ * If the highest severity is below the specified minimumSeverity, the popover will not be displayed.
+ *
+ * @param replicaUtilizations - An array of ReplicaUtilization objects representing the resource utilization of each replica.
+ */
+export const UtilizationStatusPopover = ({
+  replicaUtilizations,
+  showLabel,
+  minimumSeverity = 'Information',
+}: UtilizationStatusPopoverProps) => {
+  const highestMemoryAlert = getHighestMemoryAlert(replicaUtilizations)
+  const highestCPUAlert = getHighestCPUAlert(replicaUtilizations)
 
   const highestAlertTotal = getHighestSeverity(highestMemoryAlert, highestCPUAlert)
 
-  const isBelowMinimumSeverity =
-    MINIMUM_SEVERITY !== undefined && !isSeverityAtLeast(highestAlertTotal.severity, MINIMUM_SEVERITY)
+  const isBelowMinimumSeverity = !isSeverityAtLeast(highestAlertTotal.severity, minimumSeverity)
 
   if (isBelowMinimumSeverity) {
     return null

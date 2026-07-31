@@ -1,7 +1,7 @@
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
-import { EnvironmentCardList } from '../../components/EnvironmentList/EnvironmentList'
+import { EnvironmentCardList } from '../../components/EnvironmentList/EnvironmentCardList'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'

@@ -1,28 +1,11 @@
-import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './environmentCardUtilizationStatus.const'
-import type {
-  ReplicaUtilization,
-  ReplicaUtilizationResponse,
-  Severity,
-  SeverityWithReason,
-  Thresholds,
-} from './environmentCardUtilizationStatus.types'
-
-/** Walks the nested utilization response once into a flat, path-keyed list. */
-export const flattenReplicaUtilization = (
-  data: ReplicaUtilizationResponse | undefined
-): Array<{ key: string; replica: ReplicaUtilization }> =>
-  Object.entries(data?.environments ?? {}).flatMap(([envName, environment]) =>
-    Object.entries(environment.components ?? {}).flatMap(([compName, component]) =>
-      Object.entries(component.replicas ?? {}).map(([replicaName, replica]) => ({
-        key: `${envName}.${compName}.${replicaName}`,
-        replica,
-      }))
-    )
-  )
+import type { ReplicaResourcesUtilizationResponse, ReplicaUtilization } from '../../../../store/radix-api'
+import { flattenReplicaUtilization } from '../utils'
+import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './utilizationStatusPopover.const'
+import type { Severity, SeverityWithReason, Thresholds } from './utilizationStatusPopover.types'
 
 /** Extracts the replica utilizations belonging to a single environment. */
-export const getEnvironmentReplicas = (
-  data: ReplicaUtilizationResponse | undefined,
+export const getEnvironmentReplicaUtilizations = (
+  data: ReplicaResourcesUtilizationResponse | undefined,
   environmentName: string
 ): ReplicaUtilization[] =>
   flattenReplicaUtilization(data)
