@@ -47,7 +47,11 @@ export function getFetchErrorData(error: ManagedErrors): {
   }
 
   if (IsMSALError(error)) {
-    if (error.message.includes('refresh_token_expired') || error.message.includes('no_account_error')) {
+    if (
+      error.message.includes('refresh_token_expired') ||
+      error.message.includes('no_account_error') ||
+      error.message.includes('timed_out')
+    ) {
       return {
         code: undefined,
         message: 'Session expired. Please login again.',
