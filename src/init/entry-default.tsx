@@ -10,6 +10,20 @@ import { msalConfig } from './msal-config'
 
 const msal = new PublicClientApplication(msalConfig)
 
+// TODO: TEMP DEV MOCK — remove before merging to release branch
+// const realAcquireTokenSilent = msal.acquireTokenSilent.bind(msal)
+// const mockTokenExpiresAt = Date.now() + 10_000
+// msal.acquireTokenSilent = ((...args: Parameters<typeof realAcquireTokenSilent>) => {
+//   if (Date.now() < mockTokenExpiresAt) {
+//     return realAcquireTokenSilent(...args)
+//   }
+
+//   const timedOutError = new Error('timed_out: See https://aka.ms/msal.js/errors#timed_out for details')
+//   timedOutError.name = 'BrowserAuthError'
+//   console.error(timedOutError)
+//   return Promise.reject(timedOutError)
+// }) as typeof msal.acquireTokenSilent
+
 msal.initialize().then(() => {
   if (!msal.getActiveAccount() && msal.getAllAccounts().length > 0) {
     msal.setActiveAccount(msal.getAllAccounts()[0])

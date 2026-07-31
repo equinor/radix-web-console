@@ -2,6 +2,7 @@ import type { SerializedError } from '@reduxjs/toolkit'
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import { getReasonPhrase } from 'http-status-codes'
 
+import { requiresInteractiveLogin } from '../msal/interactive-auth'
 import type { FetchQueryError } from '../types'
 
 type ManagedErrors = FetchQueryError | SerializedError | Error | unknown
@@ -47,7 +48,7 @@ export function getFetchErrorData(error: ManagedErrors): {
   }
 
   if (IsMSALError(error)) {
-    if (error.message.includes('refresh_token_expired') || error.message.includes('no_account_error')) {
+    if (requiresInteractiveLogin(error)) {
       return {
         code: undefined,
         message: 'Session expired. Please login again.',
