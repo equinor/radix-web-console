@@ -1,15 +1,18 @@
-import type { Component, Deployment, DeploymentSummary } from '../../../../../../../store/radix-api'
-import { getComponentsStatusMeta, getDeploymentStatusMeta, getReplicasStatusMeta } from '../domain/statusMeta.utils'
-import { AggregatedStatusPopover } from './aggregated-status-popover/AggregatedStatusPopover'
-import type { StatusItem } from './aggregated-status-popover/aggregatedStatusPopover.types'
+import type { Component, Deployment, DeploymentSummary } from '../../../../store/radix-api'
+import { AggregatedStatusPopover } from '../../../status-popover/shared/aggregated-status-popover/AggregatedStatusPopover'
+import type { StatusItem } from '../../../status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
+import {
+  getComponentsStatusMeta,
+  getDeploymentStatusMeta,
+  getReplicasStatusMeta,
+} from './environment-card-environment-status/wip/domain/statusMeta.utils'
 
-const EnvironmentCardEnvironmentStatus2 = ({
-  latestDeployment,
-  components,
-}: {
+interface EnvironmentCardEnvironmentStatusProps {
   latestDeployment?: Pick<Deployment | DeploymentSummary, 'status'>
   components?: Component[]
-}) => {
+}
+
+const EnvironmentCardEnvironmentStatus = ({ latestDeployment, components }: EnvironmentCardEnvironmentStatusProps) => {
   const replicasStatus = getReplicasStatusMeta(components ?? [])
   const componentsStatus = getComponentsStatusMeta(components ?? [])
   const deploymentStatus = getDeploymentStatusMeta(latestDeployment ?? { status: 'Inactive' })
@@ -23,4 +26,4 @@ const EnvironmentCardEnvironmentStatus2 = ({
   return <AggregatedStatusPopover title="Environment Status" items={items} />
 }
 
-export default EnvironmentCardEnvironmentStatus2
+export default EnvironmentCardEnvironmentStatus

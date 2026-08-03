@@ -1,4 +1,4 @@
-import type { AlertLevel } from '../../domain/statusMeta.types'
+import type { AlertLevel } from '../../../environment-card/components/environment-card-statuses/environment-card-environment-status/wip/domain/statusMeta.types'
 import { AlertLevelWeightMap } from './aggregatedStatusPopover.const'
 
 /** Returns the alert level with the highest severity weight, defaulting to 'Good'. */

@@ -23,15 +23,11 @@ import { AppBadge } from '../app-badge'
 
 import './style.css'
 import { slowPollingInterval } from '../../store/defaults'
-import {
-  aggregateVulnerabilitySummaries,
-  environmentVulnerabilitySummarizer,
-  type VulnerabilitySummary,
-} from '../EnvironmentList/environment-status-utils'
-import { UtilizationStatusPopover } from '../environment-card/common/utilization-status-popover/UtilizationStatusPopover'
-import { flattenReplicaUtilization } from '../environment-card/common/utils'
-import { VulnerabilityStatusPopover } from '../environment-card/common/vulnerability-status-popover/VulnerabilityStatusPopover'
-import { ApplicationStatusPopover } from './components/application-status-popover/ApplicationStatusPopover'
+import { UtilizationStatusPopover } from '../status-popover/shared/utilization-status-popover/UtilizationStatusPopover'
+import { getApplicationReplicaUtilizations } from '../status-popover/shared/utilization-status-popover/utilizationStatusPopover.utils'
+import { VulnerabilityStatusPopover } from '../status-popover/shared/vulnerability-status-popover/VulnerabilityStatusPopover'
+import { summarizeApplicationVulnerabilities } from '../status-popover/shared/vulnerability-status-popover/vulnerabilityStatusPopover.utils'
+import { ApplicationStatusPopover } from './components/ApplicationStatusPopover'
 
 export type FavouriteClickedHandler = (event: MouseEvent<HTMLButtonElement>, name: string) => void
 
@@ -97,12 +93,8 @@ export const AppListItem = ({
   utilization,
   vulnerabilitySummary,
 }: AppListItemLayoutProps) => {
-  const vulnerabilities: VulnerabilitySummary = (vulnerabilitySummary ?? []).reduce(
-    (obj, x) => aggregateVulnerabilitySummaries([obj, environmentVulnerabilitySummarizer(x)]),
-    {}
-  )
-
-  const replicaUtilizations = flattenReplicaUtilization(utilization).map(({ replica }) => replica)
+  const vulnerabilities = summarizeApplicationVulnerabilities(vulnerabilitySummary)
+  const replicaUtilizations = getApplicationReplicaUtilizations(utilization)
 
   const time = latestJob && (latestJob.status === 'Running' || !latestJob.ended ? latestJob.started : latestJob.ended)
 

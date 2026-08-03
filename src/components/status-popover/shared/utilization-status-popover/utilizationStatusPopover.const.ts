@@ -1,4 +1,4 @@
-import type { StatusPopoverType } from '../../../status-popover/status-popover'
+import type { StatusPopoverType } from '../../status-popover'
 import type { Severity, Thresholds } from './utilizationStatusPopover.types'
 
 export const CPU_THRESHOLDS: Readonly<Thresholds> = { low: 0.2, high: 0.8, max: 1.0 }

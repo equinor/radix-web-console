@@ -1,9 +1,8 @@
 import { Typography } from '@equinor/eds-core-react'
 import type { Application } from '../../store/radix-api'
-import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
-import './style.css'
 import { Banner } from '../banner/Banner'
 import { EnvironmentCardContainer } from '../environment-card/EnvironmentCardContainer'
+import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
 
 export type EnvironmentListProps = {

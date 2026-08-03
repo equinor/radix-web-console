@@ -16,7 +16,7 @@ import {
 import type { StatusMeta } from './statusMeta.types'
 
 /** Returns the entry with the highest weight, keeping the first on ties. */
-export const getHeaviestWeightedStatusMeta = (statuses: StatusMeta[]): StatusMeta => {
+const getHeaviestWeightedStatusMeta = (statuses: StatusMeta[]): StatusMeta => {
   return statuses.reduce<StatusMeta>((worst, current) => (current.weight > worst.weight ? current : worst), {
     alertLevel: 'Good',
     weight: -1,

@@ -2,7 +2,7 @@ import { Icon, Typography } from '@equinor/eds-core-react'
 import { desktop_mac, pressure } from '@equinor/eds-icons'
 import type { ReplicaUtilization } from '../../../../store/radix-api'
 import { StatusBadgeTemplate } from '../../../status-badges/status-badge-template'
-import { StatusPopover } from '../../../status-popover/status-popover'
+import { StatusPopover } from '../../status-popover'
 import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './utilizationStatusPopover.const'
 import type { Severity } from './utilizationStatusPopover.types'
 
@@ -23,8 +23,6 @@ export interface UtilizationStatusPopoverProps {
  * Displays a popover with the resource utilization status of the replicas.
  * The popover shows the highest severity of CPU and Memory utilization across all replicas.
  * If the highest severity is below the specified minimumSeverity, the popover will not be displayed.
- *
- * @param replicaUtilizations - An array of ReplicaUtilization objects representing the resource utilization of each replica.
  */
 export const UtilizationStatusPopover = ({
   replicaUtilizations,

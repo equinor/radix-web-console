@@ -1,14 +1,31 @@
 import type { ReplicaResourcesUtilizationResponse, ReplicaUtilization } from '../../../../store/radix-api'
-import { flattenReplicaUtilization } from '../utils'
 import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './utilizationStatusPopover.const'
 import type { Severity, SeverityWithReason, Thresholds } from './utilizationStatusPopover.types'
 
-/** Extracts the replica utilizations belonging to a single environment. */
+type KeyedReplicaUtilization = { key: string; replica: ReplicaUtilization }
+
+/** Flattens the nested environment/component/replica response into a keyed list of replicas. */
+const flattenReplicaUtilizations = (data: ReplicaResourcesUtilizationResponse | undefined): KeyedReplicaUtilization[] =>
+  Object.entries(data?.environments ?? {}).flatMap(([envName, environment]) =>
+    Object.entries(environment.components ?? {}).flatMap(([compName, component]) =>
+      Object.entries(component.replicas ?? {}).map(([replicaName, replica]) => ({
+        key: `${envName}.${compName}.${replicaName}`,
+        replica,
+      }))
+    )
+  )
+
+/** Returns every replica utilization across the whole application. */
+export const getApplicationReplicaUtilizations = (
+  data: ReplicaResourcesUtilizationResponse | undefined
+): ReplicaUtilization[] => flattenReplicaUtilizations(data).map(({ replica }) => replica)
+
+/** Returns the replica utilizations belonging to a single environment. */
 export const getEnvironmentReplicaUtilizations = (
   data: ReplicaResourcesUtilizationResponse | undefined,
   environmentName: string
 ): ReplicaUtilization[] =>
-  flattenReplicaUtilization(data)
+  flattenReplicaUtilizations(data)
     .filter(({ key }) => key.startsWith(`${environmentName}.`))
     .map(({ replica }) => replica)
 
