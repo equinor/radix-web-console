@@ -6,9 +6,11 @@ import { getEnvironmentReplicaUtilizations } from '../../common/utilization-stat
 import { VulnerabilityStatusPopover } from '../../common/vulnerability-status-popover/VulnerabilityStatusPopover'
 import { summarizeEnvironmentVulnerabilities } from '../../common/vulnerability-status-popover/vulnerabilityStatusPopover.utils'
 import styles from '../../environmentCard.module.css'
-import { EnvironmentCardEnvironmentStatus } from './environment-card-environment-status/EnvironmentCardEnvironmentStatus'
-import EnvironmentCardEnvironmentStatus2 from './environment-card-environment-status/EnvironmentCardEnvironmentStatus2'
-import { buildEnvironmentStatusElements } from './environment-card-environment-status/environmentCardEnvironmentStatus.utils'
+import {
+  buildEnvironmentStatusElements,
+  EnvironmentCardEnvironmentStatus,
+} from './environment-card-environment-status/EnvironmentCardEnvironmentStatus'
+import EnvironmentCardEnvironmentStatus2 from './environment-card-environment-status/wip/components/EnvironmentCardEnvironmentStatus2'
 
 interface EnvironmentCardStatusesProps {
   environmentName: string
