@@ -1,6 +1,9 @@
 import { InteractionRequiredAuthError } from '@azure/msal-browser'
+import type { AuthCodeMSALBrowserAuthenticationProvider } from '@microsoft/microsoft-graph-client/authProviders/authCodeMsalBrowser'
 
-type TokenProvider = { getAccessToken: () => Promise<string> }
+export const REFRESH_MSAL_AUTH_ERROR = 'refresh_msal_auth'
+
+type TokenProvider = Pick<AuthCodeMSALBrowserAuthenticationProvider, 'getAccessToken'>
 
 /**
  * This file is the source of truth for deciding "is this auth session dead, or just a hiccup?".
@@ -57,6 +60,21 @@ export function requiresInteractiveLogin(error: unknown): boolean {
 let terminalAuthError: unknown = null
 
 /**
+ * Callback fired whenever an access token is requested while the session is
+ * dead. May fire many times (every guarded call), so the handler must make sure
+ * it doesn't trigger multiple navigations or toasts.
+ */
+let onTerminalAuthError: ((error: unknown) => void) | null = null
+
+/**
+ * Registers the callback invoked when the session is detected as dead.
+ * Kept as dependency injection so this auth module stays decoupled from routing.
+ */
+export function setTerminalAuthErrorHandler(handler: (error: unknown) => void): void {
+  onTerminalAuthError = handler
+}
+
+/**
  * Gets an access token for an API call.
  * Before returning, checks if we've already hit a terminal auth error and throws it again if so,
  * preventing any further API calls from being made until the user re-authenticates.
@@ -64,6 +82,7 @@ let terminalAuthError: unknown = null
  */
 export async function acquireAccessToken(authProvider: TokenProvider): Promise<string> {
   if (terminalAuthError) {
+    onTerminalAuthError?.(terminalAuthError)
     throw terminalAuthError
   }
 
@@ -72,6 +91,7 @@ export async function acquireAccessToken(authProvider: TokenProvider): Promise<s
   } catch (error) {
     if (requiresInteractiveLogin(error)) {
       terminalAuthError = error
+      onTerminalAuthError?.(error)
     }
     throw error
   }
