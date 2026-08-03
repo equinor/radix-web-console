@@ -8,10 +8,13 @@ export function promiseHandler<T>(
   errMsg = 'Error'
 ): void {
   promise.then(onSuccess).catch((err) => {
+    const { action, message } = getFetchErrorData(err)
+
     // A dead session redirects to the session-expired page, do not toast.
-    if (getFetchErrorData(err).action === REFRESH_MSAL_AUTH_ERROR) {
+    if (action === REFRESH_MSAL_AUTH_ERROR) {
       return
     }
-    errorToast(`${errMsg}: ${err.message}`)
+
+    errorToast(`${errMsg}: ${message}`)
   })
 }
