@@ -8,8 +8,8 @@ import { AggregatedStatusPopover } from '../../status-popover/shared/aggregated-
 import type { StatusItem } from '../../status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
 
 interface ApplicationStatusPopoverProps {
-  environments?: Environment[]
-  latestJob?: Pick<JobSummary, 'status'>
+  readonly environments?: ReadonlyArray<Environment>
+  readonly latestJob?: Pick<JobSummary, 'status'>
 }
 
 /**

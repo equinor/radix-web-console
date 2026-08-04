@@ -1,4 +1,4 @@
-import type { IconData } from '@equinor/eds-icons'
+import type { ReactElement } from 'react'
 import type {
   AuxiliaryResourceDeployment,
   Component,
@@ -8,12 +8,12 @@ import type {
   ReplicaStatus,
 } from '../../../../../../../store/radix-api'
 
-export type AlertLevel = 'Warning' | 'Danger' | 'Good'
+export type AlertLevel = 'None' | 'Warning' | 'Danger'
 
 export type StatusMeta = {
   alertLevel: AlertLevel
   weight: number
-  icon: IconData
+  icon: ReactElement
 }
 
 export type SupportedStatusValues = {

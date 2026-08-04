@@ -29,11 +29,7 @@ export const AggregatedStatusPopover = (props: AggregatedStatusPopoverProps) => 
     <StatusPopover title={title} type={aggregated.type} icon={<Icon data={aggregated.icon} />}>
       <div className="grid grid--gap-small">
         {items.map((item) => (
-          <StatusBadgeTemplate
-            key={item.label}
-            type={AlertLevelPresentationMap[item.alertLevel].type}
-            icon={<Icon data={item.icon} />}
-          >
+          <StatusBadgeTemplate key={item.label} type={AlertLevelPresentationMap[item.alertLevel].type} icon={item.icon}>
             {item.label}
           </StatusBadgeTemplate>
         ))}

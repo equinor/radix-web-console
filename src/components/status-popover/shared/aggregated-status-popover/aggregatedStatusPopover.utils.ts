@@ -6,6 +6,6 @@ export const getMostSevereAlertLevel = (alertLevels: AlertLevel[]): AlertLevel =
   return alertLevels.reduce(
     (mostSevere, alertLevel) =>
       AlertLevelWeightMap[alertLevel] > AlertLevelWeightMap[mostSevere] ? alertLevel : mostSevere,
-    'Good'
+    'None'
   )
 }

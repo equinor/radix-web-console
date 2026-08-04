@@ -1,3 +1,4 @@
+import { Icon } from '@equinor/eds-core-react'
 import { check } from '@equinor/eds-icons'
 import type {
   Component,
@@ -18,9 +19,9 @@ import type { StatusMeta } from './statusMeta.types'
 /** Returns the entry with the highest weight, keeping the first on ties. */
 const getHeaviestWeightedStatusMeta = (statuses: StatusMeta[]): StatusMeta => {
   return statuses.reduce<StatusMeta>((worst, current) => (current.weight > worst.weight ? current : worst), {
-    alertLevel: 'Good',
+    alertLevel: 'None',
     weight: -1,
-    icon: check,
+    icon: <Icon data={check} />,
   })
 }
 
@@ -62,7 +63,9 @@ export const getLatestJobStatusMeta = (latestJob?: Pick<JobSummary, 'status'>): 
  * Aggregates every environment's active deployment, components and replicas into the single
  * heaviest-weighted StatusMeta for the application.
  */
-export const getEnvironmentsStatusMeta = (environments: Environment[]): StatusMeta => {
+export const getEnvironmentsStatusMeta = (
+  environments: ReadonlyArray<Pick<Environment, 'activeDeployment'>>
+): StatusMeta => {
   const components = environments.flatMap((environment) => environment.activeDeployment?.components ?? [])
   const deployments = environments
     .map((environment) => environment.activeDeployment)

@@ -2,9 +2,9 @@ import { github, trending_up } from '@equinor/eds-icons'
 import { describe, expect, it } from 'vitest'
 import {
   getBuildSource,
-  getPublicComponentsView,
   MAX_VISIBLE_PUBLIC_COMPONENTS,
   type PublicComponent,
+  truncatePublicComponents,
 } from './environmentCard.utils'
 
 describe('getBuildSource', () => {
@@ -114,7 +114,7 @@ describe('getPublicComponentsView', () => {
     Array.from({ length: count }, (_, index) => ({ name: `component-${index}`, url: `https://host/${index}` }))
 
   it('returns an empty view when there are no components', () => {
-    expect(getPublicComponentsView()).toEqual({
+    expect(truncatePublicComponents()).toEqual({
       visible: [],
       hiddenCount: 0,
       subtitle: undefined,
@@ -123,7 +123,7 @@ describe('getPublicComponentsView', () => {
 
   it('shows all components without a subtitle when within the limit', () => {
     const components = makeComponents(MAX_VISIBLE_PUBLIC_COMPONENTS)
-    const view = getPublicComponentsView(components)
+    const view = truncatePublicComponents(components)
 
     expect(view.visible).toEqual(components)
     expect(view.hiddenCount).toBe(0)
@@ -131,7 +131,7 @@ describe('getPublicComponentsView', () => {
   })
 
   it('collapses extra components and reports how many are hidden', () => {
-    const view = getPublicComponentsView(makeComponents(5))
+    const view = truncatePublicComponents(makeComponents(5))
 
     expect(view.visible).toHaveLength(MAX_VISIBLE_PUBLIC_COMPONENTS)
     expect(view.hiddenCount).toBe(5 - MAX_VISIBLE_PUBLIC_COMPONENTS)
@@ -139,7 +139,7 @@ describe('getPublicComponentsView', () => {
   })
 
   it('respects a custom max limit', () => {
-    const view = getPublicComponentsView(makeComponents(3), 1)
+    const view = truncatePublicComponents(makeComponents(3), 1)
 
     expect(view.visible).toHaveLength(1)
     expect(view.hiddenCount).toBe(2)

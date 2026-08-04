@@ -1,3 +1,4 @@
+import { Icon } from '@equinor/eds-core-react'
 import { check, error_outlined, warning_outlined } from '@equinor/eds-icons'
 import type { Meta, StoryObj } from '@storybook/react-vite'
 import { AggregatedStatusPopover } from './AggregatedStatusPopover'
@@ -20,8 +21,8 @@ export const Good: Story = {
   args: {
     title: 'Environments',
     items: [
-      { label: 'production', alertLevel: 'Good', icon: check },
-      { label: 'staging', alertLevel: 'Good', icon: check },
+      { label: 'production', alertLevel: 'None', icon: <Icon data={check} /> },
+      { label: 'staging', alertLevel: 'None', icon: <Icon data={check} /> },
     ],
   },
 }
@@ -30,8 +31,8 @@ export const Warning: Story = {
   args: {
     title: 'Environments',
     items: [
-      { label: 'production', alertLevel: 'Good', icon: check },
-      { label: 'staging', alertLevel: 'Warning', icon: warning_outlined },
+      { label: 'production', alertLevel: 'None', icon: <Icon data={check} /> },
+      { label: 'staging', alertLevel: 'Warning', icon: <Icon data={warning_outlined} /> },
     ],
   },
 }
@@ -40,9 +41,9 @@ export const Danger: Story = {
   args: {
     title: 'Environments',
     items: [
-      { label: 'production', alertLevel: 'Danger', icon: error_outlined },
-      { label: 'staging', alertLevel: 'Warning', icon: warning_outlined },
-      { label: 'development', alertLevel: 'Good', icon: check },
+      { label: 'production', alertLevel: 'Danger', icon: <Icon data={error_outlined} /> },
+      { label: 'staging', alertLevel: 'Warning', icon: <Icon data={warning_outlined} /> },
+      { label: 'development', alertLevel: 'None', icon: <Icon data={check} /> },
     ],
   },
 }

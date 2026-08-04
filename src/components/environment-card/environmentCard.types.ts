@@ -22,8 +22,8 @@ export interface EnvironmentCardBuildSource {
   readonly label: string
   /** When set the label should be rendered as a link. */
   readonly url?: {
-    path: string
-    showAsExternalUrl: boolean
+    readonly path: string
+    readonly showAsExternalUrl: boolean
   }
   readonly icon: IconData | undefined
 }
@@ -33,7 +33,7 @@ export interface PublicComponent {
   readonly url: string
 }
 
-export interface PublicComponentsView {
+export interface TruncatedPublicComponents {
   readonly visible: ReadonlyArray<PublicComponent>
   readonly hiddenCount: number
   readonly subtitle?: string

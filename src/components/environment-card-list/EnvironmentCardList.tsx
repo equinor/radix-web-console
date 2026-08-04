@@ -6,7 +6,7 @@ import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
 
 export type EnvironmentListProps = {
-  application: Application
+  readonly application: Pick<Application, 'name' | 'registration' | 'environments'>
 }
 
 export const EnvironmentCardList = ({ application }: EnvironmentListProps) => {

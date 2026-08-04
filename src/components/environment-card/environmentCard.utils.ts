@@ -4,7 +4,7 @@ import type {
   BranchInfo,
   EnvironmentCardBuildSource,
   PublicComponent,
-  PublicComponentsView,
+  TruncatedPublicComponents,
 } from './environmentCard.types'
 
 export type { PublicComponent } from './environmentCard.types'
@@ -90,10 +90,10 @@ export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource =
  * Splits public components into a visible slice and a hidden count, providing a
  * ready to render "(+N more)" subtitle when some are collapsed.
  */
-export const getPublicComponentsView = (
+export const truncatePublicComponents = (
   components: ReadonlyArray<PublicComponent> = [],
   max: number = MAX_VISIBLE_PUBLIC_COMPONENTS
-): PublicComponentsView => {
+): TruncatedPublicComponents => {
   const visible = components.slice(0, max)
   const hiddenCount = components.length - visible.length
 

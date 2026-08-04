@@ -10,7 +10,7 @@ import { useGetEnvironmentVulnerabilitySummaryQuery } from '../../store/scan-api
 import { getAppDeploymentUrl } from '../../utils/routing'
 import { routeWithParams, smallGithubCommitHash } from '../../utils/string'
 import { EnvironmentCard } from './EnvironmentCard'
-import { getBuildSource, getPublicComponents, getPublicComponentsView } from './environmentCard.utils'
+import { getBuildSource, getPublicComponents, truncatePublicComponents } from './environmentCard.utils'
 
 export type EnvironmentCardContainerProps = {
   application: Pick<Application, 'name' | 'registration'>
@@ -65,7 +65,7 @@ export const EnvironmentCardContainer = ({ application, environment }: Environme
     <EnvironmentCard
       isLoading={areComponentsLoading}
       environment={{ name: environment.name, url: environmentUrl, isOrphan: isOrphanedEnvironment }}
-      publicComponents={getPublicComponentsView(getPublicComponents(components))}
+      publicComponents={truncatePublicComponents(getPublicComponents(components))}
       activeDeployment={
         activeDeployment && deploymentName
           ? {
