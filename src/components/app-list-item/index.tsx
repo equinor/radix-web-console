@@ -20,24 +20,14 @@ import {
 import { filterFields } from '../../utils/filter-fields'
 import { routeWithParams } from '../../utils/string'
 import { AppBadge } from '../app-badge'
-import {
-  EnvironmentCardStatus,
-  type EnvironmentCardStatusMap,
-  EnvironmentVulnerabilityIndicator,
-} from '../environments-summary/environment-card-status'
-import {
-  aggregateComponentReplicaStatus,
-  aggregateComponentStatus,
-  aggregateDeploymentStatus,
-  aggregateVulnerabilitySummaries,
-  EnvironmentStatus,
-  environmentVulnerabilitySummarizer,
-  type VulnerabilitySummary,
-} from '../environments-summary/environment-status-utils'
 
 import './style.css'
 import { slowPollingInterval } from '../../store/defaults'
-import { Severity, UtilizationPopover } from '../utilization-popover/utilization-popover'
+import { UtilizationStatusPopover } from '../status-popover/shared/utilization-status-popover/UtilizationStatusPopover'
+import { getApplicationReplicaUtilizations } from '../status-popover/shared/utilization-status-popover/utilizationStatusPopover.utils'
+import { VulnerabilityStatusPopover } from '../status-popover/shared/vulnerability-status-popover/VulnerabilityStatusPopover'
+import { summarizeApplicationVulnerabilities } from '../status-popover/shared/vulnerability-status-popover/vulnerabilityStatusPopover.utils'
+import { ApplicationStatusPopover } from './components/ApplicationStatusPopover'
 
 export type FavouriteClickedHandler = (event: MouseEvent<HTMLButtonElement>, name: string) => void
 
@@ -53,7 +43,7 @@ export interface AppListItemProps {
   isDeleted?: boolean
 }
 
-const visibleKeys: Array<Lowercase<Vulnerability['severity']>> = ['critical', 'high']
+const visibleKeys: ReadonlyArray<Lowercase<Vulnerability['severity']>> = ['critical', 'high']
 
 export const AppListItemContainer = ({ isLoading, ...props }: AppListItemProps) => {
   const { data: vulnerabilitySummary, isLoading: isVulnSummaryLoading } = useGetApplicationVulnerabilitySummariesQuery(
@@ -103,14 +93,10 @@ export const AppListItem = ({
   utilization,
   vulnerabilitySummary,
 }: AppListItemLayoutProps) => {
-  const vulnerabilities: VulnerabilitySummary = (vulnerabilitySummary ?? []).reduce(
-    (obj, x) => aggregateVulnerabilitySummaries([obj, environmentVulnerabilitySummarizer(x)]),
-    {}
-  )
+  const vulnerabilities = summarizeApplicationVulnerabilities(vulnerabilitySummary)
+  const replicaUtilizations = getApplicationReplicaUtilizations(utilization)
 
   const time = latestJob && (latestJob.status === 'Running' || !latestJob.ended ? latestJob.started : latestJob.ended)
-
-  const statusElements = parseAppForStatusElements(latestJob, environments)
 
   const latestJobIsChanging = latestJob && (latestJob.status === 'Running' || latestJob.status === 'Stopping')
 
@@ -169,19 +155,16 @@ export const AppListItem = ({
                       )}
 
                       {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
-                        <EnvironmentVulnerabilityIndicator
-                          title="Vulnerabilities"
-                          size={22}
-                          summary={filterFields(vulnerabilities, visibleKeys)}
-                          visibleKeys={visibleKeys}
-                        />
+                        <VulnerabilityStatusPopover summary={filterFields(vulnerabilities, visibleKeys)} />
                       )}
 
-                      <UtilizationPopover path={''} utilization={utilization} minimumSeverity={Severity.Warning} />
+                      <UtilizationStatusPopover
+                        replicaUtilizations={replicaUtilizations}
+                        showLabel={false}
+                        minimumSeverity="Warning"
+                      />
 
-                      {statusElements && (
-                        <EnvironmentCardStatus title="Application status" statusElements={statusElements} />
-                      )}
+                      <ApplicationStatusPopover environments={environments} latestJob={latestJob} />
                     </div>
                   </>
                 )}
@@ -206,27 +189,5 @@ const WElement = ({ appName, isPlaceholder, className, children }: PropsWithChil
     <Link className={className} to={routeWithParams(routes.app, { appName })}>
       {children}
     </Link>
-  )
-}
-
-function parseAppForStatusElements(latestJob?: JobSummary, environments?: Environment[]): EnvironmentCardStatusMap {
-  return {
-    ...(latestJob && {
-      'Latest Job': latestJob.status == 'Failed' ? EnvironmentStatus.Danger : EnvironmentStatus.Consistent,
-    }),
-    ...(environments && {
-      Environments: aggregateEnvironmentStatus(environments),
-    }),
-  }
-}
-
-function aggregateEnvironmentStatus(environments: Environment[]): EnvironmentStatus {
-  const components = environments.flatMap((env) => env.activeDeployment?.components ?? [])
-  const deployments = environments.filter((env) => env.activeDeployment).map((env) => env.activeDeployment!)
-
-  return Math.max(
-    aggregateDeploymentStatus(deployments),
-    aggregateComponentStatus(components),
-    aggregateComponentReplicaStatus(components)
   )
 }
