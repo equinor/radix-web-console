@@ -42,10 +42,10 @@ export const DeploymentStatusMap = {
 export const JobStatusMap = {
   Succeeded: { alertLevel: 'None', weight: 0, icon: <Icon data={check} /> },
   Running: { alertLevel: 'None', weight: 1, icon: <Icon data={check} /> },
+  Stopping: { alertLevel: 'Warning', weight: 6, icon: <Icon data={warning_outlined} /> }, // TODO
   Stopped: { alertLevel: 'None', weight: 2, icon: <Icon data={stop_circle} /> }, // TODO
   StoppedNoChanges: { alertLevel: 'None', weight: 3, icon: <Icon data={stop_circle} /> }, // TODO
   Queued: { alertLevel: 'Warning', weight: 4, icon: <Icon data={warning_outlined} /> }, // TODO
   Waiting: { alertLevel: 'Warning', weight: 5, icon: <Icon data={warning_outlined} /> }, // TODO
-  Stopping: { alertLevel: 'Warning', weight: 6, icon: <Icon data={warning_outlined} /> }, // TODO
   Failed: { alertLevel: 'Danger', weight: 7, icon: <Icon data={error_outlined} /> },
 } as const satisfies Record<NonNullable<SupportedStatusValues['LatestJobStatus']>, StatusMeta>

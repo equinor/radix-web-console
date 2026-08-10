@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react'
+import { EnvironmentCardContainer } from '../../containers/environment-card-container/EnvironmentCardContainer'
 import type { Application } from '../../store/radix-api'
 import { Banner } from '../banner/Banner'
-import { EnvironmentCardContainer } from '../environment-card/EnvironmentCardContainer'
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
 

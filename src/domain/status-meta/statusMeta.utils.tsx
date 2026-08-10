@@ -1,12 +1,6 @@
 import { Icon } from '@equinor/eds-core-react'
 import { check } from '@equinor/eds-icons'
-import type {
-  Component,
-  Deployment,
-  DeploymentSummary,
-  Environment,
-  JobSummary,
-} from '../../../../../../../store/radix-api'
+import type { Component, Deployment, DeploymentSummary, Environment, JobSummary } from '../../store/radix-api'
 import {
   AuxiliaryResourceDeploymentStatusMap,
   ComponentStatusMap,

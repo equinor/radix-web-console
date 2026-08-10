@@ -6,7 +6,7 @@ import type {
   DeploymentSummary,
   JobSummary,
   ReplicaStatus,
-} from '../../../../../../../store/radix-api'
+} from '../../store/radix-api'
 
 export type AlertLevel = 'None' | 'Warning' | 'Danger'
 

@@ -1,9 +1,6 @@
+import type { StatusMeta } from '../../../domain/status-meta/statusMeta.types'
+import { getEnvironmentsStatusMeta, getLatestJobStatusMeta } from '../../../domain/status-meta/statusMeta.utils'
 import type { Environment, JobSummary } from '../../../store/radix-api'
-import type { StatusMeta } from '../../environment-card/components/environment-card-statuses/environment-card-environment-status/wip/domain/statusMeta.types'
-import {
-  getEnvironmentsStatusMeta,
-  getLatestJobStatusMeta,
-} from '../../environment-card/components/environment-card-statuses/environment-card-environment-status/wip/domain/statusMeta.utils'
 import { AggregatedStatusPopover } from '../../status-popover/shared/aggregated-status-popover/AggregatedStatusPopover'
 import type { StatusItem } from '../../status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
 

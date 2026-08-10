@@ -1,5 +1,5 @@
 import { check, error_outlined, type IconData, warning_outlined } from '@equinor/eds-icons'
-import type { AlertLevel } from '../../../environment-card/components/environment-card-statuses/environment-card-environment-status/wip/domain/statusMeta.types'
+import type { AlertLevel } from '../../../../domain/status-meta/statusMeta.types'
 import type { StatusBadgeTemplateType } from '../../../status-badges/status-badge-template'
 
 export const AlertLevelWeightMap = {

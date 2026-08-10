@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Component, Environment } from '../../../../../../../store/radix-api'
+import type { Component, Environment } from '../../store/radix-api'
 import {
   AuxiliaryResourceDeploymentStatusMap,
   ComponentStatusMap,

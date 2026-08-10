@@ -1,9 +1,14 @@
 import { Typography } from '@equinor/eds-core-react'
 import { Link } from 'react-router'
 import { ExternalLink } from '../../link/external-link'
-import type { EnvironmentCardBuildSource } from '../environmentCard.types'
+import type { BuildSourceUrl } from '../environmentCard.types'
 
-export const BuildSourceLabel = (props: Pick<EnvironmentCardBuildSource, 'url' | 'label'>) => {
+interface BuildSourceInfoProps {
+  readonly url?: BuildSourceUrl
+  readonly label: string
+}
+
+export const BuildSourceInfo = (props: BuildSourceInfoProps) => {
   const { url, label } = props
 
   if (!url) {

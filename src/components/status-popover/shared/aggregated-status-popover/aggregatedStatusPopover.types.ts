@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import type { AlertLevel } from '../../../environment-card/components/environment-card-statuses/environment-card-environment-status/wip/domain/statusMeta.types'
+import type { AlertLevel } from '../../../../domain/status-meta/statusMeta.types'
 
 export type StatusItem = {
   /** Alert level used for deciding the aggregated status and the color for popover badge */

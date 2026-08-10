@@ -1,115 +1,86 @@
 import { github, trending_up } from '@equinor/eds-icons'
 import { describe, expect, it } from 'vitest'
-import {
-  getBuildSource,
-  MAX_VISIBLE_PUBLIC_COMPONENTS,
-  type PublicComponent,
-  truncatePublicComponents,
-} from './environmentCard.utils'
+import type { PublicComponent } from './environmentCard.types'
+import { getBuildSourceView, MAX_VISIBLE_PUBLIC_COMPONENTS, truncatePublicComponents } from './environmentCard.utils'
 
-describe('getBuildSource', () => {
-  it('marks a promoted deployment that has a branch mapping as automatic-but-promoted', () => {
-    const source = getBuildSource({
+describe('getBuildSourceView', () => {
+  it('shows the git ref, commit and an external commit link for an automatic build', () => {
+    const view = getBuildSourceView({
+      kind: 'automatic',
       branchMapping: 'main',
-      promotedFrom: 'qa',
-      pipelineJobUrl: '/job/123',
-    })
-
-    expect(source).toEqual({
-      type: 'automatic-but-promoted',
-      subtitle: '(Built from main)',
-      label: 'Promoted from qa',
-      url: { path: '/job/123', showAsExternalUrl: false },
-      icon: trending_up,
-    })
-  })
-
-  it('marks a promoted deployment without a branch mapping as promote', () => {
-    const source = getBuildSource({
-      promotedFrom: 'qa',
-      pipelineJobUrl: '/job/123',
-    })
-
-    expect(source).toEqual({
-      type: 'promote',
-      subtitle: '(Built manually)',
-      label: 'Promoted from qa',
-      url: { path: '/job/123', showAsExternalUrl: false },
-      icon: trending_up,
-    })
-  })
-
-  it('omits the url for a promoted deployment without a pipeline job', () => {
-    const source = getBuildSource({ branchMapping: 'main', promotedFrom: 'qa' })
-
-    expect(source.url).toBeUndefined()
-  })
-
-  it('marks a deployment built from a branch mapping as automatic with a commit link', () => {
-    const source = getBuildSource({
-      name: 'main',
+      gitRef: 'main',
       shortCommitId: 'abc123',
-      branchMapping: 'main',
       commitUrl: 'https://repo/commit/abc123',
-      promotedFrom: undefined,
     })
 
-    expect(source).toEqual({
-      type: 'automatic',
-      subtitle: '(Built from main)',
+    expect(view).toEqual({
       label: 'main@abc123',
-      url: { path: 'https://repo/commit/abc123', showAsExternalUrl: true },
+      subtitle: '(Built from main)',
       icon: github,
+      url: { path: 'https://repo/commit/abc123', showAsExternalUrl: true },
     })
   })
 
   it('omits the url for an automatic build without a commit url', () => {
-    const source = getBuildSource({
-      name: 'main',
-      shortCommitId: 'abc123',
+    const view = getBuildSourceView({
+      kind: 'automatic',
       branchMapping: 'main',
-      promotedFrom: undefined,
+      gitRef: 'main',
+      shortCommitId: 'abc123',
     })
 
-    expect(source.type).toBe('automatic')
-    expect(source.url).toBeUndefined()
+    expect(view.url).toBeUndefined()
   })
 
-  it('marks a branch mapping with no deployment as not-built-yet', () => {
-    const source = getBuildSource({ branchMapping: 'release-.*', promotedFrom: undefined })
+  it('shows where a promoted deployment was promoted from with an internal job link', () => {
+    const view = getBuildSourceView({
+      kind: 'promoted',
+      branchMapping: 'main',
+      promotedFrom: 'qa',
+      pipelineJobUrl: '/job/123',
+    })
 
-    expect(source).toEqual({
-      type: 'not-built-yet',
-      subtitle: '(Built from release-.*)',
+    expect(view).toEqual({
+      label: 'Promoted from qa',
+      subtitle: '(Built from main)',
+      icon: trending_up,
+      url: { path: '/job/123', showAsExternalUrl: false },
+    })
+  })
+
+  it('treats a promoted deployment without a branch mapping as built manually in the subtitle', () => {
+    const view = getBuildSourceView({ kind: 'promoted', promotedFrom: 'qa' })
+
+    expect(view.subtitle).toBe('(Built manually)')
+    expect(view.url).toBeUndefined()
+  })
+
+  it('shows a placeholder for a branch mapping with no deployment yet', () => {
+    expect(getBuildSourceView({ kind: 'automatic-not-built-yet', branchMapping: 'main' })).toEqual({
       label: 'Will build automatically',
+      subtitle: '(Built from main)',
       icon: github,
     })
   })
 
-  it('marks a deployment with no branch mapping and no promotion as built manually', () => {
-    const source = getBuildSource({ promotedFrom: undefined })
-
-    expect(source).toEqual({
-      type: 'promote',
-      subtitle: '(Built manually)',
+  it('labels a promoted-not-built-yet source as built manually', () => {
+    expect(getBuildSourceView({ kind: 'promoted-not-built-yet' })).toEqual({
       label: 'Built manually',
+      subtitle: '(Built manually)',
       icon: trending_up,
     })
   })
 
-  it('falls back to unknown when a branch mapping only has partial deployment info', () => {
-    const source = getBuildSource({ branchMapping: 'main', name: 'main', promotedFrom: undefined })
-
-    expect(source).toEqual({
-      type: 'unknown',
-      subtitle: 'N/A',
+  it('falls back to N/A for an unknown build source', () => {
+    expect(getBuildSourceView({ kind: 'unknown' })).toEqual({
       label: 'N/A',
+      subtitle: 'N/A',
       icon: undefined,
     })
   })
 })
 
-describe('getPublicComponentsView', () => {
+describe('truncatePublicComponents', () => {
   const makeComponents = (count: number): PublicComponent[] =>
     Array.from({ length: count }, (_, index) => ({ name: `component-${index}`, url: `https://host/${index}` }))
 
@@ -117,17 +88,15 @@ describe('getPublicComponentsView', () => {
     expect(truncatePublicComponents()).toEqual({
       visible: [],
       hiddenCount: 0,
-      subtitle: undefined,
     })
   })
 
-  it('shows all components without a subtitle when within the limit', () => {
+  it('shows all components when within the limit', () => {
     const components = makeComponents(MAX_VISIBLE_PUBLIC_COMPONENTS)
     const view = truncatePublicComponents(components)
 
     expect(view.visible).toEqual(components)
     expect(view.hiddenCount).toBe(0)
-    expect(view.subtitle).toBeUndefined()
   })
 
   it('collapses extra components and reports how many are hidden', () => {
@@ -135,14 +104,5 @@ describe('getPublicComponentsView', () => {
 
     expect(view.visible).toHaveLength(MAX_VISIBLE_PUBLIC_COMPONENTS)
     expect(view.hiddenCount).toBe(5 - MAX_VISIBLE_PUBLIC_COMPONENTS)
-    expect(view.subtitle).toBe(`(+${5 - MAX_VISIBLE_PUBLIC_COMPONENTS} more)`)
-  })
-
-  it('respects a custom max limit', () => {
-    const view = truncatePublicComponents(makeComponents(3), 1)
-
-    expect(view.visible).toHaveLength(1)
-    expect(view.hiddenCount).toBe(2)
-    expect(view.subtitle).toBe('(+2 more)')
   })
 })
