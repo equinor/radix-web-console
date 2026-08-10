@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react'
 import { useGetJobReplicaLogQuery } from '../../../store/log-api'
-import { type ReplicaSummary, type ScheduledJobSummary, radixApi, useJobLogQuery } from '../../../store/radix-api'
+import { type ReplicaSummary, radixApi, type ScheduledJobSummary, useJobLogQuery } from '../../../store/radix-api'
 import '../style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import AsyncResource from '../../../components/async-resource/async-resource'

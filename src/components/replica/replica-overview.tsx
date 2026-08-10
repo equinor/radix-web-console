@@ -36,12 +36,28 @@ export const ReplicaOverview = ({ replica, job, title, duration, status, state }
               <>
                 <ReplicaDuration
                   created={replica.created}
-                  ended={replica.endTime ? new Date(replica.endTime) : (replica.replicaStatus?.status === 'Stopped' && replica.endTime === null) ? job?.ended ? new Date(job.ended) : undefined : undefined}
-                 />
+                  ended={
+                    replica.endTime
+                      ? new Date(replica.endTime)
+                      : replica.replicaStatus?.status === 'Stopped' && replica.endTime === null
+                        ? job?.ended
+                          ? new Date(job.ended)
+                          : undefined
+                        : undefined
+                  }
+                />
                 {replica.containerStarted && (
                   <ContainerDuration
                     started={new Date(replica.containerStarted)}
-                     ended={replica.endTime ? new Date(replica.endTime) : (replica.replicaStatus?.status === 'Stopped' && replica.endTime === null) ? job?.ended ? new Date(job.ended) : undefined : undefined}
+                    ended={
+                      replica.endTime
+                        ? new Date(replica.endTime)
+                        : replica.replicaStatus?.status === 'Stopped' && replica.endTime === null
+                          ? job?.ended
+                            ? new Date(job.ended)
+                            : undefined
+                          : undefined
+                    }
                   />
                 )}
               </>
