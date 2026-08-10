@@ -1,9 +1,7 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react'
-import { type PropsWithChildren, type ReactNode, useEffect } from 'react'
-import { useNavigate } from 'react-router'
+import type { PropsWithChildren, ReactNode } from 'react'
 
 import { externalUrls } from '../../externalUrls'
-import { routes } from '../../router/routes'
 import type { FetchQueryResult } from '../../store/types'
 import { getFetchErrorData } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'
@@ -23,17 +21,7 @@ export default function AsyncResource({
   errorContent,
   nonFailureErrorCodes: nonErrorCodes,
 }: AnotherAsyncResourceProps) {
-  const { code, message, action } = asyncState?.error ? getFetchErrorData(asyncState.error) : {}
-
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    if (action !== 'refresh_msal_auth') {
-      return
-    }
-
-    navigate(routes.sessionExpired, { replace: true })
-  }, [action, navigate])
+  const { code, message } = asyncState?.error ? getFetchErrorData(asyncState.error) : {}
 
   if (!asyncState || asyncState.isLoading) {
     return (

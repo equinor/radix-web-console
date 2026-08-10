@@ -113,7 +113,7 @@ const UserInfo = () => {
   }
 
   const signOut = async () => {
-    await instance.logout({ account })
+    await instance.logoutRedirect({ account, idTokenHint: account?.idToken })
   }
 
   return (

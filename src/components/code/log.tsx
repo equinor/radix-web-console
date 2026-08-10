@@ -10,6 +10,7 @@ import './style.css'
 import { FitAddon } from '@xterm/addon-fit'
 import { EventSource } from 'eventsource'
 import { useStore } from 'react-redux'
+import { acquireAccessToken } from '../../store/msal/interactive-auth'
 import type { RootState } from '../../store/store'
 import { LoadingButton } from '../button/loading-button'
 
@@ -219,8 +220,7 @@ const useAuthentication = () => {
       return
     }
 
-    authProvider
-      .getAccessToken()
+    acquireAccessToken(authProvider)
       .then((token) => setToken(token))
       .catch((err) => setTokenError(err))
   }, [authProvider])

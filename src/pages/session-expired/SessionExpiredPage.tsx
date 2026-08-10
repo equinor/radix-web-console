@@ -2,9 +2,14 @@ import { Button, Typography } from '@equinor/eds-core-react'
 import { HomeIcon } from '../../components/home-icon'
 
 export default function SessionExpiredPage() {
+  /**
+   * Must stay a full-page navigation: it's what clears the cached terminalAuthError
+   * guard in store/msal/interactive-auth.ts. A popup/SPA re-login would leave the
+   * guard set and lock the user out, clear it explicitly if you change this.
+   */
   const handleReauth = () => {
     sessionStorage.clear()
-    window.location.href = '/applications'
+    window.location.href = '/applications' // Do not remove this without reading function comment above.
   }
 
   return (

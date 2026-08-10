@@ -29,7 +29,9 @@ export function ConfigureGitHubWebhook({ repository, appName, sharedSecret }: Pr
             Choose <code>application/json</code> as Content type
           </List.Item>
           <List.Item>
-            Set <em>Secret</em> to <code>{sharedSecret}</code> <CompactCopyButton content={sharedSecret ?? ''} />
+            Set <em>Secret</em> to{' '}
+            <code style={{ verticalAlign: 'middle', minWidth: '10em', minHeight: '1.5em' }}>{sharedSecret}</code>{' '}
+            <CompactCopyButton content={sharedSecret ?? ''} />
           </List.Item>
           <List.Item>Press "Add webhook"</List.Item>
         </List>

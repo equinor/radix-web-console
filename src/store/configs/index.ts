@@ -1,5 +1,6 @@
 import { type BaseQueryApi, createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { configVariables } from '../../utils/config'
+import { acquireAccessToken } from '../msal/interactive-auth'
 import type { RootState } from '../store'
 
 /** Override for text/plain response handler */
@@ -16,7 +17,7 @@ const proxyPrepareHeaders = async (headers: Headers, { getState }: Pick<BaseQuer
     return headers
   }
 
-  const token = await provider.radixApiAuthProvider.getAccessToken()
+  const token = await acquireAccessToken(provider.radixApiAuthProvider)
   headers.set('Authorization', `Bearer ${token}`)
   return headers
 }
@@ -74,7 +75,7 @@ export const serviceNowStoreApi = createApi({
       const provider = state.auth.provider
       if (!provider || !provider.serviceNowAuthProvider) return headers
 
-      const token = await provider.serviceNowAuthProvider.getAccessToken()
+      const token = await acquireAccessToken(provider.serviceNowAuthProvider)
       headers.set('Authorization', `Bearer ${token}`)
 
       return headers
