@@ -1,8 +1,6 @@
-import type { StatusMeta } from '../../../domain/status-meta/statusMeta.types'
-import { getEnvironmentsStatusMeta, getLatestJobStatusMeta } from '../../../domain/status-meta/statusMeta.utils'
 import type { Environment, JobSummary } from '../../../store/radix-api'
 import { AggregatedStatusPopover } from '../../status-popover/shared/aggregated-status-popover/AggregatedStatusPopover'
-import type { StatusItem } from '../../status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
+import { getApplicationStatusItems } from './applicationStatusPopover.utils'
 
 interface ApplicationStatusPopoverProps {
   readonly environments?: ReadonlyArray<Environment>
@@ -16,13 +14,7 @@ interface ApplicationStatusPopoverProps {
 export const ApplicationStatusPopover = (props: ApplicationStatusPopoverProps) => {
   const { environments, latestJob } = props
 
-  const latestJobStatus: StatusMeta = getLatestJobStatusMeta(latestJob)
-  const environmentsStatus: StatusMeta = getEnvironmentsStatusMeta(environments ?? [])
-
-  const items: StatusItem[] = [
-    { label: 'Latest job', alertLevel: latestJobStatus.alertLevel, icon: latestJobStatus.icon },
-    { label: 'Environments', alertLevel: environmentsStatus.alertLevel, icon: environmentsStatus.icon },
-  ]
+  const items = getApplicationStatusItems(environments, latestJob)
 
   return <AggregatedStatusPopover title="Application status" items={items} />
 }
