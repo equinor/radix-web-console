@@ -4,6 +4,7 @@ import type { Application } from '../../store/radix-api'
 import { Banner } from '../banner/Banner'
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
+import styles from './environmentCardList.module.css'
 
 interface EnvironmentCardListProps {
   readonly application: Pick<Application, 'name' | 'registration' | 'environments'>
@@ -16,7 +17,7 @@ export const EnvironmentCardList = (props: EnvironmentCardListProps) => {
   return (
     <>
       {hasEnvironments ? (
-        <ul className="grid grid--gap-medium grid--overview-columns">
+        <ul className={styles.environmentCardList}>
           {application?.environments?.map((environment) => (
             <li key={environment.name}>
               <EnvironmentCardContainer application={application} environment={environment} />
