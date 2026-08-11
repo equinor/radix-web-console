@@ -39,10 +39,8 @@ export const ReplicaOverview = ({ replica, job, title, duration, status, state }
                   ended={
                     replica.endTime
                       ? new Date(replica.endTime)
-                      : replica.replicaStatus?.status === 'Stopped' && replica.endTime === null
-                        ? job?.ended
-                          ? new Date(job.ended)
-                          : undefined
+                      : replica.replicaStatus?.status === 'Stopped' && replica.endTime == null && job?.ended
+                        ? new Date(job.ended)
                         : undefined
                   }
                 />
@@ -52,10 +50,8 @@ export const ReplicaOverview = ({ replica, job, title, duration, status, state }
                     ended={
                       replica.endTime
                         ? new Date(replica.endTime)
-                        : replica.replicaStatus?.status === 'Stopped' && replica.endTime === null
-                          ? job?.ended
-                            ? new Date(job.ended)
-                            : undefined
+                        : replica.replicaStatus?.status === 'Stopped' && replica.endTime == null && job?.ended
+                          ? new Date(job.ended)
                           : undefined
                     }
                   />
