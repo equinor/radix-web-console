@@ -9,7 +9,8 @@ interface EnvironmentCardListProps {
   readonly application: Pick<Application, 'name' | 'registration' | 'environments'>
 }
 
-export const EnvironmentCardList = ({ application }: EnvironmentCardListProps) => {
+export const EnvironmentCardList = (props: EnvironmentCardListProps) => {
+  const { application } = props
   const hasEnvironments = application.environments && application.environments.length > 0
 
   return (

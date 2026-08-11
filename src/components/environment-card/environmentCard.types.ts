@@ -6,7 +6,7 @@ export interface BranchInfo {
   readonly commitUrl?: string
   /** The branch to automatically build from */
   readonly branchMapping?: string
-  readonly promotedFrom: string | undefined
+  readonly promotedFrom?: string
   readonly pipelineJobUrl?: string
 }
 

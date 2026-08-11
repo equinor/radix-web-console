@@ -16,7 +16,8 @@ interface EnvironmentCardContainerProps {
   readonly environment: Pick<EnvironmentSummary, 'name' | 'status' | 'activeDeployment' | 'branchMapping'>
 }
 
-export const EnvironmentCardContainer = ({ application, environment }: EnvironmentCardContainerProps) => {
+export const EnvironmentCardContainer = (props: EnvironmentCardContainerProps) => {
+  const { application, environment } = props
   const deploymentName = environment.activeDeployment?.name
 
   const { data: components, isLoading: areComponentsLoading } = useComponentsQuery(

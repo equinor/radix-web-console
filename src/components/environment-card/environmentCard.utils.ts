@@ -46,7 +46,7 @@ export const getBuildSourceView = (buildSource: EnvironmentCardBuildSource): Bui
 
 /** Splits public components into a visible slice and a count of those hidden beyond it. */
 export const truncatePublicComponents = (
-  components: ReadonlyArray<PublicComponent> = []
+  components: ReadonlyArray<PublicComponent>
 ): { visible: ReadonlyArray<PublicComponent>; hiddenCount: number } => {
   const visible = components.slice(0, MAX_VISIBLE_PUBLIC_COMPONENTS)
   const hiddenCount = components.length - visible.length

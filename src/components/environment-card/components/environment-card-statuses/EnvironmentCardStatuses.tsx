@@ -7,9 +7,9 @@ import type { VulnerabilityCounts } from '../../../status-popover/shared/vulnera
 import styles from '../../environmentCard.module.css'
 
 interface EnvironmentCardStatusesProps {
-  replicaUtilizations: ReplicaUtilization[]
-  vulnerabilities: VulnerabilityCounts
-  environmentStatusItems: StatusItem[]
+  readonly replicaUtilizations: ReadonlyArray<ReplicaUtilization>
+  readonly vulnerabilities: VulnerabilityCounts
+  readonly environmentStatusItems: ReadonlyArray<StatusItem>
 }
 
 export const EnvironmentCardStatuses = (props: EnvironmentCardStatusesProps) => {

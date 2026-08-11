@@ -85,7 +85,7 @@ describe('truncatePublicComponents', () => {
     Array.from({ length: count }, (_, index) => ({ name: `component-${index}`, url: `https://host/${index}` }))
 
   it('returns an empty view when there are no components', () => {
-    expect(truncatePublicComponents()).toEqual({
+    expect(truncatePublicComponents([])).toEqual({
       visible: [],
       hiddenCount: 0,
     })

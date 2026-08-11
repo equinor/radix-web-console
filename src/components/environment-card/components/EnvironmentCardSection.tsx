@@ -8,19 +8,23 @@ interface EnvironmentCardSectionProps {
   readonly children: ReactNode
 }
 
-export const EnvironmentCardSection = ({ title, subtitle, children }: EnvironmentCardSectionProps) => (
-  <div>
+export const EnvironmentCardSection = (props: EnvironmentCardSectionProps) => {
+  const { title, subtitle, children } = props
+
+  return (
     <div>
-      <Typography variant="caption" as="span">
-        {title}
-      </Typography>
-      {subtitle && (
-        <Typography variant="caption" as="span" className={styles.secondaryText}>
-          {' '}
-          {subtitle}
+      <div>
+        <Typography variant="caption" as="span">
+          {title}
         </Typography>
-      )}
+        {subtitle && (
+          <Typography variant="caption" as="span" className={styles.secondaryText}>
+            {' '}
+            {subtitle}
+          </Typography>
+        )}
+      </div>
+      {children}
     </div>
-    {children}
-  </div>
-)
+  )
+}

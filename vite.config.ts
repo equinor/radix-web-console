@@ -6,7 +6,7 @@ import packageJson from './package.json'
 const devComponentRegex = /\.\.\/(components|pages)\/([A-Za-z0-9_-]+(\/[A-Za-z0-9_-]+)?)\/dev\.(tsx|jsx|js)/i
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   appType: 'spa',
   server: {
     host: '0.0.0.0',
@@ -40,7 +40,7 @@ export default defineConfig(({ mode }) => ({
       external: (source) => !!devComponentRegex.exec(source),
       output: {
         // Production builds should never include console.log statements, so we drop them in the minification step
-        minify: { compress: { dropConsole: true }, mangle: true, module: true },
+        minify: { compress: { dropConsole: true }, mangle: true },
       },
     },
   },
@@ -49,4 +49,4 @@ export default defineConfig(({ mode }) => ({
     'import.meta.env.PACKAGE_NAME': JSON.stringify(packageJson.name),
   },
   plugins: [react()],
-}))
+})

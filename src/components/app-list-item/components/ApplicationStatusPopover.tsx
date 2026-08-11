@@ -12,7 +12,6 @@ interface ApplicationStatusPopoverProps {
 /**
  * Goes through the list of environments for one application and the latest job, and finds the most severe status,
  * then renders a popover with the aggregated status and a list of all items.
- * If the list of environments is empty, returns null.
  */
 export const ApplicationStatusPopover = (props: ApplicationStatusPopoverProps) => {
   const { environments, latestJob } = props

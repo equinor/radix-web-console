@@ -39,7 +39,6 @@ const resolveStatusMeta = <TStatus extends string>(
   status: TStatus | undefined
 ): StatusMeta => {
   const meta = map[status as TStatus]
-
   // A defined-but-unmapped status means the backend sent a value we don't know about.
   if (status !== undefined && meta === undefined) {
     console.warn(`resolveStatusMeta: unknown status "${status}"`)
@@ -54,8 +53,12 @@ const resolveStatusMeta = <TStatus extends string>(
  */
 export const getReplicasStatusMeta = (components: Component[]): StatusMeta => {
   const replicas = components
-    .flatMap((c) => c.replicaList)
-    .concat(components?.flatMap((c) => c.oauth2?.deployments?.flatMap((d) => d.replicaList) ?? []))
+    .flatMap((component) => component.replicaList)
+    .concat(
+      components?.flatMap(
+        (component) => component.oauth2?.deployments?.flatMap((deployment) => deployment.replicaList) ?? []
+      )
+    )
     .filter((x) => !!x)
 
   return replicas.reduce<StatusMeta>((agg, { replicaStatus }) => {
