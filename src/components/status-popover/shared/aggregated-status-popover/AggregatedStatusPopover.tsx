@@ -1,8 +1,7 @@
-import { Icon } from '@equinor/eds-core-react'
 import type { ReactNode } from 'react'
 import { StatusBadgeTemplate } from '../../../status-badges/status-badge-template'
 import { StatusPopover } from '../../status-popover'
-import { AlertLevelPresentationMap } from './aggregatedStatusPopover.const'
+import { AGGREGATED_STATUS_MAP } from './aggregatedStatusPopover.const'
 import type { StatusItem } from './aggregatedStatusPopover.types'
 import { getMostSevereAlertLevel } from './aggregatedStatusPopover.utils'
 
@@ -23,13 +22,13 @@ export const AggregatedStatusPopover = (props: AggregatedStatusPopoverProps) => 
     return null
   }
   const mostSevereAlertLevel = getMostSevereAlertLevel(items.map((item) => item.alertLevel))
-  const aggregated = AlertLevelPresentationMap[mostSevereAlertLevel]
+  const aggregatedStatus = AGGREGATED_STATUS_MAP[mostSevereAlertLevel]
 
   return (
-    <StatusPopover title={title} type={aggregated.type} icon={<Icon data={aggregated.icon} />}>
+    <StatusPopover title={title} type={aggregatedStatus.type} icon={aggregatedStatus.icon}>
       <div className="grid grid--gap-small">
         {items.map((item) => (
-          <StatusBadgeTemplate key={item.label} type={AlertLevelPresentationMap[item.alertLevel].type} icon={item.icon}>
+          <StatusBadgeTemplate key={item.label} type={AGGREGATED_STATUS_MAP[item.alertLevel].type} icon={item.icon}>
             {item.label}
           </StatusBadgeTemplate>
         ))}

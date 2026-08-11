@@ -1,27 +1,56 @@
-import { Icon } from '@equinor/eds-core-react'
-import { check } from '@equinor/eds-icons'
-import type { Component, Deployment, DeploymentSummary, Environment, JobSummary } from '../../store/radix-api'
+import type {
+  AuxiliaryResourceDeployment,
+  Component,
+  Deployment,
+  DeploymentSummary,
+  Environment,
+  JobSummary,
+} from '../../store/radix-api'
 import {
-  AuxiliaryResourceDeploymentStatusMap,
-  ComponentStatusMap,
-  DeploymentStatusMap,
-  JobStatusMap,
-  ReplicaStatusMap,
+  ALERT_LEVEL_SEVERITY_MAP,
+  AUXILIARY_RESOURCE_DEPLOYMENT_STATUS_MAP,
+  COMPONENT_STATUS_MAP,
+  DEPLOYMENT_STATUS_MAP,
+  JOB_STATUS_MAP,
+  NONE_STATUS_META,
+  REPLICA_STATUS_MAP,
+  UNKNOWN_STATUS_META,
 } from './statusMeta.const'
-import type { StatusMeta } from './statusMeta.types'
+import type { AlertLevel, StatusMeta } from './statusMeta.types'
 
-/** Returns the entry with the highest weight, keeping the first on ties. */
-const getHeaviestWeightedStatusMeta = (statuses: StatusMeta[]): StatusMeta => {
-  return statuses.reduce<StatusMeta>((worst, current) => (current.weight > worst.weight ? current : worst), {
-    alertLevel: 'None',
-    weight: -1,
-    icon: <Icon data={check} />,
-  })
+/** Collapses statuses into the most severe by alert level, ties are broken by the one with the highest priority. */
+const getMostSevereStatusMeta = (statuses: StatusMeta[]): StatusMeta =>
+  statuses.reduce<StatusMeta>((worst, current) => {
+    const severityDiff = ALERT_LEVEL_SEVERITY_MAP[current.alertLevel] - ALERT_LEVEL_SEVERITY_MAP[worst.alertLevel]
+
+    if (severityDiff === 0) {
+      return current.priority > worst.priority ? current : worst
+    }
+
+    return severityDiff > 0 ? current : worst
+  }, NONE_STATUS_META)
+
+/**
+ * Resolves a status to its meta, falling back to {@link UNKNOWN_STATUS_META} when the value is
+ * missing or not one the map knows about (e.g. unexpected data from the backend).
+ */
+const resolveStatusMeta = <TStatus extends string>(
+  map: Record<TStatus, StatusMeta>,
+  status: TStatus | undefined
+): StatusMeta => {
+  const meta = map[status as TStatus]
+
+  // A defined-but-unmapped status means the backend sent a value we don't know about.
+  if (status !== undefined && meta === undefined) {
+    console.warn(`resolveStatusMeta: unknown status "${status}"`)
+  }
+
+  return meta ?? UNKNOWN_STATUS_META
 }
 
 /**
- * Iterates all components and their replicas, returning the
- * heaviest-weighted status meta for the environment.
+ * Iterates all components and their replicas, returning the most severe
+ * status meta for the environment.
  */
 export const getReplicasStatusMeta = (components: Component[]): StatusMeta => {
   const replicas = components
@@ -30,32 +59,36 @@ export const getReplicasStatusMeta = (components: Component[]): StatusMeta => {
     .filter((x) => !!x)
 
   return replicas.reduce<StatusMeta>((agg, { replicaStatus }) => {
-    const meta = ReplicaStatusMap[replicaStatus?.status ?? 'Running']
-    return getHeaviestWeightedStatusMeta([agg, meta])
-  }, ReplicaStatusMap.Running)
+    const meta = resolveStatusMeta(REPLICA_STATUS_MAP, replicaStatus?.status)
+    return getMostSevereStatusMeta([agg, meta])
+  }, REPLICA_STATUS_MAP.Running)
 }
 
-export const getComponentsStatusMeta = (components: Component[]): StatusMeta => {
-  return components.reduce<StatusMeta>((agg, { status, oauth2 }) => {
-    const component = ComponentStatusMap[status ?? 'Consistent']
-    const auxiliary = AuxiliaryResourceDeploymentStatusMap[oauth2?.deployment.status ?? 'Consistent']
+const getOauth2DeploymentStatusMeta = (oauth2Deployments: AuxiliaryResourceDeployment[]): StatusMeta =>
+  oauth2Deployments.reduce<StatusMeta>((agg, deployment) => {
+    const meta = resolveStatusMeta(AUXILIARY_RESOURCE_DEPLOYMENT_STATUS_MAP, deployment.status)
+    return getMostSevereStatusMeta([agg, meta])
+  }, AUXILIARY_RESOURCE_DEPLOYMENT_STATUS_MAP.Consistent)
 
-    return getHeaviestWeightedStatusMeta([agg, component, auxiliary])
-  }, ComponentStatusMap.Consistent)
-}
+export const getComponentsStatusMeta = (components: Component[]): StatusMeta =>
+  components.reduce<StatusMeta>((agg, component) => {
+    const componentStatus = resolveStatusMeta(COMPONENT_STATUS_MAP, component.status)
+    const oauth2DeploymentStatus = getOauth2DeploymentStatusMeta(component.oauth2?.deployments ?? [])
 
-export const getDeploymentStatusMeta = (deployment: Pick<Deployment | DeploymentSummary, 'status'>): StatusMeta => {
-  return DeploymentStatusMap[deployment.status ?? 'Inactive']
-}
+    return getMostSevereStatusMeta([agg, componentStatus, oauth2DeploymentStatus])
+  }, COMPONENT_STATUS_MAP.Consistent)
 
-/** Resolves the StatusMeta for the latest pipeline job, defaulting to a healthy status. */
-export const getLatestJobStatusMeta = (latestJob?: Pick<JobSummary, 'status'>): StatusMeta => {
-  return JobStatusMap[latestJob?.status ?? 'Succeeded']
-}
+export const getDeploymentStatusMeta = (deployment: {
+  status?: Deployment['status'] | DeploymentSummary['status']
+}): StatusMeta => resolveStatusMeta(DEPLOYMENT_STATUS_MAP, deployment.status ?? 'Ready')
+
+/** Resolves the StatusMeta for the latest pipeline job, or unknown when it is missing. */
+export const getLatestJobStatusMeta = (latestJob?: Pick<JobSummary, 'status'>): StatusMeta =>
+  resolveStatusMeta(JOB_STATUS_MAP, latestJob?.status)
 
 /**
  * Aggregates every environment's active deployment, components and replicas into the single
- * heaviest-weighted StatusMeta for the application.
+ * most severe StatusMeta for the application.
  */
 export const getEnvironmentsStatusMeta = (
   environments: ReadonlyArray<Pick<Environment, 'activeDeployment'>>
@@ -65,11 +98,9 @@ export const getEnvironmentsStatusMeta = (
     .map((environment) => environment.activeDeployment)
     .filter((deployment) => !!deployment)
 
-  const deploymentMeta = getHeaviestWeightedStatusMeta(
-    deployments.map((deployment) => getDeploymentStatusMeta(deployment))
-  )
+  const deploymentMeta = getMostSevereStatusMeta(deployments.map((deployment) => getDeploymentStatusMeta(deployment)))
   const componentsMeta = getComponentsStatusMeta(components)
   const replicasMeta = getReplicasStatusMeta(components)
 
-  return getHeaviestWeightedStatusMeta([deploymentMeta, componentsMeta, replicasMeta])
+  return getMostSevereStatusMeta([deploymentMeta, componentsMeta, replicasMeta])
 }

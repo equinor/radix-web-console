@@ -8,11 +8,11 @@ import type {
   ReplicaStatus,
 } from '../../store/radix-api'
 
-export type AlertLevel = 'None' | 'Warning' | 'Danger'
+export type AlertLevel = 'None' | 'Loading' | 'Warning' | 'Danger'
 
 export type StatusMeta = {
   alertLevel: AlertLevel
-  weight: number
+  priority: number
   icon: ReactElement
 }
 

@@ -1,4 +1,3 @@
-import { getEnvironmentStatusItems } from '../../components/environment-card/components/environment-card-statuses/environmentCardStatuses.utils'
 import { EnvironmentCard } from '../../components/environment-card/EnvironmentCard'
 import { getEnvironmentReplicaUtilizations } from '../../components/status-popover/shared/utilization-status-popover/utilizationStatusPopover.utils'
 import { summarizeEnvironmentVulnerabilities } from '../../components/status-popover/shared/vulnerability-status-popover/vulnerabilityStatusPopover.utils'
@@ -10,7 +9,7 @@ import {
   useGetApplicationResourcesUtilizationQuery,
 } from '../../store/radix-api'
 import { useGetEnvironmentVulnerabilitySummaryQuery } from '../../store/scan-api'
-import { getEnvironmentCardProps } from './environmentCardContainer.utils'
+import { getEnvironmentCardProps, getEnvironmentStatusItems } from './environmentCardContainer.utils'
 
 export type EnvironmentCardContainerProps = {
   application: Pick<Application, 'name' | 'registration'>

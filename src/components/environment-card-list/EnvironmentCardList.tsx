@@ -5,11 +5,11 @@ import { Banner } from '../banner/Banner'
 import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
 
-export type EnvironmentListProps = {
+interface EnvironmentCardListProps {
   readonly application: Pick<Application, 'name' | 'registration' | 'environments'>
 }
 
-export const EnvironmentCardList = ({ application }: EnvironmentListProps) => {
+export const EnvironmentCardList = ({ application }: EnvironmentCardListProps) => {
   const hasEnvironments = application.environments && application.environments.length > 0
 
   return (

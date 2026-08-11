@@ -5,8 +5,14 @@ import type {
   EnvironmentCardEnvironment,
   PublicComponent,
 } from '../../components/environment-card/environmentCard.types'
+import { StatusItem } from '../../components/status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
+import {
+  getComponentsStatusMeta,
+  getDeploymentStatusMeta,
+  getReplicasStatusMeta,
+} from '../../domain/status-meta/statusMeta.utils'
 import { routes } from '../../router/routes'
-import type { Application, Component, EnvironmentSummary } from '../../store/radix-api'
+import type { Application, Component, DeploymentSummary, EnvironmentSummary } from '../../store/radix-api'
 import { getAppDeploymentUrl } from '../../utils/routing'
 import { routeWithParams, smallGithubCommitHash } from '../../utils/string'
 
@@ -138,3 +144,19 @@ export const getEnvironmentCardProps = (
   activeDeployment: getCardActiveDeployment(application.name, environment.activeDeployment),
   buildSource: getCardBuildSource(application, environment),
 })
+
+/** Aggregates deployment, components and replicas into the popover's status items. */
+export const getEnvironmentStatusItems = (
+  components: Component[] = [],
+  deploymentStatus?: DeploymentSummary['status']
+): StatusItem[] => {
+  const deployment = getDeploymentStatusMeta({ status: deploymentStatus })
+  const componentsStatus = getComponentsStatusMeta(components)
+  const replicasStatus = getReplicasStatusMeta(components)
+
+  return [
+    { label: 'Deployment', alertLevel: deployment.alertLevel, icon: deployment.icon },
+    { label: 'Components', alertLevel: componentsStatus.alertLevel, icon: componentsStatus.icon },
+    { label: 'Replicas', alertLevel: replicasStatus.alertLevel, icon: replicasStatus.icon },
+  ]
+}

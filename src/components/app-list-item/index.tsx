@@ -154,17 +154,19 @@ export const AppListItem = ({
                         />
                       )}
 
-                      {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
-                        <VulnerabilityStatusPopover summary={filterFields(vulnerabilities, visibleKeys)} />
+                      {!isLoading && (
+                        <>
+                          {visibleKeys.some((key) => vulnerabilities[key] > 0) && (
+                            <VulnerabilityStatusPopover summary={filterFields(vulnerabilities, visibleKeys)} />
+                          )}
+                          <UtilizationStatusPopover
+                            replicaUtilizations={replicaUtilizations}
+                            showLabel={false}
+                            minimumSeverity="Warning"
+                          />
+                          <ApplicationStatusPopover environments={environments} latestJob={latestJob} />
+                        </>
                       )}
-
-                      <UtilizationStatusPopover
-                        replicaUtilizations={replicaUtilizations}
-                        showLabel={false}
-                        minimumSeverity="Warning"
-                      />
-
-                      <ApplicationStatusPopover environments={environments} latestJob={latestJob} />
                     </div>
                   </>
                 )}

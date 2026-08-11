@@ -1,11 +1,11 @@
+import { ALERT_LEVEL_SEVERITY_MAP } from '../../../../domain/status-meta/statusMeta.const'
 import type { AlertLevel } from '../../../../domain/status-meta/statusMeta.types'
-import { AlertLevelWeightMap } from './aggregatedStatusPopover.const'
 
-/** Returns the alert level with the highest severity weight, defaulting to 'Good'. */
+/** Returns the alert level with the highest severity, defaulting to 'None'. */
 export const getMostSevereAlertLevel = (alertLevels: AlertLevel[]): AlertLevel => {
   return alertLevels.reduce(
     (mostSevere, alertLevel) =>
-      AlertLevelWeightMap[alertLevel] > AlertLevelWeightMap[mostSevere] ? alertLevel : mostSevere,
+      ALERT_LEVEL_SEVERITY_MAP[alertLevel] > ALERT_LEVEL_SEVERITY_MAP[mostSevere] ? alertLevel : mostSevere,
     'None'
   )
 }

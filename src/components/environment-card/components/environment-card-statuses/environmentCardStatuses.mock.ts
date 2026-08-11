@@ -1,22 +1,22 @@
+import { getEnvironmentStatusItems } from '../../../../containers/environment-card-container/environmentCardContainer.utils'
 import type { Component, ReplicaResourcesUtilizationResponse } from '../../../../store/radix-api'
 import type { EnvironmentVulnerabilities } from '../../../../store/scan-api'
 import { getEnvironmentReplicaUtilizations } from '../../../status-popover/shared/utilization-status-popover/utilizationStatusPopover.utils'
 import { summarizeEnvironmentVulnerabilities } from '../../../status-popover/shared/vulnerability-status-popover/vulnerabilityStatusPopover.utils'
-import { getEnvironmentStatusItems } from './environmentCardStatuses.utils'
 
-const APP_NAME = 'radix-api'
+const APP_NAME = 'application-name'
 
 const createComponent = (name: string, host?: string): Component => ({
   name,
-  image: `ghcr.io/equinor/${APP_NAME}-${name}:latest`,
+  image: `some-fake-image.io/equinor/${APP_NAME}-${name}:latest`,
   type: 'component',
   ...(host ? { variables: { RADIX_PUBLIC_DOMAIN_NAME: host } } : {}),
 })
 
 export const mockComponents: Component[] = [
-  createComponent('web', 'web-radix-api-dev.radix.equinor.com'),
-  createComponent('api', 'api-radix-api-dev.radix.equinor.com'),
-  createComponent('admin', 'admin-radix-api-dev.radix.equinor.com'),
+  createComponent('web', 'web-some-random-fake-url.equinor.com'),
+  createComponent('api', 'api-some-random-fake-url.equinor.com'),
+  createComponent('admin', 'admin-some-random-fake-url.equinor.com'),
   createComponent('worker'),
 ]
 const mockUtilization: ReplicaResourcesUtilizationResponse = {
