@@ -5,7 +5,7 @@ import type {
   EnvironmentCardEnvironment,
   PublicComponent,
 } from '../../components/environment-card/environmentCard.types'
-import { StatusItem } from '../../components/status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
+import type { StatusItem } from '../../components/status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
 import {
   getComponentsStatusMeta,
   getDeploymentStatusMeta,

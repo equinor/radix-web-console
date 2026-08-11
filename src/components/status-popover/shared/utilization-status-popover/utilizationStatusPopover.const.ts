@@ -8,7 +8,7 @@ export const MEMORY_THRESHOLDS: Readonly<Thresholds> = {
   max: 0.9,
 }
 
-export const SEVERITY_MAP = {
+export const UTILIZATION_SEVERITY_MAP = {
   None: { rank: 0, label: 'Normal Utilization', type: 'default' },
   Information: { rank: 1, label: 'Low Utilization', type: 'default' },
   Warning: { rank: 2, label: 'High Utilization', type: 'warning' },

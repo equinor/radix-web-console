@@ -16,7 +16,7 @@ import {
   REPLICA_STATUS_MAP,
   UNKNOWN_STATUS_META,
 } from './statusMeta.const'
-import type { AlertLevel, StatusMeta } from './statusMeta.types'
+import type { StatusMeta } from './statusMeta.types'
 
 /** Collapses statuses into the most severe by alert level, ties are broken by the one with the highest priority. */
 const getMostSevereStatusMeta = (statuses: StatusMeta[]): StatusMeta =>

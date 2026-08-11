@@ -13,7 +13,7 @@ const createComponent = (name: string, host?: string): Component => ({
   ...(host ? { variables: { RADIX_PUBLIC_DOMAIN_NAME: host } } : {}),
 })
 
-export const mockComponents: Component[] = [
+const mockComponents: Component[] = [
   createComponent('web', 'web-some-random-fake-url.equinor.com'),
   createComponent('api', 'api-some-random-fake-url.equinor.com'),
   createComponent('admin', 'admin-some-random-fake-url.equinor.com'),
@@ -37,7 +37,7 @@ const mockEnvScan: EnvironmentVulnerabilities = {
   name: 'dev',
   components: {
     web: {
-      image: 'ghcr.io/equinor/radix-api-web:latest',
+      image: 'some-fake-image.io/equinor/application-web:latest',
       scanSuccess: true,
       scanTime: '2026-08-01T11:00:00Z',
       vulnerabilitySummary: { critical: 1, high: 3, medium: 5, low: 12 },

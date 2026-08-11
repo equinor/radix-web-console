@@ -17,7 +17,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
-export const Good: Story = {
+export const None: Story = {
   args: {
     title: 'Environments',
     items: [

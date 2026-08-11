@@ -2,12 +2,10 @@ import { clsx } from 'clsx'
 import styles from '../environmentCard.module.css'
 
 /**
- * Loading placeholder that mirrors the EnvironmentCard layout. The outer
- * `.skeleton` class drives the shimmer; structural containers reuse `.wrapper`
- * so only the bone elements get the animated gradient.
+ * Loading placeholder that mirrors the EnvironmentCard layout.
  */
 export const EnvironmentCardSkeleton = () => (
-  <div className="skeleton">
+  <div className={clsx('skeleton', styles.skeleton)}>
     <div className={clsx('wrapper', styles.environmentCard)}>
       <div className={clsx('wrapper', styles.header)}>
         <span className={clsx(styles.skeletonBar, styles.short)} />

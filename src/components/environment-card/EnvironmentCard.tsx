@@ -30,6 +30,7 @@ interface EnvironmentCardProps {
 const EnvironmentCardRoot = (props: EnvironmentCardProps) => {
   const { environment, publicComponents, activeDeployment, buildSource, isLoading = false, children } = props
 
+  // Early return skeleton before computing values
   if (isLoading) {
     return <EnvironmentCardSkeleton />
   }

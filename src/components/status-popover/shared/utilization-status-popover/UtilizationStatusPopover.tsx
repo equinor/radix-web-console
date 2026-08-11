@@ -3,7 +3,7 @@ import { desktop_mac, pressure } from '@equinor/eds-icons'
 import type { ReplicaUtilization } from '../../../../store/radix-api'
 import { StatusBadgeTemplate } from '../../../status-badges/status-badge-template'
 import { StatusPopover } from '../../status-popover'
-import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './utilizationStatusPopover.const'
+import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, UTILIZATION_SEVERITY_MAP } from './utilizationStatusPopover.const'
 import type { Severity } from './utilizationStatusPopover.types'
 
 import {
@@ -13,10 +13,10 @@ import {
   isSeverityAtLeast,
 } from './utilizationStatusPopover.utils'
 
-export interface UtilizationStatusPopoverProps {
-  replicaUtilizations: ReplicaUtilization[]
-  showLabel?: boolean
-  minimumSeverity?: Severity
+interface UtilizationStatusPopoverProps {
+  readonly replicaUtilizations: ReadonlyArray<ReplicaUtilization>
+  readonly showLabel?: boolean
+  readonly minimumSeverity?: Severity
 }
 
 /**
@@ -44,15 +44,15 @@ export const UtilizationStatusPopover = ({
     <StatusPopover
       icon={<Icon data={pressure} />}
       title="Resource Utilization Status"
-      label={showLabel ? SEVERITY_MAP[highestAlertTotal.severity].label : undefined}
-      type={SEVERITY_MAP[highestAlertTotal.severity].type}
+      label={showLabel ? UTILIZATION_SEVERITY_MAP[highestAlertTotal.severity].label : undefined}
+      type={UTILIZATION_SEVERITY_MAP[highestAlertTotal.severity].type}
       disablePopover={highestAlertTotal.severity === 'None'}
     >
       <div className="grid grid--gap-small">
-        <StatusBadgeTemplate type={SEVERITY_MAP[highestMemoryAlert.severity].type}>
+        <StatusBadgeTemplate type={UTILIZATION_SEVERITY_MAP[highestMemoryAlert.severity].type}>
           Memory {highestMemoryAlert.reason}
         </StatusBadgeTemplate>
-        <StatusBadgeTemplate type={SEVERITY_MAP[highestCPUAlert.severity].type}>
+        <StatusBadgeTemplate type={UTILIZATION_SEVERITY_MAP[highestCPUAlert.severity].type}>
           CPU {highestCPUAlert.reason}
         </StatusBadgeTemplate>
       </div>

@@ -1,5 +1,5 @@
 import type { ReplicaResourcesUtilizationResponse, ReplicaUtilization } from '../../../../store/radix-api'
-import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, SEVERITY_MAP } from './utilizationStatusPopover.const'
+import { CPU_THRESHOLDS, MEMORY_THRESHOLDS, UTILIZATION_SEVERITY_MAP } from './utilizationStatusPopover.const'
 import type { Severity, SeverityWithReason, Thresholds } from './utilizationStatusPopover.types'
 
 type KeyedReplicaUtilization = { key: string; replica: ReplicaUtilization }
@@ -30,10 +30,10 @@ export const getEnvironmentReplicaUtilizations = (
     .map(({ replica }) => replica)
 
 export const getHighestSeverity = (a: SeverityWithReason, b: SeverityWithReason): SeverityWithReason =>
-  SEVERITY_MAP[a.severity].rank > SEVERITY_MAP[b.severity].rank ? a : b
+  UTILIZATION_SEVERITY_MAP[a.severity].rank > UTILIZATION_SEVERITY_MAP[b.severity].rank ? a : b
 
 export const isSeverityAtLeast = (severity: Severity, minimum: Severity): boolean =>
-  SEVERITY_MAP[severity].rank >= SEVERITY_MAP[minimum].rank
+  UTILIZATION_SEVERITY_MAP[severity].rank >= UTILIZATION_SEVERITY_MAP[minimum].rank
 
 const severityForRatio = (ratio: number, { low, high, max }: Thresholds): Severity => {
   if (ratio > max) return 'Critical'
@@ -43,7 +43,7 @@ const severityForRatio = (ratio: number, { low, high, max }: Thresholds): Severi
 }
 
 const createSeverityWithReason = (value: number, severity: Severity): SeverityWithReason => {
-  const label = SEVERITY_MAP[severity].label
+  const label = UTILIZATION_SEVERITY_MAP[severity].label
 
   if (severity === 'None') {
     return { severity, value, reason: label }
@@ -56,7 +56,7 @@ const createSeverityWithReason = (value: number, severity: Severity): SeverityWi
 const noAlert = createSeverityWithReason(0, 'None')
 
 const getHighestAlert = (
-  replicas: ReplicaUtilization[],
+  replicas: ReadonlyArray<ReplicaUtilization>,
   toRatio: (replica: ReplicaUtilization) => number,
   thresholds: Thresholds
 ): SeverityWithReason =>
@@ -65,8 +65,8 @@ const getHighestAlert = (
     return getHighestSeverity(createSeverityWithReason(ratio, severityForRatio(ratio, thresholds)), highest)
   }, noAlert)
 
-export const getHighestCPUAlert = (replicas: ReplicaUtilization[]): SeverityWithReason =>
+export const getHighestCPUAlert = (replicas: ReadonlyArray<ReplicaUtilization>): SeverityWithReason =>
   getHighestAlert(replicas, (replica) => replica.cpuAverage / replica.cpuRequests, CPU_THRESHOLDS)
 
-export const getHighestMemoryAlert = (replicas: ReplicaUtilization[]): SeverityWithReason =>
+export const getHighestMemoryAlert = (replicas: ReadonlyArray<ReplicaUtilization>): SeverityWithReason =>
   getHighestAlert(replicas, (replica) => replica.memoryMaximum / replica.memoryRequests, MEMORY_THRESHOLDS)

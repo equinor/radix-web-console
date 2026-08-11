@@ -6,8 +6,8 @@ import type { StatusItem } from './aggregatedStatusPopover.types'
 import { getMostSevereAlertLevel } from './aggregatedStatusPopover.utils'
 
 interface AggregatedStatusPopoverProps {
-  title: ReactNode
-  items: StatusItem[]
+  readonly title: ReactNode
+  readonly items: ReadonlyArray<StatusItem>
 }
 
 /**
@@ -21,6 +21,7 @@ export const AggregatedStatusPopover = (props: AggregatedStatusPopoverProps) => 
   if (items.length === 0) {
     return null
   }
+
   const mostSevereAlertLevel = getMostSevereAlertLevel(items.map((item) => item.alertLevel))
   const aggregatedStatus = AGGREGATED_STATUS_MAP[mostSevereAlertLevel]
 

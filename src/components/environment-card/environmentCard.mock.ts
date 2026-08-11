@@ -4,7 +4,7 @@ import type { EnvironmentCard } from './EnvironmentCard'
 type EnvironmentCardProps = ComponentProps<typeof EnvironmentCard>
 
 const APP_NAME = 'radix-api'
-const REPOSITORY = 'https://github.com/equinor/radix-api'
+const REPOSITORY = 'https://github.com/equinor/some-fake-repo'
 
 export const mockEnvironment: EnvironmentCardProps['environment'] = {
   name: 'dev',
@@ -13,8 +13,8 @@ export const mockEnvironment: EnvironmentCardProps['environment'] = {
 }
 
 export const mockPublicComponents: EnvironmentCardProps['publicComponents'] = [
-  { name: 'web', url: 'https://web-radix-api-dev.radix.equinor.com' },
-  { name: 'api', url: 'https://api-radix-api-dev.radix.equinor.com' },
+  { name: 'web', url: 'https://web-some-fake-app.equinor.com' },
+  { name: 'api', url: 'https://api-some-fake-app.equinor.com' },
 ]
 
 export const mockActiveDeployment: NonNullable<EnvironmentCardProps['activeDeployment']> = {

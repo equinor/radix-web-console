@@ -1,10 +1,11 @@
 import { Typography } from '@equinor/eds-core-react'
+import type { ReactNode } from 'react'
 import styles from '../environmentCard.module.css'
 
 interface EnvironmentCardSectionProps {
-  title: string
-  subtitle?: string
-  children: React.ReactNode
+  readonly title: string
+  readonly subtitle?: string
+  readonly children: ReactNode
 }
 
 export const EnvironmentCardSection = ({ title, subtitle, children }: EnvironmentCardSectionProps) => (

@@ -6,11 +6,13 @@
     background-position-x: 0%;
   }
 }
+
 .skeleton {
   display: contents;
-  /* Define the colors as css custom props */
   --_default-color: #e8e8e8;
   --_shimmer-color: #fff;
+
+  /* The wrapper class is used to structure the layout of the skeleton, but it should not have the shimmer animation applied. */
   :not(.wrapper) {
     /* Apply the animation that moves the background */
     animation: skeleton-shimmer 2s ease-out infinite;

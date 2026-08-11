@@ -31,7 +31,7 @@ import { ApplicationStatusPopover } from './components/ApplicationStatusPopover'
 
 export type FavouriteClickedHandler = (event: MouseEvent<HTMLButtonElement>, name: string) => void
 
-export interface AppListItemProps {
+interface AppListItemProps {
   appName: string
   latestJob?: JobSummary
   environments?: Environment[]

@@ -16,11 +16,7 @@ import {
   getReplicasStatusMeta,
 } from './statusMeta.utils'
 
-// We intentionally don't assert every entry of the status maps here; the maps are static data
-// covered by their `satisfies` types. These tests focus on the aggregation logic: defaults,
-// most-severe-by-alert-level selection, and how replicas/components are flattened out of an environment.
-
-const componentWithReplicas = (statuses: Array<{ replicaStatus?: { status?: string } }>): Component =>
+const mockComponentWithReplicas = (statuses: Array<{ replicaStatus?: { status?: string } }>): Component =>
   ({ replicaList: statuses }) as unknown as Component
 
 describe('getReplicasStatusMeta', () => {
@@ -30,7 +26,7 @@ describe('getReplicasStatusMeta', () => {
 
   it('returns the most severe replica status', () => {
     const components = [
-      componentWithReplicas([
+      mockComponentWithReplicas([
         { replicaStatus: { status: 'Running' } },
         { replicaStatus: { status: 'Failed' } },
         { replicaStatus: { status: 'Starting' } },
@@ -54,13 +50,13 @@ describe('getReplicasStatusMeta', () => {
   })
 
   it('treats a missing replica status as unknown', () => {
-    const components = [componentWithReplicas([{ replicaStatus: undefined }])]
+    const components = [mockComponentWithReplicas([{ replicaStatus: undefined }])]
 
     expect(getReplicasStatusMeta(components)).toEqual(UNKNOWN_STATUS_META)
   })
 
   it('falls back to unknown when a replica status is not a known value', () => {
-    const components = [componentWithReplicas([{ replicaStatus: { status: 'Bogus' } }])]
+    const components = [mockComponentWithReplicas([{ replicaStatus: { status: 'Bogus' } }])]
 
     expect(getReplicasStatusMeta(components)).toEqual(UNKNOWN_STATUS_META)
   })

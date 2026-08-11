@@ -11,9 +11,9 @@ import {
 import { useGetEnvironmentVulnerabilitySummaryQuery } from '../../store/scan-api'
 import { getEnvironmentCardProps, getEnvironmentStatusItems } from './environmentCardContainer.utils'
 
-export type EnvironmentCardContainerProps = {
-  application: Pick<Application, 'name' | 'registration'>
-  environment: Pick<EnvironmentSummary, 'name' | 'status' | 'activeDeployment' | 'branchMapping'>
+interface EnvironmentCardContainerProps {
+  readonly application: Pick<Application, 'name' | 'registration'>
+  readonly environment: Pick<EnvironmentSummary, 'name' | 'status' | 'activeDeployment' | 'branchMapping'>
 }
 
 export const EnvironmentCardContainer = ({ application, environment }: EnvironmentCardContainerProps) => {
