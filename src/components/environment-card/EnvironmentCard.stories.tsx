@@ -20,6 +20,13 @@ const meta = {
   title: 'Domain/Environment Card',
   component: EnvironmentCard,
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: 360 }}>
+        <Story />
+      </div>
+    ),
+  ],
   render: (args) => (
     <EnvironmentCard {...args}>
       <EnvironmentCard.Statuses
