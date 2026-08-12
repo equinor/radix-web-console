@@ -39,15 +39,9 @@ export const ReplicaOverview = ({ replica, job, title, duration, status, state }
           <div className="grid grid--gap-medium">
             {duration || (
               <>
-                <ReplicaDuration
-                  created={replica.created}
-                  ended={resolvedEndTime}
-                />
+                <ReplicaDuration created={replica.created} ended={resolvedEndTime} />
                 {replica.containerStarted && (
-                  <ContainerDuration
-                    started={new Date(replica.containerStarted)}
-                    ended={resolvedEndTime}
-                  />
+                  <ContainerDuration started={new Date(replica.containerStarted)} ended={resolvedEndTime} />
                 )}
               </>
             )}
