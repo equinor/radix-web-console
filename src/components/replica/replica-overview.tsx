@@ -16,7 +16,7 @@ export interface ReplicaElements {
   state?: React.JSX.Element
 }
 
-type OverviewProps = { replica: ReplicaSummary; job?: ScheduledJobSummary } & ReplicaElements
+type OverviewProps = { replica: ReplicaSummary; job?: Pick<ScheduledJobSummary, 'ended'> } & ReplicaElements
 export const ReplicaOverview = ({ replica, job, title, duration, status, state }: OverviewProps) => {
   return (
     <>

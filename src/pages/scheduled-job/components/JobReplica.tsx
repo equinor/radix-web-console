@@ -16,7 +16,7 @@ export const JobReplica: FunctionComponent<{
   envName: string
   scheduledJobName: string
   replica: ReplicaSummary
-  job?: ScheduledJobSummary
+  job?: Pick<ScheduledJobSummary, 'ended'>
   isExpanded?: boolean
 }> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, job, isExpanded }) => {
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
