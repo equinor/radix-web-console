@@ -24,7 +24,7 @@ export const mockActiveDeployment: NonNullable<EnvironmentCardProps['activeDeplo
 }
 
 export const mockBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'automatic',
+  kind: 'build-deployed',
   branchMapping: 'main',
   gitRef: 'main',
   shortCommitId: '0123456',
@@ -38,10 +38,10 @@ export const mockPromotedBuildSource: EnvironmentCardProps['buildSource'] = {
 }
 
 export const mockAutomaticNotBuiltYetBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'automatic-not-built-yet',
+  kind: 'automatic-not-deployed-yet',
   branchMapping: 'main',
 }
 
 export const mockPromotedNotBuiltYetBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'promoted-not-built-yet',
+  kind: 'manual-not-deployed-yet',
 }

@@ -40,10 +40,10 @@ export const getPublicComponents = (components: ReadonlyArray<Component> = []): 
  * from the (possibly regex) branch mapping and the active deployment info.
  */
 export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource => {
-  const { name, shortCommitId, commitUrl, branchMapping, promotedFrom, pipelineJobUrl } = branch
+  const { gitRef, shortCommitId, commitUrl, branchMapping, promotedFrom, pipelineJobType, pipelineJobUrl } = branch
 
   // Promoted deployments show where they were promoted from and link to the pipeline job.
-  if (promotedFrom) {
+  if (pipelineJobType == 'promote' && promotedFrom) {
     return {
       kind: 'promoted',
       promotedFrom,
@@ -53,31 +53,34 @@ export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource =
   }
 
   // Automatically built from a branch mapping.
-  if (branchMapping && name && shortCommitId) {
+  if (pipelineJobType == 'build-deploy' && gitRef && shortCommitId) {
     return {
-      kind: 'automatic',
+      kind: 'build-deployed',
       branchMapping,
-      gitRef: name,
+      gitRef,
       shortCommitId,
       commitUrl,
     }
   }
 
-  // Branch mapping exists but nothing has been built yet.
-  if (branchMapping && !name && !shortCommitId) {
+  // Manually deployed deployments show the link to the pipeline job.
+  if (pipelineJobType == 'deploy') {
     return {
-      kind: 'automatic-not-built-yet',
+      kind: 'deployed',
+      branchMapping,
+      pipelineJobUrl,
+    }
+  }
+
+  // Branch mapping exists but nothing has been built yet.
+  if (branchMapping) {
+    return {
+      kind: 'automatic-not-deployed-yet',
       branchMapping,
     }
   }
 
-  // No branch mapping — the environment is only ever populated by promotion, and nothing has been promoted yet.
-  if (!branchMapping) {
-    return { kind: 'promoted-not-built-yet' }
-  }
-
-  // Fallback: Not available.
-  return { kind: 'unknown' }
+  return { kind: 'manual-not-deployed-yet' }
 }
 
 const getCardEnvironment = (
@@ -115,12 +118,15 @@ const getCardBuildSource = (
     ? routeWithParams(routes.appJob, { appName: application.name, jobName: activeDeployment.createdByJob })
     : undefined
 
+  console.log('activeDeployment', activeDeployment?.pipelineJobType)
+
   return getBuildSource({
-    name: activeDeployment?.gitRef,
+    gitRef: activeDeployment?.gitRef,
     branchMapping,
     shortCommitId: commitHash ? smallGithubCommitHash(commitHash) : undefined,
     commitUrl: commitHash ? `${application.registration?.repository}/commit/${commitHash}` : undefined,
     pipelineJobUrl,
+    pipelineJobType: activeDeployment?.pipelineJobType,
     promotedFrom: activeDeployment?.promotedFromEnvironment,
   })
 }

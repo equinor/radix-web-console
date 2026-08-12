@@ -1,12 +1,13 @@
 import type { IconData } from '@equinor/eds-icons'
 
 export interface BranchInfo {
-  readonly name?: string
+  readonly gitRef?: string
   readonly shortCommitId?: string
   readonly commitUrl?: string
   /** The branch to automatically build from */
   readonly branchMapping?: string
   readonly promotedFrom?: string
+  readonly pipelineJobType?: 'build' | 'build-deploy' | 'promote' | 'deploy' | 'apply-config'
   readonly pipelineJobUrl?: string
 }
 
@@ -30,8 +31,8 @@ export interface BuildSourceUrl {
  */
 export type EnvironmentCardBuildSource =
   | {
-      readonly kind: 'automatic'
-      readonly branchMapping: string
+      readonly kind: 'build-deployed'
+      readonly branchMapping?: string
       readonly gitRef: string
       readonly shortCommitId: string
       readonly commitUrl?: string
@@ -43,9 +44,14 @@ export type EnvironmentCardBuildSource =
       readonly branchMapping?: string
       readonly pipelineJobUrl?: string
     }
-  | { readonly kind: 'automatic-not-built-yet'; readonly branchMapping: string }
-  | { readonly kind: 'promoted-not-built-yet' }
-  | { readonly kind: 'unknown' }
+  | {
+      readonly kind: 'deployed'
+      /** Present when the environment would otherwise build automatically. */
+      readonly branchMapping?: string
+      readonly pipelineJobUrl?: string
+    }
+  | { readonly kind: 'automatic-not-deployed-yet'; readonly branchMapping: string }
+  | { readonly kind: 'manual-not-deployed-yet' }
 
 export interface PublicComponent {
   readonly name: string

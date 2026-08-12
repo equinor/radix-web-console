@@ -6,7 +6,7 @@ import { getBuildSourceView, MAX_VISIBLE_PUBLIC_COMPONENTS, truncatePublicCompon
 describe('getBuildSourceView', () => {
   it('shows the git ref, commit and an external commit link for an automatic build', () => {
     const view = getBuildSourceView({
-      kind: 'automatic',
+      kind: 'build-deployed',
       branchMapping: 'main',
       gitRef: 'main',
       shortCommitId: 'abc123',
@@ -23,7 +23,7 @@ describe('getBuildSourceView', () => {
 
   it('omits the url for an automatic build without a commit url', () => {
     const view = getBuildSourceView({
-      kind: 'automatic',
+      kind: 'build-deployed',
       branchMapping: 'main',
       gitRef: 'main',
       shortCommitId: 'abc123',
@@ -48,34 +48,26 @@ describe('getBuildSourceView', () => {
     })
   })
 
-  it('treats a promoted deployment without a branch mapping as built manually in the subtitle', () => {
+  it('treats a promoted deployment without a branch mapping as deployed manually in the subtitle', () => {
     const view = getBuildSourceView({ kind: 'promoted', promotedFrom: 'qa' })
 
-    expect(view.subtitle).toBe('(Built manually)')
+    expect(view.subtitle).toBe('(Deployed manually)')
     expect(view.url).toBeUndefined()
   })
 
   it('shows a placeholder for a branch mapping with no deployment yet', () => {
-    expect(getBuildSourceView({ kind: 'automatic-not-built-yet', branchMapping: 'main' })).toEqual({
+    expect(getBuildSourceView({ kind: 'automatic-not-deployed-yet', branchMapping: 'main' })).toEqual({
       label: 'Will build automatically',
       subtitle: '(Built from main)',
       icon: github,
     })
   })
 
-  it('labels a promoted-not-built-yet source as built manually', () => {
-    expect(getBuildSourceView({ kind: 'promoted-not-built-yet' })).toEqual({
-      label: 'Built manually',
-      subtitle: '(Built manually)',
+  it('labels a promoted-not-built-yet source as deployed manually', () => {
+    expect(getBuildSourceView({ kind: 'manual-not-deployed-yet' })).toEqual({
+      label: 'Deployed manually',
+      subtitle: '(Deployed manually)',
       icon: trending_up,
-    })
-  })
-
-  it('falls back to N/A for an unknown build source', () => {
-    expect(getBuildSourceView({ kind: 'unknown' })).toEqual({
-      label: 'N/A',
-      subtitle: 'N/A',
-      icon: undefined,
     })
   })
 })

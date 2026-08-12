@@ -13,6 +13,7 @@ import {
 describe('getBuildSource', () => {
   it('marks a promoted deployment that has a branch mapping as promoted, keeping the branch mapping', () => {
     const source = getBuildSource({
+      pipelineJobType: 'promote',
       branchMapping: 'main',
       promotedFrom: 'qa',
       pipelineJobUrl: '/job/123',
@@ -28,6 +29,7 @@ describe('getBuildSource', () => {
 
   it('marks a promoted deployment without a branch mapping as promoted', () => {
     const source = getBuildSource({
+      pipelineJobType: 'promote',
       promotedFrom: 'qa',
       pipelineJobUrl: '/job/123',
     })
@@ -41,7 +43,8 @@ describe('getBuildSource', () => {
 
   it('marks a deployment built from a branch mapping as automatic', () => {
     const source = getBuildSource({
-      name: 'main',
+      pipelineJobType: 'build-deploy',
+      gitRef: 'main',
       shortCommitId: 'abc123',
       branchMapping: 'main',
       commitUrl: 'https://repo/commit/abc123',
@@ -49,7 +52,7 @@ describe('getBuildSource', () => {
     })
 
     expect(source).toEqual({
-      kind: 'automatic',
+      kind: 'build-deployed',
       branchMapping: 'main',
       gitRef: 'main',
       shortCommitId: 'abc123',
@@ -57,25 +60,19 @@ describe('getBuildSource', () => {
     })
   })
 
-  it('marks a branch mapping with no deployment as automatic-not-built-yet', () => {
+  it('marks a branch mapping with no pipelineJobType as automatic-not-deployed-yet', () => {
     const source = getBuildSource({ branchMapping: 'release-.*', promotedFrom: undefined })
 
     expect(source).toEqual({
-      kind: 'automatic-not-built-yet',
+      kind: 'automatic-not-deployed-yet',
       branchMapping: 'release-.*',
     })
   })
 
-  it('marks a deployment with no branch mapping as promoted-not-built-yet', () => {
+  it('marks a deployment with no pipelineJobType as manual-not-deployed-yet', () => {
     const source = getBuildSource({ promotedFrom: undefined })
 
-    expect(source).toEqual({ kind: 'promoted-not-built-yet' })
-  })
-
-  it('falls back to unknown when a branch mapping only has partial deployment info', () => {
-    const source = getBuildSource({ branchMapping: 'main', name: 'main', promotedFrom: undefined })
-
-    expect(source).toEqual({ kind: 'unknown' })
+    expect(source).toEqual({ kind: 'manual-not-deployed-yet' })
   })
 })
 
@@ -122,6 +119,7 @@ describe('getEnvironmentCardProps', () => {
     const environment = makeEnvironment({
       name: 'radix-api-dev-abcde-fghij',
       activeFrom: '2026-08-01T10:00:00Z',
+      pipelineJobType: 'build-deploy',
       gitCommitHash: '0123456789abcdef',
       gitRef: 'main',
     } as DeploymentSummary)
@@ -139,7 +137,7 @@ describe('getEnvironmentCardProps', () => {
       activeFrom: '2026-08-01T10:00:00Z',
     })
     expect(props.buildSource).toEqual({
-      kind: 'automatic',
+      kind: 'build-deployed',
       branchMapping: 'main',
       gitRef: 'main',
       shortCommitId: '0123456',
@@ -163,7 +161,7 @@ describe('getEnvironmentCardProps', () => {
     const environment = makeEnvironment(undefined, { branchMapping: 'main' })
 
     expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
-      kind: 'automatic-not-built-yet',
+      kind: 'automatic-not-deployed-yet',
       branchMapping: 'main',
     })
   })
@@ -173,6 +171,7 @@ describe('getEnvironmentCardProps', () => {
       {
         name: 'radix-api-prod-xyz',
         activeFrom: '2026-08-02T10:00:00Z',
+        pipelineJobType: 'promote',
         promotedFromEnvironment: 'qa',
         createdByJob: 'radix-pipeline-20260802-xyz',
       } as DeploymentSummary,

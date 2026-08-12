@@ -9,30 +9,37 @@ export const MAX_VISIBLE_PUBLIC_COMPONENTS = 2
  */
 export const getBuildSourceView = (buildSource: EnvironmentCardBuildSource): BuildSourceView => {
   switch (buildSource.kind) {
-    case 'automatic':
+    case 'build-deployed':
       return {
         label: `${buildSource.gitRef}@${buildSource.shortCommitId}`,
-        subtitle: `(Built from ${buildSource.branchMapping})`,
+        subtitle: buildSource.branchMapping ? `(Built from ${buildSource.branchMapping})` : '(Deployed manually)',
         icon: github,
         url: buildSource.commitUrl ? { path: buildSource.commitUrl, showAsExternalUrl: true } : undefined,
       }
     case 'promoted':
       return {
         label: `Promoted from ${buildSource.promotedFrom}`,
-        subtitle: buildSource.branchMapping ? `(Built from ${buildSource.branchMapping})` : '(Built manually)',
+        subtitle: buildSource.branchMapping ? `(Built from ${buildSource.branchMapping})` : '(Deployed manually)',
         icon: trending_up,
         url: buildSource.pipelineJobUrl ? { path: buildSource.pipelineJobUrl, showAsExternalUrl: false } : undefined,
       }
-    case 'automatic-not-built-yet':
+    case 'deployed':
+      return {
+        label: 'Deployed manually',
+        subtitle: buildSource.branchMapping ? `(Built from ${buildSource.branchMapping})` : '(Deployed manually)',
+        icon: trending_up,
+        url: buildSource.pipelineJobUrl ? { path: buildSource.pipelineJobUrl, showAsExternalUrl: false } : undefined,
+      }
+    case 'automatic-not-deployed-yet':
       return {
         label: 'Will build automatically',
         subtitle: `(Built from ${buildSource.branchMapping})`,
         icon: github,
       }
-    case 'promoted-not-built-yet':
+    case 'manual-not-deployed-yet':
       return {
-        label: 'Built manually',
-        subtitle: '(Built manually)',
+        label: 'Not yet deployed',
+        subtitle: '(Deployed manually)',
         icon: trending_up,
       }
     default:
