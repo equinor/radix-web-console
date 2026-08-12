@@ -27,11 +27,13 @@ import { getFetchErrorMessage } from '../../../store/utils/parse-errors'
 import { getAppDeploymentUrl, getAppUrl, getEnvsUrl } from '../../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../../utils/sort-utils'
 import { linkToGitHubBranch, routeWithParams, smallDeploymentName } from '../../../utils/string'
-import { ComponentList } from './ComponentList'
 import EnvironmentAlerting from './EnvironmentAlerting'
 import EnvironmentToolbar from './EnvironmentToolbar'
 
 import '../style.css'
+import { buildComponentMap } from '../../../utils/build-component-map'
+import { ActiveJobsList } from './ActiveJobsList'
+import { ActiveComponentsList } from './active-components/ActiveComponentsList'
 
 type Props = {
   appName: string
@@ -60,6 +62,8 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
   const isOrphan = environment?.status === 'Orphan'
   const deployment = isLoaded && environment.activeDeployment
   const skippedDeployComponents = deployment?.components?.filter((c) => c.skipDeployment) ?? false
+
+  const { components: activeComponents, jobs: activeJobs } = buildComponentMap(deployment?.components ?? [])
 
   return (
     <>
@@ -228,9 +232,12 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
             {envDNSExternalAliases?.length > 0 && (
               <DNSAliases appName={appName} dnsAliases={envDNSExternalAliases} title={'DNS external aliases'} />
             )}
-            {deployment && (
-              <ComponentList appName={appName} environment={environment} components={deployment.components ?? []} />
+
+            {activeComponents.length > 0 && (
+              <ActiveComponentsList appName={appName} envName={envName} components={activeComponents} />
             )}
+            {activeJobs.length > 0 && <ActiveJobsList appName={appName} envName={envName} jobs={activeJobs} />}
+
             <EventsList
               isExpanded={isEventListExpanded}
               onExpanded={setIsEventListExpanded}
