@@ -1,12 +1,13 @@
-import { Accordion, Table, Typography } from '@equinor/eds-core-react'
+import { Accordion, Icon, Table, Typography } from '@equinor/eds-core-react'
+import { update } from '@equinor/eds-icons'
 import { Link } from 'react-router'
 import { ComponentStatusBadge } from '../../../components/status-badges'
+import { StatusPopover } from '../../../components/status-popover/status-popover'
+import { RelativeToNow } from '../../../components/time/relative-to-now'
 import type { Component, ReplicaSummary } from '../../../store/radix-api'
 import { getActiveJobComponentUrl, getReplicaUrl } from '../../../utils/routing'
 import { ReplicaLinks } from './ReplicaLinks'
 import { VulnerabilitySummaryCell } from './vulnerability-summary-cell/VulnerabilitySummaryCell'
-
-import '../style.css'
 
 interface ActiveJobsListProps {
   readonly appName: string
@@ -41,10 +42,17 @@ export const ActiveJobsList = (props: ActiveJobsListProps) => {
               <Table.Body>
                 {jobs.map((job) => (
                   <Table.Row key={job.name}>
-                    <Table.Cell>
+                    <Table.Cell className="component-list-body__name">
                       <Typography as={Link} to={getActiveJobComponentUrl(appName, envName, job.name)} link>
                         {job.name}
                       </Typography>
+                      {job.nextRun && (
+                        <StatusPopover icon={<Icon data={update} />} title="Cron job" type="default">
+                          <Typography variant="caption" as="div">
+                            Next run: <RelativeToNow time={job.nextRun} titlePrefix="Scheduled for" />
+                          </Typography>
+                        </StatusPopover>
+                      )}
                     </Table.Cell>
                     <Table.Cell>
                       <ComponentStatusBadge status={job.status ?? 'Reconciling'} />

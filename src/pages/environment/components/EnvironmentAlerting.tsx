@@ -8,8 +8,6 @@ import { ScrimPopup } from '../../../components/scrim-popup'
 import { pollingInterval } from '../../../store/defaults'
 import { radixApi, type UpdateAlertingConfig } from '../../../store/radix-api'
 
-import '../style.css'
-
 interface Props {
   appName: string
   envName: string

@@ -24,16 +24,16 @@ import {
   useGetEnvironmentQuery,
 } from '../../../store/radix-api'
 import { getFetchErrorMessage } from '../../../store/utils/parse-errors'
+import { buildComponentMap } from '../../../utils/build-component-map'
 import { getAppDeploymentUrl, getAppUrl, getEnvsUrl } from '../../../utils/routing'
 import { dataSorter, sortCompareDate } from '../../../utils/sort-utils'
 import { linkToGitHubBranch, routeWithParams, smallDeploymentName } from '../../../utils/string'
+import { ActiveJobsList } from './ActiveJobsList'
+import { ActiveComponentsList } from './active-components/ActiveComponentsList'
 import EnvironmentAlerting from './EnvironmentAlerting'
 import EnvironmentToolbar from './EnvironmentToolbar'
 
 import '../style.css'
-import { buildComponentMap } from '../../../utils/build-component-map'
-import { ActiveJobsList } from './ActiveJobsList'
-import { ActiveComponentsList } from './active-components/ActiveComponentsList'
 
 type Props = {
   appName: string

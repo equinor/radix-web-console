@@ -2,9 +2,8 @@ import { Accordion, Table, Typography } from '@equinor/eds-core-react'
 import { useMemo } from 'react'
 import { slowPollingInterval } from '../../../../store/defaults'
 import { type Component, useGetApplicationResourcesUtilizationQuery } from '../../../../store/radix-api'
-import { hasComponentOAuth2Service } from './activeComponents.utils'
-import '../../style.css'
 import { ActiveComponentRow } from './ActiveComponentRow'
+import { hasComponentOAuth2Service } from './activeComponents.utils'
 
 interface ActiveComponentsListProps {
   readonly appName: string
