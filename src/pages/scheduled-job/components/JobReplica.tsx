@@ -1,6 +1,6 @@
 import type { FunctionComponent } from 'react'
 import { useGetJobReplicaLogQuery } from '../../../store/log-api'
-import { type ReplicaSummary, radixApi, useJobLogQuery } from '../../../store/radix-api'
+import { type ReplicaSummary, radixApi, type ScheduledJobSummary, useJobLogQuery } from '../../../store/radix-api'
 import '../style.css'
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import AsyncResource from '../../../components/async-resource/async-resource'
@@ -16,8 +16,9 @@ export const JobReplica: FunctionComponent<{
   envName: string
   scheduledJobName: string
   replica: ReplicaSummary
+  job?: Pick<ScheduledJobSummary, 'ended'>
   isExpanded?: boolean
-}> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, isExpanded }) => {
+}> = ({ header, appName, envName, jobComponentName, scheduledJobName, replica, job, isExpanded }) => {
   const [getLog] = radixApi.endpoints.jobLog.useLazyQuery()
 
   const state = useJobLogQuery(
@@ -43,7 +44,7 @@ export const JobReplica: FunctionComponent<{
           </Accordion.Header>
           <Accordion.Panel>
             <AsyncResource asyncState={{ isLoading: state.isLoading || historyLogState.isLoading, isError: false }}>
-              <ReplicaOverview replica={replica} />
+              <ReplicaOverview replica={replica} job={job} />
               {notFound && (
                 <Log content={historyLogState.data as string} copy download filename={`${replica.name}.txt`} />
               )}

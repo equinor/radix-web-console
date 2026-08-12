@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { useInterval } from '../../hooks/use-interval'
-import type { ReplicaSummary } from '../../store/radix-api'
+import type { ReplicaSummary, ScheduledJobSummary } from '../../store/radix-api'
 import { smallReplicaName } from '../../utils/string'
 import { ReplicaImage } from '../replica-image'
 import { ResourceRequirements } from '../resource-requirements'
@@ -16,8 +16,13 @@ export interface ReplicaElements {
   state?: React.JSX.Element
 }
 
-type OverviewProps = { replica: ReplicaSummary } & ReplicaElements
-export const ReplicaOverview = ({ replica, title, duration, status, state }: OverviewProps) => {
+type OverviewProps = { replica: ReplicaSummary; job?: Pick<ScheduledJobSummary, 'ended'> } & ReplicaElements
+export const ReplicaOverview = ({ replica, job, title, duration, status, state }: OverviewProps) => {
+  const resolvedEndTime = replica.endTime
+    ? new Date(replica.endTime)
+    : replica.replicaStatus?.status === 'Stopped' && replica.endTime == null && job?.ended
+      ? new Date(job.ended)
+      : undefined
   return (
     <>
       <section className="grid grid--gap-medium overview">
@@ -34,15 +39,9 @@ export const ReplicaOverview = ({ replica, title, duration, status, state }: Ove
           <div className="grid grid--gap-medium">
             {duration || (
               <>
-                <ReplicaDuration
-                  created={replica.created}
-                  ended={replica.endTime ? new Date(replica.endTime) : undefined}
-                />
+                <ReplicaDuration created={replica.created} ended={resolvedEndTime} />
                 {replica.containerStarted && (
-                  <ContainerDuration
-                    started={new Date(replica.containerStarted)}
-                    ended={replica.endTime ? new Date(replica.endTime) : undefined}
-                  />
+                  <ContainerDuration started={new Date(replica.containerStarted)} ended={resolvedEndTime} />
                 )}
               </>
             )}
