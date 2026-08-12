@@ -69,6 +69,7 @@ export const getReplicasStatusMeta = (components: Component[]): StatusMeta => {
 
 const getOauth2DeploymentStatusMeta = (oauth2Deployments: AuxiliaryResourceDeployment[]): StatusMeta =>
   oauth2Deployments.reduce<StatusMeta>((agg, deployment) => {
+    // TODO #1389: AuxiliaryResourceDeployment seems to return wrong string literal union, making AUXILIARY_RESOURCE_DEPLOYMENT_STATUS_MAP wrong
     const meta = resolveStatusMeta(AUXILIARY_RESOURCE_DEPLOYMENT_STATUS_MAP, deployment.status)
     return getMostSevereStatusMeta([agg, meta])
   }, AUXILIARY_RESOURCE_DEPLOYMENT_STATUS_MAP.Consistent)
