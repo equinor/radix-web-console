@@ -33,7 +33,7 @@ export function ConfigureGitHubWebhook({ repository, appName, sharedSecret }: Pr
             {sharedSecret ? (
               <>
                 <code style={{ verticalAlign: 'middle', minWidth: '10em', minHeight: '1.5em' }}>{sharedSecret}</code>{' '}
-                <CompactCopyButton content={sharedSecret ?? ''} />
+                <CompactCopyButton content={sharedSecret} />
               </>
             ) : (
               <CircularProgress size={16} />
