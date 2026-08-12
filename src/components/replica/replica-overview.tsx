@@ -18,6 +18,11 @@ export interface ReplicaElements {
 
 type OverviewProps = { replica: ReplicaSummary; job?: Pick<ScheduledJobSummary, 'ended'> } & ReplicaElements
 export const ReplicaOverview = ({ replica, job, title, duration, status, state }: OverviewProps) => {
+  const resolvedEndTime = replica.endTime
+    ? new Date(replica.endTime)
+    : replica.replicaStatus?.status === 'Stopped' && replica.endTime == null && job?.ended
+      ? new Date(job.ended)
+      : undefined
   return (
     <>
       <section className="grid grid--gap-medium overview">
@@ -36,24 +41,12 @@ export const ReplicaOverview = ({ replica, job, title, duration, status, state }
               <>
                 <ReplicaDuration
                   created={replica.created}
-                  ended={
-                    replica.endTime
-                      ? new Date(replica.endTime)
-                      : replica.replicaStatus?.status === 'Stopped' && replica.endTime == null && job?.ended
-                        ? new Date(job.ended)
-                        : undefined
-                  }
+                  ended={resolvedEndTime}
                 />
                 {replica.containerStarted && (
                   <ContainerDuration
                     started={new Date(replica.containerStarted)}
-                    ended={
-                      replica.endTime
-                        ? new Date(replica.endTime)
-                        : replica.replicaStatus?.status === 'Stopped' && replica.endTime == null && job?.ended
-                          ? new Date(job.ended)
-                          : undefined
-                    }
+                    ended={resolvedEndTime}
                   />
                 )}
               </>
