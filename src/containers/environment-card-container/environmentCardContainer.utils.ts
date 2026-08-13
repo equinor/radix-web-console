@@ -118,7 +118,6 @@ const getCardBuildSource = (
     ? routeWithParams(routes.appJob, { appName: application.name, jobName: activeDeployment.createdByJob })
     : undefined
 
-  console.log('activeDeployment', activeDeployment?.pipelineJobType)
 
   return getBuildSource({
     gitRef: activeDeployment?.gitRef,
