@@ -44,7 +44,6 @@ export const EnvironmentCardContainer = (props: EnvironmentCardContainerProps) =
     buildSource,
   } = getEnvironmentCardProps(application, environment, components)
 
-  console.log('buildSource', buildSource)
 
   return (
     <EnvironmentCard
