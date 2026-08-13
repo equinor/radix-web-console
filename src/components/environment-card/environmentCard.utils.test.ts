@@ -63,7 +63,7 @@ describe('getBuildSourceView', () => {
     })
   })
 
-  it('labels a promoted-not-built-yet source as deployed manually', () => {
+  it('labels a manual-not-deployed-yet source as not yet deployed', () => {
     expect(getBuildSourceView({ kind: 'manual-not-deployed-yet' })).toEqual({
       label: 'Not yet deployed',
       subtitle: '(Deployed manually)',
