@@ -43,7 +43,7 @@ export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource =
   const { gitRef, shortCommitId, commitUrl, branchMapping, promotedFrom, pipelineJobType, pipelineJobUrl } = branch
 
   // Promoted deployments show where they were promoted from and link to the pipeline job.
-  if (pipelineJobType == 'promote' && promotedFrom) {
+  if (pipelineJobType === 'promote' && promotedFrom) {
     return {
       kind: 'promoted',
       promotedFrom,
@@ -53,7 +53,7 @@ export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource =
   }
 
   // Automatically built from a branch mapping.
-  if (pipelineJobType == 'build-deploy' && gitRef && shortCommitId) {
+  if (pipelineJobType === 'build-deploy' && gitRef && shortCommitId) {
     return {
       kind: 'build-deployed',
       branchMapping,
@@ -64,7 +64,7 @@ export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource =
   }
 
   // Manually deployed deployments show the link to the pipeline job.
-  if (pipelineJobType == 'deploy') {
+  if (pipelineJobType === 'deploy') {
     return {
       kind: 'deployed',
       branchMapping,
@@ -117,7 +117,6 @@ const getCardBuildSource = (
   const pipelineJobUrl = activeDeployment?.createdByJob
     ? routeWithParams(routes.appJob, { appName: application.name, jobName: activeDeployment.createdByJob })
     : undefined
-
 
   return getBuildSource({
     gitRef: activeDeployment?.gitRef,
