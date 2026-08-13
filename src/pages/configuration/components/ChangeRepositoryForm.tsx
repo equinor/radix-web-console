@@ -1,44 +1,21 @@
 import { Accordion, Button, Checkbox, CircularProgress, List, TextField, Typography } from '@equinor/eds-core-react'
-import { type ChangeEvent, type FormEvent, useState } from 'react'
+import { type ChangeEvent, type SubmitEventHandler, useState } from 'react'
 import { Alert } from '../../../components/alert'
-import AsyncResource from '../../../components/async-resource/async-resource'
-import { Code } from '../../../components/code/code'
-import { CompactCopyButton } from '../../../components/compact-copy-button'
-import imageDeployKey from '../../../components/configure-application-github/deploy-key02.png'
-import imageWebhook from '../../../components/configure-application-github/webhook01.png'
 import { handlePromiseWithToast } from '../../../components/global-top-nav/styled-toaster'
-import { ExternalLink } from '../../../components/link/external-link'
-import { pollingInterval } from '../../../store/defaults'
-import { useGetDeployKeyAndSecretQuery, useModifyRegistrationDetailsMutation } from '../../../store/radix-api'
+import { useModifyRegistrationDetailsMutation } from '../../../store/radix-api'
 import { getFetchErrorMessage } from '../../../store/utils/parse-errors'
-import { configVariables } from '../../../utils/config'
-
-const radixZoneDNS = configVariables.RADIX_DNS_ZONE
-
-const DeployKey = ({ appName }: { appName: string }) => {
-  const { data: deployKeAndSecret, ...depAndSecState } = useGetDeployKeyAndSecretQuery({ appName }, { pollingInterval })
-
-  return (
-    <AsyncResource asyncState={depAndSecState}>
-      <Code copy content={deployKeAndSecret?.publicDeployKey ?? ''} />
-    </AsyncResource>
-  )
-}
 
 interface Props {
   appName: string
   repository: string
   refetch: () => unknown
-  sharedSecret?: string
 }
-export function ChangeRepositoryForm({ appName, repository, refetch, sharedSecret }: Props) {
+export function ChangeRepositoryForm({ appName, repository, refetch }: Props) {
   const [currentRepository, setCurrentRepository] = useState(repository)
   const [useAcknowledgeWarnings, setAcknowledgeWarnings] = useState(false)
   const [mutate, { isLoading, error, data: modifyState, isSuccess }] = useModifyRegistrationDetailsMutation()
 
-  const webhookURL = `https://webhook.${radixZoneDNS}/events/github?appName=${appName}`
-
-  const handleSubmit = handlePromiseWithToast(async (ev: FormEvent) => {
+  const handleSubmit: SubmitEventHandler = handlePromiseWithToast(async (ev) => {
     ev.preventDefault()
 
     await mutate({
@@ -117,60 +94,7 @@ export function ChangeRepositoryForm({ appName, repository, refetch, sharedSecre
               )}
             </form>
             {!isLoading && isSuccess && (
-              <>
-                <Typography variant="body_short_bold">Move the Deploy Key to the new repository</Typography>
-                <div className="o-body-text grid grid--gap-medium">
-                  <List variant="numbered">
-                    <List.Item>
-                      Open the <ExternalLink href={`${repository}/settings/keys`}>Deploy Key page</ExternalLink> to
-                      delete the Deploy Key from the previous repository
-                    </List.Item>
-                    <List.Item>
-                      Open the <ExternalLink href={`${repository}/settings/keys/new`}>Add New Deploy Key</ExternalLink>{' '}
-                      and follow the steps below
-                    </List.Item>
-                  </List>
-                  <img alt="'Add deploy key' steps on GitHub" src={imageDeployKey} srcSet={`${imageDeployKey} 2x`} />
-                  <List variant="numbered" start="3">
-                    <List.Item>Give the key a name, e.g. "Radix deploy key"</List.Item>
-                    <List.Item>Copy and paste this key:</List.Item>
-                  </List>
-                  <DeployKey appName={appName} />
-                  <List variant="numbered" start="5">
-                    <List.Item>Press "Add key"</List.Item>
-                  </List>
-                </div>
-                <Typography variant="body_short_bold">Move the Webhook to the new repository</Typography>
-                <div className="o-body-text">
-                  <List variant="numbered" start="6">
-                    <List.Item>
-                      Open the <ExternalLink href={`${repository}/settings/hooks`}>Webhook page</ExternalLink> of the
-                      previous repository and delete the existing Webhook
-                    </List.Item>
-                    <List.Item>
-                      Open the <ExternalLink href={`${repository}/settings/hooks/new`}>Add Webhook page</ExternalLink>{' '}
-                      and follow the steps below
-                    </List.Item>
-                  </List>
-                  <img alt="'Add webhook' steps on GitHub" src={imageWebhook} srcSet={`${imageWebhook} 2x`} />
-                  <List variant="numbered" start="8">
-                    <List.Item>
-                      As Payload URL, use <code>{webhookURL}</code> <CompactCopyButton content={webhookURL} />
-                    </List.Item>
-                    <List.Item>
-                      Choose <code>application/json</code> as Content type
-                    </List.Item>
-                    <List.Item>
-                      The Shared Secret for this application is{' '}
-                      <code style={{ verticalAlign: 'middle', minWidth: '10em', minHeight: '1.5em' }}>
-                        {sharedSecret}
-                      </code>{' '}
-                      <CompactCopyButton content={sharedSecret ?? ''} />
-                    </List.Item>
-                    <List.Item>Press "Add webhook"</List.Item>
-                  </List>
-                </div>
-              </>
+              <Alert type="success">Success: Remember to update your deploy key and your webhooks shared secret</Alert>
             )}
           </div>
         </Accordion.Panel>
