@@ -7,12 +7,15 @@ import {
 import { EnvironmentCard } from './EnvironmentCard'
 import {
   mockActiveDeployment,
+  mockApplyConfigBuildSource,
   mockAutomaticNotBuiltYetBuildSource,
   mockBuildSource,
+  mockDeployExternalBuildSource,
   mockEnvironment,
   mockPromotedBuildSource,
   mockPromotedNotBuiltYetBuildSource,
   mockPublicComponents,
+  mockUnknownBuildSource,
 } from './environmentCard.mock'
 
 /** Summarises a single application environment: public components, active deployment, build source and aggregated statuses. */
@@ -64,6 +67,30 @@ export const PromotedDeployment: Story = {
   args: {
     ...Default.args,
     buildSource: mockPromotedBuildSource,
+  },
+}
+
+/** Re-deployed from a fresh reading of radixconfig.yaml (apply-config). */
+export const ApplyConfigDeployment: Story = {
+  args: {
+    ...Default.args,
+    buildSource: mockApplyConfigBuildSource,
+  },
+}
+
+/** Deployed from an external image via a radixconfig override rather than an internal build. */
+export const ExternalImageDeployment: Story = {
+  args: {
+    ...Default.args,
+    buildSource: mockDeployExternalBuildSource,
+  },
+}
+
+/** Deployed, but the deployment lacks the data needed to describe how it was built. */
+export const UnknownBuildSource: Story = {
+  args: {
+    ...Default.args,
+    buildSource: mockUnknownBuildSource,
   },
 }
 

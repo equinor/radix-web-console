@@ -1,5 +1,13 @@
 import type { ComponentProps } from 'react'
 import type { EnvironmentCard } from './EnvironmentCard'
+import type {
+  EnvironmentCardBuildSourceApplyConfig,
+  EnvironmentCardBuildSourceBuildAndDeploy,
+  EnvironmentCardBuildSourceDeploy,
+  EnvironmentCardBuildSourceNotDeployed,
+  EnvironmentCardBuildSourcePromoted,
+  EnvironmentCardBuildSourceUnknown,
+} from './environmentCard.types'
 
 type EnvironmentCardProps = ComponentProps<typeof EnvironmentCard>
 
@@ -23,25 +31,40 @@ export const mockActiveDeployment: NonNullable<EnvironmentCardProps['activeDeplo
   url: `/applications/${APP_NAME}/deployments/${APP_NAME}-dev-abcde-fghij`,
 }
 
-export const mockBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'automatic',
+export const mockBuildSource: EnvironmentCardBuildSourceBuildAndDeploy = {
+  pipelineJobType: 'build-deploy',
   branchMapping: 'main',
   gitRef: 'main',
   shortCommitId: '0123456',
   commitUrl: `${REPOSITORY}/commit/0123456789abcdef`,
 }
 
-export const mockPromotedBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'promoted',
+export const mockPromotedBuildSource: EnvironmentCardBuildSourcePromoted = {
+  pipelineJobType: 'promote',
   promotedFrom: 'qa',
   pipelineJobUrl: `/applications/${APP_NAME}/jobs/radix-pipeline-20260801100000-abcde`,
 }
 
-export const mockAutomaticNotBuiltYetBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'automatic-not-built-yet',
+export const mockApplyConfigBuildSource: EnvironmentCardBuildSourceApplyConfig = {
+  pipelineJobType: 'apply-config',
+  branchMapping: 'main',
+  pipelineJobUrl: `/applications/${APP_NAME}/jobs/radix-pipeline-20260801100000-fghij`,
+}
+
+export const mockDeployExternalBuildSource: EnvironmentCardBuildSourceDeploy = {
+  pipelineJobType: 'deploy',
+  pipelineJobUrl: `/applications/${APP_NAME}/jobs/radix-pipeline-20260801100000-klmno`,
+}
+
+export const mockUnknownBuildSource: EnvironmentCardBuildSourceUnknown = {
+  pipelineJobType: 'unknown',
+}
+
+export const mockAutomaticNotBuiltYetBuildSource: EnvironmentCardBuildSourceNotDeployed = {
+  pipelineJobType: undefined,
   branchMapping: 'main',
 }
 
-export const mockPromotedNotBuiltYetBuildSource: EnvironmentCardProps['buildSource'] = {
-  kind: 'promoted-not-built-yet',
+export const mockPromotedNotBuiltYetBuildSource: EnvironmentCardBuildSourceNotDeployed = {
+  pipelineJobType: undefined,
 }

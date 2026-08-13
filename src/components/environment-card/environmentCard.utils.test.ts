@@ -1,12 +1,12 @@
-import { github, trending_up } from '@equinor/eds-icons'
+import { cloud, github, setting_backup_restore, trending_up } from '@equinor/eds-icons'
 import { describe, expect, it } from 'vitest'
 import type { PublicComponent } from './environmentCard.types'
 import { getBuildSourceView, MAX_VISIBLE_PUBLIC_COMPONENTS, truncatePublicComponents } from './environmentCard.utils'
 
 describe('getBuildSourceView', () => {
-  it('shows the git ref, commit and an external commit link for an automatic build', () => {
+  it('shows the git ref, commit and an external commit link for a build-deploy', () => {
     const view = getBuildSourceView({
-      kind: 'automatic',
+      pipelineJobType: 'build-deploy',
       branchMapping: 'main',
       gitRef: 'main',
       shortCommitId: 'abc123',
@@ -21,9 +21,9 @@ describe('getBuildSourceView', () => {
     })
   })
 
-  it('omits the url for an automatic build without a commit url', () => {
+  it('omits the url for a build-deploy without a commit url', () => {
     const view = getBuildSourceView({
-      kind: 'automatic',
+      pipelineJobType: 'build-deploy',
       branchMapping: 'main',
       gitRef: 'main',
       shortCommitId: 'abc123',
@@ -34,7 +34,7 @@ describe('getBuildSourceView', () => {
 
   it('shows where a promoted deployment was promoted from with an internal job link', () => {
     const view = getBuildSourceView({
-      kind: 'promoted',
+      pipelineJobType: 'promote',
       branchMapping: 'main',
       promotedFrom: 'qa',
       pipelineJobUrl: '/job/123',
@@ -48,33 +48,65 @@ describe('getBuildSourceView', () => {
     })
   })
 
-  it('treats a promoted deployment without a branch mapping as built manually in the subtitle', () => {
-    const view = getBuildSourceView({ kind: 'promoted', promotedFrom: 'qa' })
+  it('treats a promoted deployment without a branch mapping as deployed manually in the subtitle', () => {
+    const view = getBuildSourceView({ pipelineJobType: 'promote', promotedFrom: 'qa' })
 
-    expect(view.subtitle).toBe('(Built manually)')
+    expect(view.subtitle).toBe('(Deployed manually)')
     expect(view.url).toBeUndefined()
   })
 
-  it('shows a placeholder for a branch mapping with no deployment yet', () => {
-    expect(getBuildSourceView({ kind: 'automatic-not-built-yet', branchMapping: 'main' })).toEqual({
-      label: 'Will build automatically',
+  it('describes an apply-config re-deployment with an internal job link', () => {
+    expect(
+      getBuildSourceView({ pipelineJobType: 'apply-config', branchMapping: 'main', pipelineJobUrl: '/job/456' })
+    ).toEqual({
+      label: 'From previous deployment',
       subtitle: '(Built from main)',
-      icon: github,
+      icon: setting_backup_restore,
+      url: { path: '/job/456', showAsExternalUrl: false },
     })
   })
 
-  it('labels a promoted-not-built-yet source as built manually', () => {
-    expect(getBuildSourceView({ kind: 'promoted-not-built-yet' })).toEqual({
-      label: 'Built manually',
-      subtitle: '(Built manually)',
-      icon: trending_up,
+  it('uses a manual subtitle for an apply-config without a branch mapping', () => {
+    const view = getBuildSourceView({ pipelineJobType: 'apply-config', pipelineJobUrl: '/job/456' })
+
+    expect(view.subtitle).toBe('(Deployed manually)')
+  })
+
+  it('describes an externally deployed image as deployed manually', () => {
+    expect(getBuildSourceView({ pipelineJobType: 'deploy', pipelineJobUrl: '/job/789' })).toEqual({
+      label: 'Deployed external image',
+      subtitle: '(Deployed manually)',
+      icon: cloud,
+      url: { path: '/job/789', showAsExternalUrl: false },
+    })
+  })
+
+  it('omits the url for an externally deployed image without a job link', () => {
+    const view = getBuildSourceView({ pipelineJobType: 'deploy' })
+
+    expect(view.url).toBeUndefined()
+  })
+
+  it('shows an automatic placeholder for a branch mapping with no deployment yet', () => {
+    expect(getBuildSourceView({ pipelineJobType: undefined, branchMapping: 'main' })).toEqual({
+      label: 'Will build and deploy automatically',
+      subtitle: '(Built from main)',
+      icon: undefined,
+    })
+  })
+
+  it('shows a manual placeholder when there is no deployment and no branch mapping', () => {
+    expect(getBuildSourceView({ pipelineJobType: undefined })).toEqual({
+      label: 'Will be deployed manually',
+      subtitle: '(Deployed manually)',
+      icon: undefined,
     })
   })
 
   it('falls back to N/A for an unknown build source', () => {
-    expect(getBuildSourceView({ kind: 'unknown' })).toEqual({
+    expect(getBuildSourceView({ pipelineJobType: 'unknown' })).toEqual({
       label: 'N/A',
-      subtitle: 'N/A',
+      subtitle: '(N/A)',
       icon: undefined,
     })
   })

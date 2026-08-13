@@ -3,81 +3,7 @@ import { routes } from '../../router/routes'
 import type { Application, Component, DeploymentSummary, EnvironmentSummary } from '../../store/radix-api'
 import { getAppDeploymentUrl } from '../../utils/routing'
 import { routeWithParams } from '../../utils/string'
-import {
-  getBuildSource,
-  getEnvironmentCardProps,
-  getPublicComponents,
-  URL_VAR_NAME,
-} from './environmentCardContainer.utils'
-
-describe('getBuildSource', () => {
-  it('marks a promoted deployment that has a branch mapping as promoted, keeping the branch mapping', () => {
-    const source = getBuildSource({
-      branchMapping: 'main',
-      promotedFrom: 'qa',
-      pipelineJobUrl: '/job/123',
-    })
-
-    expect(source).toEqual({
-      kind: 'promoted',
-      branchMapping: 'main',
-      promotedFrom: 'qa',
-      pipelineJobUrl: '/job/123',
-    })
-  })
-
-  it('marks a promoted deployment without a branch mapping as promoted', () => {
-    const source = getBuildSource({
-      promotedFrom: 'qa',
-      pipelineJobUrl: '/job/123',
-    })
-
-    expect(source).toEqual({
-      kind: 'promoted',
-      promotedFrom: 'qa',
-      pipelineJobUrl: '/job/123',
-    })
-  })
-
-  it('marks a deployment built from a branch mapping as automatic', () => {
-    const source = getBuildSource({
-      name: 'main',
-      shortCommitId: 'abc123',
-      branchMapping: 'main',
-      commitUrl: 'https://repo/commit/abc123',
-      promotedFrom: undefined,
-    })
-
-    expect(source).toEqual({
-      kind: 'automatic',
-      branchMapping: 'main',
-      gitRef: 'main',
-      shortCommitId: 'abc123',
-      commitUrl: 'https://repo/commit/abc123',
-    })
-  })
-
-  it('marks a branch mapping with no deployment as automatic-not-built-yet', () => {
-    const source = getBuildSource({ branchMapping: 'release-.*', promotedFrom: undefined })
-
-    expect(source).toEqual({
-      kind: 'automatic-not-built-yet',
-      branchMapping: 'release-.*',
-    })
-  })
-
-  it('marks a deployment with no branch mapping as promoted-not-built-yet', () => {
-    const source = getBuildSource({ promotedFrom: undefined })
-
-    expect(source).toEqual({ kind: 'promoted-not-built-yet' })
-  })
-
-  it('falls back to unknown when a branch mapping only has partial deployment info', () => {
-    const source = getBuildSource({ branchMapping: 'main', name: 'main', promotedFrom: undefined })
-
-    expect(source).toEqual({ kind: 'unknown' })
-  })
-})
+import { getEnvironmentCardProps, getPublicComponents, URL_VAR_NAME } from './environmentCardContainer.utils'
 
 describe('getPublicComponents', () => {
   const makeComponent = (name: string, publicDomain?: string): Component =>
@@ -118,10 +44,13 @@ describe('getEnvironmentCardProps', () => {
     ...overrides,
   })
 
-  it('maps an automatically built environment to card props', () => {
+  const jobUrl = (jobName: string) => routeWithParams(routes.appJob, { appName: 'radix-api', jobName })
+
+  it('maps environment metadata and the active deployment', () => {
     const environment = makeEnvironment({
       name: 'radix-api-dev-abcde-fghij',
       activeFrom: '2026-08-01T10:00:00Z',
+      pipelineJobType: 'build-deploy',
       gitCommitHash: '0123456789abcdef',
       gitRef: 'main',
     } as DeploymentSummary)
@@ -138,13 +67,6 @@ describe('getEnvironmentCardProps', () => {
       url: getAppDeploymentUrl('radix-api', 'radix-api-dev-abcde-fghij'),
       activeFrom: '2026-08-01T10:00:00Z',
     })
-    expect(props.buildSource).toEqual({
-      kind: 'automatic',
-      branchMapping: 'main',
-      gitRef: 'main',
-      shortCommitId: '0123456',
-      commitUrl: 'https://github.com/equinor/radix-api/commit/0123456789abcdef',
-    })
   })
 
   it('derives isOrphan from an Orphan environment status', () => {
@@ -159,38 +81,6 @@ describe('getEnvironmentCardProps', () => {
     expect(getEnvironmentCardProps(application, environment).activeDeployment).toBeUndefined()
   })
 
-  it('builds an automatic-not-built-yet source from a branch mapping without a deployment', () => {
-    const environment = makeEnvironment(undefined, { branchMapping: 'main' })
-
-    expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
-      kind: 'automatic-not-built-yet',
-      branchMapping: 'main',
-    })
-  })
-
-  it('wires a promoted deployment through to the build source with a pipeline job link', () => {
-    const environment = makeEnvironment(
-      {
-        name: 'radix-api-prod-xyz',
-        activeFrom: '2026-08-02T10:00:00Z',
-        promotedFromEnvironment: 'qa',
-        createdByJob: 'radix-pipeline-20260802-xyz',
-      } as DeploymentSummary,
-      { name: 'prod', branchMapping: undefined }
-    )
-
-    const props = getEnvironmentCardProps(application, environment)
-
-    expect(props.buildSource).toEqual({
-      kind: 'promoted',
-      promotedFrom: 'qa',
-      pipelineJobUrl: routeWithParams(routes.appJob, {
-        appName: 'radix-api',
-        jobName: 'radix-pipeline-20260802-xyz',
-      }),
-    })
-  })
-
   it('derives public components from the passed component list', () => {
     const environment = makeEnvironment(undefined)
 
@@ -199,5 +89,147 @@ describe('getEnvironmentCardProps', () => {
     ])
 
     expect(props.publicComponents).toEqual([{ name: 'web', url: 'https://web.example.com' }])
+  })
+
+  describe('build source', () => {
+    it('maps a build-deploy with its branch, commit and commit url', () => {
+      const environment = makeEnvironment({
+        name: 'radix-api-dev',
+        activeFrom: '2026-08-01T10:00:00Z',
+        pipelineJobType: 'build-deploy',
+        gitRef: 'main',
+        gitCommitHash: '0123456789abcdef',
+      } as DeploymentSummary)
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
+        pipelineJobType: 'build-deploy',
+        branchMapping: 'main',
+        gitRef: 'main',
+        shortCommitId: '0123456',
+        commitUrl: 'https://github.com/equinor/radix-api/commit/0123456789abcdef',
+      })
+    })
+
+    it('maps a promotion, wiring the pipeline job link', () => {
+      const environment = makeEnvironment(
+        {
+          name: 'radix-api-prod',
+          activeFrom: '2026-08-02T10:00:00Z',
+          pipelineJobType: 'promote',
+          promotedFromEnvironment: 'qa',
+          createdByJob: 'radix-pipeline-20260802-xyz',
+        } as DeploymentSummary,
+        { branchMapping: undefined }
+      )
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
+        pipelineJobType: 'promote',
+        promotedFrom: 'qa',
+        pipelineJobUrl: jobUrl('radix-pipeline-20260802-xyz'),
+      })
+    })
+
+    it('maps an apply-config re-deployment', () => {
+      const environment = makeEnvironment({
+        name: 'radix-api-dev',
+        activeFrom: '2026-08-03T10:00:00Z',
+        pipelineJobType: 'apply-config',
+        createdByJob: 'radix-pipeline-20260803-abc',
+      } as DeploymentSummary)
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
+        pipelineJobType: 'apply-config',
+        branchMapping: 'main',
+        pipelineJobUrl: jobUrl('radix-pipeline-20260803-abc'),
+      })
+    })
+
+    it('maps an externally deployed image without a branch mapping', () => {
+      const environment = makeEnvironment(
+        {
+          name: 'radix-api-dev',
+          activeFrom: '2026-08-04T10:00:00Z',
+          pipelineJobType: 'deploy',
+          createdByJob: 'radix-pipeline-20260804-def',
+        } as DeploymentSummary,
+        { branchMapping: undefined }
+      )
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
+        pipelineJobType: 'deploy',
+        pipelineJobUrl: jobUrl('radix-pipeline-20260804-def'),
+      })
+    })
+
+    it('reports not deployed yet from a branch mapping with no active deployment', () => {
+      const environment = makeEnvironment(undefined, { branchMapping: 'main' })
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({
+        pipelineJobType: undefined,
+        branchMapping: 'main',
+      })
+    })
+
+    it('reports not deployed yet with no branch mapping', () => {
+      const environment = makeEnvironment(undefined, { branchMapping: undefined })
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({ pipelineJobType: undefined })
+    })
+
+    it('falls back to unknown for a deployed build-deploy missing its commit', () => {
+      const environment = makeEnvironment({
+        name: 'radix-api-dev',
+        activeFrom: '2026-08-05T10:00:00Z',
+        pipelineJobType: 'build-deploy',
+        gitRef: 'main',
+      } as DeploymentSummary)
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({ pipelineJobType: 'unknown' })
+    })
+
+    it('falls back to unknown for a plain build job', () => {
+      const environment = makeEnvironment({
+        name: 'radix-api-dev',
+        activeFrom: '2026-08-06T10:00:00Z',
+        pipelineJobType: 'build',
+      } as DeploymentSummary)
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({ pipelineJobType: 'unknown' })
+    })
+
+    it('falls back to unknown for a promotion missing its source environment', () => {
+      const environment = makeEnvironment(
+        {
+          name: 'radix-api-prod',
+          activeFrom: '2026-08-07T10:00:00Z',
+          pipelineJobType: 'promote',
+          createdByJob: 'radix-pipeline-20260807-ghi',
+        } as DeploymentSummary,
+        { branchMapping: undefined }
+      )
+
+      expect(getEnvironmentCardProps(application, environment).buildSource).toEqual({ pipelineJobType: 'unknown' })
+    })
+
+    it('omits the commit url for a build-deploy when the app has no repository', () => {
+      const applicationWithoutRepo: Pick<Application, 'name' | 'registration'> = {
+        name: 'radix-api',
+        registration: {} as Application['registration'],
+      }
+      const environment = makeEnvironment({
+        name: 'radix-api-dev',
+        activeFrom: '2026-08-08T10:00:00Z',
+        pipelineJobType: 'build-deploy',
+        gitRef: 'main',
+        gitCommitHash: '0123456789abcdef',
+      } as DeploymentSummary)
+
+      expect(getEnvironmentCardProps(applicationWithoutRepo, environment).buildSource).toEqual({
+        pipelineJobType: 'build-deploy',
+        branchMapping: 'main',
+        gitRef: 'main',
+        shortCommitId: '0123456',
+      })
+    })
   })
 })

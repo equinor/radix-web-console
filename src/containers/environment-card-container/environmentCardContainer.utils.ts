@@ -1,5 +1,4 @@
 import type {
-  BranchInfo,
   EnvironmentCardActiveDeployment,
   EnvironmentCardBuildSource,
   EnvironmentCardEnvironment,
@@ -35,51 +34,6 @@ export const getPublicComponents = (components: ReadonlyArray<Component> = []): 
       url: getPublicComponentUrl(component),
     }))
 
-/**
- * Derives how the "Source" section of an environment card should be presented
- * from the (possibly regex) branch mapping and the active deployment info.
- */
-export const getBuildSource = (branch: BranchInfo): EnvironmentCardBuildSource => {
-  const { name, shortCommitId, commitUrl, branchMapping, promotedFrom, pipelineJobUrl } = branch
-
-  // Promoted deployments show where they were promoted from and link to the pipeline job.
-  if (promotedFrom) {
-    return {
-      kind: 'promoted',
-      promotedFrom,
-      branchMapping,
-      pipelineJobUrl,
-    }
-  }
-
-  // Automatically built from a branch mapping.
-  if (branchMapping && name && shortCommitId) {
-    return {
-      kind: 'automatic',
-      branchMapping,
-      gitRef: name,
-      shortCommitId,
-      commitUrl,
-    }
-  }
-
-  // Branch mapping exists but nothing has been built yet.
-  if (branchMapping && !name && !shortCommitId) {
-    return {
-      kind: 'automatic-not-built-yet',
-      branchMapping,
-    }
-  }
-
-  // No branch mapping — the environment is only ever populated by promotion, and nothing has been promoted yet.
-  if (!branchMapping) {
-    return { kind: 'promoted-not-built-yet' }
-  }
-
-  // Fallback: Not available.
-  return { kind: 'unknown' }
-}
-
 const getCardEnvironment = (
   application: Pick<Application, 'name'>,
   environment: Pick<EnvironmentSummary, 'name' | 'status'>
@@ -104,25 +58,69 @@ const getCardActiveDeployment = (
   }
 }
 
+// Deployed, but a plain 'build' or missing data means we can't describe how it was built.
+const UNKNOWN_BUILD_SOURCE: EnvironmentCardBuildSource = { pipelineJobType: 'unknown' }
+
+// A build-deploy is defined by its branch and commit; without them there is nothing to describe.
+const getBuildDeploySource = (
+  deployment: DeploymentSummary,
+  branchMapping: string | undefined,
+  repository: string | undefined
+): EnvironmentCardBuildSource => {
+  const { gitRef, gitCommitHash } = deployment
+  if (!branchMapping || !gitRef || !gitCommitHash) {
+    return UNKNOWN_BUILD_SOURCE
+  }
+
+  return {
+    pipelineJobType: 'build-deploy',
+    branchMapping,
+    gitRef,
+    shortCommitId: smallGithubCommitHash(gitCommitHash),
+    commitUrl: repository ? `${repository}/commit/${gitCommitHash}` : undefined,
+  }
+}
+
+const getPromotedSource = (
+  deployment: DeploymentSummary,
+  branchMapping: string | undefined,
+  pipelineJobUrl: string | undefined
+): EnvironmentCardBuildSource =>
+  deployment.promotedFromEnvironment
+    ? { pipelineJobType: 'promote', promotedFrom: deployment.promotedFromEnvironment, pipelineJobUrl, branchMapping }
+    : UNKNOWN_BUILD_SOURCE
+
 const getCardBuildSource = (
   application: Pick<Application, 'name' | 'registration'>,
   environment: Pick<EnvironmentSummary, 'activeDeployment' | 'branchMapping'>
 ): EnvironmentCardBuildSource => {
   const { activeDeployment, branchMapping } = environment
-  const commitHash = activeDeployment?.gitCommitHash
 
-  const pipelineJobUrl = activeDeployment?.createdByJob
+  // No active deployment: it will build from a branch or be deployed manually.
+  if (!activeDeployment?.name) {
+    return { pipelineJobType: undefined, branchMapping }
+  }
+
+  const pipelineJobUrl = activeDeployment.createdByJob
     ? routeWithParams(routes.appJob, { appName: application.name, jobName: activeDeployment.createdByJob })
     : undefined
 
-  return getBuildSource({
-    name: activeDeployment?.gitRef,
-    branchMapping,
-    shortCommitId: commitHash ? smallGithubCommitHash(commitHash) : undefined,
-    commitUrl: commitHash ? `${application.registration?.repository}/commit/${commitHash}` : undefined,
-    pipelineJobUrl,
-    promotedFrom: activeDeployment?.promotedFromEnvironment,
-  })
+  switch (activeDeployment.pipelineJobType) {
+    case 'build-deploy':
+      return getBuildDeploySource(activeDeployment, branchMapping, application.registration?.repository)
+
+    case 'promote':
+      return getPromotedSource(activeDeployment, branchMapping, pipelineJobUrl)
+
+    case 'apply-config':
+      return { pipelineJobType: 'apply-config', pipelineJobUrl, branchMapping }
+
+    case 'deploy':
+      return { pipelineJobType: 'deploy', pipelineJobUrl }
+
+    default:
+      return UNKNOWN_BUILD_SOURCE
+  }
 }
 
 /**
