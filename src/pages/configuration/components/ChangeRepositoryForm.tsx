@@ -29,7 +29,7 @@ interface Props {
   appName: string
   repository: string
   refetch: () => unknown
-  sharedSecret: string
+  sharedSecret?: string
 }
 export function ChangeRepositoryForm({ appName, repository, refetch, sharedSecret }: Props) {
   const [currentRepository, setCurrentRepository] = useState(repository)
@@ -165,7 +165,7 @@ export function ChangeRepositoryForm({ appName, repository, refetch, sharedSecre
                       <code style={{ verticalAlign: 'middle', minWidth: '10em', minHeight: '1.5em' }}>
                         {sharedSecret}
                       </code>{' '}
-                      <CompactCopyButton content={sharedSecret} />
+                      <CompactCopyButton content={sharedSecret ?? ''} />
                     </List.Item>
                     <List.Item>Press "Add webhook"</List.Item>
                   </List>

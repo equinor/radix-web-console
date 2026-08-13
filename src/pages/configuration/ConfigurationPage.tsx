@@ -115,7 +115,7 @@ function ConfigurationPage({ appName }: { appName: string }) {
               <ChangeRepositoryForm
                 appName={appName}
                 repository={registration.repository}
-                sharedSecret={secrets?.sharedSecret ?? ''}
+                sharedSecret={secrets?.sharedSecret}
                 refetch={refetch}
               />
               <ChangeConfigBranchForm appName={appName} configBranch={registration.configBranch} refetch={refetch} />
