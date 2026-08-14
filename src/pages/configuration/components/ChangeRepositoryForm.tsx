@@ -100,7 +100,15 @@ export function ChangeRepositoryForm({ appName, repository, refetch }: Props) {
             {!isLoading && isSuccess && (
               <Banner variant="success">
                 <Banner.Message>
-                  Repository updated. Remember to update your deploy key and your webhooks shared secret.
+                  Repository updated. Remember to update your{' '}
+                  <a
+                    href="https://radix.equinor.com/start/registering-app/#deploy-key"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    deploy key
+                  </a>{' '}
+                  and your webhooks shared secret if you use it.
                 </Banner.Message>
               </Banner>
             )}
