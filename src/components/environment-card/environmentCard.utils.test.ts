@@ -97,7 +97,7 @@ describe('getBuildSourceView', () => {
 
   it('shows a manual placeholder when there is no deployment and no branch mapping', () => {
     expect(getBuildSourceView({ pipelineJobType: undefined })).toEqual({
-      label: 'Will be deployed manually',
+      label: 'To be deployed manually',
       subtitle: '(Deployed manually)',
       icon: undefined,
     })
