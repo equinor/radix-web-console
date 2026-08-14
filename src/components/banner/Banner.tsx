@@ -1,11 +1,18 @@
 import { Button, Icon, Typography } from '@equinor/eds-core-react'
-import { close, type IconData, info_circle, warning_outlined } from '@equinor/eds-icons'
+import {
+  check_circle_outlined,
+  close,
+  error_outlined,
+  type IconData,
+  info_circle,
+  warning_outlined,
+} from '@equinor/eds-icons'
 import clsx from 'clsx'
 import type { ReactNode } from 'react'
 
 import styles from './banner.module.css'
 
-type BannerVariant = 'info' | 'warning'
+type BannerVariant = 'info' | 'warning' | 'success' | 'danger'
 
 export interface BannerProps {
   /** Visual style of the banner. */
@@ -20,6 +27,8 @@ export interface BannerProps {
 const bannerVariants: Record<BannerVariant, { className: string; icon: IconData }> = {
   warning: { className: styles.warning, icon: warning_outlined },
   info: { className: styles.info, icon: info_circle },
+  success: { className: styles.success, icon: check_circle_outlined },
+  danger: { className: styles.danger, icon: error_outlined },
 }
 
 const BannerRoot = ({ className, variant = 'info', children, onDismiss }: BannerProps) => {

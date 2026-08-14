@@ -1,6 +1,6 @@
 import { Accordion, Button, Checkbox, CircularProgress, List, TextField, Typography } from '@equinor/eds-core-react'
 import { type ChangeEvent, type SubmitEventHandler, useState } from 'react'
-import { Alert } from '../../../components/alert'
+import { Banner } from '../../../components/banner/Banner'
 import { handlePromiseWithToast } from '../../../components/global-top-nav/styled-toaster'
 import { useModifyRegistrationDetailsMutation } from '../../../store/radix-api'
 import { getFetchErrorMessage } from '../../../store/utils/parse-errors'
@@ -44,7 +44,9 @@ export function ChangeRepositoryForm({ appName, repository, refetch }: Props) {
             <form className="grid grid--gap-medium" onSubmit={handleSubmit}>
               {error && (
                 <div>
-                  <Alert type="danger">Failed to change repository. {getFetchErrorMessage(error)}</Alert>
+                  <Banner variant="danger">
+                    <Banner.Message>Failed to change repository. {getFetchErrorMessage(error)}</Banner.Message>
+                  </Banner>
                 </div>
               )}
               <TextField
@@ -65,7 +67,9 @@ export function ChangeRepositoryForm({ appName, repository, refetch }: Props) {
                   <List>
                     {modifyState?.warnings.map((warning, i) => (
                       <List.Item key={i}>
-                        <Alert type="warning">{warning}</Alert>
+                        <Banner variant="warning">
+                          <Banner.Message>{warning}</Banner.Message>
+                        </Banner>
                       </List.Item>
                     ))}
                   </List>
@@ -94,7 +98,11 @@ export function ChangeRepositoryForm({ appName, repository, refetch }: Props) {
               )}
             </form>
             {!isLoading && isSuccess && (
-              <Alert type="success">Success: Remember to update your deploy key and your webhooks shared secret</Alert>
+              <Banner variant="success">
+                <Banner.Message>
+                  Repository updated. Remember to update your deploy key and your webhooks shared secret.
+                </Banner.Message>
+              </Banner>
             )}
           </div>
         </Accordion.Panel>
