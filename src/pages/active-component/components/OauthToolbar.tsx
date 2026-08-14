@@ -15,9 +15,10 @@ type Props = {
 export function OAuthToolbar({ appName, envName, componentName, type, oauth2, refetch }: Props) {
   const [trigger, { isLoading }] = useRestartOAuthAuxiliaryResourceMutation()
   const startRefetch = useDurationInterval(refetch)
-  const isRestartEnabled = oauth2?.deployment?.status !== 'Stopped' || isLoading
+  const deployment = oauth2?.deployments?.find((d) => d.type === type)
+  const isRestartEnabled = deployment?.status !== 'Stopped' || isLoading
 
-  const restartInProgress = isLoading || oauth2?.deployment?.status === 'Reconciling'
+  const restartInProgress = isLoading || deployment?.status === 'Reconciling'
 
   const onRestart = handlePromiseWithToast(
     async () => {
