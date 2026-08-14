@@ -17,6 +17,7 @@ const getInternalJobUrl = (pipelineJobUrl?: string): BuildSourceUrl | undefined 
 
 const getLabelForNotDeployed = (branchMapping?: string): string =>
   branchMapping ? 'Will build and deploy automatically' : 'Will be deployed manually'
+
 /**
  * Derives everything the "Source" section renders — label, subtitle, icon and
  * optional link — from a {@link EnvironmentCardBuildSource}.
