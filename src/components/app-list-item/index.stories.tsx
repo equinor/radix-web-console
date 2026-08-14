@@ -38,7 +38,7 @@ export const FavoriteAppWithProblems: Story = {
       name: 'running-job-app',
       created: addMinutes(new Date(), -15).toISOString(),
       started: addMinutes(new Date(), -14).toISOString(),
-      status: 'Running',
+      status: 'Failed',
       pipeline: 'build-deploy',
       triggeredFromWebhook: false,
     },

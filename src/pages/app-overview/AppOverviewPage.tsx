@@ -5,7 +5,7 @@ import { FutureApplicationCost } from '../../components/application-future-cost'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { DefaultAppAlias } from '../../components/component/default-app-alias'
 import { DNSAliases } from '../../components/component/dns-aliases'
-import { EnvironmentsSummary } from '../../components/environments-summary'
+import { EnvironmentCardList } from '../../components/environment-card-list/EnvironmentCardList'
 import { JobsList } from '../../components/jobs-list'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
@@ -43,10 +43,12 @@ function AppOverviewPage({ appName }: { appName: string }) {
         {appAlias && <DefaultAppAlias appName={appName} appAlias={appAlias} />}
         {dnsAliases && <DNSAliases appName={appName} dnsAliases={dnsAliases} title={'DNS aliases'} />}
         {DNSAliases && <DNSAliases appName={appName} dnsAliases={dnsExternalAliases} title={'DNS external aliases'} />}
-        <span className="grid grid--gap-small">
+
+        <div className="grid grid--gap-small">
           <Typography variant="h4">Environments</Typography>
-          {application && <EnvironmentsSummary application={application} />}
-        </span>
+          {application && <EnvironmentCardList application={application} />}
+        </div>
+
         <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>
     </main>

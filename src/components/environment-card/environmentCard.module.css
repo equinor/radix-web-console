@@ -1,0 +1,103 @@
+.environmentCard {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--eds_ui_background__default);
+  box-shadow: var(--eds_elevation_overlay);
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--eds_ui_background__medium);
+
+    .statuses {
+      display: flex;
+      gap: 0.25rem;
+    }
+  }
+
+  .title {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem 0.5rem 1rem;
+
+    .icon {
+      fill: var(--eds_interactive_primary__resting);
+      margin-right: 0.25rem;
+    }
+    .secondaryText {
+      color: var(--eds_text_static_icons__tertiary);
+    }
+  }
+
+  .footer {
+    --eds_button__padding_x: 0.5rem;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0.5rem;
+  }
+}
+
+/* Skeleton loader "bone" placeholders .*/
+.skeleton {
+  .skeletonBar {
+    height: 1rem;
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  .skeletonBar.short {
+    width: 40%;
+  }
+
+  .skeletonBar.medium {
+    width: 65%;
+  }
+
+  .skeletonBar.caption {
+    height: 0.75rem;
+    width: 35%;
+  }
+
+  .skeletonIcon {
+    flex-shrink: 0;
+    width: 1.125rem;
+    height: 1.125rem;
+    border-radius: 50%;
+  }
+
+  .skeletonButton {
+    width: 7rem;
+    height: 2rem;
+    border-radius: 4px;
+  }
+
+  .skeletonStatuses {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .skeletonSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skeletonRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
