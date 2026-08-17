@@ -1,5 +1,4 @@
-import { Icon, Typography } from '@equinor/eds-core-react'
-import { update } from '@equinor/eds-icons'
+import { Typography } from '@equinor/eds-core-react'
 import { ComponentDeploymentGitHubAttributes } from '../../../../components/component/component-deployment-github-attributes'
 import { ComponentIdentity } from '../../../../components/component/component-identity'
 import { ComponentPorts } from '../../../../components/component/component-ports'
@@ -8,23 +7,19 @@ import { JobSchedulerDetails } from '../../../../components/component/scheduled-
 import { DockerImage } from '../../../../components/docker-image'
 import { ResourceRequirements } from '../../../../components/resource-requirements'
 import { Runtime } from '../../../../components/runtime'
-import { StatusBadgeTemplate } from '../../../../components/status-badges/status-badge-template'
-import { RelativeToNow } from '../../../../components/time/relative-to-now'
 import type { Component, Deployment } from '../../../../store/radix-api'
 import { CronSchedule } from '../cron-schedule/CronSchedule'
 
 import styles from './overview.module.css'
 
 interface OverviewProps {
-  appName: string
-  component: Component
-  deployment?: Deployment
+  readonly appName: string
+  readonly component: Component
+  readonly deployment?: Deployment
 }
 
 export const Overview = (props: OverviewProps) => {
   const { appName, component, deployment } = props
-
-  const isScheduledJob = !!component.nextRun
 
   return (
     <div className="grid grid--gap-medium">
@@ -35,23 +30,10 @@ export const Overview = (props: OverviewProps) => {
             <Typography>
               Job <strong>{component.name}</strong>
             </Typography>
-            {isScheduledJob && (
-              <StatusBadgeTemplate icon={<Icon data={update} />} type="default">
-                Cron job
-              </StatusBadgeTemplate>
-            )}
           </div>
           <Typography>
             Image <DockerImage path={component.image} />
           </Typography>
-          {isScheduledJob && (
-            <Typography>
-              Scheduled to run{' '}
-              <strong>
-                <RelativeToNow time={component.nextRun} titlePrefix="Scheduled for" />
-              </strong>
-            </Typography>
-          )}
           <DeploymentRef appName={appName} deploymentName={deployment?.name ?? ''} />
           <ComponentDeploymentGitHubAttributes deployComponent={component} deployment={deployment} />
           {component && deployment && <ComponentIdentity component={component} />}

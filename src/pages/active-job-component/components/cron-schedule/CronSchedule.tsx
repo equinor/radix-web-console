@@ -4,8 +4,8 @@ import type { Component } from '../../../../store/radix-api'
 import styles from './cronSchedule.module.css'
 
 interface CronScheduleProps {
-  component: Pick<Component, 'nextRun' | 'cronSchedules'>
-  className?: string
+  readonly component: Pick<Component, 'nextRun' | 'cronSchedules'>
+  readonly className?: string
 }
 
 /**
@@ -27,16 +27,18 @@ export const CronSchedule = (props: CronScheduleProps) => {
         Cron schedule
       </Typography>
       <dl className={styles.descriptionList}>
-        <dd className={styles.scheduleTitle}>Schedule</dd>
-        <dt className={styles.scheduleList}>
+        <dt className={styles.scheduleTitle}>Schedule</dt>
+        <dd className={styles.scheduleList}>
           {component.cronSchedules?.map((schedule) => (
             <code key={schedule}>{schedule}</code>
           ))}
-        </dt>
-        <dd>Next run</dd>
-        <dt>
-          <RelativeToNow capitalize time={component.nextRun} />
-        </dt>
+        </dd>
+        <dt>Next run</dt>
+        <dd>
+          <strong>
+            <RelativeToNow capitalize time={component.nextRun} />
+          </strong>
+        </dd>
       </dl>
     </section>
   )

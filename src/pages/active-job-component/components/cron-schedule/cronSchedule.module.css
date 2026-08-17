@@ -1,7 +1,7 @@
 .descriptionList {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 0.5rem 1rem;
+  gap: var(--eds_spacing_x_small) var(--eds_spacing_small);
 
   dd {
     margin-left: 0;
@@ -15,7 +15,7 @@
   .scheduleList {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.25rem;
+    gap: var(--eds_spacing_x_small);
     max-width: 440px;
   }
 }
