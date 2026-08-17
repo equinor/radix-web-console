@@ -1,0 +1,32 @@
+@keyframes skeleton-shimmer {
+  0% {
+    background-position-x: 200%;
+  }
+  100% {
+    background-position-x: 0%;
+  }
+}
+
+.skeleton {
+  display: contents;
+  --_default-color: #e8e8e8;
+  --_shimmer-color: #fff;
+
+  /* The wrapper class is used to structure the layout of the skeleton, but it should not have the shimmer animation applied. */
+  :not(.wrapper) {
+    /* Apply the animation that moves the background */
+    animation: skeleton-shimmer 2s ease-out infinite;
+    /* Create a background that has a small shimmer "stripe"
+      and tilt it 100 degrees. */
+    background: linear-gradient(
+      100deg,
+      var(--_default-color),
+      var(--_default-color) 50%,
+      var(--_shimmer-color) 60%,
+      var(--_default-color) 70%
+    );
+    /* Make the background twice the width so we can offset it. */
+    background-size: 200% 100%;
+    background-attachment: fixed;
+  }
+}

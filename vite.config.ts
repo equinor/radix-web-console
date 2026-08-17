@@ -38,6 +38,10 @@ export default defineConfig({
     rolldownOptions: {
       // Exclude dev.* components from the main bundle, as they are only used in development and should be lazy-loaded when accessed
       external: (source) => !!devComponentRegex.exec(source),
+      output: {
+        // Production builds should never include console.log statements, so we drop them in the minification step
+        minify: { compress: { dropConsole: true }, mangle: true },
+      },
     },
   },
   define: {

@@ -18,12 +18,7 @@ export function RegenerateSharedSecretScrim({ appName, refetchSecrets }: Props) 
 
   const onRegenerate = handlePromiseWithToast(async () => {
     setShow(false)
-    await regenerateSecrets({
-      appName,
-      regenerateSharedSecretData: {
-        sharedSecret: crypto.randomUUID(),
-      },
-    }).unwrap()
+    await regenerateSecrets({ appName }).unwrap()
     await refetchSecrets()
   })
 

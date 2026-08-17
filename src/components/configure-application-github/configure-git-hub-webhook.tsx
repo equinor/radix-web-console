@@ -1,4 +1,4 @@
-import { List, Typography } from '@equinor/eds-core-react'
+import { CircularProgress, List, Typography } from '@equinor/eds-core-react'
 import { configVariables } from '../../utils/config'
 import { CompactCopyButton } from '../compact-copy-button'
 import { ExternalLink } from '../link/external-link'
@@ -30,8 +30,14 @@ export function ConfigureGitHubWebhook({ repository, appName, sharedSecret }: Pr
           </List.Item>
           <List.Item>
             Set <em>Secret</em> to{' '}
-            <code style={{ verticalAlign: 'middle', minWidth: '10em', minHeight: '1.5em' }}>{sharedSecret}</code>{' '}
-            <CompactCopyButton content={sharedSecret ?? ''} />
+            {sharedSecret ? (
+              <>
+                <code style={{ verticalAlign: 'middle', minWidth: '10em', minHeight: '1.5em' }}>{sharedSecret}</code>{' '}
+                <CompactCopyButton content={sharedSecret} />
+              </>
+            ) : (
+              <CircularProgress size={16} />
+            )}
           </List.Item>
           <List.Item>Press "Add webhook"</List.Item>
         </List>
