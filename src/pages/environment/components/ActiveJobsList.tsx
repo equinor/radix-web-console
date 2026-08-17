@@ -49,7 +49,7 @@ export const ActiveJobsList = (props: ActiveJobsListProps) => {
                       {job.nextRun && (
                         <StatusPopover icon={<Icon data={update} />} title="Cron job" type="default">
                           <Typography variant="caption" as="div">
-                            Next run: <RelativeToNow time={job.nextRun} titlePrefix="Scheduled for" />
+                            Next run: <RelativeToNow capitalize time={job.nextRun} />
                           </Typography>
                         </StatusPopover>
                       )}

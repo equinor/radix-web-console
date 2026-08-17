@@ -1,16 +1,19 @@
 import { Icon, Typography } from '@equinor/eds-core-react'
 import { update } from '@equinor/eds-icons'
-import { ComponentDeploymentGitHubAttributes } from '../../../components/component/component-deployment-github-attributes'
-import { ComponentIdentity } from '../../../components/component/component-identity'
-import { ComponentPorts } from '../../../components/component/component-ports'
-import { DeploymentRef } from '../../../components/component/deployment-ref'
-import { JobSchedulerDetails } from '../../../components/component/scheduled-job/job-scheduler-details'
-import { DockerImage } from '../../../components/docker-image'
-import { ResourceRequirements } from '../../../components/resource-requirements'
-import { Runtime } from '../../../components/runtime'
-import { StatusBadgeTemplate } from '../../../components/status-badges/status-badge-template'
-import { RelativeToNow } from '../../../components/time/relative-to-now'
-import type { Component, Deployment } from '../../../store/radix-api'
+import { ComponentDeploymentGitHubAttributes } from '../../../../components/component/component-deployment-github-attributes'
+import { ComponentIdentity } from '../../../../components/component/component-identity'
+import { ComponentPorts } from '../../../../components/component/component-ports'
+import { DeploymentRef } from '../../../../components/component/deployment-ref'
+import { JobSchedulerDetails } from '../../../../components/component/scheduled-job/job-scheduler-details'
+import { DockerImage } from '../../../../components/docker-image'
+import { ResourceRequirements } from '../../../../components/resource-requirements'
+import { Runtime } from '../../../../components/runtime'
+import { StatusBadgeTemplate } from '../../../../components/status-badges/status-badge-template'
+import { RelativeToNow } from '../../../../components/time/relative-to-now'
+import type { Component, Deployment } from '../../../../store/radix-api'
+import { CronSchedule } from '../cron-schedule/CronSchedule'
+
+import styles from './overview.module.css'
 
 interface OverviewProps {
   appName: string
@@ -62,6 +65,7 @@ export const Overview = (props: OverviewProps) => {
           <JobSchedulerDetails component={component} />
         </section>
       </div>
+      <CronSchedule component={component} className={styles.cronSchedule} />
     </div>
   )
 }

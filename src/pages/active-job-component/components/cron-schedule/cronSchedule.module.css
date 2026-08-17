@@ -1,0 +1,21 @@
+.descriptionList {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1rem;
+
+  dd {
+    margin-left: 0;
+  }
+
+  /* Adjusted to keep a nice alignment when the list is long and wraps */
+  .scheduleTitle {
+    margin: var(--eds_spacing_small) 0;
+  }
+
+  .scheduleList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    max-width: 440px;
+  }
+}
