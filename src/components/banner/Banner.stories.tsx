@@ -44,6 +44,24 @@ export const WarningBanner: Story = {
   ),
 }
 
+export const SuccessBanner: Story = {
+  args: { variant: 'success' },
+  render: (args) => (
+    <Banner {...args}>
+      <Banner.Message>This is a success banner</Banner.Message>
+    </Banner>
+  ),
+}
+
+export const DangerBanner: Story = {
+  args: { variant: 'danger' },
+  render: (args) => (
+    <Banner {...args}>
+      <Banner.Message>This is a danger banner</Banner.Message>
+    </Banner>
+  ),
+}
+
 export const WithDismiss: Story = {
   args: { onDismiss: () => alert('Banner dismissed') },
   render: (args) => (

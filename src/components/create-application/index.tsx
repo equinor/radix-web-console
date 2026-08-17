@@ -6,7 +6,6 @@ import {
 } from '../../store/radix-api'
 import './style.css'
 import { useState } from 'react'
-import { pollingInterval } from '../../store/defaults'
 import { CreateApplicationScrim } from './create-application-scrim'
 
 export default function PageCreateApplication() {
@@ -16,7 +15,7 @@ export default function PageCreateApplication() {
 
   const { data: secrets, refetch: refetchSecrets } = useGetDeployKeyAndSecretQuery(
     { appName: appName! },
-    { pollingInterval, skip: !appName }
+    { pollingInterval: 5000, skip: !appName }
   )
 
   const onCreateApplication = async (
