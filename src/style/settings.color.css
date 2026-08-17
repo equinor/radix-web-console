@@ -158,6 +158,14 @@
   --temp-eds-2-color-info-2: #f4ffff;
   --temp-eds-2-color-info-7: #6fb6e9;
   --temp-eds-2-color-info-12: #015e8d;
+
+  --temp-eds-2-color-success-2: #f6fff5;
+  --temp-eds-2-color-success-7: #7cc278;
+  --temp-eds-2-color-success-12: #20691f;
+
+  --temp-eds-2-color-danger-2: #fff9f8;
+  --temp-eds-2-color-danger-7: #ff7a7d;
+  --temp-eds-2-color-danger-12: #a50827;
 }
 
 .cluster-type--playground:root {

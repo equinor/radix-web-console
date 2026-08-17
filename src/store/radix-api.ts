@@ -319,6 +319,7 @@ const injectedRtkApi = api.injectEndpoints({
         params: {
           sinceTime: queryArg.sinceTime,
           lines: queryArg.lines,
+          previous: queryArg.previous,
           file: queryArg.file,
           follow: queryArg.follow,
         },
@@ -1011,7 +1012,6 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/regenerate-shared-secret`,
         method: "POST",
-        body: queryArg.regenerateSharedSecretData,
         headers: {
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
@@ -1420,6 +1420,8 @@ export type GetOAuthPodLogApiArg = {
   sinceTime?: string;
   /** Get log lines (example 1000) */
   lines?: string;
+  /** Get previous container log if true */
+  previous?: string;
   /** Get log as a file if true */
   file?: string;
   /** Get log as a server-sent event stream if true */
@@ -2300,8 +2302,6 @@ export type RegenerateSharedSecretApiArg = {
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
-  /** Regenerate shared secret and secret data */
-  regenerateSharedSecretData: RegenerateSharedSecretData;
 };
 export type ResetManuallyScaledComponentsInApplicationApiResponse = unknown;
 export type ResetManuallyScaledComponentsInApplicationApiArg = {
@@ -2559,6 +2559,9 @@ export type Component = {
   image: string;
   /** Name the component */
   name: string;
+  /** NextRun is the next time the job component's cron schedule is due to run, if a cron schedule is configured.
+    It is the earliest next run across all configured schedules, interpreted in the configured timezone and returned as a UTC timestamp. */
+  nextRun?: string;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
   /** Ports defines the port number and protocol that a component is exposed for internally in environment */
@@ -2831,8 +2834,6 @@ export type ApplicationRegistration = {
   readerAdUsers: string[];
   /** Repository the github repository */
   repository: string;
-  /** SharedSecret the shared secret of the webhook */
-  sharedSecret: string;
 };
 export type ApplicationRegistrationUpsertResponse = {
   applicationRegistration?: ApplicationRegistration;
@@ -3099,6 +3100,8 @@ export type ScheduledJobSummary = {
   command?: string[];
   /** Created timestamp */
   created?: string;
+  /** CronSchedule is the cron schedule expression, if this job was created by a cron schedule. */
+  cronSchedule?: string;
   /** DeploymentName name of RadixDeployment for the job */
   deploymentName: string;
   /** Ended timestamp */
@@ -3572,10 +3575,6 @@ export type ImageHubSecret = {
 export type RegenerateDeployKeyData = {
   /** PrivateKey of the deploy key */
   privateKey?: string;
-};
-export type RegenerateSharedSecretData = {
-  /** SharedSecret of the shared secret */
-  sharedSecret?: string;
 };
 export type ClusterConfigurationHoldsClusterConfigurationEnvironment = {
   /** ClusterEgressIps List of egress IPs for the cluster. Can be used for whitelisting in external services. */

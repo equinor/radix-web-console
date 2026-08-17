@@ -58,4 +58,30 @@
       color: var(--temp-eds-2-color-warning-12);
     }
   }
+
+  /* Variant - Success */
+  &.success {
+    background-color: var(--temp-eds-2-color-success-2);
+    border-color: var(--temp-eds-2-color-success-7);
+
+    .icon {
+      fill: var(--temp-eds-2-color-success-12);
+    }
+    .closeButton {
+      color: var(--temp-eds-2-color-success-12);
+    }
+  }
+
+  /* Variant - Danger */
+  &.danger {
+    background-color: var(--temp-eds-2-color-danger-2);
+    border-color: var(--temp-eds-2-color-danger-7);
+
+    .icon {
+      fill: var(--temp-eds-2-color-danger-12);
+    }
+    .closeButton {
+      color: var(--temp-eds-2-color-danger-12);
+    }
+  }
 }
