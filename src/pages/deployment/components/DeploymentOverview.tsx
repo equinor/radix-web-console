@@ -23,7 +23,8 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
     { appName, deploymentName },
     { skip: !appName || !deploymentName, pollingInterval }
   )
-  const componentMap = buildComponentMap(deployment?.components ?? [])
+  const { components, jobs } = buildComponentMap(deployment?.components ?? [])
+
   return (
     <>
       <Breadcrumb
@@ -70,11 +71,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
               <DeploymentSummary appName={appName} deployment={deployment} />
 
               <div>
-                <DeploymentComponentList
-                  appName={appName}
-                  deployment={deployment}
-                  components={componentMap?.component ?? []}
-                />
+                <DeploymentComponentList appName={appName} deployment={deployment} components={components ?? []} />
               </div>
 
               <div>
@@ -82,7 +79,7 @@ export const DeploymentOverview = ({ appName, deploymentName }: Props) => {
                   appName={appName}
                   deploymentName={deploymentName}
                   deployment={deployment}
-                  components={componentMap?.job ?? []}
+                  components={jobs ?? []}
                 />
               </div>
             </>
