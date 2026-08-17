@@ -2,6 +2,7 @@ import { Accordion, Button, Checkbox, CircularProgress, List, TextField, Typogra
 import { type ChangeEvent, type SubmitEventHandler, useState } from 'react'
 import { Banner } from '../../../components/banner/Banner'
 import { handlePromiseWithToast } from '../../../components/global-top-nav/styled-toaster'
+import { ExternalLink } from '../../../components/link/external-link'
 import { useModifyRegistrationDetailsMutation } from '../../../store/radix-api'
 import { getFetchErrorMessage } from '../../../store/utils/parse-errors'
 
@@ -101,13 +102,9 @@ export function ChangeRepositoryForm({ appName, repository, refetch }: Props) {
               <Banner variant="success">
                 <Banner.Message>
                   Repository updated. Remember to update your{' '}
-                  <a
-                    href="https://radix.equinor.com/start/registering-app/#deploy-key"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
+                  <ExternalLink href="https://radix.equinor.com/start/registering-app/#deploy-key">
                     deploy key
-                  </a>{' '}
+                  </ExternalLink>{' '}
                   and your webhooks shared secret if you use it.
                 </Banner.Message>
               </Banner>
