@@ -221,6 +221,7 @@ export const ScheduledJobList: FunctionComponent<{
                             <JobContextMenu
                               menuItems={[
                                 <Menu.Item
+                                  disabled={!!job.cronSchedule}
                                   key={0}
                                   onClick={() => setVisiblePayloadScrim(job.name, !visiblePayloadScrims[job.name])}
                                 >
