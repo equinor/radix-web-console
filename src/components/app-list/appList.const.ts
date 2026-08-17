@@ -1,0 +1,1 @@
+export const APP_LIST_REFRESH_INTERVAL_MS = 24 * 60 * 60 * 1000

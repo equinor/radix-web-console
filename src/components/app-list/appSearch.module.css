@@ -1,0 +1,20 @@
+.appSearch {
+  display: flex;
+}
+.searchField {
+  width: 100%;
+  max-width: 0px;
+
+  svg {
+    display: none;
+  }
+
+  &.expanded {
+    max-width: 300px;
+    transition: max-width 0.3s ease-in-out;
+
+    svg {
+      display: block;
+    }
+  }
+}

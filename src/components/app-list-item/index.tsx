@@ -37,7 +37,7 @@ interface AppListItemProps {
   environments?: Environment[]
   handler: FavouriteClickedHandler
   isPlaceholder?: boolean
-  isFavourite?: boolean
+  isFavorite?: boolean
   isLoading: boolean
   showStatus?: boolean
   isDeleted?: boolean

@@ -1,44 +1,34 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
-import { useCallback } from 'react'
-
-import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
-import { dataSorter, sortCompareString } from '../../utils/sort-utils'
-import { AppListItemContainer } from '../app-list-item'
-import CreateApplication from '../create-application'
-
-import './style.css'
 import { refresh } from '@equinor/eds-icons'
 import { QueryStatus } from '@reduxjs/toolkit/query'
 import { uniq } from 'lodash-es'
+import { useCallback, useState } from 'react'
+
 import {
-  favouriteApplicationsKey,
+  favouriteApplicationsKey as favoriteApplicationsKey,
   knownApplicationsKey,
   knownApplicationsLastRefreshKey,
   useMsalAccountLocalStorage,
 } from '../../hooks/use-local-storage'
 import { useTimestampTimeout } from '../../hooks/use-timestamp-timeout'
 import { pollingInterval } from '../../store/defaults'
+import { radixApi, useGetSearchApplicationsQuery } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { promiseHandler } from '../../utils/promise-handler'
+import { dataSorter, sortCompareString } from '../../utils/sort-utils'
 import { Alert } from '../alert'
+import CreateApplication from '../create-application'
+import { AppSearch } from './AppSearch'
+import { APP_LIST_REFRESH_INTERVAL_MS } from './appList.const'
+import { isArrayOfStrings } from './appList.utils'
+import { FavoritesList } from './FavoritesList'
+import { KnownApplicationsList } from './KnownApplicationsList'
 
-const LoadingCards = ({ amount }: { amount: number }) => (
-  <div className="app-list__list loading">
-    {[...Array(amount || 1)].map((_, i) => (
-      <AppListItemContainer key={i} appName={''} handler={(e) => e.preventDefault()} isPlaceholder isLoading={false} />
-    ))}
-  </div>
-)
-
-const isArrayOfStrings = (variable: unknown): variable is string[] => {
-  return Array.isArray(variable) && variable.every((item) => typeof item === 'string')
-}
-
-const appListrefreshInterval = 24 * 60 * 60 * 1000
+import './style.css'
 
 export default function AppList() {
-  const [favourites, setFavourites] = useMsalAccountLocalStorage<Array<string>>(
-    favouriteApplicationsKey,
+  const [favorites, setFavorites] = useMsalAccountLocalStorage<Array<string>>(
+    favoriteApplicationsKey,
     [],
     isArrayOfStrings
   )
@@ -49,7 +39,7 @@ export default function AppList() {
     isArrayOfStrings
   )
 
-  const [knowAppNamesLastRefresh, setKnowAppNamesLastRefresh] = useMsalAccountLocalStorage(
+  const [knownAppNamesLastRefresh, setKnownAppNamesLastRefresh] = useMsalAccountLocalStorage(
     knownApplicationsLastRefreshKey,
     0
   )
@@ -61,92 +51,75 @@ export default function AppList() {
       showAppsQuery({}).unwrap(),
       (data) => {
         setKnownAppNames(data.map((app) => app.name))
-        setKnowAppNamesLastRefresh(Date.now())
+        setKnownAppNamesLastRefresh(Date.now())
       },
       'error'
     )
-  }, [showAppsQuery, setKnownAppNames, setKnowAppNamesLastRefresh])
+  }, [showAppsQuery, setKnownAppNames, setKnownAppNamesLastRefresh])
 
-  useTimestampTimeout(refreshKnownApps, knowAppNamesLastRefresh + appListrefreshInterval)
+  useTimestampTimeout(refreshKnownApps, knownAppNamesLastRefresh + APP_LIST_REFRESH_INTERVAL_MS)
 
-  const { data: favsData, ...favsState } = useGetSearchApplicationsQuery(
+  const { data: favouriteApps, ...favouriteAppsState } = useGetSearchApplicationsQuery(
     {
-      apps: favourites?.join(','),
+      apps: favorites?.join(','),
       includeEnvironments: true,
       includeLatestJobSummary: true,
     },
-    { skip: favourites?.length === 0, pollingInterval }
+    { skip: favorites?.length === 0, pollingInterval }
   )
 
   const changeFavouriteApplication = (appName: string, isFavourite: boolean) => {
-    if (!favourites) {
-      setFavourites([appName])
+    if (!favorites) {
+      setFavorites([appName])
       return
     }
     if (isFavourite) {
-      setFavourites((old) => uniq([...old, appName]))
+      setFavorites((old) => uniq([...old, appName]))
       return
     }
-    setFavourites((old) => old.filter((a) => a !== appName))
+    setFavorites((old) => old.filter((favourite) => favourite !== appName))
   }
 
-  const knownApps = dataSorter(knownAppNames ?? [], [(x, y) => sortCompareString(x, y)]).map((appName) => ({
-    name: appName,
-    isFavourite: favourites?.includes(appName),
-  }))
+  const [searchValue, setSearchValue] = useState('')
 
-  const favouriteNames = dataSorter(favourites ?? [], [(x, y) => sortCompareString(x, y)])
+  const favouriteNames = dataSorter(favorites ?? [], [(a, b) => sortCompareString(a, b)])
+
+  const knownApps = dataSorter(knownAppNames ?? [], [(a, b) => sortCompareString(a, b)])
+    .map((appName) => ({
+      name: appName,
+      isFavourite: favorites?.includes(appName),
+    }))
+    .filter((app) => app.name.toLowerCase().includes(searchValue.toLowerCase()))
+
+  const isRefreshing = showAppsQueryState.isLoading || showAppsQueryState.isFetching
+  const hasLoadedKnownAppsOnce = showAppsQueryState.status === QueryStatus.fulfilled || knownAppNamesLastRefresh > 0
 
   return (
     <article className="grid grid--gap-medium">
       <div className="app-list__header">
-        <Typography variant="body_short_bold">Favourites</Typography>
+        <Typography variant="body_short_bold">Favorites</Typography>
         <div className="app-list__buttons">
           <CreateApplication />
         </div>
       </div>
       <div className="app-list">
-        {favouriteNames?.length > 0 ? (
-          <div className="grid grid--gap-medium app-list--section">
-            <div className="app-list__list">
-              {favouriteNames.map((appName) => {
-                const app = favsData?.find((a) => a.name === appName)
-                return (
-                  <AppListItemContainer
-                    key={appName}
-                    appName={appName}
-                    isDeleted={!app}
-                    environments={app?.environments}
-                    latestJob={app?.latestJob}
-                    handler={(e) => {
-                      changeFavouriteApplication(appName, false)
-                      e.preventDefault()
-                    }}
-                    isFavourite
-                    showStatus
-                    isLoading={favsState.isLoading}
-                  />
-                )
-              })}
-            </div>
-          </div>
-        ) : (
-          <Typography>No favourites</Typography>
-        )}
+        <FavoritesList
+          favoriteNames={favouriteNames}
+          favoriteApps={favouriteApps}
+          isLoading={favouriteAppsState.isLoading}
+          onRemoveFavorite={(appName) => changeFavouriteApplication(appName, false)}
+        />
         <div className="applications-list-title-actions">
           <Typography variant="body_short_bold">All applications</Typography>
+          <AppSearch searchValue={searchValue} setSearchValue={setSearchValue} />
           <Button
             className={'action--justify-end'}
             variant="outlined"
             color="primary"
-            disabled={showAppsQueryState.isLoading || showAppsQueryState.isFetching}
+            disabled={isRefreshing}
             onClick={refreshKnownApps}
           >
-            {showAppsQueryState.isLoading || showAppsQueryState.isFetching ? (
-              <CircularProgress size={16} />
-            ) : (
-              <Icon data={refresh} />
-            )}
+            {isRefreshing ? <CircularProgress size={16} /> : <Icon data={refresh} />}
             Refresh list
           </Button>
         </div>
@@ -156,43 +129,12 @@ export default function AppList() {
           </div>
         )}
         <div className="grid grid--gap-medium app-list--section">
-          {knownAppNames?.length > 0 ? (
-            <div className="app-list__list">
-              {knownApps.map((app) => {
-                return (
-                  <AppListItemContainer
-                    key={app.name}
-                    appName={app.name}
-                    handler={(e) => {
-                      changeFavouriteApplication(app.name, !app.isFavourite)
-                      e.preventDefault()
-                    }}
-                    isFavourite={app.isFavourite}
-                    isLoading={false}
-                  />
-                )
-              })}
-            </div>
-          ) : (
-            <>
-              {showAppsQueryState.status === QueryStatus.fulfilled || knowAppNamesLastRefresh > 0 ? (
-                <div
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 'var(--eds_spacing_medium)',
-                  }}
-                >
-                  <Typography variant="h3">No applications yet</Typography>
-                  <Typography>Applications that you create (or have access to) appear here</Typography>
-                  <CreateApplication />
-                </div>
-              ) : (
-                <LoadingCards amount={6} />
-              )}
-            </>
-          )}
+          <KnownApplicationsList
+            apps={knownApps}
+            hasKnownApps={(knownAppNames?.length ?? 0) > 0}
+            hasLoadedOnce={hasLoadedKnownAppsOnce}
+            onToggleFavourite={changeFavouriteApplication}
+          />
         </div>
       </div>
     </article>

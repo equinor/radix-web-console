@@ -29,6 +29,13 @@
   gap: var(--eds_spacing_medium);
 }
 
+.app-list--empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--eds_spacing_medium);
+}
+
 @media (min-width: 50rem) {
   .app-list--no-apps-header {
     grid-template-columns: 1fr auto;
