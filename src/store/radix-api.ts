@@ -2549,6 +2549,8 @@ export type Runtime = {
 export type Component = {
   /** Commit ID for the component. It can be different from the Commit ID, specified in deployment label */
   commitID?: string;
+  /** Cron schedules defined for a job component */
+  cronSchedules?: string[];
   /** Array of external DNS configurations */
   externalDNS?: ExternalDns[];
   /** GitTags the git tags that the git commit hash points to */

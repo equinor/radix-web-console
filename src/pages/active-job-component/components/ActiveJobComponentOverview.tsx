@@ -23,7 +23,7 @@ import { getEnvsUrl } from '../../../utils/routing'
 import { routeWithParams } from '../../../utils/string'
 import { ComponentReplicaList } from '../../active-component/components/ComponentReplicaList'
 import { JobComponentVulnerabilityDetails } from './JobComponentVulnerabilityDetails'
-import { Overview } from './Overview'
+import { Overview } from './overview/Overview'
 
 type Props = {
   appName: string
