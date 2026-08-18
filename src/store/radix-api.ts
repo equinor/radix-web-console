@@ -2525,7 +2525,6 @@ export type AuxiliaryResourceDeployment = {
   type?: "oauth" | "oauth-redis" | '""';
 };
 export type OAuth2AuxiliaryResource = {
-  deployment: AuxiliaryResourceDeployment;
   /** Deployments describes the underlying Kubernetes deployments for the resource */
   deployments?: AuxiliaryResourceDeployment[];
   identity?: Identity;
