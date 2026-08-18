@@ -30,6 +30,8 @@ export const AppSearch = (props: AppSearchProps) => {
         value={searchValue}
         onChange={(e) => onSearchValueChange(e.target.value)}
         onBlur={onBlur}
+        aria-hidden={!isSearchFieldVisible}
+        tabIndex={isSearchFieldVisible ? 0 : -1}
       />
     </div>
   )

@@ -1,5 +1,6 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
 import { refresh } from '@equinor/eds-icons'
+import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import CreateApplication from '../create-application'
 import { AllApplicationsList } from './components/AllApplicationsList'
 import { AppSearch } from './components/app-search/AppSearch'
@@ -10,10 +11,18 @@ import { useAppSearch } from './hooks/useAppSearch'
 import { useFavoriteApplications } from './hooks/useFavoriteApplications'
 
 import './style.css'
+import { Banner } from '../banner/Banner'
 
 export const ApplicationsOverview = () => {
   const { favoriteApplications, isFavorite, isLoading: isLoadingFavorites, setFavorite } = useFavoriteApplications()
-  const { applicationNames, hasLoadedOnce, isRefreshing, refresh: refreshApplications } = useApplications()
+  const {
+    applicationNames,
+    hasLoadedOnce,
+    isRefreshing,
+    isError,
+    error,
+    refresh: refreshApplications,
+  } = useApplications()
   const search = useAppSearch()
 
   const applications = applicationNames.map((name) => ({
@@ -21,9 +30,8 @@ export const ApplicationsOverview = () => {
     isFavorite: isFavorite(name),
   }))
 
-  const filteredApplications = applications.filter((app) =>
-    app.name.toLowerCase().includes(search.searchValue.toLowerCase())
-  )
+  const searchTerm = search.searchTerm.toLowerCase()
+  const filteredApplications = applications.filter((app) => app.name.toLowerCase().includes(searchTerm))
 
   return (
     <article className="grid grid--gap-medium">
@@ -62,6 +70,11 @@ export const ApplicationsOverview = () => {
             </Button>
           </div>
         </div>
+        {isError && (
+          <div>
+            <Banner variant="danger">Failed to load applications. {getFetchErrorMessage(error)}</Banner>
+          </div>
+        )}
         <div className="grid grid--gap-medium app-list--section">
           {search.isUserSearching && hasLoadedOnce && filteredApplications.length === 0 ? (
             <NoSearchResults searchTerm={search.searchValue} />

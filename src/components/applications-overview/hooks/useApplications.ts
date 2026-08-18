@@ -51,6 +51,8 @@ export const useApplications = () => {
     applicationNames,
     hasLoadedOnce,
     isRefreshing,
+    isError: showAppsQuery.isError,
+    error: showAppsQuery.error,
     refresh,
   }
 }
