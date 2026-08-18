@@ -5,11 +5,11 @@ import { MemoryRouter } from 'react-router'
 import * as radixApi from '../../store/radix-api'
 import store from '../../store/store'
 import type { FetchQueryHookResult } from '../../store/types'
-import AppList from '.'
+import { ApplicationsOverview } from './ApplicationsOverview'
 
 const noop = () => void 0
 
-describe('AppList component', () => {
+describe('ApplicationsOverview component', () => {
   beforeEach(() => {
     vi.spyOn(radixApi, 'useShowApplicationsQuery')
     vi.spyOn(radixApi, 'useGetSearchApplicationsQuery')
@@ -50,7 +50,7 @@ describe('AppList component', () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <AppList />
+          <ApplicationsOverview />
         </MemoryRouter>
       </Provider>
     )

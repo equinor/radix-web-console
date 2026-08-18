@@ -29,23 +29,25 @@ import { VulnerabilityStatusPopover } from '../status-popover/shared/vulnerabili
 import { summarizeApplicationVulnerabilities } from '../status-popover/shared/vulnerability-status-popover/vulnerabilityStatusPopover.utils'
 import { ApplicationStatusPopover } from './components/ApplicationStatusPopover'
 
-export type FavouriteClickedHandler = (event: MouseEvent<HTMLButtonElement>, name: string) => void
-
 interface AppListItemProps {
   appName: string
   latestJob?: JobSummary
   environments?: Environment[]
-  handler: FavouriteClickedHandler
+  handler: (event: MouseEvent<HTMLButtonElement>, name: string) => void
   isPlaceholder?: boolean
   isFavorite?: boolean
   isLoading: boolean
   showStatus?: boolean
   isDeleted?: boolean
+  utilization?: ReplicaResourcesUtilizationResponse
+  vulnerabilitySummary?: ApplicationVulnerabilities
 }
+
+type AppListItemContainerProps = Omit<AppListItemProps, 'utilization' | 'vulnerabilitySummary'>
 
 const visibleKeys: ReadonlyArray<Lowercase<Vulnerability['severity']>> = ['critical', 'high']
 
-export const AppListItemContainer = ({ isLoading, ...props }: AppListItemProps) => {
+export const AppListItemContainer = ({ isLoading, ...props }: AppListItemContainerProps) => {
   const { data: vulnerabilitySummary, isLoading: isVulnSummaryLoading } = useGetApplicationVulnerabilitySummariesQuery(
     { appName: props.appName },
     { pollingInterval: 0, skip: !props.showStatus }
@@ -58,26 +60,12 @@ export const AppListItemContainer = ({ isLoading, ...props }: AppListItemProps) 
 
   return (
     <AppListItem
+      {...props}
+      isLoading={isUtilizationLoading || isVulnSummaryLoading || isLoading}
       utilization={utilization}
       vulnerabilitySummary={vulnerabilitySummary}
-      isLoading={isUtilizationLoading || isVulnSummaryLoading || isLoading}
-      {...props}
     />
   )
-}
-
-export type AppListItemLayoutProps = {
-  appName: string
-  latestJob?: JobSummary
-  environments?: Environment[]
-  handler: FavouriteClickedHandler
-  isPlaceholder?: boolean
-  isFavourite?: boolean
-  showStatus?: boolean
-  isLoading: boolean
-  isDeleted?: boolean
-  utilization?: ReplicaResourcesUtilizationResponse
-  vulnerabilitySummary?: ApplicationVulnerabilities
 }
 
 export const AppListItem = ({
@@ -89,10 +77,10 @@ export const AppListItem = ({
   handler,
   showStatus,
   isPlaceholder,
-  isFavourite,
+  isFavorite,
   utilization,
   vulnerabilitySummary,
-}: AppListItemLayoutProps) => {
+}: AppListItemProps) => {
   const vulnerabilities = summarizeApplicationVulnerabilities(vulnerabilitySummary)
   const replicaUtilizations = getApplicationReplicaUtilizations(utilization)
 
@@ -119,7 +107,7 @@ export const AppListItem = ({
             </Typography>
             <div className="app-list-item--details-favourite">
               <Button variant="ghost_icon" onClick={(e) => handler(e, appName)}>
-                <Icon data={isFavourite ? star_filled : star_outlined} />
+                <Icon data={isFavorite ? star_filled : star_outlined} />
               </Button>
             </div>
           </div>

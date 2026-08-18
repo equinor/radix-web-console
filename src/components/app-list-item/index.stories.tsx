@@ -25,7 +25,7 @@ export const FavoriteApp: Story = {
     appName: 'favorite-app',
     handler: () => {},
     isLoading: false,
-    isFavourite: true,
+    isFavorite: true,
   },
 }
 
@@ -78,7 +78,7 @@ export const FavoriteAppWithProblems: Story = {
         },
       },
     },
-    isFavourite: true,
+    isFavorite: true,
     showStatus: true,
   },
 }
@@ -132,7 +132,7 @@ export const DeletedWithStatus: Story = {
     handler: () => {},
     isLoading: false,
     isDeleted: true,
-    isFavourite: false,
+    isFavorite: false,
     showStatus: true,
   },
 }

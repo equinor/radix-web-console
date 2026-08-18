@@ -48,6 +48,12 @@
   align-items: center;
 }
 
+.applications-list-title-actions__right {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--eds_spacing_medium);
+}
+
 .action--justify-end {
   justify-self: end;
 }

@@ -1,4 +1,4 @@
-import AppList from '../../components/app-list'
+import { ApplicationsOverview } from '../../components/applications-overview/ApplicationsOverview'
 import { DocumentTitle } from '../../components/document-title'
 import { MigrateFederatedCredentialsBanner } from '../../components/migrateFederatedCredentialsBanner/MigrateFederatedCredentialsBanner'
 
@@ -10,7 +10,7 @@ export default function ApplicationsPage() {
       <DocumentTitle title="Applications" />
       {/* TODO: #1373 - This is a temporary solution and should be removed once the migration is complete and all users have updated their configurations. */}
       <MigrateFederatedCredentialsBanner className="temporary-migration-banner" />
-      <AppList />
+      <ApplicationsOverview />
     </div>
   )
 }
