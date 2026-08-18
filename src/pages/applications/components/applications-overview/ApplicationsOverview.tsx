@@ -1,17 +1,17 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
 import { refresh } from '@equinor/eds-icons'
-import { getFetchErrorMessage } from '../../store/utils/parse-errors'
-import CreateApplication from '../create-application'
-import { AllApplicationsList } from './components/AllApplicationsList'
-import { AppSearch } from './components/app-search/AppSearch'
-import { FavoritesList } from './components/FavoritesList'
-import { NoSearchResults } from './components/NoSearchResults'
-import { useApplications } from './hooks/useApplications'
-import { useAppSearch } from './hooks/useAppSearch'
-import { useFavoriteApplications } from './hooks/useFavoriteApplications'
+import { Banner } from '../../../../components/banner/Banner'
+import CreateApplication from '../../../../components/create-application'
+import { getFetchErrorMessage } from '../../../../store/utils/parse-errors'
+import { useApplications } from '../../hooks/useApplications'
+import { useAppSearch } from '../../hooks/useAppSearch'
+import { useFavoriteApplications } from '../../hooks/useFavoriteApplications'
+import { AllApplicationsList } from '../AllApplicationsList'
+import { AppSearch } from '../app-search/AppSearch'
+import { FavoritesList } from '../FavoritesList'
+import { NoSearchResults } from '../NoSearchResults'
 
-import './style.css'
-import { Banner } from '../banner/Banner'
+import '../style.css'
 
 export const ApplicationsOverview = () => {
   const { favoriteApplications, isFavorite, isLoading: isLoadingFavorites, setFavorite } = useFavoriteApplications()

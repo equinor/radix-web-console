@@ -2,12 +2,11 @@ import { QueryStatus } from '@reduxjs/toolkit/query'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
-
-import type * as radixApi from '../../store/radix-api'
-import store from '../../store/store'
-import type { FetchQueryHookResult } from '../../store/types'
+import type * as radixApi from '../../../../store/radix-api'
+import store from '../../../../store/store'
+import type { FetchQueryHookResult } from '../../../../store/types'
+import { useApplications } from '../../hooks/useApplications'
 import { ApplicationsOverview } from './ApplicationsOverview'
-import { useApplications } from './hooks/useApplications'
 
 const noop = () => void 0
 

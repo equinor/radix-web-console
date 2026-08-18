@@ -1,6 +1,6 @@
-import { ApplicationsOverview } from '../../components/applications-overview/ApplicationsOverview'
 import { DocumentTitle } from '../../components/document-title'
 import { MigrateFederatedCredentialsBanner } from '../../components/migrateFederatedCredentialsBanner/MigrateFederatedCredentialsBanner'
+import { ApplicationsOverview } from './components/applications-overview/ApplicationsOverview'
 
 import './style.css'
 

@@ -1,4 +1,4 @@
-import { AppListItemContainer } from '../../app-list-item'
+import { AppListItemContainer } from '../../../components/app-list-item'
 
 interface LoadingCardsProps {
   readonly amount: number

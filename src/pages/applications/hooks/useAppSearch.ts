@@ -17,7 +17,7 @@ export const useAppSearch = () => {
 
   const changeSearchValue = (value: string) => {
     setSearchValue(value)
-    // Keep focus on the field after the native clear ("x") button empties it
+    // Keep focus on the field after the EDS clear ("x") button empties it
     if (value === '') {
       inputRef.current?.focus()
     }

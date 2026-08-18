@@ -1,6 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-
-import { AppListItemContainer } from '../../app-list-item'
+import { AppListItemContainer } from '../../../components/app-list-item'
 import type { FavoriteApplication } from '../hooks/useFavoriteApplications'
 
 interface FavoritesListProps {

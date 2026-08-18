@@ -1,6 +1,8 @@
 .appSearch {
   display: flex;
+  height: 40px; /* Needed to keep same height when expanded */
 }
+
 .searchField {
   width: 100%;
   max-width: 0px;

@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
-import { AppListItemContainer } from '../../app-list-item'
-import CreateApplication from '../../create-application'
+import { AppListItemContainer } from '../../../components/app-list-item'
+import CreateApplication from '../../../components/create-application'
 import { LoadingCards } from './LoadingCards'
 
 interface ApplicationListItem {
