@@ -10,7 +10,7 @@ import { ApplicationsOverview } from './ApplicationsOverview'
 
 const noop = () => void 0
 
-vi.mock('../../store/radix-api', async (importOriginal) => ({
+vi.mock('../../../../store/radix-api', async (importOriginal) => ({
   ...(await importOriginal<typeof radixApi>()),
   ...({
     useShowApplicationsQuery: (): FetchQueryHookResult<radixApi.ShowApplicationsApiResponse> => ({
@@ -41,7 +41,7 @@ vi.mock('../../store/radix-api', async (importOriginal) => ({
   } as Record<keyof typeof radixApi, () => FetchQueryHookResult>),
 }))
 
-vi.mock('./hooks/useApplications')
+vi.mock('../../hooks/useApplications')
 
 const mockedUseApplications = vi.mocked(useApplications)
 
