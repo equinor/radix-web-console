@@ -15,7 +15,7 @@ import { NoSearchResults } from '../NoSearchResults'
 import styles from './ApplicationsOverview.module.css'
 
 export const ApplicationsOverview = () => {
-  const { favoriteApplications, isFavorite, isLoading: isLoadingFavorites, setFavorite } = useFavoriteApplications()
+  const { favoriteApplications, isFavorite, setFavorite } = useFavoriteApplications()
   const { applicationNames, hasLoadedOnce, isRefreshing, error, refresh: refreshApplications } = useApplications()
   const search = useAppSearch()
 
@@ -38,7 +38,6 @@ export const ApplicationsOverview = () => {
       <div className={styles.appList}>
         <FavoritesList
           favoriteApplications={favoriteApplications}
-          isLoading={isLoadingFavorites}
           onRemoveFavorite={(appName) => setFavorite(appName, false)}
         />
         <div className={styles.titleActions}>

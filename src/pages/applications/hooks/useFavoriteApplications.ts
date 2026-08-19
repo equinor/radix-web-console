@@ -10,6 +10,7 @@ import { isArrayOfStrings } from '../../../utils/type-guards'
 export interface FavoriteApplication {
   readonly name: string
   readonly details?: ApplicationSummary
+  readonly isLoading: boolean
   readonly isDeleted: boolean
 }
 
@@ -51,7 +52,15 @@ export const useFavoriteApplications = () => {
   // the API and may be missing when a local stored favorite no longer exists.
   const favoriteApplications: FavoriteApplication[] = savedNames.map((name) => {
     const details = fetchedApplications?.find((application) => application.name === name)
-    return { name, details, isDeleted: !details }
+    // A just-added favorite has no details until the fetch settles, treat it as
+    // loading, not deleted, while the request is still in flight.
+    const isMissingDetails = !details
+    return {
+      name,
+      details,
+      isLoading: isMissingDetails && fetchState.isFetching,
+      isDeleted: isMissingDetails && !fetchState.isFetching,
+    }
   })
 
   const isFavorite = (appName: string) => (favorites ?? []).includes(appName)
@@ -59,7 +68,6 @@ export const useFavoriteApplications = () => {
   return {
     favoriteApplications,
     isFavorite,
-    isLoading: fetchState.isLoading,
     setFavorite,
   }
 }
