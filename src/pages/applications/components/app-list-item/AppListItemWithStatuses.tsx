@@ -5,7 +5,7 @@ import { useGetApplicationVulnerabilitySummariesQuery } from '../../../../store/
 import { AppListItem, type AppListItemProps } from './AppListItem'
 import { AppListItemStatus } from './components/AppListItemStatus'
 
-interface AppListItemContainerProps {
+interface AppListItemWithStatusesProps {
   readonly appName: AppListItemProps['appName']
   readonly onToggleFavorite: AppListItemProps['onToggleFavorite']
   readonly isFavorite?: AppListItemProps['isFavorite']
@@ -21,7 +21,7 @@ interface AppListItemContainerProps {
  * (vulnerabilities + resource utilization) — that is the reason this container exists.
  * Use the plain `AppListItem` for rows that should not show status.
  */
-export const AppListItemWithStatuses = (props: AppListItemContainerProps) => {
+export const AppListItemWithStatuses = (props: AppListItemWithStatusesProps) => {
   const { appName, latestJob, environments, onToggleFavorite, isFavorite, isDeleted, isLoading } = props
 
   const { data: vulnerabilitySummary, isLoading: isVulnSummaryLoading } = useGetApplicationVulnerabilitySummariesQuery(

@@ -29,7 +29,7 @@ export const FavoriteApp: Story = {
   },
 }
 
-/** With a status slot filled in, as `AppListItemContainer` does for favorites. */
+/** With a status slot filled in, as `AppListItemWithStatuses` does for favorites. */
 export const WithStatus: Story = {
   args: {
     appName: 'favorite-app-with-problems',

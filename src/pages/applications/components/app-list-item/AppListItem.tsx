@@ -14,7 +14,7 @@ export interface AppListItemProps {
   readonly onToggleFavorite: (event: MouseEvent<HTMLButtonElement>) => void
   readonly isFavorite?: boolean
   readonly isPlaceholder?: boolean
-  /** Optional status slot, typically an `<AppListItemStatus />` supplied by `AppListItemContainer`. */
+  /** Optional status slot, typically an `<AppListItemStatus />` supplied by `AppListItemWithStatuses`. */
   readonly children?: ReactNode
 }
 
