@@ -70,7 +70,7 @@ export const ApplicationsOverview = () => {
         )}
         <div className={clsx('grid grid--gap-medium', sharedStyles.section)}>
           {search.isUserSearching && hasLoadedOnce && filteredApplications.length === 0 ? (
-            <NoSearchResults searchTerm={search.searchValue} />
+            <NoSearchResults searchValue={search.searchValue} />
           ) : (
             <AllApplicationsList apps={filteredApplications} hasLoadedOnce={hasLoadedOnce} setFavorite={setFavorite} />
           )}

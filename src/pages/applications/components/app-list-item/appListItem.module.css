@@ -42,7 +42,7 @@
 .statusLastJob {
   display: grid;
   grid-template-columns: 1fr auto;
-  padding-top: 4px;
+  padding-top: var(--eds_spacing_x_small);
 }
 
 /* Skeleton loader "bone" placeholders. */
@@ -73,7 +73,7 @@
   .bar {
     height: 1rem;
     width: 100%;
-    border-radius: 4px;
+    border-radius: var(--eds_spacing_x_small);
   }
 
   .bar.title {
