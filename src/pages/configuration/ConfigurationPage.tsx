@@ -112,12 +112,7 @@ function ConfigurationPage({ appName }: { appName: string }) {
             <section className="grid grid--gap-small">
               <Typography variant="h4">Danger Zone</Typography>
               <ChangeAdminForm registration={registration} refetch={refetch} />
-              <ChangeRepositoryForm
-                appName={appName}
-                repository={registration.repository}
-                sharedSecret={registration.sharedSecret}
-                refetch={refetch}
-              />
+              <ChangeRepositoryForm appName={appName} repository={registration.repository} refetch={refetch} />
               <ChangeConfigBranchForm appName={appName} configBranch={registration.configBranch} refetch={refetch} />
               <ChangeConfigFileForm
                 refetch={refetch}

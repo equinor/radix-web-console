@@ -81,6 +81,7 @@ export const ScheduledJobPage: FunctionComponent<{
                     jobComponentName={jobComponentName}
                     scheduledJobName={scheduledJobName}
                     replica={jobReplicas[0]}
+                    job={job}
                     isExpanded={true}
                   />
                 </div>
@@ -92,6 +93,7 @@ export const ScheduledJobPage: FunctionComponent<{
                     jobComponentName={jobComponentName}
                     scheduledJobName={scheduledJobName}
                     replica={jobReplicas[1]}
+                    job={job}
                     isExpanded={false}
                   />
                 )}
@@ -118,6 +120,7 @@ export const ScheduledJobPage: FunctionComponent<{
                               jobComponentName={jobComponentName}
                               scheduledJobName={scheduledJobName}
                               replica={replica}
+                              job={job}
                               isExpanded={false}
                             />
                           ))}

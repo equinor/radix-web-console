@@ -16,6 +16,11 @@
 .component-list > tbody td {
   word-break: break-all;
 }
+.component-list > tbody td.component-list-body__name {
+  display: flex;
+  align-items: center;
+  gap: var(--eds_spacing_x_small);
+}
 
 .environment-overview__tags {
   align-items: center;

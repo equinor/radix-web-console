@@ -8,7 +8,7 @@ import { routes } from '../../../router/routes'
 import { pollingInterval } from '../../../store/defaults'
 import { useGetDeploymentQuery } from '../../../store/radix-api'
 import { routeWithParams, smallDeploymentName } from '../../../utils/string'
-import { Overview } from '../../active-job-component/components/Overview'
+import { Overview } from '../../active-job-component/components/overview/Overview'
 
 export const DeploymentJobComponentOverview: FunctionComponent<{
   appName: string

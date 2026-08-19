@@ -31,7 +31,6 @@ const meta = {
       readerAdUsers: ['Reader User 1', 'Reader User 2'],
       name: 'a-name-thing',
       repository: 'https://some/path/to/a/repo',
-      sharedSecret: 'a long shared secret',
       configBranch: 'configBranch',
       creator: 'creator',
       owner: 'owner',
