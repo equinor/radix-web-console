@@ -27,7 +27,7 @@ export const FavoritesList = (props: FavoritesListProps) => {
             isDeleted={isDeleted}
             environments={details?.environments}
             latestJob={details?.latestJob}
-            handler={(event) => {
+            onToggleFavorite={(event) => {
               onRemoveFavorite(name)
               event.preventDefault()
             }}

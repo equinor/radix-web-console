@@ -13,7 +13,7 @@ const meta = {
   },
   decorators: [
     (Story) => (
-      <AppListItem appName="my-app" handler={() => {}}>
+      <AppListItem appName="my-app" onToggleFavorite={() => {}}>
         <Story />
       </AppListItem>
     ),

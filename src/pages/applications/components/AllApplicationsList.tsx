@@ -40,7 +40,7 @@ export const AllApplicationsList = (props: AllApplicationsListProps) => {
         <AppListItem
           key={app.name}
           appName={app.name}
-          handler={(event) => {
+          onToggleFavorite={(event) => {
             setFavorite(app.name, !app.isFavorite)
             event.preventDefault()
           }}

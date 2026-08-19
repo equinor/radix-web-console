@@ -10,16 +10,16 @@ import styles from './appListItem.module.css'
 import { AppListItemSkeleton } from './components/AppListItemSkeleton'
 
 export interface AppListItemProps {
-  appName: string
-  handler: (event: MouseEvent<HTMLButtonElement>, name: string) => void
-  isFavorite?: boolean
-  isPlaceholder?: boolean
+  readonly appName: string
+  readonly onToggleFavorite: (event: MouseEvent<HTMLButtonElement>) => void
+  readonly isFavorite?: boolean
+  readonly isPlaceholder?: boolean
   /** Optional status slot, typically an `<AppListItemStatus />` supplied by `AppListItemContainer`. */
-  children?: ReactNode
+  readonly children?: ReactNode
 }
 
 export const AppListItem = (props: AppListItemProps) => {
-  const { appName, handler, isFavorite, isPlaceholder, children } = props
+  const { appName, onToggleFavorite, isFavorite, isPlaceholder, children } = props
 
   if (isPlaceholder) {
     return <AppListItemSkeleton />
@@ -36,8 +36,8 @@ export const AppListItem = (props: AppListItemProps) => {
             <Typography className={styles.detailsTitle} variant="h6">
               {appName}
             </Typography>
-            <div className={styles.detailsFavourite}>
-              <Button variant="ghost_icon" onClick={(e) => handler(e, appName)}>
+            <div className={styles.detailsFavorite}>
+              <Button variant="ghost_icon" onClick={onToggleFavorite}>
                 <Icon data={isFavorite ? star_filled : star_outlined} />
               </Button>
             </div>

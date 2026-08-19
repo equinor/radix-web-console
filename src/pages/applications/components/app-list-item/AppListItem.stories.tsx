@@ -3,13 +3,13 @@ import { addMinutes } from 'date-fns'
 import { AppListItem } from './AppListItem'
 import { AppListItemStatus } from './components/AppListItemStatus'
 
-/** A row in the applications list showing an app's name and favourite state. Status is provided via the optional slot. */
+/** A row in the applications list showing an app's name and favorite state. Status is provided via the optional slot. */
 const meta = {
   title: 'Data Display/App List Item',
   component: AppListItem,
   tags: ['autodocs'],
   args: {
-    handler: () => {},
+    onToggleFavorite: () => {},
   },
 } satisfies Meta<typeof AppListItem>
 
@@ -29,7 +29,7 @@ export const FavoriteApp: Story = {
   },
 }
 
-/** With a status slot filled in, as `AppListItemContainer` does for favourites. */
+/** With a status slot filled in, as `AppListItemContainer` does for favorites. */
 export const WithStatus: Story = {
   args: {
     appName: 'favorite-app-with-problems',

@@ -27,10 +27,10 @@
   white-space: nowrap;
 }
 .detailsTitle,
-.detailsFavourite {
+.detailsFavorite {
   height: 24px;
 }
-.detailsFavourite > button {
+.detailsFavorite > button {
   overflow: hidden;
   height: unset;
   width: unset;

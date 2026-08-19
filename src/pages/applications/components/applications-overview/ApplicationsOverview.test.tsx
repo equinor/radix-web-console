@@ -1,5 +1,6 @@
 import { QueryStatus } from '@reduxjs/toolkit/query'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
 import type * as radixApi from '../../../../store/radix-api'
@@ -91,5 +92,26 @@ describe('ApplicationsOverview component', () => {
     renderOverview()
 
     expect(screen.getByText(/Failed to load applications/)).toBeTruthy()
+  })
+
+  it('filters the list to applications matching the search term', async () => {
+    mockedUseApplications.mockReturnValue({ ...baseApplicationsState, applicationNames: ['alpha', 'beta'] })
+
+    renderOverview()
+
+    await userEvent.type(screen.getByPlaceholderText('Search applications'), 'alph')
+
+    expect(screen.getByText('alpha')).toBeTruthy()
+    expect(screen.queryByText('beta')).toBeNull()
+  })
+
+  it('shows the no-results message when the search matches no applications', async () => {
+    mockedUseApplications.mockReturnValue({ ...baseApplicationsState, applicationNames: ['alpha', 'beta'] })
+
+    renderOverview()
+
+    await userEvent.type(screen.getByPlaceholderText('Search applications'), 'nomatch')
+
+    expect(screen.getByText('No applications found')).toBeTruthy()
   })
 })

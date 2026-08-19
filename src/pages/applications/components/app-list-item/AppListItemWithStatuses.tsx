@@ -6,14 +6,14 @@ import { AppListItem, type AppListItemProps } from './AppListItem'
 import { AppListItemStatus } from './components/AppListItemStatus'
 
 interface AppListItemContainerProps {
-  appName: AppListItemProps['appName']
-  handler: AppListItemProps['handler']
-  isFavorite?: AppListItemProps['isFavorite']
+  readonly appName: AppListItemProps['appName']
+  readonly onToggleFavorite: AppListItemProps['onToggleFavorite']
+  readonly isFavorite?: AppListItemProps['isFavorite']
 
-  latestJob?: JobSummary
-  environments?: Environment[]
-  isDeleted?: boolean
-  isLoading: boolean
+  readonly latestJob?: JobSummary
+  readonly environments?: Environment[]
+  readonly isDeleted?: boolean
+  readonly isLoading: boolean
 }
 
 /**
@@ -22,20 +22,20 @@ interface AppListItemContainerProps {
  * Use the plain `AppListItem` for rows that should not show status.
  */
 export const AppListItemWithStatuses = (props: AppListItemContainerProps) => {
-  const { appName, latestJob, environments, handler, isFavorite, isDeleted, isLoading } = props
+  const { appName, latestJob, environments, onToggleFavorite, isFavorite, isDeleted, isLoading } = props
 
   const { data: vulnerabilitySummary, isLoading: isVulnSummaryLoading } = useGetApplicationVulnerabilitySummariesQuery(
     { appName },
-    { pollingInterval: 0 }
+    { pollingInterval: 0, skip: isDeleted } // Do not fetch for deleted apps
   )
 
   const { data: utilization, isLoading: isUtilizationLoading } = useGetApplicationResourcesUtilizationQuery(
     { appName },
-    { pollingInterval: slowPollingInterval }
+    { pollingInterval: slowPollingInterval, skip: isDeleted } // Do not fetch for deleted apps
   )
 
   return (
-    <AppListItem appName={appName} handler={handler} isFavorite={isFavorite}>
+    <AppListItem appName={appName} onToggleFavorite={onToggleFavorite} isFavorite={isFavorite}>
       <AppListItemStatus
         latestJob={latestJob}
         environments={environments}

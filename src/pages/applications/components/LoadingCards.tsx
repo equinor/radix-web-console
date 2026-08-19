@@ -13,7 +13,7 @@ export const LoadingCards = (props: LoadingCardsProps) => {
   return (
     <div className={clsx(styles.list, styles.loading)}>
       {skeletonKeys.map((key) => (
-        <AppListItem key={key} appName="" handler={() => {}} isPlaceholder />
+        <AppListItem key={key} appName="" onToggleFavorite={() => {}} isPlaceholder />
       ))}
     </div>
   )
