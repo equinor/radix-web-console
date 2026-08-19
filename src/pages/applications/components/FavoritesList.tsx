@@ -1,6 +1,8 @@
 import { Typography } from '@equinor/eds-core-react'
+import { clsx } from 'clsx'
 import type { FavoriteApplication } from '../hooks/useFavoriteApplications'
 import { AppListItemWithStatuses } from './app-list-item/AppListItemWithStatuses'
+import styles from './applications.module.css'
 
 interface FavoritesListProps {
   readonly favoriteApplications: FavoriteApplication[]
@@ -16,8 +18,8 @@ export const FavoritesList = (props: FavoritesListProps) => {
   }
 
   return (
-    <div className="grid grid--gap-medium app-list--section">
-      <div className="app-list__list">
+    <div className={clsx('grid grid--gap-medium', styles.section)}>
+      <div className={styles.list}>
         {favoriteApplications.map(({ name, details, isDeleted }) => (
           <AppListItemWithStatuses
             key={name}

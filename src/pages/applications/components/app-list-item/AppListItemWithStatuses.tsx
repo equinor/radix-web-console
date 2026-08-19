@@ -3,6 +3,7 @@ import type { Environment, JobSummary } from '../../../../store/radix-api'
 import { useGetApplicationResourcesUtilizationQuery } from '../../../../store/radix-api'
 import { useGetApplicationVulnerabilitySummariesQuery } from '../../../../store/scan-api'
 import { AppListItem, type AppListItemProps } from './AppListItem'
+import { AppListItemStatus } from './components/AppListItemStatus'
 
 interface AppListItemContainerProps {
   appName: AppListItemProps['appName']
@@ -35,7 +36,7 @@ export const AppListItemWithStatuses = (props: AppListItemContainerProps) => {
 
   return (
     <AppListItem appName={appName} handler={handler} isFavorite={isFavorite}>
-      <AppListItem.Statuses
+      <AppListItemStatus
         latestJob={latestJob}
         environments={environments}
         isDeleted={isDeleted}

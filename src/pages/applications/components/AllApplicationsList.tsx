@@ -1,6 +1,7 @@
 import { Typography } from '@equinor/eds-core-react'
 import CreateApplication from '../../../components/create-application'
 import { AppListItem } from './app-list-item/AppListItem'
+import styles from './applications.module.css'
 import { LoadingCards } from './LoadingCards'
 
 interface ApplicationListItem {
@@ -21,7 +22,7 @@ export const AllApplicationsList = (props: AllApplicationsListProps) => {
 
   if (noAppsAvailable) {
     return (
-      <div className="app-list--empty">
+      <div className={styles.empty}>
         <Typography variant="h3">No applications yet</Typography>
         <Typography>Applications that you create (or have access to) appear here</Typography>
         <CreateApplication />
@@ -34,7 +35,7 @@ export const AllApplicationsList = (props: AllApplicationsListProps) => {
   }
 
   return (
-    <div className="app-list__list">
+    <div className={styles.list}>
       {apps.map((app) => (
         <AppListItem
           key={app.name}

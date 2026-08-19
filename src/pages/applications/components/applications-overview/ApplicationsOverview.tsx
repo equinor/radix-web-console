@@ -1,5 +1,6 @@
 import { Button, CircularProgress, Icon, Typography } from '@equinor/eds-core-react'
 import { refresh } from '@equinor/eds-icons'
+import { clsx } from 'clsx'
 import { Banner } from '../../../../components/banner/Banner'
 import CreateApplication from '../../../../components/create-application'
 import { getFetchErrorMessage } from '../../../../store/utils/parse-errors'
@@ -8,10 +9,10 @@ import { useAppSearch } from '../../hooks/useAppSearch'
 import { useFavoriteApplications } from '../../hooks/useFavoriteApplications'
 import { AllApplicationsList } from '../AllApplicationsList'
 import { AppSearch } from '../app-search/AppSearch'
+import sharedStyles from '../applications.module.css'
 import { FavoritesList } from '../FavoritesList'
 import { NoSearchResults } from '../NoSearchResults'
-
-import '../style.css'
+import styles from './ApplicationsOverview.module.css'
 
 export const ApplicationsOverview = () => {
   const { favoriteApplications, isFavorite, isLoading: isLoadingFavorites, setFavorite } = useFavoriteApplications()
@@ -28,21 +29,21 @@ export const ApplicationsOverview = () => {
 
   return (
     <article className="grid grid--gap-medium">
-      <div className="app-list__header">
+      <div className={styles.header}>
         <Typography variant="body_short_bold">Favorites</Typography>
-        <div className="app-list__buttons">
+        <div className={styles.buttons}>
           <CreateApplication />
         </div>
       </div>
-      <div className="app-list">
+      <div className={styles.appList}>
         <FavoritesList
           favoriteApplications={favoriteApplications}
           isLoading={isLoadingFavorites}
           onRemoveFavorite={(appName) => setFavorite(appName, false)}
         />
-        <div className="applications-list-title-actions">
+        <div className={styles.titleActions}>
           <Typography variant="body_short_bold">All applications</Typography>
-          <div className="applications-list-title-actions__right">
+          <div className={styles.titleActionsRight}>
             <AppSearch
               searchValue={search.searchValue}
               isSearchFieldVisible={search.isSearchFieldVisible}
@@ -68,7 +69,7 @@ export const ApplicationsOverview = () => {
             <Banner variant="danger">Failed to load applications. {getFetchErrorMessage(error)}</Banner>
           </div>
         )}
-        <div className="grid grid--gap-medium app-list--section">
+        <div className={clsx('grid grid--gap-medium', sharedStyles.section)}>
           {search.isUserSearching && hasLoadedOnce && filteredApplications.length === 0 ? (
             <NoSearchResults searchTerm={search.searchValue} />
           ) : (

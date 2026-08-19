@@ -8,7 +8,6 @@ import { routeWithParams } from '../../../../utils/string'
 
 import styles from './appListItem.module.css'
 import { AppListItemSkeleton } from './components/AppListItemSkeleton'
-import { AppListItemStatus } from './components/AppListItemStatus'
 
 export interface AppListItemProps {
   appName: string
@@ -19,7 +18,7 @@ export interface AppListItemProps {
   children?: ReactNode
 }
 
-const AppListItemRoot = (props: AppListItemProps) => {
+export const AppListItem = (props: AppListItemProps) => {
   const { appName, handler, isFavorite, isPlaceholder, children } = props
 
   if (isPlaceholder) {
@@ -50,7 +49,3 @@ const AppListItemRoot = (props: AppListItemProps) => {
     </Link>
   )
 }
-
-export const AppListItem = Object.assign(AppListItemRoot, {
-  Statuses: AppListItemStatus,
-})

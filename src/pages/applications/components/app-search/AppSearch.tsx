@@ -32,6 +32,7 @@ export const AppSearch = (props: AppSearchProps) => {
         onBlur={onBlur}
         aria-hidden={!isSearchFieldVisible}
         tabIndex={isSearchFieldVisible ? 0 : -1}
+        placeholder="Search applications"
       />
     </div>
   )
