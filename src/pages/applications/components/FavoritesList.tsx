@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
-import { AppListItemContainer } from '../../../components/app-list-item'
 import type { FavoriteApplication } from '../hooks/useFavoriteApplications'
+import { AppListItemWithStatuses } from './app-list-item/AppListItemWithStatuses'
 
 interface FavoritesListProps {
   readonly favoriteApplications: FavoriteApplication[]
@@ -19,7 +19,7 @@ export const FavoritesList = (props: FavoritesListProps) => {
     <div className="grid grid--gap-medium app-list--section">
       <div className="app-list__list">
         {favoriteApplications.map(({ name, details, isDeleted }) => (
-          <AppListItemContainer
+          <AppListItemWithStatuses
             key={name}
             appName={name}
             isDeleted={isDeleted}
@@ -30,7 +30,6 @@ export const FavoritesList = (props: FavoritesListProps) => {
               event.preventDefault()
             }}
             isFavorite
-            showStatus
             isLoading={isLoading}
           />
         ))}

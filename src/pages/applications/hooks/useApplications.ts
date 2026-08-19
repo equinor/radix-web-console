@@ -1,6 +1,5 @@
 import { QueryStatus } from '@reduxjs/toolkit/query'
 import { useCallback } from 'react'
-
 import {
   knownApplicationsKey,
   knownApplicationsLastRefreshKey,
@@ -51,8 +50,7 @@ export const useApplications = () => {
     applicationNames,
     hasLoadedOnce,
     isRefreshing,
-    isError: showAppsQuery.isError,
-    error: showAppsQuery.error,
+    error: showAppsQuery.isError ? showAppsQuery.error : undefined,
     refresh,
   }
 }

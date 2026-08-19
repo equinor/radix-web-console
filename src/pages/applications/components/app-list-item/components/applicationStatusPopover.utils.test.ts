@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { Environment, JobSummary } from '../../../store/radix-api'
+import type { Environment, JobSummary } from '../../../../../store/radix-api'
 import { getApplicationStatusItems } from './applicationStatusPopover.utils'
 
 const mockEnvironment = (): Environment => ({}) as Environment

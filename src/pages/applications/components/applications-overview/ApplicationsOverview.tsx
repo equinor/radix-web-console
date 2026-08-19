@@ -15,14 +15,7 @@ import '../style.css'
 
 export const ApplicationsOverview = () => {
   const { favoriteApplications, isFavorite, isLoading: isLoadingFavorites, setFavorite } = useFavoriteApplications()
-  const {
-    applicationNames,
-    hasLoadedOnce,
-    isRefreshing,
-    isError,
-    error,
-    refresh: refreshApplications,
-  } = useApplications()
+  const { applicationNames, hasLoadedOnce, isRefreshing, error, refresh: refreshApplications } = useApplications()
   const search = useAppSearch()
 
   const applications = applicationNames.map((name) => ({
@@ -70,7 +63,7 @@ export const ApplicationsOverview = () => {
             </Button>
           </div>
         </div>
-        {isError && (
+        {error && (
           <div>
             <Banner variant="danger">Failed to load applications. {getFetchErrorMessage(error)}</Banner>
           </div>

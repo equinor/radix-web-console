@@ -49,7 +49,6 @@ const baseApplicationsState: ReturnType<typeof useApplications> = {
   applicationNames: [],
   hasLoadedOnce: true,
   isRefreshing: false,
-  isError: false,
   error: undefined,
   refresh: noop,
 }
@@ -86,7 +85,6 @@ describe('ApplicationsOverview component', () => {
   it('shows an error alert when loading applications fails', () => {
     mockedUseApplications.mockReturnValue({
       ...baseApplicationsState,
-      isError: true,
       error: { status: 500, data: 'boom' },
     })
 

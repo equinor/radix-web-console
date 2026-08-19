@@ -1,4 +1,4 @@
-import { AppListItemContainer } from '../../../components/app-list-item'
+import { AppListItem } from './app-list-item/AppListItem'
 
 interface LoadingCardsProps {
   readonly amount: number
@@ -6,16 +6,12 @@ interface LoadingCardsProps {
 
 export const LoadingCards = (props: LoadingCardsProps) => {
   const { amount } = props
+  const skeletonKeys = Array.from({ length: amount || 1 }, (_, index) => `app-list-skeleton-${index}`)
+
   return (
     <div className="app-list__list loading">
-      {[...Array(amount || 1)].map((_, index) => (
-        <AppListItemContainer
-          key={index}
-          appName={''}
-          handler={(event) => event.preventDefault()}
-          isPlaceholder
-          isLoading={false}
-        />
+      {skeletonKeys.map((key) => (
+        <AppListItem key={key} appName="" handler={() => {}} isPlaceholder />
       ))}
     </div>
   )

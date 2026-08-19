@@ -1,6 +1,6 @@
 import { Typography } from '@equinor/eds-core-react'
-import { AppListItemContainer } from '../../../components/app-list-item'
 import CreateApplication from '../../../components/create-application'
+import { AppListItem } from './app-list-item/AppListItem'
 import { LoadingCards } from './LoadingCards'
 
 interface ApplicationListItem {
@@ -36,7 +36,7 @@ export const AllApplicationsList = (props: AllApplicationsListProps) => {
   return (
     <div className="app-list__list">
       {apps.map((app) => (
-        <AppListItemContainer
+        <AppListItem
           key={app.name}
           appName={app.name}
           handler={(event) => {
@@ -44,7 +44,6 @@ export const AllApplicationsList = (props: AllApplicationsListProps) => {
             event.preventDefault()
           }}
           isFavorite={app.isFavorite}
-          isLoading={false}
         />
       ))}
     </div>
