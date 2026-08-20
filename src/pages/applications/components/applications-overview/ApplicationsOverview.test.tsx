@@ -99,6 +99,7 @@ describe('ApplicationsOverview component', () => {
 
     renderOverview()
 
+    await userEvent.click(screen.getByTitle('Search applications'))
     await userEvent.type(screen.getByPlaceholderText('Search applications'), 'alph')
 
     expect(screen.getByText('alpha')).toBeTruthy()
@@ -110,6 +111,7 @@ describe('ApplicationsOverview component', () => {
 
     renderOverview()
 
+    await userEvent.click(screen.getByTitle('Search applications'))
     await userEvent.type(screen.getByPlaceholderText('Search applications'), 'nomatch')
 
     expect(screen.getByText('No applications found')).toBeTruthy()

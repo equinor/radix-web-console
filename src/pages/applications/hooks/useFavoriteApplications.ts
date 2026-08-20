@@ -35,10 +35,6 @@ export const useFavoriteApplications = () => {
   )
 
   const setFavorite = (appName: string, isFavorite: boolean) => {
-    if (!favorites) {
-      setFavorites([appName])
-      return
-    }
     if (isFavorite) {
       setFavorites((old) => [...new Set([...old, appName])])
       return
@@ -52,14 +48,18 @@ export const useFavoriteApplications = () => {
   // the API and may be missing when a local stored favorite no longer exists.
   const favoriteApplications: FavoriteApplication[] = savedNames.map((name) => {
     const details = fetchedApplications?.find((application) => application.name === name)
+
     // A just-added favorite has no details until the fetch settles, treat it as
     // loading, not deleted, while the request is still in flight.
     const isMissingDetails = !details
+    const isLoading = isMissingDetails && (fetchState.isLoading || fetchState.isFetching)
+    const isDeleted = isMissingDetails && fetchState.isSuccess
+
     return {
       name,
       details,
-      isLoading: isMissingDetails && fetchState.isFetching,
-      isDeleted: isMissingDetails && !fetchState.isFetching,
+      isLoading,
+      isDeleted,
     }
   })
 

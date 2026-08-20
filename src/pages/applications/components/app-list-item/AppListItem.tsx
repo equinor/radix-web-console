@@ -25,6 +25,12 @@ export const AppListItem = (props: AppListItemProps) => {
     return <AppListItemSkeleton />
   }
 
+  const handleToggleFavorite = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
+    onToggleFavorite(event)
+  }
+
   return (
     <Link className={styles.appListItem} to={routeWithParams(routes.app, { appName })}>
       <div className={styles.area}>
@@ -37,7 +43,7 @@ export const AppListItem = (props: AppListItemProps) => {
               {appName}
             </Typography>
             <div className={styles.detailsFavorite}>
-              <Button variant="ghost_icon" onClick={onToggleFavorite}>
+              <Button variant="ghost_icon" onClick={handleToggleFavorite}>
                 <Icon data={isFavorite ? star_filled : star_outlined} />
               </Button>
             </div>

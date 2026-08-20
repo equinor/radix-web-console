@@ -33,6 +33,7 @@ export const AppSearch = (props: AppSearchProps) => {
         aria-hidden={!isSearchFieldVisible}
         tabIndex={isSearchFieldVisible ? 0 : -1}
         placeholder="Search applications"
+        aria-label="Search applications"
       />
     </div>
   )
