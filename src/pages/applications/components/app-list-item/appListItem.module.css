@@ -1,0 +1,82 @@
+.appListItem {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  border-radius: var(--eds_spacing_x_small);
+  background-color: var(--eds_ui_background__default);
+  text-decoration: none;
+  animation: animate-appear var(--duration-slow) 1;
+}
+.appListItem:hover {
+  box-shadow: var(--eds_elevation_overlay);
+}
+
+.area {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--eds_spacing_medium_small);
+  padding: var(--eds_spacing_medium);
+}
+
+.details {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.detailsTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.detailsTitle,
+.detailsFavorite {
+  height: 24px;
+}
+.detailsFavorite > button {
+  overflow: hidden;
+  height: unset;
+  width: unset;
+}
+
+.status {
+  color: grey;
+}
+.statusLastJob {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding-top: var(--eds_spacing_x_small);
+}
+
+/* Skeleton loader "bone" placeholders. */
+.skeletonItem {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--eds_spacing_medium_small);
+  padding: var(--eds_spacing_medium);
+  border-radius: var(--eds_spacing_x_small);
+  background-color: var(--eds_ui_background__default);
+}
+
+.skeletonDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--eds_spacing_small);
+}
+
+.skeleton {
+  .icon {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+
+  .bar {
+    height: 1rem;
+    width: 100%;
+    border-radius: var(--eds_spacing_x_small);
+  }
+
+  .bar.title {
+    width: 45%;
+  }
+}

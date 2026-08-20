@@ -110,8 +110,7 @@ To access a component's `integration.tsx` file go to the URL at
 <code>localhost:3000/dev-integration/<i>component-name</i></code>.
 
 The file should export a function `injectMockSocketServers`, that receives an
-object with all mocked websockets that can be listened and responded to. See the
-file `/components/app-list/integration.tsx` for an example.
+object with all mocked websockets that can be listened and responded to.
 
 Any `fetch()` requests can be mocked by importing `fetch-mock` and declaring the
 requested URLs and responses, e.g.

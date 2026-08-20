@@ -1,0 +1,22 @@
+.appSearch {
+  display: flex;
+  height: 40px; /* Needed to keep same height when expanded */
+}
+
+.searchField {
+  width: 100%;
+  max-width: 0px;
+  transition: max-width 0.4s ease-in-out;
+
+  svg {
+    display: none;
+  }
+
+  &.expanded {
+    max-width: 300px;
+
+    svg {
+      display: block;
+    }
+  }
+}
