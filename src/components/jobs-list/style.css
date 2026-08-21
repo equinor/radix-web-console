@@ -10,17 +10,23 @@
 .job-summary__data-section {
   align-items: center;
   display: flex;
+  flex-wrap: wrap;
+  max-width: 12rem;
 }
 
 .job-summary__data-section a {
-  color: var(--eds_text_static_icons__default);
-  text-decoration: none;
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: underline;
 }
 
-.job-summary__id-section,
-.job-summary__id-section span {
-  color: var(--eds_interactive_primary__resting);
-  text-decoration: none;
+.job-summary__id-cell {
+  white-space: nowrap;
+}
+
+.job-summary__id-actions {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: var(--eds_spacing_x_small);
 }
 
 .job-summary__link:hover {
@@ -31,15 +37,4 @@
 :not(:last-child).job-summary__link::after {
   content: ",";
   margin-right: var(--eds_spacing_small);
-}
-
-.pipeline-name {
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.pipeline-name:hover {
-  text-decoration: underline;
 }

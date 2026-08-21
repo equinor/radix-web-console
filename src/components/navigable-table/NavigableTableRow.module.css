@@ -1,0 +1,43 @@
+.row {
+  position: relative;
+}
+
+.row:hover,
+.row:focus-within {
+  background-color: var(--eds_interactive_table__cell__fill_hover);
+  cursor: pointer;
+}
+
+/* The stretched link turns the whole row into one navigation target */
+.rowLink {
+  color: inherit;
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.rowLink::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+/* Lift every other interactive child above the stretched overlay so it stays
+   independently clickable — removes the usual stretched-link z-index footgun */
+.row a:not(.rowLink),
+.row button {
+  position: relative;
+  z-index: 1;
+}
+
+.chevron svg {
+  fill: var(--eds_text_static_icons__tertiary);
+  transition:
+    transform 0.1s ease-in-out,
+    fill 0.1s ease-in-out;
+}
+
+.row:hover .chevron svg,
+.row:focus-within .chevron svg {
+  fill: var(--eds_interactive_primary__resting);
+  transform: translateX(2px);
+}
