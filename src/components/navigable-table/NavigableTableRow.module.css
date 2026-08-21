@@ -24,7 +24,8 @@
 /* Lift every other interactive child above the stretched overlay so it stays
    independently clickable — removes the usual stretched-link z-index footgun */
 .row a:not(.rowLink),
-.row button {
+.row button,
+.row .interactive > * {
   position: relative;
   z-index: 1;
 }

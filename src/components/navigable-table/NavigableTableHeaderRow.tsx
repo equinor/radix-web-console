@@ -1,5 +1,5 @@
 import { Table } from '@equinor/eds-core-react'
-import type { FunctionComponent, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export interface NavigableTableHeaderRowProps {
   /** The header cells. The trailing chevron column is added for you */
@@ -10,7 +10,7 @@ export interface NavigableTableHeaderRowProps {
  * The header row that goes with `NavigableTableRow`. It adds the same empty cell
  * on the end that each row uses for its chevron, so the columns always line up.
  */
-export const NavigableTableHeaderRow: FunctionComponent<NavigableTableHeaderRowProps> = (props) => {
+export const NavigableTableHeaderRow = (props: NavigableTableHeaderRowProps) => {
   const { children } = props
 
   return (

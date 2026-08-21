@@ -1,40 +1,31 @@
-.jobs-list tr th,
-.jobs-list tr td {
+.pipeline-jobs-table tr th,
+.pipeline-jobs-table tr td {
   padding: var(--eds_spacing_small);
 }
 
-.jobs-list__no-jobs-icon .fa-question-circle {
-  color: var(--color-primary-4);
+.pipeline-jobs-table__id-cell {
+  white-space: nowrap;
 }
 
-.job-summary__data-section {
+.pipeline-jobs-table__id-actions {
+  display: inline-flex;
+  vertical-align: middle;
+  margin-left: var(--eds_spacing_x_small);
+}
+
+.pipeline-jobs-table__environments {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
   max-width: 12rem;
 }
 
-.job-summary__data-section a {
+.pipeline-jobs-table__environment-link {
   color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
 
-.job-summary__id-cell {
-  white-space: nowrap;
-}
-
-.job-summary__id-actions {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-left: var(--eds_spacing_x_small);
-}
-
-.job-summary__link:hover {
-  color: var(--eds_interactive_primary__resting);
-  text-decoration: underline;
-}
-
-:not(:last-child).job-summary__link::after {
+:not(:last-child).pipeline-jobs-table__environment-link::after {
   content: ",";
   margin-right: var(--eds_spacing_small);
 }

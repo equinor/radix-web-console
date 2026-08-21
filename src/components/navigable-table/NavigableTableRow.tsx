@@ -1,15 +1,15 @@
 import { Icon, Table } from '@equinor/eds-core-react'
 import { chevron_right } from '@equinor/eds-icons'
 import type { FunctionComponent, ReactNode } from 'react'
-import { Link } from 'react-router'
+import { Link, type LinkProps } from 'react-router'
 
 import styles from './NavigableTableRow.module.css'
 
 export interface NavigableTableRowProps {
   /** Where the row takes you when it is clicked */
-  to: string
+  to: LinkProps['to']
   /** What screen readers read out, since the link itself only shows a chevron */
-  linkLabel: string
+  linkLabel: LinkProps['aria-label']
   /** The row's cells. The trailing chevron cell is added for you */
   children: ReactNode
 }

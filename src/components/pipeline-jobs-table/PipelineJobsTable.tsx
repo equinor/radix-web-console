@@ -4,14 +4,14 @@ import type { JobSummary } from '../../store/radix-api'
 import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
 import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
 import { NavigableTable } from '../navigable-table/NavigableTable'
-import { JobSummaryTableRow } from './job-summary-table-row'
 
 import './style.css'
+import { PipelineJobsTableRow } from './PipelineJobsTableRow'
 
 interface PipelineJobsTableProps {
-  appName: string
-  jobs?: Readonly<Array<JobSummary>>
-  limit?: number
+  readonly appName: string
+  readonly jobs?: Readonly<Array<JobSummary>>
+  readonly limit?: number
 }
 
 export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
@@ -21,6 +21,7 @@ export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
   const [dateSort, setDateSort] = useState<SortDirection>('descending')
   const [envSort, setEnvSort] = useState<SortDirection>()
   const [pipelineSort, setPipelineSort] = useState<SortDirection>()
+
   useEffect(() => {
     setSortedData(
       dataSorter(jobs?.slice(0, limit || jobs.length), [
@@ -35,7 +36,7 @@ export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
     <span className="grid grid--gap-small">
       <Typography variant="h4">Latest pipeline jobs</Typography>
       {sortedData.length > 0 ? (
-        <div className="jobs-list grid grid--table-overflow">
+        <div className="pipeline-jobs-table grid grid--table-overflow">
           <NavigableTable>
             <NavigableTable.Head>
               <NavigableTable.HeaderRow>
@@ -58,7 +59,7 @@ export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
             </NavigableTable.Head>
             <NavigableTable.Body>
               {sortedData.map((x) => (
-                <JobSummaryTableRow key={x.name} appName={appName} job={x} />
+                <PipelineJobsTableRow key={x.name} appName={appName} job={x} />
               ))}
             </NavigableTable.Body>
           </NavigableTable>
