@@ -9,14 +9,17 @@ import { RadixJobConditionBadge } from '../status-badges'
 import { Duration } from '../time/duration'
 import { RelativeToNow } from '../time/relative-to-now'
 
+import styles from './pipelineJobsTable.module.css'
+
 const TriggeredByCell = (props: { readonly triggeredBy: string | undefined }) => {
   const { triggeredBy = '' } = props
-  const isTextLong = triggeredBy.length > 25
-  const triggeredByDisplay = isTextLong
+
+  const isLongText = triggeredBy.length > 25
+  const triggeredByDisplay = isLongText
     ? `${triggeredBy.slice(0, 8)}...${triggeredBy.slice(-12)}`
     : triggeredBy || 'N/A'
 
-  return isTextLong ? (
+  return isLongText ? (
     <Tooltip placement="top" title={triggeredBy}>
       <span>{triggeredByDisplay}</span>
     </Tooltip>
@@ -35,15 +38,17 @@ export const PipelineJobsTableRow = (props: PipelineJobsTableRowProps) => {
   const sortedEnvironments = (job.environments ?? []).toSorted((a, b) => a.localeCompare(b))
 
   const shortenedJobName = job.name.slice(-5)
+  const jobStartedDate = job.started ? new Date(job.started) : undefined
+  const jobEndedDate = job.ended ? new Date(job.ended) : undefined
 
   return (
     <NavigableTable.Row
       to={routeWithParams(routes.appJob, { appName, jobName: job.name })}
       linkLabel={`Open pipeline job ${shortenedJobName}`}
     >
-      <NavigableTable.Cell className="pipeline-jobs-table__id-cell">
+      <NavigableTable.Cell className={styles.idCell}>
         <span>{shortenedJobName}</span>
-        <span className="pipeline-jobs-table__id-actions">
+        <span className={styles.idActions}>
           <CompactCopyButton content={job.name} />
         </span>
       </NavigableTable.Cell>
@@ -53,18 +58,18 @@ export const PipelineJobsTableRow = (props: PipelineJobsTableRowProps) => {
       <NavigableTable.Cell>
         {job.started && (
           <>
-            <RelativeToNow titlePrefix="Start time" capitalize time={new Date(job.started)} />
+            <RelativeToNow titlePrefix="Start time" capitalize time={jobStartedDate} />
             <br />
-            <Duration title="Duration" start={new Date(job.started)} end={job.ended && new Date(job.ended)} />
+            <Duration title="Duration" start={jobStartedDate} end={jobEndedDate} />
           </>
         )}
       </NavigableTable.Cell>
       <NavigableTable.Cell>
-        <div className="pipeline-jobs-table__environments">
+        <div className={styles.environments}>
           {sortedEnvironments.map((envName) => (
             <Link
               key={envName}
-              className="pipeline-jobs-table__environment-link"
+              className={styles.environmentLink}
               to={routeWithParams(routes.appEnvironment, { appName, envName })}
             >
               {envName}

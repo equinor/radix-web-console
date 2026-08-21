@@ -1,12 +1,12 @@
 import { Typography } from '@equinor/eds-core-react'
+import { clsx } from 'clsx'
 import { useEffect, useState } from 'react'
 import type { JobSummary } from '../../store/radix-api'
 import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
 import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
 import { NavigableTable } from '../navigable-table/NavigableTable'
-
-import './style.css'
 import { PipelineJobsTableRow } from './PipelineJobsTableRow'
+import styles from './pipelineJobsTable.module.css'
 
 interface PipelineJobsTableProps {
   readonly appName: string
@@ -36,7 +36,7 @@ export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
     <span className="grid grid--gap-small">
       <Typography variant="h4">Latest pipeline jobs</Typography>
       {sortedData.length > 0 ? (
-        <div className="pipeline-jobs-table grid grid--table-overflow">
+        <div className={clsx(styles.pipelineJobsTable, 'grid', 'grid--table-overflow')}>
           <NavigableTable>
             <NavigableTable.Head>
               <NavigableTable.HeaderRow>

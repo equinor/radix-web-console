@@ -1,31 +1,31 @@
-.pipeline-jobs-table tr th,
-.pipeline-jobs-table tr td {
+.pipelineJobsTable tr th,
+.pipelineJobsTable tr td {
   padding: var(--eds_spacing_small);
 }
 
-.pipeline-jobs-table__id-cell {
+.idCell {
   white-space: nowrap;
 }
 
-.pipeline-jobs-table__id-actions {
+.idActions {
   display: inline-flex;
   vertical-align: middle;
   margin-left: var(--eds_spacing_x_small);
 }
 
-.pipeline-jobs-table__environments {
+.environments {
   align-items: center;
   display: flex;
   flex-wrap: wrap;
-  max-width: 12rem;
+  max-width: 11rem;
 }
 
-.pipeline-jobs-table__environment-link {
+.environmentLink {
   color: var(--eds_interactive_primary__resting);
   text-decoration: underline;
 }
 
-:not(:last-child).pipeline-jobs-table__environment-link::after {
+:not(:last-child).environmentLink::after {
   content: ",";
   margin-right: var(--eds_spacing_small);
 }
