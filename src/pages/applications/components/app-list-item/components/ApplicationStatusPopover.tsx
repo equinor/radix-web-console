@@ -1,5 +1,5 @@
-import type { Environment, JobSummary } from '../../../store/radix-api'
-import { AggregatedStatusPopover } from '../../status-popover/shared/aggregated-status-popover/AggregatedStatusPopover'
+import { AggregatedStatusPopover } from '../../../../../components/status-popover/shared/aggregated-status-popover/AggregatedStatusPopover'
+import type { Environment, JobSummary } from '../../../../../store/radix-api'
 import { getApplicationStatusItems } from './applicationStatusPopover.utils'
 
 interface ApplicationStatusPopoverProps {

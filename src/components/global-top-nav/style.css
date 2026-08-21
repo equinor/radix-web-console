@@ -70,6 +70,11 @@
   background: var(--eds_interactive_success__text);
 }
 
+.feedback-button {
+  max-width: 10rem;
+  justify-self: end;
+}
+
 @media (min-width: 50rem) {
   .global-top-nav .mobile-menu {
     display: none;

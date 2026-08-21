@@ -1,0 +1,24 @@
+/* Shared layout for the app-card lists rendered by AllApplicationsList,
+   FavoritesList, LoadingCards and NoSearchResults. */
+
+.section {
+  align-items: center;
+}
+
+.list {
+  display: grid;
+  grid-gap: var(--eds_spacing_medium);
+  grid-column: span 2;
+  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+}
+
+.list.loading {
+  grid-column: auto;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--eds_spacing_medium);
+}

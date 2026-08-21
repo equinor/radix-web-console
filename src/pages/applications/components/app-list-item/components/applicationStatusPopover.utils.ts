@@ -1,6 +1,6 @@
-import { getEnvironmentsStatusMeta, getLatestJobStatusMeta } from '../../../domain/status-meta/statusMeta.utils'
-import type { Environment, JobSummary } from '../../../store/radix-api'
-import type { StatusItem } from '../../status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
+import type { StatusItem } from '../../../../../components/status-popover/shared/aggregated-status-popover/aggregatedStatusPopover.types'
+import { getEnvironmentsStatusMeta, getLatestJobStatusMeta } from '../../../../../domain/status-meta/statusMeta.utils'
+import type { Environment, JobSummary } from '../../../../../store/radix-api'
 
 /**
  * Builds the aggregated status items for an application: always the environments status,
