@@ -1,5 +1,5 @@
 import { Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { JobSummary } from '../../store/radix-api'
 import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
 import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
@@ -8,13 +8,14 @@ import { JobSummaryTableRow } from './job-summary-table-row'
 
 import './style.css'
 
-export interface JobsListProps {
+interface PipelineJobsTableProps {
   appName: string
   jobs?: Readonly<Array<JobSummary>>
   limit?: number
 }
 
-export const JobsList: FunctionComponent<JobsListProps> = ({ appName, jobs, limit }) => {
+export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
+  const { appName, jobs, limit } = props
   const [sortedData, setSortedData] = useState([...(jobs ?? [])])
 
   const [dateSort, setDateSort] = useState<SortDirection>('descending')

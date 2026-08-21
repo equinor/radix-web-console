@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { JobsList } from '.'
+import { PipelineJobsTable } from '.'
 import { mockedJobs } from './jobs-list.mock'
 
 /** Sortable table of an application's pipeline jobs across every status and pipeline type, with an optional row `limit`. */
 const meta = {
   title: 'Data Display/Jobs List',
-  component: JobsList,
+  component: PipelineJobsTable,
   tags: ['autodocs'],
   args: {
     appName: 'radix-web-console',
     jobs: mockedJobs,
   },
-} satisfies Meta<typeof JobsList>
+} satisfies Meta<typeof PipelineJobsTable>
 
 export default meta
 type Story = StoryObj<typeof meta>
