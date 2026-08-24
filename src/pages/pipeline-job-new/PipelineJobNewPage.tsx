@@ -6,6 +6,7 @@ import { Alert } from '../../components/alert'
 import { Breadcrumb } from '../../components/breadcrumb'
 import CreateJobForm from '../../components/create-job-form'
 import { DocumentTitle } from '../../components/document-title'
+import { router } from '../../router/router'
 import { routes } from '../../router/routes'
 import { radixApi } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
@@ -41,6 +42,7 @@ function PipelineJobNewPage({ appName }: Props) {
       // @ts-expect-error initiate *is* a action, wrong types from redux?
       radixApi.endpoints.getApplicationJobs.initiate({ appName }, { subscribe: false, forceRefetch: true })
     )
+    router.navigate(routeWithParams(routes.appJob, { appName, jobName }))
   }
 
   return (

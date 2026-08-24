@@ -2,14 +2,14 @@ import { Icon, Typography } from '@equinor/eds-core-react'
 import { time } from '@equinor/eds-icons'
 import type { FunctionComponent } from 'react'
 import { Link } from 'react-router'
-
-import { routes } from '../../router/routes'
-import type { Step } from '../../store/radix-api'
-import { differenceInWords, formatDateTimePrecise } from '../../utils/datetime'
-import { getPipelineStepDescription, PipelineStep } from '../../utils/pipeline'
-import { routeWithParams } from '../../utils/string'
-import { RadixJobConditionBadge } from '../status-badges'
-import { RelativeToNow } from '../time/relative-to-now'
+import { RadixJobConditionBadge } from '../../../../components/status-badges'
+import { RelativeToNow } from '../../../../components/time/relative-to-now'
+import { routes } from '../../../../router/routes'
+import type { Step } from '../../../../store/radix-api'
+import { differenceInWords, formatDateTimePrecise } from '../../../../utils/datetime'
+import { getPipelineStepDescription, PipelineStep } from '../../../../utils/pipeline'
+import { routeWithParams } from '../../../../utils/string'
+import styles from './stepSummary.module.css'
 
 function getComponents(name: string, components: Array<string>): string {
   if (components?.length > 1) {
@@ -83,8 +83,8 @@ export const StepSummary: FunctionComponent<{
   jobName: string
   step: Step
 }> = ({ appName, jobName, step }) => (
-  <div className="step-summary__content">
-    <div className="step-summary__description">
+  <div className={styles.content}>
+    <div className={styles.description}>
       <Typography
         as={Link}
         to={routeWithParams(routes.appJobStep, {
@@ -101,8 +101,8 @@ export const StepSummary: FunctionComponent<{
       <RadixJobConditionBadge status={step.status ?? 'Waiting'} />
     </div>
 
-    <div className="step-summary__time">
-      <Icon className="step__icon" data={time} />
+    <div className={styles.time}>
+      <Icon className={styles.icon} data={time} />
       <div className="grid grid--gap-small">
         <StepDuration started={step.started} ended={step.ended} />
       </div>

@@ -1,10 +1,10 @@
 import { List, Typography } from '@equinor/eds-core-react'
 import { Link } from 'react-router'
-import { routes } from '../../router/routes'
-import type { DeploymentSummary } from '../../store/radix-api'
-import { routeWithParams } from '../../utils/string'
-import { GitCommitTags } from '../component/git-commit-tags'
-import { DockerImage } from '../docker-image'
+import { GitCommitTags } from '../../../../components/component/git-commit-tags'
+import { DockerImage } from '../../../../components/docker-image'
+import { routes } from '../../../../router/routes'
+import type { DeploymentSummary } from '../../../../store/radix-api'
+import { routeWithParams } from '../../../../utils/string'
 
 type Props = {
   appName: string

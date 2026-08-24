@@ -1,0 +1,28 @@
+.wrapper {
+  margin: 0 auto;
+  margin-top: 10rem;
+  padding: 2rem;
+  max-width: 600px;
+  border-radius: 8px;
+  text-align: center;
+
+  .textCenter {
+    text-align: center;
+  }
+
+  .spinner {
+    margin-bottom: 2rem;
+  }
+
+  .title {
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    margin-bottom: 1rem;
+  }
+
+  .link {
+    margin-top: 1rem;
+    display: inline-block;
+  }
+}

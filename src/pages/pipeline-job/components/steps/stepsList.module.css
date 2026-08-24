@@ -1,0 +1,29 @@
+.stepIcon {
+  fill: var(--eds_interactive_primary__resting);
+}
+
+.step {
+  display: grid;
+  gap: 0 var(--eds_spacing_medium);
+  grid-template-columns: auto 1fr;
+}
+
+.divider {
+  justify-items: center;
+  grid-template-rows: max-content 1fr;
+}
+
+.dividerLine {
+  border-left: 2px solid var(--eds_interactive_primary__resting);
+  height: 100%;
+  min-height: var(--eds_spacing_xx_large);
+  width: 1px;
+  margin: var(--eds_spacing_x_small) 0;
+}
+
+.indented {
+  display: grid;
+  gap: 0 var(--eds_spacing_medium);
+  grid-template-columns: auto 1fr;
+  margin-left: var(--eds_spacing_x_large);
+}

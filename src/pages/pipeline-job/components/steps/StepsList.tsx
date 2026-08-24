@@ -8,13 +8,15 @@ import {
   radio_button_unselected,
   record,
 } from '@equinor/eds-icons'
+import clsx from 'clsx'
 import type { FunctionComponent } from 'react'
 import React from 'react'
-import type { Step } from '../../store/radix-api'
-import { PipelineStep } from '../../utils/pipeline'
-import { sortCompareDate } from '../../utils/sort-utils'
-import { StepSummary } from './step-summary'
-import { SubPipelineStepSummary } from './sub-pipeline-step-summary'
+import type { Step } from '../../../../store/radix-api'
+import { PipelineStep } from '../../../../utils/pipeline'
+import { sortCompareDate } from '../../../../utils/sort-utils'
+import { StepSummary } from './StepSummary'
+import { SubPipelineStepSummary } from './SubPipelineStepSummary'
+import styles from './stepsList.module.css'
 
 function getStepIcon(name: string): IconData {
   switch (name) {
@@ -120,10 +122,10 @@ export const StepsList: FunctionComponent<{
       <div className="grid grid--gap-medium">
         {namedSteps.length > 0 ? (
           namedSteps.map((step) => (
-            <div key={getStepKey(step)} className="steps-list__step">
-              <div className="grid steps-list__divider">
-                <Icon className="step__icon" data={getStepIcon(step.name ?? '')} />
-                <span className="steps-list__divider-line" />
+            <div key={getStepKey(step)} className={styles.step}>
+              <div className={clsx('grid', styles.divider)}>
+                <Icon className={styles.stepIcon} data={getStepIcon(step.name ?? '')} />
+                <span className={styles.dividerLine} />
               </div>
               <StepSummary appName={appName} jobName={jobName} step={step} />
             </div>
@@ -134,19 +136,19 @@ export const StepsList: FunctionComponent<{
         {subPipelineSteps.length > 0 &&
           subPipelineSteps.map((groupedSteps) => (
             <React.Fragment key={`${groupedSteps.pipelineName}-${groupedSteps.environment}`}>
-              <div className="steps-list__step">
-                <div className="grid steps-list__divider">
-                  <Icon className="step__icon" data={lightbulb} />
+              <div className={styles.step}>
+                <div className={clsx('grid', styles.divider)}>
+                  <Icon className={styles.stepIcon} data={lightbulb} />
                 </div>
                 <Typography>
                   {'Sub-Pipeline'} / {groupedSteps.environment}
                 </Typography>
               </div>
               {groupedSteps.steps.map((step) => (
-                <div key={getStepKey(step)} className="steps-list__step--indented steps-list__step">
-                  <div className="grid steps-list__divider">
-                    <Icon className="step__icon" data={getStepIcon(step.name ?? '')} />
-                    <span className="steps-list__divider-line" />
+                <div key={getStepKey(step)} className={clsx(styles.indented, styles.step)}>
+                  <div className={clsx('grid', styles.divider)}>
+                    <Icon className={styles.stepIcon} data={getStepIcon(step.name ?? '')} />
+                    <span className={styles.dividerLine} />
                   </div>
                   <SubPipelineStepSummary appName={appName} jobName={jobName} step={step} />
                 </div>
