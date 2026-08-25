@@ -1,5 +1,5 @@
+import { useNavigate } from 'react-router'
 import AsyncResource from '../../../components/async-resource/async-resource'
-import { router } from '../../../router/router'
 import { routes } from '../../../router/routes'
 import { pollingInterval } from '../../../store/defaults'
 import { radixApi, useGetApplicationJobQuery, useGetApplicationQuery } from '../../../store/radix-api'
@@ -16,6 +16,8 @@ interface PipelineJobDetailsProps {
 export const PipelineJobDetails = (props: PipelineJobDetailsProps) => {
   const { appName, jobName } = props
 
+  const navigate = useNavigate()
+
   const { data: application } = useGetApplicationQuery({ appName }, { skip: !appName, pollingInterval })
   const {
     data: job,
@@ -30,7 +32,7 @@ export const PipelineJobDetails = (props: PipelineJobDetailsProps) => {
 
   const navigateToAllJobs = async () => {
     await fetchAllJobs({ appName }).unwrap()
-    router.navigate(routeWithParams(routes.appJobs, { appName }))
+    navigate(routeWithParams(routes.appJobs, { appName }))
   }
 
   const repository = application?.registration?.repository
