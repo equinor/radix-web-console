@@ -13,10 +13,11 @@ interface PipelineJobDetailsContentProps {
   readonly job?: Job
   readonly repository?: string
   readonly onJobChanged: () => void
+  readonly onRerunJob: () => void
 }
 
 export const PipelineJobDetailsContent = (props: PipelineJobDetailsContentProps) => {
-  const { appName, jobName, job, repository, onJobChanged } = props
+  const { appName, jobName, job, repository, onJobChanged, onRerunJob } = props
 
   if (!job) {
     return <Typography variant="h4">This pipeline job could not be found</Typography>
@@ -30,7 +31,7 @@ export const PipelineJobDetailsContent = (props: PipelineJobDetailsContentProps)
   return (
     <>
       <PipelineJobStopButton appName={appName} jobName={jobName} status={job.status} onStopped={onJobChanged} />
-      <PipelineJobRerunButton appName={appName} jobName={jobName} status={job.status} />
+      <PipelineJobRerunButton appName={appName} jobName={jobName} status={job.status} onRerun={onRerunJob} />
 
       <PipelineJobSummary appName={appName} job={job} repository={repository} />
       <PipelineJobArtifacts appName={appName} job={job} repository={repository} />

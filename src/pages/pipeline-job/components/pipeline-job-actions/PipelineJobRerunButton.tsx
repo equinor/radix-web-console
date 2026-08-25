@@ -1,26 +1,24 @@
 import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { Dialog } from '../../../../components/dialog/Dialog'
 import { handlePromiseWithToast } from '../../../../components/global-top-nav/styled-toaster'
-import { routes } from '../../../../router/routes'
 import { type Job, radixApi } from '../../../../store/radix-api'
-import { routeWithParams, smallJobName } from '../../../../utils/string'
+import { smallJobName } from '../../../../utils/string'
 
 interface PipelineJobRerunButtonProps {
   readonly appName: string
   readonly jobName: string
   readonly status: Job['status']
+  readonly onRerun: () => void
 }
 
 /**
  * When a job has failed or been stopped, this button allows the user to rerun the job.
  */
 export const PipelineJobRerunButton = (props: PipelineJobRerunButtonProps) => {
-  const { appName, jobName, status } = props
+  const { appName, jobName, status, onRerun } = props
   const [rerunJob, rerunJobState] = radixApi.endpoints.rerunApplicationJob.useMutation()
   const [isConfirmPopupVisible, setIsConfirmPopupVisible] = useState(false)
-  const navigate = useNavigate()
 
   const canBeRerun = status === 'Failed' || status === 'Stopped'
   const isRerunning = rerunJobState.isLoading
@@ -37,7 +35,7 @@ export const PipelineJobRerunButton = (props: PipelineJobRerunButtonProps) => {
     async () => {
       closeConfirmPopup()
       await rerunJob({ appName, jobName }).unwrap()
-      navigate(routeWithParams(routes.appJobs, { appName }))
+      onRerun()
     },
     `Pipeline job '${smallJobName(jobName)}' was successfully rerun.`
   )
