@@ -2,7 +2,7 @@ import { useAccount, useMsal } from '@azure/msal-react'
 import { Button, Card, Icon, Popover, Tabs, TopBar, Typography } from '@equinor/eds-core-react'
 import { account_circle, close, comment_discussion, info_circle, log_in, log_out, menu } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
-import { forwardRef, type PropsWithChildren, useState } from 'react'
+import { type ReactNode, useState } from 'react'
 import { Link } from 'react-router'
 import { externalUrls } from '../../externalUrls'
 import { routes } from '../../router/routes'
@@ -13,11 +13,16 @@ import { StyledToastContainer } from './styled-toaster'
 
 import './style.css'
 
+const DOCUMENTATION_TAB_VALUE = 'documentation'
+
 export const GlobalTopNav = () => {
-  const [menuIsClosed, setOpenMenu] = useState(false)
-  const handleClick = () => setOpenMenu(!menuIsClosed)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev)
   const radixClusterBase = configVariables.RADIX_DNS_ZONE
   const CLUSTERS = Object.entries(configVariables.CLUSTERS)
+
+  const activeCluster = CLUSTERS.find(([, cluster]) => cluster.baseUrl === radixClusterBase)
+  const activeTabValue = activeCluster ? activeCluster[0] : DOCUMENTATION_TAB_VALUE
 
   return (
     <TopBar className="global-top-nav">
@@ -25,8 +30,8 @@ export const GlobalTopNav = () => {
         <HomeLogo />
       </TopBar.Header>
       <TopBar.CustomContent>
-        <Tabs>
-          <Tabs.List className={menuIsClosed ? 'nav-links active' : 'nav-links'}>
+        <Tabs activeTab={activeTabValue}>
+          <Tabs.List className={clsx('nav-links', { 'mobile-menu-open': isMobileMenuOpen })}>
             {CLUSTERS.map(([name, cluster]) => {
               const isDev = cluster.isDev && configVariables.RADIX_CLUSTER_TYPE !== 'development'
               const isActive = radixClusterBase === cluster.baseUrl
@@ -35,12 +40,12 @@ export const GlobalTopNav = () => {
               }
 
               return (
-                <TabItemTemplate href={cluster.href} mark={isActive} key={name}>
+                <TabItemTemplate href={cluster.href} value={name} key={name}>
                   {name}
                 </TabItemTemplate>
               )
             })}
-            <TabItemTemplate href={externalUrls.documentation} mark={!radixClusterBase}>
+            <TabItemTemplate href={externalUrls.documentation} value={DOCUMENTATION_TAB_VALUE}>
               Documentation
             </TabItemTemplate>
           </Tabs.List>
@@ -51,8 +56,8 @@ export const GlobalTopNav = () => {
         <FeedbackButton />
         <UserInfo />
         <div className="mobile-menu">
-          <Button variant="ghost_icon" onClick={handleClick}>
-            <Icon data={menuIsClosed ? close : menu} />
+          <Button variant="ghost_icon" onClick={toggleMobileMenu}>
+            <Icon data={isMobileMenuOpen ? close : menu} />
           </Button>
         </div>
       </TopBar.Actions>
@@ -63,17 +68,14 @@ export const GlobalTopNav = () => {
 
 interface TabItemTemplateProps {
   href: string
-  mark?: boolean
+  value: string
+  children: ReactNode
 }
 
-const TabItemTemplate = forwardRef<HTMLButtonElement, PropsWithChildren<TabItemTemplateProps>>(
-  ({ href, mark, children }, ref) => (
-    <Tabs.Tab className={clsx({ active: mark })} ref={ref}>
-      <Button variant="ghost" href={href}>
-        {children}
-      </Button>
-    </Tabs.Tab>
-  )
+const TabItemTemplate = ({ href, value, children, ...injectedTabProps }: TabItemTemplateProps) => (
+  <Tabs.Tab as={Link} to={href} value={value} {...injectedTabProps}>
+    {children}
+  </Tabs.Tab>
 )
 
 const AboutButton = () => (
