@@ -14,13 +14,13 @@ import { getBuildCacheStatus } from '../pipeline-job.utils'
 const ENDED_INTERVAL_MS = 10000000
 const RUNNING_INTERVAL_MS = 1000
 
-type Props = {
-  appName: string
-  job: Job
-  repository?: string
+interface PipelineJobSummaryProps {
+  readonly appName: string
+  readonly job: Job
+  readonly repository?: string
 }
 
-export const JobSummary = (props: Props) => {
+export const PipelineJobSummary = (props: PipelineJobSummaryProps) => {
   const { appName, job, repository } = props
   const [now, setNow] = useState(new Date())
   useInterval(() => setNow(new Date()), job.ended ? ENDED_INTERVAL_MS : RUNNING_INTERVAL_MS)

@@ -4,15 +4,15 @@ import { Link } from 'react-router'
 import { routes } from '../../../../router/routes'
 import type { Job } from '../../../../store/radix-api'
 import { routeWithParams } from '../../../../utils/string'
-import styles from './pipelineJobWaiting.module.css'
+import styles from './pipelineJobWaitingScreen.module.css'
 
-interface PipelineJobWaitingProps {
+interface PipelineJobWaitingScreenProps {
   readonly status: Job['status']
   readonly appName: string
   readonly jobType: Job['pipeline']
 }
 
-export const PipelineJobWaiting = (props: PipelineJobWaitingProps) => {
+export const PipelineJobWaitingScreen = (props: PipelineJobWaitingScreenProps) => {
   const { status, appName, jobType: pipelineType } = props
 
   const title = status === 'Waiting' ? 'Getting ready to start' : 'Pipeline job is queued'

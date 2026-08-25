@@ -7,7 +7,7 @@ import { routes } from '../../../../router/routes'
 import { type Job, radixApi } from '../../../../store/radix-api'
 import { routeWithParams, smallJobName } from '../../../../utils/string'
 
-interface RerunJobButtonProps {
+interface PipelineJobRerunButtonProps {
   readonly appName: string
   readonly jobName: string
   readonly status: Job['status']
@@ -16,7 +16,7 @@ interface RerunJobButtonProps {
 /**
  * When a job has failed or been stopped, this button allows the user to rerun the job.
  */
-export const RerunJobButton = (props: RerunJobButtonProps) => {
+export const PipelineJobRerunButton = (props: PipelineJobRerunButtonProps) => {
   const { appName, jobName, status } = props
   const [rerunJob, rerunJobState] = radixApi.endpoints.rerunApplicationJob.useMutation()
   const [isConfirmPopupVisible, setIsConfirmPopupVisible] = useState(false)

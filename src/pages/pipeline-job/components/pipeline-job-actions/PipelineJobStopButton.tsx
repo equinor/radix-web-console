@@ -3,14 +3,14 @@ import { handlePromiseWithToast } from '../../../../components/global-top-nav/st
 import { type Job, radixApi } from '../../../../store/radix-api'
 import { canStopJob, getStopButtonText } from '../pipeline-job.utils'
 
-interface StopJobButtonProps {
+interface PipelineJobStopButtonProps {
   readonly appName: string
   readonly jobName: string
   readonly status: Job['status']
   readonly onStopped: () => void
 }
 
-export const StopJobButton = (props: StopJobButtonProps) => {
+export const PipelineJobStopButton = (props: PipelineJobStopButtonProps) => {
   const { appName, jobName, status, onStopped } = props
 
   const [stopJob, stopJobState] = radixApi.endpoints.stopApplicationJob.useMutation()

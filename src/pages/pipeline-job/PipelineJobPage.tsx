@@ -9,7 +9,8 @@ interface PipelineJobPageProps {
   readonly appName: string
   readonly jobName: string
 }
-function PipelineJobPage({ appName, jobName }: PipelineJobPageProps) {
+
+const PipelineJobPage = ({ appName, jobName }: PipelineJobPageProps) => {
   return (
     <>
       <DocumentTitle title={`Pipeline Job ${jobName}`} />

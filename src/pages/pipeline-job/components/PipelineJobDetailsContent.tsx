@@ -1,11 +1,11 @@
 import { Typography } from '@equinor/eds-core-react'
 import type { Job } from '../../../store/radix-api'
-import { RerunJobButton } from './actions/RerunJobButton'
-import { StopJobButton } from './actions/StopJobButton'
-import { PipelineJobWaiting } from './pipeline-job-waiting/PipelineJobWaiting'
-import { StepsList } from './steps/StepsList'
-import { JobArtifacts } from './summary/JobArtifacts'
-import { JobSummary } from './summary/JobSummary'
+import { PipelineJobRerunButton } from './pipeline-job-actions/PipelineJobRerunButton'
+import { PipelineJobStopButton } from './pipeline-job-actions/PipelineJobStopButton'
+import { PipelineJobStepList } from './pipeline-job-step-list/PipelineJobStepList'
+import { PipelineJobWaitingScreen } from './pipeline-job-waiting-screen/PipelineJobWaitingScreen'
+import { PipelineJobArtifacts } from './summary/PipelineJobArtifacts'
+import { PipelineJobSummary } from './summary/PipelineJobSummary'
 
 interface PipelineJobDetailsContentProps {
   readonly appName: string
@@ -24,19 +24,19 @@ export const PipelineJobDetailsContent = (props: PipelineJobDetailsContentProps)
 
   const isWaitingToStart = job.status === 'Waiting' || job.status === 'Queued'
   if (isWaitingToStart) {
-    return <PipelineJobWaiting status={job.status} appName={appName} jobType={job.pipeline} />
+    return <PipelineJobWaitingScreen status={job.status} appName={appName} jobType={job.pipeline} />
   }
 
   return (
     <>
-      <StopJobButton appName={appName} jobName={jobName} status={job.status} onStopped={onJobChanged} />
-      <RerunJobButton appName={appName} jobName={jobName} status={job.status} />
+      <PipelineJobStopButton appName={appName} jobName={jobName} status={job.status} onStopped={onJobChanged} />
+      <PipelineJobRerunButton appName={appName} jobName={jobName} status={job.status} />
 
-      <JobSummary appName={appName} job={job} repository={repository} />
-      <JobArtifacts appName={appName} job={job} repository={repository} />
+      <PipelineJobSummary appName={appName} job={job} repository={repository} />
+      <PipelineJobArtifacts appName={appName} job={job} repository={repository} />
 
       <section className="grid grid--gap-medium">
-        {job.steps && <StepsList appName={appName} jobName={jobName} steps={job.steps} />}
+        {job.steps && <PipelineJobStepList appName={appName} jobName={jobName} steps={job.steps} />}
       </section>
     </>
   )

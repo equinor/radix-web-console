@@ -3,15 +3,15 @@ import { Link } from 'react-router'
 import { routes } from '../../../../router/routes'
 import type { Job } from '../../../../store/radix-api'
 import { routeWithParams, smallDeploymentName } from '../../../../utils/string'
-import { ComponentList } from './ComponentList'
+import { PipelineJobComponentList } from './PipelineJobComponentList'
 
-type Props = {
-  appName: string
-  job: Job
-  repository?: string
+interface PipelineJobArtifactsProps {
+  readonly appName: string
+  readonly job: Job
+  readonly repository?: string
 }
 
-export const JobArtifacts = (props: Props) => {
+export const PipelineJobArtifacts = (props: PipelineJobArtifactsProps) => {
   const { appName, job, repository } = props
 
   if (!job.deployments && !job.components) {
@@ -43,7 +43,7 @@ export const JobArtifacts = (props: Props) => {
           </Typography>
         ))}
         {job.components && (
-          <ComponentList appName={appName} deployments={job.deployments ?? []} repository={repository} />
+          <PipelineJobComponentList appName={appName} deployments={job.deployments ?? []} repository={repository} />
         )}
       </div>
     </section>
