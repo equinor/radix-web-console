@@ -30,6 +30,10 @@
   z-index: 1;
 }
 
+.chevron {
+  width: 3rem;
+}
+
 .chevron svg {
   fill: var(--eds_text_static_icons__tertiary);
   transition:

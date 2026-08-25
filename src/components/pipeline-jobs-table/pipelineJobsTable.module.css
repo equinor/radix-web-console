@@ -3,16 +3,6 @@
   padding: var(--eds_spacing_small);
 }
 
-.idCell {
-  white-space: nowrap;
-}
-
-.idActions {
-  display: inline-flex;
-  vertical-align: middle;
-  margin-left: var(--eds_spacing_x_small);
-}
-
 .environments {
   align-items: center;
   display: flex;

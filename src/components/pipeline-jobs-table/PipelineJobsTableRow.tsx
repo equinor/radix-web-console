@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 import { routes } from '../../router/routes'
 import type { JobSummary } from '../../store/radix-api'
 import { routeWithParams } from '../../utils/string'
-import { CompactCopyButton } from '../compact-copy-button'
 import { NavigableTable } from '../navigable-table/NavigableTable'
 import { RadixJobConditionBadge } from '../status-badges'
 import { Duration } from '../time/duration'
@@ -19,12 +18,12 @@ const TriggeredByCell = (props: { readonly triggeredBy: string | undefined }) =>
     ? `${triggeredBy.slice(0, 8)}...${triggeredBy.slice(-12)}`
     : triggeredBy || 'N/A'
 
-  return isLongText ? (
+  if (!isLongText) return triggeredByDisplay
+
+  return (
     <Tooltip placement="top" title={triggeredBy}>
       <span>{triggeredByDisplay}</span>
     </Tooltip>
-  ) : (
-    triggeredByDisplay
   )
 }
 
@@ -46,12 +45,7 @@ export const PipelineJobsTableRow = (props: PipelineJobsTableRowProps) => {
       to={routeWithParams(routes.appJob, { appName, jobName: job.name })}
       linkLabel={`Open pipeline job ${shortenedJobName}`}
     >
-      <NavigableTable.Cell className={styles.idCell}>
-        <span>{shortenedJobName}</span>
-        <span className={styles.idActions}>
-          <CompactCopyButton content={job.name} />
-        </span>
-      </NavigableTable.Cell>
+      <NavigableTable.Cell>{shortenedJobName}</NavigableTable.Cell>
       <NavigableTable.InteractiveCell>
         <TriggeredByCell triggeredBy={job.triggeredBy} />
       </NavigableTable.InteractiveCell>
