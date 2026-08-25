@@ -11,18 +11,22 @@
   }
 
   .spinner {
-    margin-bottom: 2rem;
+    margin-bottom: var(--eds_spacing_large);
   }
 
   .title {
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--eds_spacing_x_small);
   }
   .subtitle {
-    margin-bottom: 1rem;
+    margin-bottom: var(--eds_spacing_medium);
+  }
+
+  .children {
+    margin-top: var(--eds_spacing_medium);
   }
 
   .link {
-    margin-top: 1rem;
+    margin-top: var(--eds_spacing_medium);
     display: inline-block;
   }
 }

@@ -2,7 +2,7 @@ import { RelativeToNow } from '../../../../../components/time/relative-to-now'
 import type { Step } from '../../../../../store/radix-api'
 import { differenceInWords, formatDateTimePrecise } from '../../../../../utils/datetime'
 
-interface PipelineJobStepDurationProps extends Pick<Step, 'started' | 'ended'> {}
+type PipelineJobStepDurationProps = Pick<Step, 'started' | 'ended'>
 
 export const PipelineJobStepDuration = (props: PipelineJobStepDurationProps) => {
   const { started, ended } = props

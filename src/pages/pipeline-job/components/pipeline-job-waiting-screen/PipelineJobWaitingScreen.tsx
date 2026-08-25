@@ -1,5 +1,6 @@
 import { CircularProgress, Typography } from '@equinor/eds-core-react'
 import clsx from 'clsx'
+import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { routes } from '../../../../router/routes'
 import type { Job } from '../../../../store/radix-api'
@@ -10,10 +11,11 @@ interface PipelineJobWaitingScreenProps {
   readonly status: Job['status']
   readonly appName: string
   readonly jobType: Job['pipeline']
+  readonly children?: ReactNode
 }
 
 export const PipelineJobWaitingScreen = (props: PipelineJobWaitingScreenProps) => {
-  const { status, appName, jobType: pipelineType } = props
+  const { status, appName, jobType: pipelineType, children } = props
 
   const title = status === 'Waiting' ? 'Getting ready to start' : 'Pipeline job is queued'
 
@@ -32,6 +34,8 @@ export const PipelineJobWaitingScreen = (props: PipelineJobWaitingScreenProps) =
         This pipeline job has not started yet. When the job starts, the page will automatically update to show the job
         details.
       </Typography>
+
+      {children && <div className={styles.children}>{children}</div>}
 
       <Typography as={Link} link className={clsx(styles.link)} to={routeWithParams(routes.appJobs, { appName })}>
         Return to all pipeline jobs

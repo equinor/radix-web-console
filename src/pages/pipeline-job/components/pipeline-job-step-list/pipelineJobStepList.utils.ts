@@ -59,30 +59,25 @@ export const getNamedSteps = (steps: ReadonlyArray<Step>): ReadonlyArray<Step> =
 }
 
 export const getSubPipelineSteps = (steps: ReadonlyArray<Step>): ReadonlyArray<GroupedSubPipelineSteps> => {
-  const groups: Record<string, { pipelineName: string; environment: string; steps: Step[] }> = {}
+  const groups = new Map<string, { pipelineName: string; environment: string; steps: Step[] }>()
 
-  for (const step of steps.filter((step) => step.name === SUB_PIPELINE_STEP_NAME)) {
+  for (const step of steps) {
     const sub = step.subPipelineTaskStep
-    if (!sub) {
+    if (step.name !== SUB_PIPELINE_STEP_NAME || !sub) {
       continue
     }
 
     const key = `${sub.pipelineName}||${sub.environment}`
-    if (!groups[key]) {
-      groups[key] = { pipelineName: sub.pipelineName, environment: sub.environment, steps: [] }
-    }
-    groups[key].steps.push(step)
+    const group = groups.get(key) ?? { pipelineName: sub.pipelineName, environment: sub.environment, steps: [] }
+    group.steps.push(step)
+    groups.set(key, group)
   }
 
-  for (const key in groups) {
-    groups[key].steps.sort((firstStep, secondStep) => {
-      const firstStart = firstStep.started ? new Date(firstStep.started).getTime() : 0
-      const secondStart = secondStep.started ? new Date(secondStep.started).getTime() : 0
-      return firstStart - secondStart
-    })
+  for (const group of groups.values()) {
+    group.steps.sort((firstStep, secondStep) => sortCompareDate(firstStep.started, secondStep.started))
   }
 
-  return Object.values(groups).sort((firstGroup, secondGroup) => {
+  return [...groups.values()].sort((firstGroup, secondGroup) => {
     const byPipelineName = firstGroup.pipelineName.localeCompare(secondGroup.pipelineName)
     return byPipelineName !== 0 ? byPipelineName : firstGroup.environment.localeCompare(secondGroup.environment)
   })

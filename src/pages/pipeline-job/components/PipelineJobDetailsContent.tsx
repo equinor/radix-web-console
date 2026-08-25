@@ -25,7 +25,12 @@ export const PipelineJobDetailsContent = (props: PipelineJobDetailsContentProps)
 
   const isWaitingToStart = job.status === 'Waiting' || job.status === 'Queued'
   if (isWaitingToStart) {
-    return <PipelineJobWaitingScreen status={job.status} appName={appName} jobType={job.pipeline} />
+    return (
+      <PipelineJobWaitingScreen status={job.status} appName={appName} jobType={job.pipeline}>
+        {/* Makes the job cancellable */}
+        <PipelineJobStopButton appName={appName} jobName={jobName} status={job.status} onStopped={onJobChanged} />
+      </PipelineJobWaitingScreen>
+    )
   }
 
   return (

@@ -10,7 +10,9 @@ interface PipelineJobPageProps {
   readonly jobName: string
 }
 
-const PipelineJobPage = ({ appName, jobName }: PipelineJobPageProps) => {
+const PipelineJobPage = (props: PipelineJobPageProps) => {
+  const { appName, jobName } = props
+
   return (
     <>
       <DocumentTitle title={`Pipeline Job ${jobName}`} />
