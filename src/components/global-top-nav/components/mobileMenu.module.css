@@ -1,0 +1,39 @@
+/* Wrapper is transparent so the toggle button sits in the top bar actions flow. */
+.mobileMenu {
+  display: contents;
+}
+
+.panel {
+  position: fixed;
+  top: var(--layout-top-nav-height, 64px);
+  left: -100%;
+  width: 100%;
+  height: calc(100vh - var(--layout-top-nav-height, 64px));
+  background-color: var(--eds_ui_background__default);
+  transition: left 0.2s ease;
+  z-index: var(--stacking-global-overlay);
+}
+.panelOpen {
+  left: 0;
+}
+
+.links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.links a {
+  display: block;
+  padding: var(--eds_spacing_medium);
+  text-align: center;
+  text-decoration: none;
+  color: var(--eds_text__static_icons__default);
+}
+
+@media (min-width: 50rem) {
+  .mobileMenu {
+    display: none;
+  }
+}

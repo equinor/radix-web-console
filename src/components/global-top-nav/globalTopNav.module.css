@@ -1,0 +1,46 @@
+/* Doubled class keeps specificity over the EDS TopBar grid. */
+.globalTopNav.globalTopNav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+/* Logo left, actions right; the tab column sits centered in the middle third. */
+.navIconLinks {
+  justify-self: end;
+}
+
+/* Middle column: never grow past its third, and scroll its tabs when they overflow. */
+.tabsCell {
+  min-width: 0;
+  overflow: hidden;
+}
+.tabsWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+.tabsScrollArea {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.tabScrollButton {
+  flex: 0 0 auto;
+}
+
+/* Hide the scrollbar; the chevron buttons drive the scrolling. */
+.navLinks {
+  scrollbar-width: none;
+}
+.navLinks a {
+  font-size: 14px;
+}
+.navLinks::-webkit-scrollbar {
+  display: none;
+}
+
+/* On small screens the mobile menu replaces the tab strip. */
+@media (max-width: 49.99rem) {
+  .tabsCell {
+    display: none;
+  }
+}

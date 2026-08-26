@@ -1,0 +1,10 @@
+/* Same actions as the top bar, shown with icon + full label. */
+.actions {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--eds_ui_background__medium);
+}
+.actions button {
+  width: 100%;
+  justify-content: flex-start;
+}

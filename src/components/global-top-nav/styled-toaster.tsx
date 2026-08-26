@@ -4,7 +4,7 @@ import type { FunctionComponent } from 'react'
 import { type Id, ToastContainer, type ToastIcon, type TypeOptions, toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
-import './style.css'
+import './styledToaster.css'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 
 export const StyledToastContainer: FunctionComponent = () => (

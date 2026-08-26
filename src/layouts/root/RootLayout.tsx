@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router'
-
-import { GlobalTopNav } from '../../components/global-top-nav'
+import { GlobalTopNav } from '../../components/global-top-nav/GlobalTopNav'
 
 export default function RootLayout() {
   return (
