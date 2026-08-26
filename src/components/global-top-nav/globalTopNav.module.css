@@ -1,9 +1,14 @@
-/* Doubled class keeps specificity over the EDS TopBar grid. */
+/* Equal side columns center the tabs when there's spare space, but they can't
+   shrink below the logo/actions, so the tab column takes over on tight screens. */
 .globalTopNav.globalTopNav {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: 1fr auto 1fr;
+
+  /* Actions that live in the mobile menu are hidden from the top bar on small screens. */
+  @media (max-width: 49.99rem) {
+    column-gap: 0;
+  }
 }
 
-/* Logo left, actions right; the tab column sits centered in the middle third. */
 .navIconLinks {
   justify-self: end;
 }

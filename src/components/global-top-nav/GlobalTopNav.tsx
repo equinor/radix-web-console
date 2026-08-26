@@ -7,7 +7,6 @@ import { NavActions } from './components/NavActions'
 import { TabItemTemplate } from './components/TabItemTemplate'
 import styles from './globalTopNav.module.css'
 import type { ClusterEntry } from './globalTopNav.types'
-import { getClusterTabLabel } from './globalTopNav.utils'
 import { useHorizontalScroll } from './hooks/useHorizontalScroll'
 import { StyledToastContainer } from './styled-toaster'
 
@@ -49,7 +48,7 @@ export const GlobalTopNav = () => {
             <Tabs.List className={styles.navLinks} ref={scrollContainerRef}>
               {visibleClusters.map(([name, cluster]) => (
                 <TabItemTemplate href={cluster.href} value={name} key={name}>
-                  {getClusterTabLabel(name)}
+                  {name}
                 </TabItemTemplate>
               ))}
             </Tabs.List>

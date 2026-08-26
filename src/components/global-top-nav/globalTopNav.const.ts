@@ -3,8 +3,6 @@ import { externalUrls } from '../../externalUrls'
 import { routes } from '../../router/routes'
 import type { NavAction } from './globalTopNav.types'
 
-export const RADIX_ISSUES_URL = 'https://github.com/equinor/radix/issues'
-
 export const NAV_ACTIONS: readonly NavAction[] = [
   {
     id: 'documentation',
@@ -22,12 +20,13 @@ export const NAV_ACTIONS: readonly NavAction[] = [
     href: routes.about,
     isExternal: false,
     showInMobileMenu: true,
+    iconOnly: true,
   },
   {
     id: 'feedback',
     label: 'Give us feedback',
     icon: github,
-    href: RADIX_ISSUES_URL,
+    href: externalUrls.githubIssues,
     isExternal: true,
     showInMobileMenu: true,
     iconOnly: true,

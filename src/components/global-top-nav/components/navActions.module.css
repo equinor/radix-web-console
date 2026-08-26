@@ -1,6 +1,6 @@
 /* Actions that live in the mobile menu are hidden from the top bar on small screens. */
 @media (max-width: 49.99rem) {
-  .hideOnMobile {
+  .hideOnMobile.hideOnMobile {
     display: none;
   }
 }
