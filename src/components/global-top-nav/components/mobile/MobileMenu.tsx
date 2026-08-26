@@ -3,8 +3,7 @@ import { close, menu } from '@equinor/eds-icons'
 import { clsx } from 'clsx'
 import { useState } from 'react'
 import { Link } from 'react-router'
-import type { ClusterEntry } from '../globalTopNav.types'
-import { getClusterTabLabel } from '../globalTopNav.utils'
+import type { ClusterEntry } from '../../globalTopNav.types'
 import { MobileMenuActions } from './MobileMenuActions'
 import styles from './mobileMenu.module.css'
 
@@ -36,7 +35,7 @@ export const MobileMenu = (props: MobileMenuProps) => {
                 aria-current={cluster.baseUrl === activeBaseUrl ? 'page' : undefined}
                 onClick={() => setIsOpen(false)}
               >
-                {getClusterTabLabel(name)}
+                {name}
               </Link>
             </li>
           ))}

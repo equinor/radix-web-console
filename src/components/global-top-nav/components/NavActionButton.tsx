@@ -24,35 +24,18 @@ export const NavActionButton = (props: NavActionButtonProps) => {
     </>
   )
 
-  const variant = iconOnly ? 'ghost_icon' : 'ghost'
   const iconOnlyLabel = iconOnly ? action.label : undefined
 
-  if (action.isExternal) {
-    return (
-      <Button
-        variant={variant}
-        className={className}
-        onClick={onClick}
-        title={iconOnlyLabel}
-        aria-label={iconOnlyLabel}
-        href={action.href}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {content}
-      </Button>
-    )
-  }
+  const linkProps = action.isExternal ? { href: action.href, target: '_blank' } : { as: Link, to: action.href }
 
   return (
     <Button
-      variant={variant}
+      variant="ghost"
       className={className}
       onClick={onClick}
       title={iconOnlyLabel}
       aria-label={iconOnlyLabel}
-      as={Link}
-      to={action.href}
+      {...linkProps}
     >
       {content}
     </Button>

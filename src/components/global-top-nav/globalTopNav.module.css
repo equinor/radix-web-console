@@ -1,7 +1,7 @@
-/* Equal side columns center the tabs when there's spare space, but they can't
-   shrink below the logo/actions, so the tab column takes over on tight screens. */
+/* Default: logo and actions take what they need, the tabs get the remaining space
+   (no forced centering). Wide screens switch to centered — see the media query below. */
 .globalTopNav.globalTopNav {
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr) auto;
 
   /* Actions that live in the mobile menu are hidden from the top bar on small screens. */
   @media (max-width: 49.99rem) {
@@ -47,5 +47,12 @@
 @media (max-width: 49.99rem) {
   .tabsCell {
     display: none;
+  }
+}
+
+/* Only page-center the tabs when the screen is wide enough to spare the room. */
+@media (min-width: 106rem) {
+  .globalTopNav.globalTopNav {
+    grid-template-columns: 1fr auto 1fr;
   }
 }

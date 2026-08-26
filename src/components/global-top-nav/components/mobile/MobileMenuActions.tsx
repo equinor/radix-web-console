@@ -1,9 +1,9 @@
 import { Button, Icon } from '@equinor/eds-core-react'
 import { log_in, log_out } from '@equinor/eds-icons'
-import { NAV_ACTIONS } from '../globalTopNav.const'
-import { useAuthActions } from '../hooks/useAuthActions'
+import { NAV_ACTIONS } from '../../globalTopNav.const'
+import { useAuthActions } from '../../hooks/useAuthActions'
+import { NavActionButton } from '../NavActionButton'
 import styles from './mobileMenuActions.module.css'
-import { NavActionButton } from './NavActionButton'
 
 interface MobileMenuActionsProps {
   onNavigate: () => void
@@ -20,14 +20,16 @@ export const MobileMenuActions = (props: MobileMenuActionsProps) => {
       {mobileActions.map((action) => (
         <NavActionButton key={action.id} action={action} onClick={onNavigate} />
       ))}
-      <Button variant="ghost" onClick={() => signIn()}>
-        <Icon data={log_in} />
-        Sign in with a different account
-      </Button>
-      <Button variant="ghost" onClick={() => signOut()}>
-        <Icon data={log_out} />
-        Sign out
-      </Button>
+      <div className={styles.authActions}>
+        <Button variant="ghost" onClick={() => signIn()}>
+          <Icon data={log_in} />
+          Sign in with a different account
+        </Button>
+        <Button variant="ghost" onClick={() => signOut()}>
+          <Icon data={log_out} />
+          Sign out
+        </Button>
+      </div>
     </section>
   )
 }
