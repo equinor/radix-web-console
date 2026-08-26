@@ -1,6 +1,17 @@
 import { useAccount, useMsal } from '@azure/msal-react'
 import { Button, Card, Icon, Popover, Tabs, TopBar, Typography } from '@equinor/eds-core-react'
-import { account_circle, close, comment_discussion, info_circle, log_in, log_out, menu } from '@equinor/eds-icons'
+import {
+  account_circle,
+  chevron_left,
+  chevron_right,
+  close,
+  comment_discussion,
+  info_circle,
+  library_books,
+  log_in,
+  log_out,
+  menu,
+} from '@equinor/eds-icons'
 import { clsx } from 'clsx'
 import { type ReactNode, useState } from 'react'
 import { Link } from 'react-router'
@@ -10,6 +21,7 @@ import { configVariables } from '../../utils/config'
 import { HomeLogo } from '../home-logo'
 import { radixApiConfig } from '../msal-auth-context/config'
 import { StyledToastContainer } from './styled-toaster'
+import { useHorizontalScroll } from './use-horizontal-scroll'
 
 import './style.css'
 
@@ -24,34 +36,60 @@ export const GlobalTopNav = () => {
   const activeCluster = CLUSTERS.find(([, cluster]) => cluster.baseUrl === radixClusterBase)
   const activeTabValue = activeCluster ? activeCluster[0] : DOCUMENTATION_TAB_VALUE
 
+  const { scrollContainerRef, scrollBy, isStartReached, isEndReached, canScroll } = useHorizontalScroll()
+
   return (
     <TopBar className="global-top-nav">
       <TopBar.Header className="home">
         <HomeLogo />
       </TopBar.Header>
-      <TopBar.CustomContent>
-        <Tabs activeTab={activeTabValue}>
-          <Tabs.List className={clsx('nav-links', { 'mobile-menu-open': isMobileMenuOpen })}>
-            {CLUSTERS.map(([name, cluster]) => {
-              const isDev = cluster.isDev && configVariables.RADIX_CLUSTER_TYPE !== 'development'
-              const isActive = radixClusterBase === cluster.baseUrl
-              if (isDev && !isActive) {
-                return null
-              }
+      <TopBar.CustomContent className="tabs-cell">
+        <div className="tabs-wrapper">
+          {canScroll && (
+            <Button
+              className="tab-scroll-button"
+              variant="ghost_icon"
+              onClick={() => scrollBy('left')}
+              aria-hidden="true"
+              tabIndex={-1}
+              disabled={isStartReached}
+            >
+              <Icon data={chevron_left} />
+            </Button>
+          )}
+          <Tabs className="tabs-scroll-area" activeTab={activeTabValue} scrollable>
+            <Tabs.List className={clsx('nav-links', { 'mobile-menu-open': isMobileMenuOpen })} ref={scrollContainerRef}>
+              {CLUSTERS.map(([name, cluster]) => {
+                const isDev = cluster.isDev && configVariables.RADIX_CLUSTER_TYPE !== 'development'
+                const isActive = radixClusterBase === cluster.baseUrl
+                if (isDev && !isActive) {
+                  return null
+                }
 
-              return (
-                <TabItemTemplate href={cluster.href} value={name} key={name}>
-                  {name}
-                </TabItemTemplate>
-              )
-            })}
-            <TabItemTemplate href={externalUrls.documentation} value={DOCUMENTATION_TAB_VALUE}>
-              Documentation
-            </TabItemTemplate>
-          </Tabs.List>
-        </Tabs>
+                return (
+                  <TabItemTemplate href={cluster.href} value={name} key={name}>
+                    {name}
+                  </TabItemTemplate>
+                )
+              })}
+            </Tabs.List>
+          </Tabs>
+          {canScroll && (
+            <Button
+              className="tab-scroll-button"
+              variant="ghost_icon"
+              onClick={() => scrollBy('right')}
+              aria-hidden="true"
+              tabIndex={-1}
+              disabled={isEndReached}
+            >
+              <Icon data={chevron_right} />
+            </Button>
+          )}
+        </div>
       </TopBar.CustomContent>
       <TopBar.Actions className="nav-icon-links">
+        <DocumentationButton />
         <AboutButton />
         <FeedbackButton />
         <UserInfo />
@@ -81,6 +119,14 @@ const TabItemTemplate = ({ href, value, children, ...injectedTabProps }: TabItem
 const AboutButton = () => (
   <Button variant="ghost" as={Link} to={routes.about}>
     <Icon data={info_circle} />
+    About
+  </Button>
+)
+
+const DocumentationButton = () => (
+  <Button variant="ghost" as={Link} to={externalUrls.documentation} target="_blank" rel="noopener noreferrer">
+    <Icon data={library_books} />
+    Docs
   </Button>
 )
 
@@ -94,6 +140,7 @@ const FeedbackButton = () => (
     title="Give us feedback"
   >
     <Icon data={comment_discussion} />
+    Feedback
   </Button>
 )
 
