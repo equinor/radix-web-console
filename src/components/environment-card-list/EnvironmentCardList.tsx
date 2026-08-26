@@ -1,4 +1,3 @@
-import { Typography } from '@equinor/eds-core-react'
 import { EnvironmentCardContainer } from '../../containers/environment-card-container/EnvironmentCardContainer'
 import type { Application } from '../../store/radix-api'
 import { Banner } from '../banner/Banner'
@@ -27,14 +26,11 @@ export const EnvironmentCardList = (props: EnvironmentCardListProps) => {
       ) : (
         <Banner>
           <Banner.Message>
-            <Typography>
-              The <RadixConfigFileLink registration={application.registration} /> file must be read by Radix in order to
-              show information about environments.
-            </Typography>
-            <Typography>
-              Run the <NewApplyConfigPipelineLink appName={application.name}>apply-config</NewApplyConfigPipelineLink>{' '}
-              pipeline job to read the file from the application's GitHub repository.
-            </Typography>
+            The <RadixConfigFileLink registration={application.registration} /> file must be read by Radix in order to
+            show information about environments.
+            <br />
+            Run the <NewApplyConfigPipelineLink appName={application.name}>apply-config</NewApplyConfigPipelineLink>{' '}
+            pipeline job to read the file from the application's GitHub repository.
           </Banner.Message>
         </Banner>
       )}

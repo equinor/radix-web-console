@@ -31,5 +31,5 @@ export const TableSortIcon: FunctionComponent<{
   direction: SortDirection
   size?: IconProps['size']
 }> = ({ direction, size = 16 }) => (
-  <Icon style={{ marginLeft: 'auto', marginRight: 0 }} data={getTableSortIcon(direction)} size={size} />
+  <Icon style={{ marginLeft: '.2rem', marginRight: 0 }} data={getTableSortIcon(direction)} size={size} />
 )
