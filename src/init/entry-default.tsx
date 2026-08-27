@@ -1,4 +1,4 @@
-import { type AuthenticationResult, EventType, PublicClientApplication } from '@azure/msal-browser'
+import { type AccountInfo, EventType, PublicClientApplication } from '@azure/msal-browser'
 import { MsalProvider } from '@azure/msal-react'
 import { Provider } from 'react-redux'
 
@@ -22,10 +22,10 @@ setTerminalAuthErrorHandler(() => {
   router.navigate(routes.sessionExpired, { replace: true })
 })
 
-// Listen for sign-in event and set active account
+// Listen for sign-in event and set active account.
 msalInstance.addEventCallback((event) => {
   if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
-    msalInstance.setActiveAccount((event.payload as AuthenticationResult).account)
+    msalInstance.setActiveAccount(event.payload as AccountInfo)
   }
 })
 
