@@ -3,13 +3,13 @@ import { account_circle, log_in, log_out } from '@equinor/eds-icons'
 import { useState } from 'react'
 import { useAuthActions } from '../hooks/useAuthActions'
 
-export const UserInfo = () => {
+export const TopNavUserInfo = () => {
   const { account, signIn, signOut } = useAuthActions()
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const toggleMenu = () => {
-    setIsOpen(!isOpen)
+    setIsOpen((prev) => !prev)
   }
 
   return (

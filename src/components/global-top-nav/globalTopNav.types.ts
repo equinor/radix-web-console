@@ -1,6 +1,6 @@
 import type { IconData } from '@equinor/eds-icons'
 
-export interface Cluster {
+interface Cluster {
   href: string
   baseUrl: string
   isDev?: boolean
@@ -11,13 +11,10 @@ export type ClusterEntry = [name: string, cluster: Cluster]
 
 export interface NavAction {
   id: string
-  label: string
   icon: IconData
   href: string
   isExternal: boolean
-  // When true the action lives in the mobile menu; otherwise it stays in the top bar.
-  showInMobileMenu: boolean
-  // Compact top-bar presentation; the mobile menu always uses the full label.
+  label: string
+  /** Short label for desktop */
   shortLabel?: string
-  iconOnly?: boolean
 }

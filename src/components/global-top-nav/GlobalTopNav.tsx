@@ -1,9 +1,10 @@
 import { TopBar } from '@equinor/eds-core-react'
 import { configVariables } from '../../utils/config'
 import { HomeLogo } from '../home-logo'
-import { ClusterTabs } from './components/ClusterTabs'
 import { MobileMenu } from './components/mobile/MobileMenu'
 import { NavActions } from './components/NavActions'
+import { PlatformTabs } from './components/PlatformTabs'
+import { TopNavUserInfo } from './components/TopNavUserInfo'
 import styles from './globalTopNav.module.css'
 import type { ClusterEntry } from './globalTopNav.types'
 import { StyledToastContainer } from './styled-toaster'
@@ -22,10 +23,11 @@ export const GlobalTopNav = () => {
         <HomeLogo />
       </TopBar.Header>
       <TopBar.CustomContent className={styles.tabsCell}>
-        <ClusterTabs clusters={visibleClusters} activeBaseUrl={radixClusterBase} />
+        <PlatformTabs clusters={visibleClusters} activeBaseUrl={radixClusterBase} />
       </TopBar.CustomContent>
       <TopBar.Actions className={styles.navIconLinks}>
         <NavActions />
+        <TopNavUserInfo />
         <MobileMenu clusters={visibleClusters} activeBaseUrl={radixClusterBase} />
       </TopBar.Actions>
       <StyledToastContainer />

@@ -11,7 +11,6 @@ export const NAV_ACTIONS: readonly NavAction[] = [
     icon: library_books,
     href: externalUrls.documentation,
     isExternal: true,
-    showInMobileMenu: true,
   },
   {
     id: 'about',
@@ -19,16 +18,12 @@ export const NAV_ACTIONS: readonly NavAction[] = [
     icon: info_circle,
     href: routes.about,
     isExternal: false,
-    showInMobileMenu: true,
-    iconOnly: true,
   },
   {
     id: 'feedback',
-    label: 'Give us feedback',
+    label: 'Feedback',
     icon: github,
     href: externalUrls.githubIssues,
     isExternal: true,
-    showInMobileMenu: true,
-    iconOnly: true,
   },
 ] as const

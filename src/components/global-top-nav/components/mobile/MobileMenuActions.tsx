@@ -1,34 +1,46 @@
-import { Button, Icon } from '@equinor/eds-core-react'
 import { log_in, log_out } from '@equinor/eds-icons'
+import { useLocation } from 'react-router'
 import { NAV_ACTIONS } from '../../globalTopNav.const'
 import { useAuthActions } from '../../hooks/useAuthActions'
-import { NavActionButton } from '../NavActionButton'
-import styles from './mobileMenuActions.module.css'
+import { MobileMenuItem } from './MobileMenuItem'
+import styles from './mobileMenu.module.css'
 
 interface MobileMenuActionsProps {
-  onNavigate: () => void
+  readonly onNavigate: () => void
 }
 
 // Same actions as the desktop bar, but shown with icon and full label.
 export const MobileMenuActions = (props: MobileMenuActionsProps) => {
   const { onNavigate } = props
   const { signIn, signOut } = useAuthActions()
-  const mobileActions = NAV_ACTIONS.filter((action) => action.showInMobileMenu)
+
+  const { pathname } = useLocation()
+
+  const isActionActive = (to: string | undefined) => {
+    return to?.startsWith('/') === true && pathname === to
+  }
 
   return (
     <section className={styles.actions}>
-      {mobileActions.map((action) => (
-        <NavActionButton key={action.id} action={action} onClick={onNavigate} />
+      {NAV_ACTIONS.map((action) => (
+        <MobileMenuItem
+          key={action.id}
+          icon={action.icon}
+          to={action.isExternal ? undefined : action.href}
+          href={action.isExternal ? action.href : undefined}
+          onClick={onNavigate}
+          active={isActionActive(action.isExternal ? undefined : action.href)}
+        >
+          {action.label}
+        </MobileMenuItem>
       ))}
       <div className={styles.authActions}>
-        <Button variant="ghost" onClick={() => signIn()}>
-          <Icon data={log_in} />
+        <MobileMenuItem icon={log_in} onClick={() => signIn()}>
           Sign in with a different account
-        </Button>
-        <Button variant="ghost" onClick={() => signOut()}>
-          <Icon data={log_out} />
+        </MobileMenuItem>
+        <MobileMenuItem icon={log_out} onClick={() => signOut()}>
           Sign out
-        </Button>
+        </MobileMenuItem>
       </div>
     </section>
   )

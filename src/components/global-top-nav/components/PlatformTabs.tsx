@@ -5,12 +5,12 @@ import styles from '../globalTopNav.module.css'
 import type { ClusterEntry } from '../globalTopNav.types'
 import { useHorizontalScroll } from '../hooks/useHorizontalScroll'
 
-interface ClusterTabsProps {
-  clusters: ClusterEntry[]
-  activeBaseUrl: string
+interface PlatformTabsProps {
+  readonly clusters: ReadonlyArray<ClusterEntry>
+  readonly activeBaseUrl: string
 }
 
-export const ClusterTabs = (props: ClusterTabsProps) => {
+export const PlatformTabs = (props: PlatformTabsProps) => {
   const { clusters, activeBaseUrl } = props
   const activeCluster = clusters.find(([, cluster]) => cluster.baseUrl === activeBaseUrl)
   const activeTabValue = activeCluster ? activeCluster[0] : ''

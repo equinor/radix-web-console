@@ -1,9 +1,8 @@
 /* Default: logo and actions take what they need, the tabs get the remaining space
-   (no forced centering). Wide screens switch to centered — see the media query below. */
+   (no forced centering). Wide screens switch to centered, see the media query below. */
 .globalTopNav.globalTopNav {
   grid-template-columns: auto minmax(0, 1fr) auto;
 
-  /* Actions that live in the mobile menu are hidden from the top bar on small screens. */
   @media (max-width: 49.99rem) {
     column-gap: 0;
   }
@@ -32,7 +31,7 @@
   flex: 0 0 auto;
 }
 
-/* Hide the scrollbar; the chevron buttons drive the scrolling. */
+/* Hide the scrollbar, the chevron buttons handles scrolling. */
 .navLinks {
   scrollbar-width: none;
 }
@@ -50,7 +49,10 @@
   }
 }
 
-/* Only page-center the tabs when the screen is wide enough to spare the room. */
+/* Only page-center the tabs when the screen is wide enough to spare the room.
+ * NB: This min-width is selected based on the current number of clusters, and may need adjustment if the number of clusters changes.
+ *     It will not break responsive layout if you forget, but wont look as pretty.
+ */
 @media (min-width: 106rem) {
   .globalTopNav.globalTopNav {
     grid-template-columns: 1fr auto 1fr;

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-// Tabs use "scroll-snap-align: end", so scroll by less than a full row to avoid skipping past tabs.
 const SCROLL_STEP_RATIO = 0.8
 const SCROLL_DEBOUNCE_MS = 20
 const END_THRESHOLD_PX = 5
@@ -8,11 +7,11 @@ const END_THRESHOLD_PX = 5
 type ScrollDirection = 'left' | 'right'
 
 interface HorizontalScroll {
-  scrollContainerRef: (node: HTMLDivElement | null) => void
-  scrollBy: (direction: ScrollDirection) => void
-  isStartReached: boolean
-  isEndReached: boolean
-  canScroll: boolean
+  readonly scrollContainerRef: (node: HTMLDivElement | null) => void
+  readonly scrollBy: (direction: ScrollDirection) => void
+  readonly isStartReached: boolean
+  readonly isEndReached: boolean
+  readonly canScroll: boolean
 }
 
 export const useHorizontalScroll = (): HorizontalScroll => {
