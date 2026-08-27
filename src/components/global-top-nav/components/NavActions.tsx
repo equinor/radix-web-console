@@ -2,6 +2,7 @@ import { Button, Icon } from '@equinor/eds-core-react'
 import { Link } from 'react-router'
 import { NAV_ACTIONS } from '../globalTopNav.const'
 import type { NavAction } from '../globalTopNav.types'
+import styles from './navActions.module.css'
 
 interface NavActionButtonProps {
   readonly action: NavAction
@@ -16,7 +17,9 @@ interface NavActionButtonProps {
 const NavActionButton = (props: NavActionButtonProps) => {
   const { action, className, onClick } = props
 
-  const linkProps = action.isExternal ? { href: action.href, target: '_blank' } : { as: Link, to: action.href }
+  const linkProps = action.isExternal
+    ? { href: action.href, target: '_blank', rel: 'noopener noreferrer' }
+    : { as: Link, to: action.href }
 
   return (
     <Button
@@ -34,9 +37,13 @@ const NavActionButton = (props: NavActionButtonProps) => {
 }
 
 export const NavActions = () => (
-  <>
-    {NAV_ACTIONS.map((action) => (
-      <NavActionButton key={action.id} action={action} />
-    ))}
-  </>
+  <nav className={styles.navActions} aria-label="Site actions">
+    <ul>
+      {NAV_ACTIONS.map((action) => (
+        <li key={action.id}>
+          <NavActionButton action={action} />
+        </li>
+      ))}
+    </ul>
+  </nav>
 )

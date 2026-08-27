@@ -1,0 +1,14 @@
+.navActions {
+  /* Actions that live in the mobile menu are hidden from the top bar on small screens. */
+  @media (max-width: 49.99rem) {
+    display: none;
+  }
+}
+
+.navActions ul {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
