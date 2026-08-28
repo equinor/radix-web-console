@@ -1,24 +1,27 @@
-import { Table, Typography } from '@equinor/eds-core-react'
-import { type FunctionComponent, useEffect, useState } from 'react'
+import { Typography } from '@equinor/eds-core-react'
+import { clsx } from 'clsx'
+import { useEffect, useState } from 'react'
 import type { JobSummary } from '../../store/radix-api'
 import { dataSorter, type SortDirection, sortCompareDate, sortCompareString } from '../../utils/sort-utils'
 import { getNewSortDir, TableSortIcon } from '../../utils/table-sort-utils'
-import { JobSummaryTableRow } from './job-summary-table-row'
+import { NavigableTable } from '../navigable-table/NavigableTable'
+import { PipelineJobsTableRow } from './PipelineJobsTableRow'
+import styles from './pipelineJobsTable.module.css'
 
-import './style.css'
-
-export interface JobsListProps {
-  appName: string
-  jobs?: Readonly<Array<JobSummary>>
-  limit?: number
+interface PipelineJobsTableProps {
+  readonly appName: string
+  readonly jobs?: Readonly<Array<JobSummary>>
+  readonly limit?: number
 }
 
-export const JobsList: FunctionComponent<JobsListProps> = ({ appName, jobs, limit }) => {
+export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
+  const { appName, jobs, limit } = props
   const [sortedData, setSortedData] = useState([...(jobs ?? [])])
 
   const [dateSort, setDateSort] = useState<SortDirection>('descending')
   const [envSort, setEnvSort] = useState<SortDirection>()
   const [pipelineSort, setPipelineSort] = useState<SortDirection>()
+
   useEffect(() => {
     setSortedData(
       dataSorter(jobs?.slice(0, limit || jobs.length), [
@@ -33,33 +36,33 @@ export const JobsList: FunctionComponent<JobsListProps> = ({ appName, jobs, limi
     <span className="grid grid--gap-small">
       <Typography variant="h4">Latest pipeline jobs</Typography>
       {sortedData.length > 0 ? (
-        <div className="jobs-list grid grid--table-overflow">
-          <Table>
-            <Table.Head>
-              <Table.Row>
-                <Table.Cell>ID</Table.Cell>
-                <Table.Cell>Name</Table.Cell>
-                <Table.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort))}>
+        <div className={clsx(styles.pipelineJobsTable, 'grid', 'grid--table-overflow')}>
+          <NavigableTable>
+            <NavigableTable.Head>
+              <NavigableTable.HeaderRow>
+                <NavigableTable.Cell>ID</NavigableTable.Cell>
+                <NavigableTable.Cell>Triggered by</NavigableTable.Cell>
+                <NavigableTable.Cell sort="none" onClick={() => setDateSort(getNewSortDir(dateSort))}>
                   Date/Time
                   <TableSortIcon direction={dateSort} />
-                </Table.Cell>
-                <Table.Cell sort="none" onClick={() => setEnvSort(getNewSortDir(envSort, true))}>
+                </NavigableTable.Cell>
+                <NavigableTable.Cell sort="none" onClick={() => setEnvSort(getNewSortDir(envSort, true))}>
                   Environment
                   <TableSortIcon direction={envSort} />
-                </Table.Cell>
-                <Table.Cell>Status</Table.Cell>
-                <Table.Cell sort="none" onClick={() => setPipelineSort(getNewSortDir(pipelineSort, true))}>
+                </NavigableTable.Cell>
+                <NavigableTable.Cell>Status</NavigableTable.Cell>
+                <NavigableTable.Cell sort="none" onClick={() => setPipelineSort(getNewSortDir(pipelineSort, true))}>
                   Pipeline
                   <TableSortIcon direction={pipelineSort} />
-                </Table.Cell>
-              </Table.Row>
-            </Table.Head>
-            <Table.Body>
+                </NavigableTable.Cell>
+              </NavigableTable.HeaderRow>
+            </NavigableTable.Head>
+            <NavigableTable.Body>
               {sortedData.map((x) => (
-                <JobSummaryTableRow key={x.name} appName={appName} job={x} />
+                <PipelineJobsTableRow key={x.name} appName={appName} job={x} />
               ))}
-            </Table.Body>
-          </Table>
+            </NavigableTable.Body>
+          </NavigableTable>
         </div>
       ) : (
         <span className="grid grid--gap-small">

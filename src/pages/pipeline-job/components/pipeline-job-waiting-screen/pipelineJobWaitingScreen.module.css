@@ -1,0 +1,32 @@
+.wrapper {
+  margin: 0 auto;
+  margin-top: 10rem;
+  padding: 2rem;
+  max-width: 600px;
+  border-radius: 8px;
+  text-align: center;
+
+  .textCenter {
+    text-align: center;
+  }
+
+  .spinner {
+    margin-bottom: var(--eds_spacing_large);
+  }
+
+  .title {
+    margin-bottom: var(--eds_spacing_x_small);
+  }
+  .subtitle {
+    margin-bottom: var(--eds_spacing_medium);
+  }
+
+  .children {
+    margin-top: var(--eds_spacing_medium);
+  }
+
+  .link {
+    margin-top: var(--eds_spacing_medium);
+    display: inline-block;
+  }
+}

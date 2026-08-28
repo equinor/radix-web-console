@@ -1,60 +1,55 @@
-.step__icon {
+.stepIcon {
   fill: var(--eds_interactive_primary__resting);
 }
-.steps-list__step {
+
+.step {
   display: grid;
   gap: 0 var(--eds_spacing_medium);
   grid-template-columns: auto 1fr;
 }
-.steps-list__divider {
+
+.divider {
   justify-items: center;
   grid-template-rows: max-content 1fr;
 }
-.steps-list__divider-line {
+
+.dividerLine {
   border-left: 2px solid var(--eds_interactive_primary__resting);
   height: 100%;
   min-height: var(--eds_spacing_xx_large);
   width: 1px;
   margin: var(--eds_spacing_x_small) 0;
 }
-.steps-list__step--indented {
+
+.indented {
   display: grid;
   gap: 0 var(--eds_spacing_medium);
   grid-template-columns: auto 1fr;
-  margin-left: var(--eds_spacing_x_large); /* or use px value like 24px */
+  margin-left: var(--eds_spacing_x_large);
 }
-.step-summary__content {
+
+.icon {
+  fill: var(--eds_interactive_primary__resting);
+}
+
+.content {
   display: grid;
   gap: var(--eds_spacing_medium);
   grid-template-columns: repeat(auto-fill, 5rem);
 }
-.step-summary__description {
+
+.description {
   display: grid;
   gap: var(--eds_spacing_small);
   grid-auto-rows: max-content;
   grid-column-end: span 4;
   justify-items: start;
 }
-.step-summary__time {
+
+.time {
   display: grid;
   gap: var(--eds_spacing_small);
   grid-auto-rows: max-content;
   grid-template-columns: auto 1fr;
   grid-column-end: span 2;
-}
-
-.rerun-job-content {
-  padding: var(--eds_spacing_medium);
-  padding-top: 0;
-  overflow: auto;
-}
-@media (min-width: 150rem) {
-  .rerun-job-content {
-    margin: auto;
-  }
-}
-
-.rerun-job-options {
-  margin-top: auto;
-  margin-bottom: auto;
 }

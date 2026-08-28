@@ -1,0 +1,21 @@
+.pipelineJobsTable tr th,
+.pipelineJobsTable tr td {
+  padding: var(--eds_spacing_small);
+}
+
+.environments {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 11rem;
+}
+
+.environmentLink {
+  color: var(--eds_interactive_primary__resting);
+  text-decoration: underline;
+}
+
+:not(:last-child).environmentLink::after {
+  content: ",";
+  margin-right: var(--eds_spacing_small);
+}

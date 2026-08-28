@@ -1,16 +1,29 @@
+import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
-import { JobOverview } from '../../components/job-overview'
+import { routes } from '../../router/routes'
 import { withRouteParams } from '../../utils/router'
+import { routeWithParams, smallJobName } from '../../utils/string'
+import { PipelineJobDetails } from './components/PipelineJobDetails'
 
-type Props = {
-  appName: string
-  jobName: string
+interface PipelineJobPageProps {
+  readonly appName: string
+  readonly jobName: string
 }
-function PipelineJobPage({ appName, jobName }: Props) {
+
+const PipelineJobPage = (props: PipelineJobPageProps) => {
+  const { appName, jobName } = props
+
   return (
     <>
       <DocumentTitle title={`Pipeline Job ${jobName}`} />
-      <JobOverview appName={appName} jobName={jobName} />
+      <Breadcrumb
+        links={[
+          { label: appName, to: routeWithParams(routes.app, { appName }) },
+          { label: 'Pipeline Jobs', to: routeWithParams(routes.appJobs, { appName }) },
+          { label: smallJobName(jobName) },
+        ]}
+      />
+      <PipelineJobDetails appName={appName} jobName={jobName} />
     </>
   )
 }
