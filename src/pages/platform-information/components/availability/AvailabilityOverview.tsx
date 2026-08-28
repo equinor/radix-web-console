@@ -1,9 +1,9 @@
-import { CircularProgress, Typography } from '@equinor/eds-core-react'
+import { Button, CircularProgress, Typography } from '@equinor/eds-core-react'
 import { clsx } from 'clsx'
 import { useState } from 'react'
 import { Chart, type ChartWrapperOptions } from 'react-google-charts'
+import { Dialog } from '../../../../components/dialog/Dialog'
 import { ExternalLink } from '../../../../components/link/external-link'
-import { ScrimPopup } from '../../../../components/scrim-popup'
 import { externalUrls } from '../../../../externalUrls'
 import { useGetUptimeQuery } from '../../../../store/uptime-api'
 import { AvailabilityTimeline } from './AvailabilityTimeline'
@@ -12,7 +12,7 @@ import styles from './availabilityOverview.module.css'
 
 export const AvailabilityOverview = () => {
   const { data: uptime, isLoading, isError } = useGetUptimeQuery()
-  const [visibleScrim, setVisibleScrim] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   if (isError) {
     return <Typography>Failed to load chart</Typography>
@@ -39,25 +39,30 @@ export const AvailabilityOverview = () => {
       <AvailabilityTimeline
         availabilitySummary={availability}
         days={dailyAvailability}
-        onViewHistory={() => setVisibleScrim(true)}
+        onViewHistory={() => setIsDialogOpen(true)}
       />
-      <ScrimPopup title="Availability" open={visibleScrim} onClose={() => setVisibleScrim(false)} isDismissable>
-        <div className={clsx('grid grid--gap-medium', styles.chartContainer)}>
-          <Typography>
-            For more information on availability, please check the{' '}
-            <ExternalLink href={externalUrls.uptimeDocs}>documentation</ExternalLink>.
-          </Typography>
 
-          {visibleScrim && (
+      <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} isDismissable width="48rem">
+        <Dialog.Header>Availability History</Dialog.Header>
+        <Dialog.Content>
+          <div className={clsx('grid grid--gap-medium', styles.chartContainer)}>
+            <Typography>
+              For more information on availability, please check the{' '}
+              <ExternalLink href={externalUrls.uptimeDocs}>documentation</ExternalLink>.
+            </Typography>
+
             <Chart
               chartType="SteppedAreaChart"
               className={styles.chartArea}
               data={[['Date', 'Available'], ...data]}
               options={CHART_OPTIONS}
             />
-          )}
-        </div>
-      </ScrimPopup>
+          </div>
+        </Dialog.Content>
+        <Dialog.Actions>
+          <Button onClick={() => setIsDialogOpen(false)}>Close</Button>
+        </Dialog.Actions>
+      </Dialog>
     </>
   )
 }

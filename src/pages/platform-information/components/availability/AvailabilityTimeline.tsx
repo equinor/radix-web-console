@@ -1,4 +1,4 @@
-import { Tooltip, Typography } from '@equinor/eds-core-react'
+import { Button, EdsProvider, Tooltip, Typography } from '@equinor/eds-core-react'
 import { clsx } from 'clsx'
 import type { DailyAvailability, DayStatus } from './availability.types'
 import styles from './availabilityTimeline.module.css'
@@ -33,9 +33,11 @@ export const AvailabilityTimeline = (props: AvailabilityTimelineProps) => {
           Last {days.length} days - Availability: {availabilitySummary.toFixed(2)}%
         </Typography>
         {onViewHistory && (
-          <Typography link onClick={onViewHistory}>
-            View history
-          </Typography>
+          <EdsProvider density="compact">
+            <Button variant="ghost" onClick={onViewHistory} className={styles.viewHistory}>
+              View history
+            </Button>
+          </EdsProvider>
         )}
       </div>
       <div className={styles.bars} role="img" aria-label={`Daily availability for the last ${days.length} days`}>
