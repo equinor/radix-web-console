@@ -19,7 +19,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/cost-api/, '/api/v1'),
       },
-      '/uptime': 'https://uptime.dev.radix.equinor.com',
+      '/uptime/': {
+        target: 'https://uptime.ext-mon.radix.equinor.com',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/uptime/, ''),
+      },
       '/log-api/': {
         target: 'https://server-radix-log-api-qa.dev.radix.equinor.com',
         changeOrigin: true,
