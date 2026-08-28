@@ -21,6 +21,7 @@ import ScheduledBatchPage from '../pages/scheduled-batch/ScheduledBatchPage'
 import ScheduledJobPage from '../pages/scheduled-job/ScheduledJobPage'
 import SessionExpiredPage from '../pages/session-expired/SessionExpiredPage'
 import StepPage from '../pages/step/StepPage'
+import { SupportPage } from '../pages/support/SupportPage'
 import type { RouteTree, StaticRoutes } from './router.types'
 import { buildPathMap } from './routes.utils'
 
@@ -34,6 +35,7 @@ import { buildPathMap } from './routes.utils'
  */
 export const routeTree = [
   { key: 'about', path: 'about', Component: AboutPage },
+  { key: 'support', path: 'support', Component: SupportPage },
   { key: 'sessionExpired', path: 'session-expired', Component: SessionExpiredPage },
   {
     key: 'apps',

@@ -1,4 +1,4 @@
-import { github, info_circle, library_books } from '@equinor/eds-icons'
+import { cloud, info_circle, library_books, support } from '@equinor/eds-icons'
 import { externalUrls } from '../../externalUrls'
 import { routes } from '../../router/routes'
 import type { NavAction } from './globalTopNav.types'
@@ -15,15 +15,17 @@ export const NAV_ACTIONS: readonly NavAction[] = [
   {
     id: 'about',
     label: 'About',
-    icon: info_circle,
+    shortLabel: 'About',
+    icon: cloud,
     href: routes.about,
     isExternal: false,
   },
   {
-    id: 'feedback',
-    label: 'Feedback',
-    icon: github,
-    href: externalUrls.githubIssues,
-    isExternal: true,
+    id: 'support',
+    label: 'Support',
+    shortLabel: 'Support',
+    icon: support,
+    href: routes.support,
+    isExternal: false,
   },
 ] as const
