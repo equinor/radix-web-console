@@ -1,0 +1,24 @@
+.styled_toaster > div > .Toastify__toast-icon > svg[type="info"] {
+  fill: var(--eds_interactive_primary__resting);
+}
+.styled_toaster > div > .Toastify__toast-icon > svg[type="error"] {
+  fill: var(--eds_interactive_danger__text);
+}
+.styled_toaster > div > .Toastify__toast-icon > svg[type="warning"] {
+  fill: var(--eds_interactive_warning__text);
+}
+.styled_toaster > div > .Toastify__toast-icon > svg[type="success"] {
+  fill: var(--eds_interactive_success__text);
+}
+.styled_toaster > .Toastify__progress-bar--info {
+  background: var(--eds_interactive_primary__resting);
+}
+.styled_toaster > .Toastify__progress-bar--error {
+  background: var(--eds_interactive_danger__text);
+}
+.styled_toaster > .Toastify__progress-bar--warning {
+  background: var(--eds_interactive_warning__text);
+}
+.styled_toaster > .Toastify__progress-bar--success {
+  background: var(--eds_interactive_success__text);
+}

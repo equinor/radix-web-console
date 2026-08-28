@@ -1,0 +1,5 @@
+.topNavUserInfo {
+  @media (max-width: 49.99rem) {
+    display: none;
+  }
+}

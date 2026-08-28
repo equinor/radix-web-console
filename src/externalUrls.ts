@@ -4,6 +4,7 @@ import { extractCweNumber } from './utils/cwe'
 export const externalUrls = {
   community: 'https://www.radix.equinor.com/community',
   documentation: 'https://www.radix.equinor.com',
+  githubIssues: 'https://github.com/equinor/radix/issues',
   guideDockerfileComponent: 'https://www.radix.equinor.com/start/config-your-app/#a-dockerfile-per-component',
   guideGettingAccess: 'https://www.radix.equinor.com/start/getting-access/',
   referenceRadixConfig: 'https://www.radix.equinor.com/radix-config',
