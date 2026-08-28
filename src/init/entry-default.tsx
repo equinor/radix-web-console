@@ -1,4 +1,4 @@
-import { PublicClientApplication } from '@azure/msal-browser'
+import { type AccountInfo, EventType, PublicClientApplication } from '@azure/msal-browser'
 import { MsalProvider } from '@azure/msal-react'
 import { Provider } from 'react-redux'
 
@@ -10,7 +10,7 @@ import { setTerminalAuthErrorHandler } from '../store/msal/interactive-auth'
 import store from '../store/store'
 import { msalConfig } from './msal-config'
 
-const msal = new PublicClientApplication(msalConfig)
+const msalInstance = new PublicClientApplication(msalConfig)
 
 // When the session dies, send the user to the session-expired page. Handled
 // centrally here so no data-loading component has to know about session expiry.
@@ -22,26 +22,27 @@ setTerminalAuthErrorHandler(() => {
   router.navigate(routes.sessionExpired, { replace: true })
 })
 
-msal.initialize().then(() => {
-  if (!msal.getActiveAccount() && msal.getAllAccounts().length > 0) {
-    msal.setActiveAccount(msal.getAllAccounts()[0])
+// Listen for sign-in event and set active account.
+msalInstance.addEventCallback((event) => {
+  if (event.eventType === EventType.LOGIN_SUCCESS && event.payload) {
+    msalInstance.setActiveAccount(event.payload as AccountInfo)
   }
-
-  msal
-    .handleRedirectPromise()
-    .then((resp) => {
-      if (resp) {
-        msal.setActiveAccount(resp.account)
-      }
-    })
-    .catch((err) => {
-      console.error(err)
-    })
 })
+
+await msalInstance.initialize()
+
+try {
+  const response = await msalInstance.handleRedirectPromise({ navigateToLoginRequestUrl: false })
+  if (response?.account) {
+    msalInstance.setActiveAccount(response.account)
+  }
+} catch (error) {
+  console.error('MSAL redirect handling failed:', error)
+}
 
 export default (
   <Provider store={store}>
-    <MsalProvider instance={msal}>
+    <MsalProvider instance={msalInstance}>
       <MsalAuthProvider>
         <PageRouter router={router} />
       </MsalAuthProvider>
