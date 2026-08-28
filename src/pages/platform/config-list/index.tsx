@@ -1,7 +1,7 @@
 import { Table, Typography } from '@equinor/eds-core-react'
 import type { FunctionComponent } from 'react'
-import { useGetConfigurationQuery } from '../../store/radix-api'
-import AsyncResource from '../async-resource/async-resource'
+import AsyncResource from '../../../components/async-resource/async-resource'
+import { useGetConfigurationQuery } from '../../../store/radix-api'
 
 const ConfigVariableTableCell: FunctionComponent<{
   value: string[] | unknown
