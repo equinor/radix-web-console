@@ -1,4 +1,4 @@
-import { cloud, info_circle, library_books, support } from '@equinor/eds-icons'
+import { info_circle, library_books, support } from '@equinor/eds-icons'
 import { externalUrls } from '../../externalUrls'
 import { routes } from '../../router/routes'
 import type { NavAction } from './globalTopNav.types'
@@ -13,11 +13,11 @@ export const NAV_ACTIONS: readonly NavAction[] = [
     isExternal: true,
   },
   {
-    id: 'about',
-    label: 'About',
-    shortLabel: 'About',
-    icon: cloud,
-    href: routes.about,
+    id: 'platform',
+    label: 'Platform Information',
+    shortLabel: 'Platform',
+    icon: info_circle,
+    href: routes.platformInformation,
     isExternal: false,
   },
   {

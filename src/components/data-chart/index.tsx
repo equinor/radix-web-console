@@ -34,8 +34,8 @@ export const AvailabilityCharts = () => {
   const availability = (uptime.filter(([_, x]) => x === '1').length / uptime.length) * 100
 
   return (
-    <>
-      <Typography variant="h4">Availability past 30 days</Typography>
+    <div>
+      <Typography>Last 30 days</Typography>
       <div className="chart-percentage" onClick={() => setVisibleScrim(true)}>
         <div className="chart-percentage__ring">
           <CircularProgress variant="determinate" value={Math.min(Math.max(availability, 0), 100)} />
@@ -67,7 +67,7 @@ export const AvailabilityCharts = () => {
           <br />
         </div>
       </ScrimPopup>
-    </>
+    </div>
   )
 }
 

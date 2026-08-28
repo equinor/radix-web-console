@@ -12,6 +12,7 @@ interface SupportSectionProps {
   readonly title: string
   readonly children: ReactNode
 }
+
 const SupportSection = (props: SupportSectionProps) => {
   const { icon, title, children } = props
 
