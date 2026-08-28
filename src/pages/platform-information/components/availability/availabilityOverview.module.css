@@ -1,0 +1,9 @@
+.chartContainer {
+  min-width: 50vw;
+  padding: var(--eds_spacing_small) var(--eds_spacing_medium);
+  grid-template-columns: 100%;
+}
+
+.chartArea {
+  height: 160px;
+}

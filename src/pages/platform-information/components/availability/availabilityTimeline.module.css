@@ -1,0 +1,65 @@
+.timeline {
+  display: grid;
+  gap: var(--eds_spacing_x_small);
+}
+
+.timelineHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--eds_spacing_x_small) var(--eds_spacing_medium);
+  flex-wrap: wrap;
+}
+
+.bars {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 3px;
+  height: 36px;
+}
+
+.bar {
+  border-radius: 2px;
+  background-color: var(--eds_ui_background__medium);
+}
+
+.bar:hover {
+  opacity: 0.7;
+}
+
+.operational {
+  background-color: var(--eds_interactive_success__resting);
+}
+
+/* EDS has no lime/yellow tokens, so the two mid-severity steps are literals on the green→red scale. */
+.good {
+  background-color: #a0c828;
+}
+
+.fair {
+  background-color: #f5c518;
+}
+
+.poor {
+  background-color: var(--eds_interactive_warning__resting);
+}
+
+.critical {
+  background-color: var(--eds_interactive_danger__resting);
+}
+
+.noData {
+  background-color: var(--eds_ui_background__medium);
+}
+
+/* Wrap the 30 bars into two chronological rows on narrow screens. */
+@media (max-width: 40rem) {
+  .bars {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(15, 1fr);
+    grid-auto-rows: 32px;
+    height: auto;
+    gap: 2px;
+  }
+}

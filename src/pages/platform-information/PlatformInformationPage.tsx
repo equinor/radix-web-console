@@ -1,8 +1,8 @@
 import { Typography } from '@equinor/eds-core-react'
 import { clsx } from 'clsx'
-import { AvailabilityCharts } from '../../components/data-chart'
 import { DocumentTitle } from '../../components/document-title'
-import { ConfigList } from './components/ConfigList'
+import { AvailabilityOverview } from './components/availability/AvailabilityOverview'
+import { ConfigList } from './components/config-list/ConfigList'
 import styles from './platformInformationPage.module.css'
 
 export const PlatformInformationPage = () => {
@@ -20,7 +20,7 @@ export const PlatformInformationPage = () => {
             <Typography variant="h4" as="h2">
               Availability
             </Typography>
-            <AvailabilityCharts />
+            <AvailabilityOverview />
           </section>
 
           <section className="grid grid--gap-medium">
