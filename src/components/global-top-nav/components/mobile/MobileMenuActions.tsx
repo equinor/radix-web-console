@@ -12,7 +12,7 @@ interface MobileMenuActionsProps {
 // Same actions as the desktop bar, but shown with icon and full label.
 export const MobileMenuActions = (props: MobileMenuActionsProps) => {
   const { onNavigate } = props
-  const { signIn, signOut } = useAuthActions()
+  const { account, signIn, signOut } = useAuthActions()
 
   const { pathname } = useLocation()
 
@@ -35,6 +35,9 @@ export const MobileMenuActions = (props: MobileMenuActionsProps) => {
         </MobileMenuItem>
       ))}
       <div className={styles.authActions}>
+        <MobileMenuItem>
+          <b>{account?.username}</b>
+        </MobileMenuItem>
         <MobileMenuItem icon={log_in} onClick={() => signIn()}>
           Sign in with a different account
         </MobileMenuItem>

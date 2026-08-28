@@ -2,6 +2,7 @@ import { Button, Card, Icon, Popover, Typography } from '@equinor/eds-core-react
 import { account_circle, log_in, log_out } from '@equinor/eds-icons'
 import { useState } from 'react'
 import { useAuthActions } from '../hooks/useAuthActions'
+import styles from './topNavUserInfo.module.css'
 
 export const TopNavUserInfo = () => {
   const { account, signIn, signOut } = useAuthActions()
@@ -15,6 +16,7 @@ export const TopNavUserInfo = () => {
   return (
     <>
       <Button
+        className={styles.topNavUserInfo}
         variant="ghost"
         ref={setAnchorEl}
         onClick={toggleMenu}
