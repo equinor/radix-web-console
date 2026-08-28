@@ -20,9 +20,9 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const PerfectUptime: Story = {
-  args: { availabilitySummary: 100, days: mockPerfectUptime },
+  args: { days: mockPerfectUptime },
 }
 
 export const MixedUptime: Story = {
-  args: { availabilitySummary: 96.5, days: mockMixedUptime, onViewHistory: () => undefined },
+  args: { days: mockMixedUptime, onViewHistory: () => undefined },
 }

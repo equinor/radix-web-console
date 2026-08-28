@@ -50,3 +50,13 @@ export const getDailyAvailability = (
   }
   return dailyAvailability
 }
+
+/** Mean availability (%) across the days that have samples; 0 when none do. */
+export const getAverageAvailability = (days: ReadonlyArray<DailyAvailability>): number => {
+  const ratedDays = days.filter((day) => day.ratio != null)
+  if (ratedDays.length === 0) {
+    return 0
+  }
+  const totalRatio = ratedDays.reduce((sum, day) => sum + (day.ratio ?? 0), 0)
+  return (totalRatio / ratedDays.length) * 100
+}

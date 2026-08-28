@@ -31,16 +31,11 @@ export const AvailabilityOverview = () => {
   }
 
   const data = uptime.map(([timestamp, available]) => [new Date(timestamp * 1000), Number(available)])
-  const availability = (uptime.filter(([, available]) => available === '1').length / uptime.length) * 100
   const dailyAvailability = getDailyAvailability(uptime)
 
   return (
     <>
-      <AvailabilityTimeline
-        availabilitySummary={availability}
-        days={dailyAvailability}
-        onViewHistory={() => setIsDialogOpen(true)}
-      />
+      <AvailabilityTimeline days={dailyAvailability} onViewHistory={() => setIsDialogOpen(true)} />
 
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} isDismissable width="48rem">
         <Dialog.Header>Availability History</Dialog.Header>

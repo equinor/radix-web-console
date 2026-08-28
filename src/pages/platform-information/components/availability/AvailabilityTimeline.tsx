@@ -1,10 +1,10 @@
 import { Button, EdsProvider, Tooltip, Typography } from '@equinor/eds-core-react'
 import { clsx } from 'clsx'
 import type { DailyAvailability, DayStatus } from './availability.types'
+import { getAverageAvailability } from './availability.utils'
 import styles from './availabilityTimeline.module.css'
 
 interface AvailabilityTimelineProps {
-  readonly availabilitySummary: number
   readonly days: ReadonlyArray<DailyAvailability>
   readonly onViewHistory?: () => void
 }
@@ -24,7 +24,9 @@ const formatDayTitle = (day: DailyAvailability): string => {
 }
 
 export const AvailabilityTimeline = (props: AvailabilityTimelineProps) => {
-  const { availabilitySummary, days, onViewHistory } = props
+  const { days, onViewHistory } = props
+
+  const availabilitySummary = getAverageAvailability(days)
 
   return (
     <div className={styles.timeline}>
