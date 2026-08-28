@@ -51,7 +51,7 @@
 
 /* Only page-center the tabs when the screen is wide enough to spare the room.
  * NB: This min-width is selected based on the current number of clusters, and may need adjustment if the number of clusters changes.
- *     It will not break responsive layout if you forget, but wont look as pretty.
+ *     It will not break responsive layout if you forget, but won't look as pretty.
  */
 @media (min-width: 106rem) {
   .globalTopNav.globalTopNav {
