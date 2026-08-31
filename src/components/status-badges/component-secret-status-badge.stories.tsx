@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { ComponentSecretBadgeTemplates, ComponentSecretStatusBadge } from './component-secret-status-badge'
+import { COMPONENT_SECRET_STATUS_MAP, ComponentSecretStatusBadge } from './component-secret-status-badge'
 
-const statuses = Object.keys(ComponentSecretBadgeTemplates)
+const statuses = Object.keys(COMPONENT_SECRET_STATUS_MAP)
 
 /** Badge that shows the status of a component secret (Consistent, Pending or NotAvailable), falling back to "Unsupported". */
 const meta = {
@@ -16,6 +16,7 @@ const meta = {
 export default meta
 type Story = StoryObj<typeof meta>
 
+/** When a secret has status "Pending", we display it as "Missing" */
 export const Pending: Story = { args: { status: 'Pending' } }
 export const Consistent: Story = { args: { status: 'Consistent' } }
 export const NotAvailable: Story = { args: { status: 'NotAvailable' } }

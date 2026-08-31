@@ -1,11 +1,9 @@
 import { Button, Textarea, Typography } from '@equinor/eds-core-react'
 import { type ChangeEvent, type FunctionComponent, type ReactNode, useState } from 'react'
-
 import type { BuildSecret, ImageHubSecret, Secret } from '../../store/radix-api'
-import { SecretStatus } from '../secret-status'
-
-import { SecretUpdatedBadge } from '../status-badges/secret-updated-badge'
 import './style.css'
+import { ComponentSecretStatusBadge } from '../status-badges'
+import { RelativeToNow } from '../time/relative-to-now'
 
 export const SecretForm: FunctionComponent<{
   secret: Secret | BuildSecret | ImageHubSecret
@@ -35,13 +33,17 @@ export const SecretForm: FunctionComponent<{
 
       <div className="secret-status">
         <Typography>Status</Typography>
-        <SecretStatus status={secret.status} />
+        <ComponentSecretStatusBadge status={secret.status} />
       </div>
 
-      <div className="secret-status">
-        <Typography>Last changed</Typography>
-        <SecretUpdatedBadge updated={updated} />
-      </div>
+      {updated && (
+        <div className="secret-status">
+          <Typography>Last changed:</Typography>
+          <b>
+            <RelativeToNow time={updated} />
+          </b>
+        </div>
+      )}
 
       <div className="secret-overview-form">
         <form>
