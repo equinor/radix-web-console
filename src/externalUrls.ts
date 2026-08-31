@@ -15,6 +15,7 @@ export const externalUrls = {
   alertingGuide: 'https://www.radix.equinor.com/guides/alerting/',
   externalDNSGuide: 'https://www.radix.equinor.com/guides/external-alias/',
   workloadIdentityGuide: 'https://www.radix.equinor.com/guides/workload-identity/',
+  egressConfig: 'https://www.radix.equinor.com/guides/egress-config/',
   uptimeDocs: 'https://radix.equinor.com/start/uptime/',
   resourcesDocs: 'https://radix.equinor.com/guides/resource-request/',
   kubernetesResourcesCpuUnits: 'https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-cpu',

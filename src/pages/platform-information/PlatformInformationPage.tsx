@@ -30,10 +30,10 @@ export const PlatformInformationPage = () => {
               Configuration
             </Typography>
             <Typography>
-              Network and identity details for this platform. Use them when configuring external services, for example,
-              allow-listing the egress IPs in a firewall or{' '}
-              <ExternalLink href={externalUrls.workloadIdentityGuide}>setting up federated credentials</ExternalLink>{' '}
-              with the OIDC issuers .
+              Network and identity details for this platform. Use them when configuring external services, for example,{' '}
+              <ExternalLink href={externalUrls.egressConfig}>allow-listing the egress IPs</ExternalLink> in a firewall
+              or <ExternalLink href={externalUrls.workloadIdentityGuide}>setting up federated credentials</ExternalLink>{' '}
+              with the OIDC issuers.
             </Typography>
             <ConfigList />
           </section>
