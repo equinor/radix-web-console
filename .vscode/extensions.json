@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "streetsidesoftware.code-spell-checker",
-    "biomejs.biome"
+    "biomejs.biome",
+    "vunguyentuan.vscode-css-variables"
   ]
 }

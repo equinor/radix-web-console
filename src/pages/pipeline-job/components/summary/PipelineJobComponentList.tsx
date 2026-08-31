@@ -1,18 +1,20 @@
 import { List, Typography } from '@equinor/eds-core-react'
 import { Link } from 'react-router'
-import { routes } from '../../router/routes'
-import type { DeploymentSummary } from '../../store/radix-api'
-import { routeWithParams } from '../../utils/string'
-import { GitCommitTags } from '../component/git-commit-tags'
-import { DockerImage } from '../docker-image'
+import { GitCommitTags } from '../../../../components/component/git-commit-tags'
+import { DockerImage } from '../../../../components/docker-image'
+import { routes } from '../../../../router/routes'
+import type { DeploymentSummary } from '../../../../store/radix-api'
+import { routeWithParams } from '../../../../utils/string'
 
-type Props = {
-  appName: string
-  deployments: DeploymentSummary[]
-  repository?: string
+interface PipelineJobComponentListProps {
+  readonly appName: string
+  readonly deployments: ReadonlyArray<DeploymentSummary>
+  readonly repository?: string
 }
 
-export const ComponentList = ({ appName, deployments, repository }: Props) => {
+export const PipelineJobComponentList = (props: PipelineJobComponentListProps) => {
+  const { appName, deployments, repository } = props
+
   return (
     <>
       {deployments.some((value) => value.components && value.components.length > 0) && (

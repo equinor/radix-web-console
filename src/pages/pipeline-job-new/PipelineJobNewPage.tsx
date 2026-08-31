@@ -1,7 +1,7 @@
 import { Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { Alert } from '../../components/alert'
 import { Breadcrumb } from '../../components/breadcrumb'
 import CreateJobForm from '../../components/create-job-form'
@@ -32,6 +32,7 @@ interface Props {
 function PipelineJobNewPage({ appName }: Props) {
   const [createdJob, setCreatedJob] = useState<string>()
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const onSuccess = (jobName: string) => {
     setCreatedJob(jobName)
@@ -41,6 +42,7 @@ function PipelineJobNewPage({ appName }: Props) {
       // @ts-expect-error initiate *is* a action, wrong types from redux?
       radixApi.endpoints.getApplicationJobs.initiate({ appName }, { subscribe: false, forceRefetch: true })
     )
+    navigate(routeWithParams(routes.appJob, { appName, jobName }))
   }
 
   return (

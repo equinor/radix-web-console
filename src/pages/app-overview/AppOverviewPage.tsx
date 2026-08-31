@@ -6,7 +6,7 @@ import AsyncResource from '../../components/async-resource/async-resource'
 import { DefaultAppAlias } from '../../components/component/default-app-alias'
 import { DNSAliases } from '../../components/component/dns-aliases'
 import { EnvironmentCardList } from '../../components/environment-card-list/EnvironmentCardList'
-import { JobsList } from '../../components/jobs-list'
+import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
 import { configVariables } from '../../utils/config'
@@ -49,7 +49,7 @@ function AppOverviewPage({ appName }: { appName: string }) {
           {application && <EnvironmentCardList application={application} />}
         </div>
 
-        <JobsList appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
+        <PipelineJobsTable appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>
     </main>
   )

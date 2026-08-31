@@ -4,7 +4,6 @@ import { Link } from 'react-router'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
-import { JobsList } from '../../components/jobs-list'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationJobsQuery } from '../../store/radix-api'
@@ -13,6 +12,7 @@ import { routeWithParams } from '../../utils/string'
 import ApplicationAlerting from './components/ApplicationAlerting'
 
 import './style.css'
+import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
 
 function PipelineJobsPage({ appName }: { appName: string }) {
   const { data: jobs, ...state } = useGetApplicationJobsQuery({ appName }, { skip: !appName, pollingInterval })
@@ -38,7 +38,7 @@ function PipelineJobsPage({ appName }: { appName: string }) {
         </div>
 
         <AsyncResource asyncState={state}>
-          <JobsList appName={appName} jobs={jobs} />
+          <PipelineJobsTable appName={appName} jobs={jobs} />
         </AsyncResource>
       </main>
     </>
