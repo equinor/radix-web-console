@@ -1,6 +1,8 @@
 import { Typography } from '@equinor/eds-core-react'
 import { clsx } from 'clsx'
 import { DocumentTitle } from '../../components/document-title'
+import { ExternalLink } from '../../components/link/external-link'
+import { externalUrls } from '../../externalUrls'
 import { AvailabilityOverview } from './components/availability/AvailabilityOverview'
 import { ConfigList } from './components/config-list/ConfigList'
 import styles from './platformInformationPage.module.css'
@@ -29,7 +31,9 @@ export const PlatformInformationPage = () => {
             </Typography>
             <Typography>
               Network and identity details for this platform. Use them when configuring external services, for example,
-              allow-listing the egress IPs in a firewall or setting up federated credentials with the OIDC issuers.
+              allow-listing the egress IPs in a firewall or{' '}
+              <ExternalLink href={externalUrls.workloadIdentityGuide}>setting up federated credentials</ExternalLink>{' '}
+              with the OIDC issuers .
             </Typography>
             <ConfigList />
           </section>
