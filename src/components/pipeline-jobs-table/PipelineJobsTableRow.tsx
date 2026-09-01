@@ -46,9 +46,9 @@ export const PipelineJobsTableRow = (props: PipelineJobsTableRowProps) => {
       linkLabel={`Open pipeline job ${shortenedJobName}`}
     >
       <NavigableTable.Cell>{shortenedJobName}</NavigableTable.Cell>
-      <NavigableTable.InteractiveCell>
+      <NavigableTable.Cell>
         <TriggeredByCell triggeredBy={job.triggeredBy} />
-      </NavigableTable.InteractiveCell>
+      </NavigableTable.Cell>
       <NavigableTable.Cell>
         {job.started && (
           <>
