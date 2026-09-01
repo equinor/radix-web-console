@@ -15,8 +15,8 @@
   text-decoration: none;
 }
 
-/* Keep interactive cell contents in their own stacking context so they stay
-   independently clickable above the row */
+/* Ensure interactive elements inside the row stay visually above the row when
+   the row is hovered/focused (e.g. focus rings) */
 .row a:not(.rowLink),
 .row button {
   position: relative;
