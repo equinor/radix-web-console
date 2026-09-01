@@ -11,11 +11,10 @@ import { NavigableTableRow } from './NavigableTableRow'
  * `to` destination you give it. It builds on the EDS `Table`, so you put it
  * together the same way.
  *
- * Every row is a real link underneath, so people can tab to it and press Enter,
- * and screen readers announce it properly. There are two ways to keep a cell's
- * contents clickable on top of that link. Plain links and buttons already work
- * on their own. For anything else, or when you would rather be explicit, wrap
- * the contents in `NavigableTable.InteractiveCell`.
+ * Each row exposes a real link (the trailing chevron) for keyboard and screen
+ * readers, and clicking anywhere else on the row navigates there too. Links and
+ * buttons inside a cell keep working on their own — the row leaves their clicks
+ * alone.
  */
 const meta = {
   title: 'Data Display/Navigable Table',
@@ -28,7 +27,6 @@ const meta = {
     'NavigableTable.Foot': NavigableTable.Foot,
     'NavigableTable.Caption': NavigableTable.Caption,
     'NavigableTable.Cell': NavigableTable.Cell,
-    'NavigableTable.InteractiveCell': NavigableTable.InteractiveCell,
   },
   tags: ['autodocs'],
 } satisfies Meta<typeof NavigableTable>
@@ -64,10 +62,9 @@ export const Default: Story = {
 }
 
 /**
- * Two ways to keep a cell's contents clickable on top of the row link. The first
- * row's environment link is a plain `Cell` and works on its own. The second row
- * wraps its Tooltip in `NavigableTable.InteractiveCell`, which you
- * need for other interactive content which is not buttons/links
+ * A cell can hold its own interactive content. Links and buttons keep working on
+ * their own — the row's click handler ignores clicks that land on them, so the
+ * first row's environment link and copy button stay usable alongside the tooltip.
  */
 export const WithInteractiveContent: Story = {
   render: () => (
@@ -91,11 +88,11 @@ export const WithInteractiveContent: Story = {
         <NavigableTable.Row to="/applications/radix-canary-golang" linkLabel="Open radix-canary-golang">
           <NavigableTable.Cell>radix-canary-golang</NavigableTable.Cell>
           <NavigableTable.Cell>Omnia Radix</NavigableTable.Cell>
-          <NavigableTable.InteractiveCell>
+          <NavigableTable.Cell>
             <Tooltip placement="top" title="Tooltip">
               <span>I have a tooltip</span>
             </Tooltip>
-          </NavigableTable.InteractiveCell>
+          </NavigableTable.Cell>
         </NavigableTable.Row>
       </NavigableTable.Body>
     </NavigableTable>
