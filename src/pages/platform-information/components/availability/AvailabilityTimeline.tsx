@@ -42,18 +42,22 @@ export const AvailabilityTimeline = (props: AvailabilityTimelineProps) => {
           </EdsProvider>
         )}
       </div>
-      <div className={styles.bars} role="img" aria-label={`Daily availability for the last ${days.length} days`}>
-        {days.map((day) => (
-          <Tooltip key={day.date.toISOString()} title={formatDayTitle(day)}>
-            <button
-              type="button"
-              tabIndex={0}
-              aria-label={formatDayTitle(day)}
-              className={clsx(styles.bar, STATUS_CLASS[day.status] ?? styles.noData)}
-            />
-          </Tooltip>
-        ))}
-      </div>
+      <ul className={styles.bars} aria-label={`Daily availability for the last ${days.length} days`}>
+        {days.map((day) => {
+          const dayTitle = formatDayTitle(day)
+          return (
+            <li key={day.date.toISOString()}>
+              <Tooltip title={dayTitle}>
+                <button
+                  type="button"
+                  aria-label={dayTitle}
+                  className={clsx(styles.bar, STATUS_CLASS[day.status] ?? styles.noData)}
+                />
+              </Tooltip>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }

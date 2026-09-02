@@ -13,8 +13,8 @@ const ConfigValueList = (props: { value: ConfigValue }) => {
 
   return (
     <>
-      {valueAsList.map((configValue) => (
-        <div key={configValue} className={styles.valueRow}>
+      {valueAsList.map((configValue, index) => (
+        <div key={`${configValue}-${index}`} className={styles.valueRow}>
           <Typography className={styles.value}>{configValue}</Typography>
           <CompactCopyButton content={configValue} size={14} />
         </div>
