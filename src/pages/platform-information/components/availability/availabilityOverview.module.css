@@ -1,0 +1,7 @@
+.chartContainer {
+  grid-template-columns: 100%;
+}
+
+.chartArea {
+  height: 160px;
+}
