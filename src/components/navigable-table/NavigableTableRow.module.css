@@ -8,21 +8,15 @@
   cursor: pointer;
 }
 
-/* The stretched link turns the whole row into one navigation target */
+/* The chevron cell holds the row's real, focusable navigation target */
 .rowLink {
   color: inherit;
   display: inline-flex;
   text-decoration: none;
 }
 
-.rowLink::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
-
-/* Lift every other interactive child above the stretched overlay so it stays
-   independently clickable — removes the usual stretched-link z-index footgun */
+/* Keep interactive cell contents in their own stacking context so they stay
+   independently clickable above the row */
 .row a:not(.rowLink),
 .row button,
 .row .interactive > * {

@@ -15,6 +15,8 @@
   .actions {
     display: flex;
     gap: var(--eds_spacing_small);
+    width: 100%;
+    justify-content: flex-end;
   }
 
   /** Allows custom content to have a medium gap when contentAutoGap is enabled */

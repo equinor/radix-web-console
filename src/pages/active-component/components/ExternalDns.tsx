@@ -1,4 +1,5 @@
 import { Accordion, Button, Checkbox, Textarea, Typography } from '@equinor/eds-core-react'
+import { clsx } from 'clsx'
 import { type ChangeEvent, type FunctionComponent, useState } from 'react'
 import { Alert } from '../../../components/alert'
 import { ExternalDnsAliasHelp } from '../../../components/external-dns-alias-help'
@@ -12,6 +13,7 @@ import {
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../../store/radix-api'
 import { getFetchErrorData } from '../../../store/utils/parse-errors'
+import styles from './ExternalDns.module.css'
 
 type TlsData = {
   certificate?: string
@@ -129,14 +131,14 @@ export const ExternalDNSAccordion: FunctionComponent<{
       </Accordion>
       {selectedExternalDns && (
         <ScrimPopup
-          className="secret-item__scrim"
+          className={styles.scrim}
           title={selectedExternalDns.fqdn}
           open={visibleScrim}
           onClose={() => {
             setVisibleScrim(false)
           }}
         >
-          <div className="secret-item__scrim-content grid grid--gap-large">
+          <div className={clsx(styles.scrimContent, 'grid', 'grid--gap-large')}>
             <Typography>
               Update TLS certificate and private key for <strong>{selectedExternalDns.fqdn}</strong>
             </Typography>

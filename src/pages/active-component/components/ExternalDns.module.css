@@ -1,0 +1,5 @@
+.scrim .scrimContent {
+  margin: var(--eds_spacing_medium);
+  margin-top: initial;
+  min-width: 500px;
+}
