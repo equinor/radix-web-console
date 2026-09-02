@@ -15,7 +15,7 @@ export const AvailabilityOverview = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   if (isError) {
-    return <Typography>Failed to load chart</Typography>
+    return <Typography>Failed to load availability data</Typography>
   }
 
   if (isLoading) {
