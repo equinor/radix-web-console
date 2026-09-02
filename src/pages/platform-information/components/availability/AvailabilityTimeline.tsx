@@ -45,7 +45,12 @@ export const AvailabilityTimeline = (props: AvailabilityTimelineProps) => {
       <div className={styles.bars} role="img" aria-label={`Daily availability for the last ${days.length} days`}>
         {days.map((day) => (
           <Tooltip key={day.date.toISOString()} title={formatDayTitle(day)}>
-            <span className={clsx(styles.bar, STATUS_CLASS[day.status] ?? styles.noData)} />
+            <button
+              type="button"
+              tabIndex={0}
+              aria-label={formatDayTitle(day)}
+              className={clsx(styles.bar, STATUS_CLASS[day.status] ?? styles.noData)}
+            />
           </Tooltip>
         ))}
       </div>
