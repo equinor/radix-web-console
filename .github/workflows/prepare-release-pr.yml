@@ -4,7 +4,7 @@ on:
     branches:
       - master
     tags:
-      - '**'
+      - "**"
   workflow_dispatch:
 
 permissions: {}
@@ -23,4 +23,4 @@ jobs:
       generate-pre-release-pr: true
       cliff-config-path: cliff.toml
       extra-files: |
-        charts/radix-operator/Chart.yaml
+        charts/radix-web-console/Chart.yaml
