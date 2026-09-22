@@ -43,30 +43,18 @@ lint-fix:
 lint-strict:
 	npm run "lint-strict"
 
+.PHONY: helm-lint
+helm-lint:
+	helm lint charts/radix-web-console --values charts/radix-web-console/ci/test-values.yaml
+
+.PHONY: helm-template
+helm-template:
+	helm template radix-web-console charts/radix-web-console --values charts/radix-web-console/ci/test-values.yaml
+
 .PHONY: run
 run:
-	docker compose -f docker-compose.yml up
-
-.PHONY: run-rebuild
-run-rebuild:
 	docker compose -f docker-compose.yml up --build
 
 .PHONY: down
 down:
 	docker compose down
-
-.PHONY: radixconfigs
-radixconfigs: SHELL:=/bin/bash
-radixconfigs:
-	source .env.dev; envsubst < radixconfig.tpl.yaml > radixconfig.dev.yaml
-	source .env.c2; envsubst < radixconfig.tpl.yaml > radixconfig.c2.yaml
-	source .env.c3; envsubst < radixconfig.tpl.yaml > radixconfig.c3.yaml
-	source .env.platform; envsubst < radixconfig.tpl.yaml > radixconfig.platform.yaml
-	source .env.playground; envsubst < radixconfig.tpl.yaml > radixconfig.playground.yaml
-
-.PHONY: generate
-generate: radixconfigs
-
-.PHONY: verify-generate
-verify-generate: generate
-	git diff --exit-code

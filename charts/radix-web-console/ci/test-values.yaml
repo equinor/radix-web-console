@@ -1,0 +1,49 @@
+# Minimal values to lint/render the chart locally and in CI.
+# Not intended for a real deployment.
+config:
+  host: console.dev.radix.equinor.com
+  clusterName: example-01
+  dnsZone: dev.radix.equinor.com
+  clusterType: development
+  environment: qa
+  serviceNowProxyBaseUrl: https://api-radix-servicenow-proxy-qa.example-01.dev.radix.equinor.com/api/v1
+  clusters:
+    Development:
+      href: https://console.dev.radix.equinor.com/
+      baseUrl: dev.radix.equinor.com
+      isDev: true
+    Playground:
+      href: https://console.playground.radix.equinor.com/
+      baseUrl: playground.radix.equinor.com
+      isPlayground: true
+    Platform (North Europe):
+      href: https://console.radix.equinor.com/
+      baseUrl: radix.equinor.com
+    Platform 2 (West Europe):
+      href: https://console.c2.radix.equinor.com/
+      baseUrl: c2.radix.equinor.com
+    Platform 3 (Sweden Central):
+      href: https://console.c3.radix.equinor.com/
+      baseUrl: c3.radix.equinor.com
+
+httproute:
+  enabled: true
+  parentRefs:
+    - name: radix-gateway
+      namespace: istio-system
+      sectionName: https
+  hostnames:
+    - console.dev.radix.equinor.com
+
+autoscaling:
+  enabled: true
+
+podDisruptionBudget:
+  enabled: true
+
+upstreams:
+  apiUrl: https://api.example-01.dev.radix.equinor.com
+  costApiUrl: https://server-radix-cost-allocation-api-qa.example-01.dev.radix.equinor.com/api/v1/
+  logApiUrl: https://server-radix-log-api-qa.example-01.dev.radix.equinor.com/api/v1/
+  scanApiUrl: https://server-radix-vulnerability-scanner-api-qa.example-01.dev.radix.equinor.com/api/v1/
+  uptimeUrl: https://uptime.ext-mon.radix.equinor.com/

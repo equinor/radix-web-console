@@ -1,0 +1,73 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "radix-web-console.fullname" . }}
+  labels:
+    {{- include "radix-web-console.labels" . | nindent 4 }}
+data:
+  # Runtime configuration consumed by the browser at /config/inject-env.js.
+  # Values are rendered by Helm at deploy time (no runtime envsubst).
+  inject-env.js: |
+    window.injectEnv = {
+      RADIX_DNS_ZONE: {{ .Values.config.dnsZone | quote }},
+      RADIX_CLUSTERNAME: {{ .Values.config.clusterName | quote }},
+      RADIX_CLUSTER_TYPE: {{ .Values.config.clusterType | quote }},
+      RADIX_ENVIRONMENT: {{ .Values.config.environment | quote }},
+      OAUTH2_CLIENT_ID: {{ .Values.config.oauth2.clientId | quote }},
+      OAUTH2_AUTHORITY: {{ .Values.config.oauth2.authority | quote }},
+      OAUTH2_KNOWN_AUTHORITIES: {{ .Values.config.oauth2.knownAuthorities | quote }},
+      SERVICENOW_PROXY_SCOPES: {{ .Values.config.serviceNowProxyScopes | quote }},
+      RADIXAPI_SCOPES: {{ .Values.config.radixApiScopes | quote }},
+      SERVICENOW_PROXY_BASEURL: {{ required "config.serviceNowProxyBaseUrl is required" .Values.config.serviceNowProxyBaseUrl | quote }},
+      CMDB_CI_URL: {{ .Values.config.cmdbCiUrl | quote }},
+      CLUSTERS: {{ .Values.config.clusters | toJson | quote }},
+    }
+
+  # nginx server configuration, mounted at /etc/nginx/conf.d/default.conf.
+  # Upstream URLs are rendered by Helm; nginx runtime variables ($uri, $status)
+  # are intentionally left literal.
+  server.conf: |
+    server {
+      large_client_header_buffers 4 32k; # Required for OAuth2 Proxy
+
+      proxy_http_version 2;
+
+      listen 8080;
+
+      root /app;
+      error_page 500 502 503 504 /50x.html;
+
+      gzip on;
+      gzip_types text/css application/javascript image/svg+xml text/plain;
+
+      location /api/ {
+        proxy_buffering off;
+        proxy_pass {{ required "upstreams.apiUrl is required" .Values.upstreams.apiUrl }};
+      }
+
+      location /cost-api/ {
+        proxy_pass {{ required "upstreams.costApiUrl is required" .Values.upstreams.costApiUrl }};
+      }
+
+      location /uptime/ {
+        proxy_pass {{ required "upstreams.uptimeUrl is required" .Values.upstreams.uptimeUrl }};
+      }
+
+      location /log-api/ {
+        proxy_pass {{ required "upstreams.logApiUrl is required" .Values.upstreams.logApiUrl }};
+      }
+
+      location /scan-api/ {
+        proxy_pass {{ required "upstreams.scanApiUrl is required" .Values.upstreams.scanApiUrl }};
+      }
+
+      location / {
+        try_files $uri /index.html;
+      }
+
+      location = /50x.html {
+        root   /usr/share/nginx/html;
+        sub_filter_once on;
+        sub_filter HTTP_STATUS_CODE $status;
+      }
+    }

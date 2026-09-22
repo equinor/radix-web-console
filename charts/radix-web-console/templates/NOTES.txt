@@ -1,0 +1,16 @@
+Radix Web Console has been deployed.
+
+Release:   {{ .Release.Name }}
+Namespace: {{ .Release.Namespace }}
+Image:     {{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}
+
+{{- if .Values.httproute.enabled }}
+
+Reachable via Gateway API HTTPRoute at:
+{{- if .Values.httproute.hostnames }}
+{{- range .Values.httproute.hostnames }}
+  https://{{ . }}/
+{{- end }}
+{{- end }}
+
+{{- end }}
