@@ -76,7 +76,8 @@ jobs:
       contents: write
       packages: write
     env:
-      HELM_CHART_REGISTRY: oci://ghcr.io
+      HELM_REGISTRY: ghcr.io
+      HELM_REPO: oci://ghcr.io/equinor/radix/charts
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install Helm
@@ -87,7 +88,7 @@ jobs:
         run: |
           set -Eeuo pipefail
 
-          helm registry login ${{env.HELM_CHART_REGISTRY }} \
+          helm registry login ${{ env.HELM_REGISTRY }} \
             --username ${{ github.actor }} \
             --password ${{ secrets.GITHUB_TOKEN }}
       - name: Helm package and push
@@ -97,7 +98,7 @@ jobs:
           set -Eeuo pipefail
 
           version=${{ needs.metadata.outputs.version }}
-          helm_repo=${{ env.HELM_CHART_REGISTRY }}/equinor/radix/charts
+          helm_repo=${{ env.HELM_REPO }}
 
           helm package --version $version --app-version $version .
           helm push radix-web-console-$version.tgz $helm_repo
