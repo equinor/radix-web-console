@@ -1,0 +1,136 @@
+# Application configuration, rendered into the mounted ConfigMap (inject-env.js).
+# These values are baked into the config at deploy time.
+config:
+  dnsZone: ""
+  clusterName: ""
+  clusterType: ""
+  environment: prod
+  oauth2:
+    clientId: ""
+    authority: ""
+    knownAuthorities: ""
+  # Space-separated OAuth2 scopes.
+  radixApiScopes: ""
+  serviceNowProxyScopes: ""
+  # ServiceNow proxy base URL (full). Injected where used.
+  serviceNowProxyBaseUrl: ""
+  cmdbCiUrl: ""
+  # JSON string describing selectable clusters shown in the console.
+  clusters: {}
+
+# nginx reverse-proxy upstreams, rendered into the mounted ConfigMap (server.conf).
+upstreams:
+  apiUrl: ""
+  costApiUrl: ""
+  logApiUrl: ""
+  scanApiUrl: ""
+  uptimeUrl: ""
+
+image:
+  repository: ghcr.io/equinor/radix/web-console
+  pullPolicy: IfNotPresent
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+# Additional annotations/labels for the pods.
+podAnnotations: {}
+podLabels: {}
+
+# Pod-level security context. Runs as the unprivileged nginx user (uid/gid 101)
+# baked into the nginxinc/nginx-unprivileged base image.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 101
+  runAsGroup: 101
+  fsGroup: 101
+  seccompProfile:
+    type: RuntimeDefault
+
+# Container-level security context. The root filesystem is read-only; all writable
+# paths are provided via emptyDir volumes (see the Deployment).
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
+
+service:
+  type: ClusterIP
+  port: 8080
+
+# Gateway API HTTPRoute. Alternative to Ingress for clusters using Gateway API.
+httproute:
+  enabled: false
+  parentRefs: []
+  # - name: radix-gateway
+  #   namespace: istio-system
+  #   sectionName: https
+  hostnames: []
+  # Filters applied to the route rule. Defaults to adding the HSTS response header,
+  # matching the Radix-managed route.
+  filters:
+    - type: ResponseHeaderModifier
+      responseHeaderModifier:
+        add:
+          - name: Strict-Transport-Security
+            value: max-age=31536000; includeSubDomains
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 50Mi
+  limits:
+    cpu: 100m
+    memory: 100Mi
+
+# Number of pod replicas. Ignored when autoscaling.enabled is true.
+replicaCount: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# PodDisruptionBudget to keep the console available during voluntary disruptions.
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
+  # maxUnavailable: 1
+
+livenessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 5
+  periodSeconds: 20
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+readinessProbe:
+  httpGet:
+    path: /
+    port: http
+  initialDelaySeconds: 3
+  periodSeconds: 10
+  timeoutSeconds: 3
+  failureThreshold: 3
+
+# Additional volumes and volumeMounts on the Deployment.
+extraVolumes: []
+extraVolumeMounts: []
+
+# Size limit for the writable emptyDir volumes mounted into the read-only container.
+volumeSizeLimit: 10Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+topologySpreadConstraints: []
