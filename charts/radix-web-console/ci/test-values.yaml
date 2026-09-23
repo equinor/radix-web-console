@@ -6,7 +6,10 @@ config:
   dnsZone: dev.radix.equinor.com
   clusterType: development
   environment: qa
+  serviceNowProxyScopes: "api://test-client-id/.default"
   serviceNowProxyBaseUrl: https://api-radix-servicenow-proxy-qa.example-01.dev.radix.equinor.com/api/v1
+  radixApiScopes: "api://test-client-id/.default"
+  cmdbCiUrl: "https://cmdb.example-01.dev.radix.equinor.com/api/v1"
   clusters:
     Development:
       href: https://console.dev.radix.equinor.com/
@@ -25,6 +28,11 @@ config:
     Platform 3 (Sweden Central):
       href: https://console.c3.radix.equinor.com/
       baseUrl: c3.radix.equinor.com
+
+  oauth2:
+    clientId: "test-client-id"
+    authority: "https://login.microsoftonline.com/test-tenant-id"
+    knownAuthorities: "login.microsoftonline.com"
 
 httproute:
   enabled: true

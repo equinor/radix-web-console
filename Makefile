@@ -31,7 +31,7 @@ gen-service-now-api:
 	npm run "apigen:service-now"
 
 .PHONY: lint
-lint:
+lint: helm-lint
 	npm run "lint"
 	npm run "lint-ts"
 
@@ -45,7 +45,7 @@ lint-strict:
 
 .PHONY: helm-lint
 helm-lint:
-	helm lint charts/radix-web-console --values charts/radix-web-console/ci/test-values.yaml
+	helm lint charts/radix-web-console --values ./charts/radix-web-console/ci/test-values.yaml
 
 .PHONY: helm-template
 helm-template:

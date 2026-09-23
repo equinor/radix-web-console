@@ -1,7 +1,7 @@
 # Application configuration, rendered into the mounted ConfigMap (inject-env.js).
 # These values are baked into the config at deploy time.
 config:
-  dnsZone: radix.equinor.com
+  dnsZone: ""
   clusterName: ""
   clusterType: ""
   environment: prod
@@ -16,7 +16,7 @@ config:
   serviceNowProxyBaseUrl: ""
   cmdbCiUrl: ""
   # JSON string describing selectable clusters shown in the console.
-  clusters: ""
+  clusters: {}
 
 # nginx reverse-proxy upstreams, rendered into the mounted ConfigMap (server.conf).
 upstreams:
@@ -24,7 +24,7 @@ upstreams:
   costApiUrl: ""
   logApiUrl: ""
   scanApiUrl: ""
-  uptimeUrl: https://uptime.ext-mon.radix.equinor.com/
+  uptimeUrl: ""
 
 image:
   repository: ghcr.io/equinor/radix/web-console
