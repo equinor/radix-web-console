@@ -8,6 +8,11 @@ spec:
       component: web
       environment: "qa"
   environments:
+    - name: test
+      build:
+        webhookEnabled: false
+        from: "*"
+        fromType: branch
     - name: qa
       build:
         from: master
