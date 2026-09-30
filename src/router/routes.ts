@@ -1,5 +1,4 @@
 import ApplicationLayout from '../layouts/application/ApplicationLayout'
-import AboutPage from '../pages/about/AboutPage'
 import ActiveComponentPage from '../pages/active-component/ActiveComponentPage'
 import ActiveJobComponentPage from '../pages/active-job-component/ActiveJobComponentPage'
 import AppOverviewPage from '../pages/app-overview/AppOverviewPage'
@@ -16,11 +15,13 @@ import PipelineJobPage from '../pages/pipeline-job/PipelineJobPage'
 import PipelineJobNewPage from '../pages/pipeline-job-new/PipelineJobNewPage'
 import PipelineJobsPage from '../pages/pipeline-jobs/PipelineJobsPage'
 import PipelineRunTaskStepPage from '../pages/pipeline-run-task-step/PipelineRunTaskStepPage'
+import { PlatformInformationPage } from '../pages/platform-information/PlatformInformationPage'
 import ReplicaPage from '../pages/replica/ReplicaPage'
 import ScheduledBatchPage from '../pages/scheduled-batch/ScheduledBatchPage'
 import ScheduledJobPage from '../pages/scheduled-job/ScheduledJobPage'
 import SessionExpiredPage from '../pages/session-expired/SessionExpiredPage'
 import StepPage from '../pages/step/StepPage'
+import { SupportPage } from '../pages/support/SupportPage'
 import type { RouteTree, StaticRoutes } from './router.types'
 import { buildPathMap } from './routes.utils'
 
@@ -33,7 +34,8 @@ import { buildPathMap } from './routes.utils'
  * @internal - this constant should not be imported directly, use `routes` instead which includes static routes as well.
  */
 export const routeTree = [
-  { key: 'about', path: 'about', Component: AboutPage },
+  { key: 'platformInformation', path: 'platform-information', Component: PlatformInformationPage },
+  { key: 'support', path: 'support', Component: SupportPage },
   { key: 'sessionExpired', path: 'session-expired', Component: SessionExpiredPage },
   {
     key: 'apps',

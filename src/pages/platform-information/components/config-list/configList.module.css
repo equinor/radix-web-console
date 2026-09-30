@@ -1,0 +1,50 @@
+.configList {
+  margin: 0;
+  display: grid;
+  background-color: var(--eds_ui_background__default);
+  border: 1px solid var(--eds_ui_background__medium);
+  border-radius: var(--eds_spacing_x_small);
+  /* Clip row dividers to the rounded corners. */
+  overflow: hidden;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(10rem, max-content) minmax(0, 1fr);
+  gap: var(--eds_spacing_x_small) var(--eds_spacing_large);
+  padding: var(--eds_spacing_medium) var(--eds_spacing_large);
+  align-items: baseline;
+}
+
+.row:not(:last-child) {
+  border-bottom: 1px solid var(--eds_ui_background__medium);
+}
+
+.definition {
+  margin: 0;
+  display: grid;
+  gap: var(--eds_spacing_x_small);
+}
+
+.valueRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--eds_spacing_small);
+  align-items: start;
+}
+.valueRow:not(:last-child) {
+  margin-bottom: var(--eds_spacing_small);
+}
+
+.value {
+  overflow-wrap: anywhere;
+}
+
+/* Stack label above value once the two-column layout gets too cramped. */
+@media (max-width: 40rem) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: var(--eds_spacing_x_small);
+    padding: var(--eds_spacing_medium);
+  }
+}
