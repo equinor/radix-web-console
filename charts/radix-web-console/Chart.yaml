@@ -1,0 +1,16 @@
+apiVersion: v2
+name: radix-web-console
+description: Radix Web Console - the web UI for the Radix platform, served by nginx.
+type: application
+version: 1.0.0 # x-patch-semver
+appVersion: "1.0.0" # x-patch-semver
+home: https://radix.equinor.com
+icon: https://radix.equinor.com/images/logos/logo.svg
+sources:
+  - https://github.com/equinor/radix-web-console
+maintainers:
+  - name: Equinor Radix
+    url: https://radix.equinor.com
+keywords:
+  - radix
+  - web-console
