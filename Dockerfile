@@ -1,4 +1,4 @@
-FROM docker.io/node:24.19.0-alpine3.24 AS builder
+FROM --platform=$BUILDPLATFORM docker.io/node:24.19.0-alpine3.24 AS builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci --ignore-scripts
