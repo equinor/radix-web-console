@@ -58,7 +58,7 @@ It should be possible to connect to local instances of radix-cost-allocation-api
 
 ## Deploying
 
-The Web Console is a Helm Package. Commits to `master` will trigger a Release PR. Merging any release PR will create a new GitHub Release and build docker containers and package a updated Helm Chart.
+The Web Console is a Helm Package. Commits to `master` will trigger a Release PR. Merging any release PR will create a new GitHub Release and build docker containers and package an updated Helm Chart.
 
 To deploy to production we must update [Flux CD](https://github.com/euqinor/radix-flux), a PR will be updated within minutes with the new version.
 
