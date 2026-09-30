@@ -28,7 +28,6 @@ config:
     # Production:
     #   href: https://console.radix.equinor.com/
     #   baseUrl: radix.equinor.com
-    #   isProd: true
 
 # nginx reverse-proxy upstreams, rendered into the mounted ConfigMap (server.conf).
 upstreams:
