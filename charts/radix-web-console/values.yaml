@@ -17,6 +17,18 @@ config:
   cmdbCiUrl: ""
   # JSON string describing selectable clusters shown in the console.
   clusters: {}
+    # Development:
+    #   href: https://console.dev.radix.equinor.com/
+    #   baseUrl: dev.radix.equinor.com
+    #   isDev: true
+    # Playground:
+    #   href: https://console.playground.radix.equinor.com/
+    #   baseUrl: playground.radix.equinor.com
+    #   isPlayground: true
+    # Production:
+    #   href: https://console.radix.equinor.com/
+    #   baseUrl: radix.equinor.com
+    #   isProd: true
 
 # nginx reverse-proxy upstreams, rendered into the mounted ConfigMap (server.conf).
 upstreams:
