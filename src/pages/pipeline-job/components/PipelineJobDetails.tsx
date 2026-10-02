@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router'
 import AsyncResource from '../../../components/async-resource/async-resource'
 import { routes } from '../../../router/routes'
 import { pollingInterval } from '../../../store/defaults'
-import { radixApi, useGetApplicationJobQuery, useGetApplicationQuery } from '../../../store/radix-api'
+import { useGetApplicationJobQuery, useGetApplicationQuery } from '../../../store/radix-api'
 import { routeWithParams } from '../../../utils/string'
 import { PipelineJobDetailsContent } from './PipelineJobDetailsContent'
 
@@ -28,11 +28,8 @@ export const PipelineJobDetails = (props: PipelineJobDetailsProps) => {
     { skip: !appName || !jobName, pollingInterval: JOB_POLLING_INTERVAL_MS }
   )
 
-  const [fetchAllJobs] = radixApi.endpoints.getApplicationJobs.useLazyQuery()
-
-  const navigateToAllJobs = async () => {
-    await fetchAllJobs({ appName }).unwrap()
-    navigate(routeWithParams(routes.appJobs, { appName }))
+  const navigateToNewJob = async (newJobName: string) => {
+    navigate(routeWithParams(routes.appJob, { appName, jobName: newJobName }))
   }
 
   const repository = application?.registration?.repository
@@ -46,7 +43,7 @@ export const PipelineJobDetails = (props: PipelineJobDetailsProps) => {
           job={job}
           repository={repository}
           onJobChanged={refetchJob}
-          onRerunJob={navigateToAllJobs}
+          onRerunJob={navigateToNewJob}
         />
       </AsyncResource>
     </main>

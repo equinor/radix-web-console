@@ -13,7 +13,7 @@ interface PipelineJobDetailsContentProps {
   readonly job?: Job
   readonly repository?: string
   readonly onJobChanged: () => void
-  readonly onRerunJob: () => void
+  readonly onRerunJob: (newJobName: string) => void
 }
 
 export const PipelineJobDetailsContent = (props: PipelineJobDetailsContentProps) => {

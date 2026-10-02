@@ -9,7 +9,7 @@ interface PipelineJobRerunButtonProps {
   readonly appName: string
   readonly jobName: string
   readonly status: Job['status']
-  readonly onRerun: () => void
+  readonly onRerun: (newJobName: string) => void
 }
 
 /**
@@ -30,12 +30,11 @@ export const PipelineJobRerunButton = (props: PipelineJobRerunButtonProps) => {
   const openConfirmPopup = () => setIsConfirmPopupVisible(true)
   const closeConfirmPopup = () => setIsConfirmPopupVisible(false)
 
-  // TODO: When API returns id for new job, navigate to that job instead of the jobs list.
   const confirmRerun = handlePromiseWithToast(
     async () => {
       closeConfirmPopup()
-      await rerunJob({ appName, jobName }).unwrap()
-      onRerun()
+      const result = await rerunJob({ appName, jobName }).unwrap()
+      onRerun(result.name)
     },
     `Pipeline job '${smallJobName(jobName)}' was successfully rerun.`
   )
