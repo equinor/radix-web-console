@@ -85,6 +85,11 @@ export function RestartJob({
     return null
   }
 
+  // activeTo and activeFrom should always be set, but fallback to 'N/A' if not available as it is not critical for display purposes.
+  const activeFrom = jobDeployment.activeFrom ? formatDateTime(jobDeployment.activeFrom) : 'N/A'
+  const activeTo = jobDeployment.activeTo ? formatDateTime(jobDeployment.activeTo) : 'N/A'
+  const activeDeploymentActiveFrom = activeDeployment?.activeFrom ? formatDateTime(activeDeployment.activeFrom) : 'N/A'
+
   return (
     <div className="restart-job-content">
       {jobDeployment.activeTo && activeDeployment ? (
@@ -99,9 +104,9 @@ export function RestartJob({
               />
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography>
-                  Restart with current job deployment {jobDeployment.name} (active between{' '}
-                  {formatDateTime(jobDeployment.activeFrom)} and {formatDateTime(jobDeployment.activeTo)}).
+                  Restart with current job deployment {jobDeployment.name} (active between {activeFrom} and {activeTo}).
                 </Typography>
+
                 <Typography>
                   Existing job <strong>{jobName}</strong> <br />
                   will be deleted and started again.
@@ -119,8 +124,7 @@ export function RestartJob({
               />
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography className="restart-job-deployment-option">
-                  Create new job with deployment {activeDeployment.name} (active from{' '}
-                  {formatDateTime(activeDeployment.activeFrom)}
+                  Create new job with deployment {activeDeployment.name} (active from {activeDeploymentActiveFrom}
                   ).
                 </Typography>
               </div>
@@ -130,8 +134,7 @@ export function RestartJob({
       ) : (
         <>
           <Typography className="restart-job-deployment-item">
-            The job deployment <strong>{jobDeployment.name}</strong> is <strong>active</strong> (from:{' '}
-            {formatDateTime(jobDeployment.activeFrom)})
+            The job deployment <strong>{jobDeployment.name}</strong> is <strong>active</strong> (from: {activeFrom})
           </Typography>
           <Typography className="restart-job-deployment-item">
             Existing job <strong>{jobName}</strong> <br />

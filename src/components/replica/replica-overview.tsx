@@ -87,7 +87,7 @@ const ContainerDuration = ({ started, ended }: ContainerDurationProps) => {
   )
 }
 
-type ReplicaDurationProps = { created: number | string | Date; ended?: Date }
+type ReplicaDurationProps = { created?: number | string | Date; ended?: Date }
 const ReplicaDuration = ({ created: started, ended }: ReplicaDurationProps) => {
   const [now, setNow] = useState(new Date())
   useInterval(() => setNow(new Date()), 1000)

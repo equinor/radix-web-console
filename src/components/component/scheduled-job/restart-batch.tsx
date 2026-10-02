@@ -88,6 +88,16 @@ export function RestartBatch({
     return null
   }
 
+  // activeTo and activeFrom should always be set, but fallback to 'N/A' if not available as it is not critical for display purposes.
+  const formattedBatchDeploymentActiveFrom = batchDeployment.activeFrom
+    ? formatDateTime(batchDeployment.activeFrom)
+    : 'N/A'
+  const formattedBatchDeploymentActiveTo = batchDeployment.activeTo ? formatDateTime(batchDeployment.activeTo) : 'N/A'
+
+  const formattedActiveDeploymentActiveFrom = activeDeployment?.activeFrom
+    ? formatDateTime(activeDeployment.activeFrom)
+    : 'N/A'
+
   return (
     <div className="restart-job-content">
       {batchDeployment.activeTo && activeDeployment ? (
@@ -103,7 +113,7 @@ export function RestartBatch({
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography>
                   Restart with current batch deployment {batchDeployment.name} (active between{' '}
-                  {formatDateTime(batchDeployment.activeFrom)} and {formatDateTime(batchDeployment.activeTo)}).
+                  {formattedBatchDeploymentActiveFrom} and {formattedBatchDeploymentActiveTo}).
                 </Typography>
                 <Typography>
                   Existing batch jobs <strong>{batchName}</strong> <br />
@@ -123,8 +133,7 @@ export function RestartBatch({
               <div className="grid grid--gap-small restart-job-deployment-option">
                 <Typography className="restart-job-deployment-option">
                   Create new batch with deployment {activeDeployment.name} (active from{' '}
-                  {formatDateTime(activeDeployment.activeFrom)}
-                  ).
+                  {formattedActiveDeploymentActiveFrom}).
                 </Typography>
               </div>
             </div>
@@ -134,7 +143,7 @@ export function RestartBatch({
         <>
           <Typography className="restart-job-deployment-item">
             The batch deployment <strong>{batchDeployment.name}</strong> is <strong>active</strong> (from:{' '}
-            {formatDateTime(batchDeployment.activeFrom)})
+            {formattedBatchDeploymentActiveFrom})
           </Typography>
           <Typography className="restart-job-deployment-item">
             Existing batch jobs <strong>{batchName}</strong> <br />

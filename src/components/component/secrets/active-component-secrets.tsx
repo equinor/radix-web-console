@@ -18,7 +18,7 @@ const secretGrouping = Object.freeze<Array<SecretTableGroup>>([
   {
     title: 'Volume Mounts',
     Component: VolumeMountSecrets,
-    types: ['csi-azure-blob-volume', 'azure-blob-fuse-volume'],
+    types: ['csi-azure-blob-volume'],
   },
   {
     title: 'Key Vaults',
