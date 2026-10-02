@@ -112,7 +112,7 @@ export function getOAuthReplicaUrl(
   envName: string,
   componentName: string,
   replicaName: string,
-  type?: 'oauth' | 'oauth-redis' | '""'
+  type?: 'oauth' | 'oauth-redis' | ''
 ): string {
   return routeWithParams(routes.appOAuthAuxiliaryReplica, {
     appName,

@@ -8,9 +8,6 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: {
-          sshRepo: queryArg.sshRepo,
-        },
       }),
     }),
     registerApplication: build.mutation<RegisterApplicationApiResponse, RegisterApplicationApiArg>({
@@ -1094,8 +1091,6 @@ const injectedRtkApi = api.injectEndpoints({
 export { injectedRtkApi as radixApi };
 export type ShowApplicationsApiResponse = /** status 200 Successful operation */ ApplicationSummary[];
 export type ShowApplicationsApiArg = {
-  /** ssh repo to identify Radix application if exists */
-  sshRepo?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
@@ -2179,7 +2174,7 @@ export type GetTektonPipelineRunTaskStepsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type RerunApplicationJobApiResponse = unknown;
+export type RerunApplicationJobApiResponse = /** status 200 New job summary */ JobSummary;
 export type RerunApplicationJobApiArg = {
   /** name of application */
   appName: string;
@@ -2374,9 +2369,9 @@ export type X509Certificate = {
   /** Issuer contains the distinguished name for the certificate's issuer */
   issuer: string;
   /** NotAfter defines the uppdater date/time validity boundary */
-  notAfter: string;
+  notAfter?: string;
   /** NotBefore defines the lower date/time validity boundary */
-  notBefore: string;
+  notBefore?: string;
   /** Subject contains the distinguished name for the certificate */
   subject: string;
 };
@@ -2449,22 +2444,22 @@ export type Notifications = {
 };
 export type ReplicaStatus = {
   /** Status of the container
-    Pending = Container in Waiting state and the reason is ContainerCreating
-    Starting = Container is starting
-    Failed = Container is failed
-    Failing = Container is failed
-    Running = Container in Running state
-    Succeeded = Container in Succeeded state
-    Stopped = Replica was deleted du to job stopped
-    Terminated = Container in Terminated state
-    Pending Pending  Pending container
-    Failed Failed  Failed container permanently exists in a failed state
-    Failing Failing  Failing container, which can attempt to restart
-    Running Running  Running container
-    Terminated Terminated  Terminated container
-    Starting Starting  Starting container
-    Stopped Stopped  Stopped container
-    Succeeded Succeeded  Succeeded all containers in the pod have voluntarily terminated */
+    - Pending = Container in Waiting state and the reason is ContainerCreating
+    - Starting = Container is starting
+    - Failed = Container is failed
+    - Failing = Container is failed
+    - Running = Container in Running state
+    - Succeeded = Container in Succeeded state
+    - Stopped = Replica was deleted du to job stopped
+    - Terminated = Container in Terminated state
+    Pending Pending container
+    Failed Failed container permanently exists in a failed state
+    Failing Failing container, which can attempt to restart
+    Running Running container
+    Terminated Terminated container
+    Starting Starting container
+    Stopped Stopped container
+    Succeeded Succeeded all containers in the pod have voluntarily terminated */
   status: "Pending" | "Failed" | "Failing" | "Running" | "Terminated" | "Starting" | "Stopped" | "Succeeded";
 };
 export type Resources = {
@@ -2479,7 +2474,7 @@ export type ReplicaSummary = {
   /** Container started timestamp */
   containerStarted?: string;
   /** Created timestamp */
-  created: string;
+  created?: string;
   /** The time at which the batch job's pod finishedAt. */
   endTime?: string;
   /** Exit status from the last termination of the container */
@@ -2501,12 +2496,12 @@ export type ReplicaSummary = {
   /** StatusMessage provides message describing the status of a component container inside a pod */
   statusMessage?: string;
   /** Pod type
-    ComponentReplica = Replica of a Radix component
-    ScheduledJobReplica = Replica of a Radix job-component
-    JobManager = Replica of a Radix job-component scheduler
-    JobManagerAux = Replica of a Radix job-component scheduler auxiliary
-    OAuth2 = Replica of a Radix OAuth2 component
-    Undefined = Replica without defined type - to be extended */
+    - ComponentReplica = Replica of a Radix component
+    - ScheduledJobReplica = Replica of a Radix job-component
+    - JobManager = Replica of a Radix job-component scheduler
+    - JobManagerAux = Replica of a Radix job-component scheduler auxiliary
+    - OAuth2 = Replica of a Radix OAuth2 component
+    - Undefined = Replica without defined type - to be extended */
   type?:
     | "ComponentReplica"
     | "ScheduledJobReplica"
@@ -2519,17 +2514,20 @@ export type ReplicaSummary = {
 export type AuxiliaryResourceDeployment = {
   /** Running replicas of the auxiliary resource's deployment */
   replicaList?: ReplicaSummary[];
-  /** Status of the auxiliary resource's deployment */
+  /** Status of the auxiliary resource's deployment
+    - Consistent: All replicas are running with the desired state
+    - Reconciling: Waiting for new replicas to enter desired state
+    - Stopped: Replica count is set to 0 */
   status: "Stopped" | "Consistent" | "Reconciling";
   /** Name of the auxiliary resource's deployment */
-  type?: "oauth" | "oauth-redis" | '""';
+  type?: "oauth" | "oauth-redis" | "";
 };
 export type OAuth2AuxiliaryResource = {
   /** Deployments describes the underlying Kubernetes deployments for the resource */
   deployments?: AuxiliaryResourceDeployment[];
   identity?: Identity;
   /** SessionStoreType type of session store */
-  sessionStoreType?: "cookie" | "redis" | "systemManaged" | '""';
+  sessionStoreType?: "cookie" | "redis" | "systemManaged" | "";
 };
 export type Port = {
   /** IsPublic indicates that the port is accessible from the Internet by proxying traffic from 443 */
@@ -2565,7 +2563,11 @@ export type Component = {
   nextRun?: string;
   notifications?: Notifications;
   oauth2?: OAuth2AuxiliaryResource;
-  /** Ports defines the port number and protocol that a component is exposed for internally in environment */
+  /** Ports defines the port number and protocol that a component is exposed for internally in environment
+    
+    type: "array"
+    items:
+    "$ref": "#/definitions/Port" */
   ports?: Port[];
   /** Array of ReplicaSummary */
   replicaList?: ReplicaSummary[];
@@ -2583,7 +2585,10 @@ export type Component = {
   secrets?: string[];
   /** SkipDeployment The component should not be deployed, but used existing */
   skipDeployment?: boolean;
-  /** Status of the component */
+  /** Status of the component
+    - Stopped = Component is stopped (no replica)
+    - Consistent = Component is consistent with config
+    - Restarting = User has triggered restart, but this is not reconciled */
   status?: "Stopped" | "Consistent" | "Reconciling" | "Restarting" | "Outdated";
   /** Type of component */
   type: "component" | "job";
@@ -2594,11 +2599,9 @@ export type Component = {
 };
 export type Deployment = {
   /** ActiveFrom Timestamp when the deployment starts (or created) */
-  activeFrom: string;
+  activeFrom?: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
-  /** Name of the branch used to build the deployment */
-  builtFromBranch?: string;
   /** Array of components */
   components?: Component[];
   /** Name of job creating deployment */
@@ -2610,10 +2613,10 @@ export type Deployment = {
   /** GitRef Branch or tag to build from */
   gitRef?: string;
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
+    - branch
+    - tag
+    - <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | "";
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
@@ -2625,10 +2628,10 @@ export type Deployment = {
   /** Repository the GitHub repository that the deployment was built from */
   repository: string;
   /** Status of deployment reconciliation
-    Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
-    Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
-    Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
-    Inactive DeploymentStatusInactive  DeploymentStatusInactive deployment is inactive */
+    Reconciling DeploymentStatusReconciling deployment is not fully reconciled
+    Ready DeploymentStatusReady deployment is reconciled successfully
+    Failed DeploymentStatusFailed deployment reconciliation failed
+    Inactive DeploymentStatusInactive deployment is inactive */
   status: "Reconciling" | "Ready" | "Failed" | "Inactive";
   /** StatusReason contains details when deployment status is Failed */
   statusReason?: string;
@@ -2654,13 +2657,9 @@ export type ComponentSummary = {
 };
 export type DeploymentSummary = {
   /** ActiveFrom Timestamp when the deployment starts (or created) */
-  activeFrom: string;
+  activeFrom?: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
-  /** Name of the branch used to build the deployment */
-  builtFromBranch?: string;
-  /** CommitID the commit ID of the branch to build */
-  commitID?: string;
   /** Array of component summaries */
   components?: ComponentSummary[];
   /** Name of job creating deployment */
@@ -2672,10 +2671,10 @@ export type DeploymentSummary = {
   /** GitRef Branch or tag to build from */
   gitRef?: string;
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
+    - branch
+    - tag
+    - <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | "";
   /** GitTags the git tags that the git commit hash points to */
   gitTags?: string;
   /** Name the unique name of the Radix application deployment */
@@ -2688,10 +2687,10 @@ export type DeploymentSummary = {
   /** RefreshBuildCache forces to rebuild cache when UseBuildCache is true in the RadixApplication or OverrideUseBuildCache is true */
   refreshBuildCache?: boolean | null;
   /** Status of deployment reconciliation
-    Reconciling DeploymentStatusReconciling  DeploymentStatusReconciling deployment is not fully reconciled
-    Ready DeploymentStatusReady  DeploymentStatusReady deployment is reconciled successfully
-    Failed DeploymentStatusFailed  DeploymentStatusFailed deployment reconciliation failed
-    Inactive DeploymentStatusInactive  DeploymentStatusInactive deployment is inactive */
+    Reconciling DeploymentStatusReconciling deployment is not fully reconciled
+    Ready DeploymentStatusReady deployment is reconciled successfully
+    Failed DeploymentStatusFailed deployment reconciliation failed
+    Inactive DeploymentStatusInactive deployment is inactive */
   status: "Reconciling" | "Ready" | "Failed" | "Inactive";
   /** StatusReason contains details when deployment status is Failed */
   statusReason?: string;
@@ -2710,24 +2709,18 @@ export type Secret = {
   /** Resource of the secrets */
   resource?: string;
   /** Status of the secret
-    Pending = Secret exists in Radix config, but not in cluster
-    Consistent = Secret exists in Radix config and in cluster
-    NotAvailable = Secret is available in external secret configuration but not in cluster */
+    - Pending = Secret exists in Radix config, but not in cluster
+    - Consistent = Secret exists in Radix config and in cluster
+    - NotAvailable = Secret is available in external secret configuration but not in cluster */
   status?: "Pending" | "Consistent" | "NotAvailable";
   /** Type of the secret
     generic SecretTypeGeneric
-    azure-blob-fuse-volume SecretTypeAzureBlobFuseVolume
     csi-azure-blob-volume SecretTypeCsiAzureBlobVolume
     csi-azure-key-vault-creds SecretTypeCsiAzureKeyVaultCreds
     csi-azure-key-vault-item SecretTypeCsiAzureKeyVaultItem
     oauth2-proxy SecretTypeOAuth2Proxy */
   type?:
-    | "generic"
-    | "azure-blob-fuse-volume"
-    | "csi-azure-blob-volume"
-    | "csi-azure-key-vault-creds"
-    | "csi-azure-key-vault-item"
-    | "oauth2-proxy";
+    "generic" | "csi-azure-blob-volume" | "csi-azure-key-vault-creds" | "csi-azure-key-vault-item" | "oauth2-proxy";
   /** Updated timestamp of the last change */
   updated?: string;
 };
@@ -2742,9 +2735,9 @@ export type Environment = {
   /** Secrets All secrets in environment */
   secrets?: Secret[];
   /** Status of the environment
-    Pending = Environment exists in Radix config, but not in cluster
-    Consistent = Environment exists in Radix config and in cluster
-    Orphan = Environment does not exist in Radix config, but exists in cluster */
+    - Pending = Environment exists in Radix config, but not in cluster
+    - Consistent = Environment exists in Radix config and in cluster
+    - Orphan = Environment does not exist in Radix config, but exists in cluster */
   status?: "Pending" | "Consistent" | "Orphan";
 };
 export type JobSummary = {
@@ -2756,7 +2749,7 @@ export type JobSummary = {
   /** CommitID the commit ID of the branch to build */
   commitID?: string;
   /** Created timestamp */
-  created: string;
+  created?: string;
   /** DeployExternalDNS deploy external DNS */
   deployExternalDNS?: boolean | null;
   /** Ended timestamp */
@@ -2766,10 +2759,10 @@ export type JobSummary = {
   /** GitRef Branch or tag to build from */
   gitRef?: string;
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
+    - branch
+    - tag
+    - <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | "";
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
@@ -2800,11 +2793,30 @@ export type JobSummary = {
   useBuildCache?: boolean | null;
 };
 export type ApplicationSummary = {
+  adGroups?: string[];
+  adUsers?: string[];
+  /** AppID is the unique identifier for the Radix application. Not to be confused by Configuration Item. */
+  appID?: string;
+  /** CloneURL is the URL of the GitHub repository where the Radix configuration file is located. */
+  cloneURL: string;
+  /** ConfigBranch is the branch in the git repository where the Radix configuration file is located.
+    See https://git-scm.com/docs/git-check-ref-format#_description for more details. */
+  configBranch: string;
+  /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
+    ITIL defines a CI as any component that needs to be managed in order to deliver an IT Service
+    Ref: https://en.wikipedia.org/wiki/Configuration_item */
+  configurationItem?: string;
+  creator?: string;
   /** Environments List of environments for this application */
   environments?: Environment[];
   latestJob?: JobSummary;
   /** Name the name of the application */
   name: string;
+  owner?: string;
+  /** RadixConfigFullName is the full name of the Radix configuration file in the git repository. */
+  radixConfigFullName: string;
+  readerAdGroups?: string[];
+  readerAdUsers?: string[];
 };
 export type ApplicationRegistration = {
   /** AdGroups the groups that should be able to access the application */
@@ -2882,9 +2894,9 @@ export type EnvironmentSummary = {
   /** Name of the environment */
   name: string;
   /** Status of the environment
-    Pending = Environment exists in Radix config, but not in cluster
-    Consistent = Environment exists in Radix config and in cluster
-    Orphan = Environment does not exist in Radix config, but exists in cluster */
+    - Pending = Environment exists in Radix config, but not in cluster
+    - Consistent = Environment exists in Radix config and in cluster
+    - Orphan = Environment does not exist in Radix config, but exists in cluster */
   status?: "Pending" | "Consistent" | "Orphan";
 };
 export type Application = {
@@ -2976,9 +2988,7 @@ export type AlertingConfig = {
 };
 export type UpdateSlackConfigSecrets = {
   /** WebhookURL the Slack webhook URL where alerts are sent
-    Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null
-    
-    required: */
+    Secret key for webhook URL is updated if a non-nil value is present, and deleted if omitted or set to null */
   webhookUrl?: string | null;
 };
 export type UpdateReceiverConfigSecrets = {
@@ -2996,8 +3006,8 @@ export type BuildSecret = {
   /** Name name of the build secret */
   name: string;
   /** Status of the secret
-    Pending = Secret value is not set
-    Consistent = Secret value is set */
+    - Pending = Secret value is not set
+    - Consistent = Secret value is set */
   status?: "Pending" | "Consistent";
   /** Updated when the secret was last changed */
   updated?: string;
@@ -3088,8 +3098,7 @@ export type Node = {
   gpuCount?: string;
 };
 export type ScheduledJobSummary = {
-  /** Timestamp of the job restart, if applied.
-    +optional */
+  /** Timestamp of the job restart, if applied. */
   Restart?: string;
   /** Args to the entrypoint specified for the job. */
   args?: string[];
@@ -3123,14 +3132,14 @@ export type ScheduledJobSummary = {
   /** Started timestamp */
   started?: string;
   /** Status of the job
-    Running ScheduledBatchJobStatusRunning  ScheduledBatchJobStatusRunning Active
-    Succeeded ScheduledBatchJobStatusSucceeded  ScheduledBatchJobStatusSucceeded Job succeeded
-    Failed ScheduledBatchJobStatusFailed  ScheduledBatchJobStatusFailed Job failed
-    Waiting ScheduledBatchJobStatusWaiting  ScheduledBatchJobStatusWaiting Job pending
-    Stopping ScheduledBatchJobStatusStopping  ScheduledBatchJobStatusStopping job is stopping
-    Stopped ScheduledBatchJobStatusStopped  ScheduledBatchJobStatusStopped job stopped
-    Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
-    Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
+    Running ScheduledBatchJobStatusRunning Active
+    Succeeded ScheduledBatchJobStatusSucceeded Job succeeded
+    Failed ScheduledBatchJobStatusFailed Job failed
+    Waiting ScheduledBatchJobStatusWaiting Job pending
+    Stopping ScheduledBatchJobStatusStopping job is stopping
+    Stopped ScheduledBatchJobStatusStopped job stopped
+    Active ScheduledBatchJobStatusActive job, one or more pods are not ready
+    Completed ScheduledBatchJobStatusCompleted batch jobs are completed */
   status: "Running" | "Succeeded" | "Failed" | "Waiting" | "Stopping" | "Stopped" | "Active" | "Completed";
   /** TimeLimitSeconds How long the job supposed to run at maximum */
   timeLimitSeconds?: number;
@@ -3155,14 +3164,14 @@ export type ScheduledBatchSummary = {
   /** Started timestamp */
   started?: string;
   /** Status of the job
-    Running ScheduledBatchJobStatusRunning  ScheduledBatchJobStatusRunning Active
-    Succeeded ScheduledBatchJobStatusSucceeded  ScheduledBatchJobStatusSucceeded Job succeeded
-    Failed ScheduledBatchJobStatusFailed  ScheduledBatchJobStatusFailed Job failed
-    Waiting ScheduledBatchJobStatusWaiting  ScheduledBatchJobStatusWaiting Job pending
-    Stopping ScheduledBatchJobStatusStopping  ScheduledBatchJobStatusStopping job is stopping
-    Stopped ScheduledBatchJobStatusStopped  ScheduledBatchJobStatusStopped job stopped
-    Active ScheduledBatchJobStatusActive  ScheduledBatchJobStatusActive job, one or more pods are not ready
-    Completed ScheduledBatchJobStatusCompleted  ScheduledBatchJobStatusCompleted batch jobs are completed */
+    Running ScheduledBatchJobStatusRunning Active
+    Succeeded ScheduledBatchJobStatusSucceeded Job succeeded
+    Failed ScheduledBatchJobStatusFailed Job failed
+    Waiting ScheduledBatchJobStatusWaiting Job pending
+    Stopping ScheduledBatchJobStatusStopping job is stopping
+    Stopped ScheduledBatchJobStatusStopped job stopped
+    Active ScheduledBatchJobStatusActive job, one or more pods are not ready
+    Completed ScheduledBatchJobStatusCompleted batch jobs are completed */
   status: "Running" | "Succeeded" | "Failed" | "Waiting" | "Stopping" | "Stopped" | "Active" | "Completed";
   /** TotalJobCount count of jobs, requested to be scheduled by a batch */
   totalJobCount: number;
@@ -3173,7 +3182,7 @@ export type ScheduledBatchRequest = {
 };
 export type DeploymentItem = {
   /** ActiveFrom Timestamp when the deployment starts (or created) */
-  activeFrom: string;
+  activeFrom?: string;
   /** ActiveTo Timestamp when the deployment ends */
   activeTo?: string;
   /** GitCommitHash the hash of the git commit from which radixconfig.yaml was parsed */
@@ -3266,7 +3275,11 @@ export type Job = {
   commitID?: string;
   /** Components (array of ComponentSummary) created by the job
     
-    Deprecated: Inspect each deployment to get list of components created by the job */
+    Deprecated: Inspect each deployment to get list of components created by the job
+    
+    type: "array"
+    items:
+    "$ref": "#/definitions/ComponentSummary" */
   components?: ComponentSummary[];
   /** Created timestamp */
   created?: string;
@@ -3274,17 +3287,21 @@ export type Job = {
   deployExternalDNS?: boolean | null;
   /** DeployedToEnvironment the name of the environment that was deployed to */
   deployedToEnvironment?: string;
-  /** Array of deployments */
+  /** Array of deployments
+    
+    type: "array"
+    items:
+    "$ref": "#/definitions/DeploymentSummary" */
   deployments?: DeploymentSummary[];
   /** Ended timestamp */
   ended?: string;
   /** GitRef Branch or tag to build from */
   gitRef?: string;
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
+    - branch
+    - tag
+    - <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | "";
   /** Image tags names for components - if empty will use default logic */
   imageTagNames?: {
     [key: string]: string;
@@ -3309,7 +3326,11 @@ export type Job = {
   started?: string;
   /** Status of the job */
   status?: "Queued" | "Waiting" | "Running" | "Succeeded" | "Failed" | "Stopped" | "Stopping" | "StoppedNoChanges";
-  /** Array of steps */
+  /** Array of steps
+    
+    type: "array"
+    items:
+    "$ref": "#/definitions/Step" */
   steps?: Step[];
   /** TriggeredBy user that triggered the job. If through webhook = sender.login. If through api = usertoken.upn */
   triggeredBy?: string;
@@ -3330,22 +3351,22 @@ export type PipelineRun = {
   /** Started timestamp */
   started?: string;
   /** Status of the step
-    Started TaskRunReasonStarted  TaskRunReasonStarted is the reason set when the TaskRun has just started
-    Running TaskRunReasonRunning  TaskRunReasonRunning is the reason set when the TaskRun is running
-    Succeeded TaskRunReasonSuccessful  TaskRunReasonSuccessful is the reason set when the TaskRun completed successfully
-    Failed TaskRunReasonFailed  TaskRunReasonFailed is the reason set when the TaskRun completed with a failure
-    ToBeRetried TaskRunReasonToBeRetried  TaskRunReasonToBeRetried is the reason set when the last TaskRun execution failed, and will be retried
-    TaskRunCancelled TaskRunReasonCancelled  TaskRunReasonCancelled is the reason set when the TaskRun is cancelled by the user
-    TaskRunTimeout TaskRunReasonTimedOut  TaskRunReasonTimedOut is the reason set when one TaskRun execution has timed out
-    TaskRunImagePullFailed TaskRunReasonImagePullFailed  TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
-    TaskRunResultLargerThanAllowedLimit TaskRunReasonResultLargerThanAllowedLimit  TaskRunReasonResultLargerThanAllowedLimit is the reason set when one of the results exceeds its maximum allowed limit of 1 KB
-    TaskRunStopSidecarFailed TaskRunReasonStopSidecarFailed  TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
-    InvalidParamValue TaskRunReasonInvalidParamValue  TaskRunReasonInvalidParamValue indicates that the TaskRun Param input value is not allowed.
-    TaskRunResolutionFailed TaskRunReasonFailedResolution  TaskRunReasonFailedResolution indicated that the reason for failure status is  that references within the TaskRun could not be resolved
-    TaskRunValidationFailed TaskRunReasonFailedValidation  TaskRunReasonFailedValidation indicated that the reason for failure status is  that taskrun failed runtime validation
-    TaskValidationFailed TaskRunReasonTaskFailedValidation  TaskRunReasonTaskFailedValidation indicated that the reason for failure status is  that task failed runtime validation
-    ResourceVerificationFailed TaskRunReasonResourceVerificationFailed  TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
-    FailureIgnored TaskRunReasonFailureIgnored  TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
+    Started TaskRunReasonStarted is the reason set when the TaskRun has just started
+    Running TaskRunReasonRunning is the reason set when the TaskRun is running
+    Succeeded TaskRunReasonSuccessful is the reason set when the TaskRun completed successfully
+    Failed TaskRunReasonFailed is the reason set when the TaskRun completed with a failure
+    ToBeRetried TaskRunReasonToBeRetried is the reason set when the last TaskRun execution failed, and will be retried
+    TaskRunCancelled TaskRunReasonCancelled is the reason set when the TaskRun is cancelled by the user
+    TaskRunTimeout TaskRunReasonTimedOut is the reason set when one TaskRun execution has timed out
+    TaskRunImagePullFailed TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
+    TaskRunResultLargerThanAllowedLimit TaskRunReasonResultLargerThanAllowedLimit is the reason set when one of the results exceeds its maximum allowed limit of 1 KB
+    TaskRunStopSidecarFailed TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
+    InvalidParamValue TaskRunReasonInvalidParamValue indicates that the TaskRun Param input value is not allowed.
+    TaskRunResolutionFailed TaskRunReasonFailedResolution indicated that the reason for failure status is  that references within the TaskRun could not be resolved
+    TaskRunValidationFailed TaskRunReasonFailedValidation indicated that the reason for failure status is  that taskrun failed runtime validation
+    TaskValidationFailed TaskRunReasonTaskFailedValidation indicated that the reason for failure status is  that task failed runtime validation
+    ResourceVerificationFailed TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
+    FailureIgnored TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
   status?:
     | "Started"
     | "Running"
@@ -3380,17 +3401,17 @@ export type PipelineRunTask = {
   /** Started timestamp */
   started?: string;
   /** Status of the task
-    Started PipelineRunReasonStarted  PipelineRunReasonStarted is the reason set when the PipelineRun has just started
-    Running PipelineRunReasonRunning  PipelineRunReasonRunning is the reason set when the PipelineRun is running
-    Succeeded PipelineRunReasonSuccessful  PipelineRunReasonSuccessful is the reason set when the PipelineRun completed successfully
-    Completed PipelineRunReasonCompleted  PipelineRunReasonCompleted is the reason set when the PipelineRun completed successfully with one or more skipped Tasks
-    Failed PipelineRunReasonFailed  PipelineRunReasonFailed is the reason set when the PipelineRun completed with a failure
-    Cancelled PipelineRunReasonCancelled  PipelineRunReasonCancelled is the reason set when the PipelineRun cancelled by the user  This reason may be found with a corev1.ConditionFalse status, if the cancellation was processed successfully  This reason may be found with a corev1.ConditionUnknown status, if the cancellation is being processed or failed
-    PipelineRunPending PipelineRunReasonPending  PipelineRunReasonPending is the reason set when the PipelineRun is in the pending state
-    PipelineRunTimeout PipelineRunReasonTimedOut  PipelineRunReasonTimedOut is the reason set when the PipelineRun has timed out
-    PipelineRunStopping PipelineRunReasonStopping  PipelineRunReasonStopping indicates that no new Tasks will be scheduled by the controller, and the  pipeline will stop once all running tasks complete their work
-    CancelledRunningFinally PipelineRunReasonCancelledRunningFinally  PipelineRunReasonCancelledRunningFinally indicates that pipeline has been gracefully cancelled  and no new Tasks will be scheduled by the controller, but final tasks are now running
-    StoppedRunningFinally PipelineRunReasonStoppedRunningFinally  PipelineRunReasonStoppedRunningFinally indicates that pipeline has been gracefully stopped  and no new Tasks will be scheduled by the controller, but final tasks are now running
+    Started PipelineRunReasonStarted is the reason set when the PipelineRun has just started
+    Running PipelineRunReasonRunning is the reason set when the PipelineRun is running
+    Succeeded PipelineRunReasonSuccessful is the reason set when the PipelineRun completed successfully
+    Completed PipelineRunReasonCompleted is the reason set when the PipelineRun completed successfully with one or more skipped Tasks
+    Failed PipelineRunReasonFailed is the reason set when the PipelineRun completed with a failure
+    Cancelled PipelineRunReasonCancelled is the reason set when the PipelineRun cancelled by the user  This reason may be found with a corev1.ConditionFalse status, if the cancellation was processed successfully  This reason may be found with a corev1.ConditionUnknown status, if the cancellation is being processed or failed
+    PipelineRunPending PipelineRunReasonPending is the reason set when the PipelineRun is in the pending state
+    PipelineRunTimeout PipelineRunReasonTimedOut is the reason set when the PipelineRun has timed out
+    PipelineRunStopping PipelineRunReasonStopping indicates that no new Tasks will be scheduled by the controller, and the  pipeline will stop once all running tasks complete their work
+    CancelledRunningFinally PipelineRunReasonCancelledRunningFinally indicates that pipeline has been gracefully cancelled  and no new Tasks will be scheduled by the controller, but final tasks are now running
+    StoppedRunningFinally PipelineRunReasonStoppedRunningFinally indicates that pipeline has been gracefully stopped  and no new Tasks will be scheduled by the controller, but final tasks are now running
     CouldntGetPipeline PipelineRunReasonCouldntGetPipeline  ReasonCouldntGetPipeline indicates that the reason for the failure status is that the  associated Pipeline couldn't be retrieved
     InvalidPipelineResourceBindings PipelineRunReasonInvalidBindings  ReasonInvalidBindings indicates that the reason for the failure status is that the  PipelineResources bound in the PipelineRun didn't match those declared in the Pipeline
     InvalidWorkspaceBindings PipelineRunReasonInvalidWorkspaceBinding  ReasonInvalidWorkspaceBinding indicates that a Pipeline expects a workspace but a  PipelineRun has provided an invalid binding.
@@ -3401,7 +3422,7 @@ export type PipelineRunTask = {
     CouldntGetTask PipelineRunReasonCouldntGetTask  ReasonCouldntGetTask indicates that the reason for the failure status is that the  associated Pipeline's Tasks couldn't all be retrieved
     ParameterMissing PipelineRunReasonParameterMissing  ReasonParameterMissing indicates that the reason for the failure status is that the  associated PipelineRun didn't provide all the required parameters
     PipelineValidationFailed PipelineRunReasonFailedValidation  ReasonFailedValidation indicates that the reason for failure status is  that pipelinerun failed runtime validation
-    CouldntGetPipelineResult PipelineRunReasonCouldntGetPipelineResult  PipelineRunReasonCouldntGetPipelineResult indicates that the pipeline fails to retrieve the  referenced result. This could be due to failed TaskRuns or Runs that were supposed to produce  the results
+    CouldntGetPipelineResult PipelineRunReasonCouldntGetPipelineResult indicates that the pipeline fails to retrieve the  referenced result. This could be due to failed TaskRuns or Runs that were supposed to produce  the results
     PipelineInvalidGraph PipelineRunReasonInvalidGraph  ReasonInvalidGraph indicates that the reason for the failure status is that the  associated Pipeline is an invalid graph (a.k.a wrong order, cycle, …)
     PipelineRunCouldntCancel PipelineRunReasonCouldntCancel  ReasonCouldntCancel indicates that a PipelineRun was cancelled but attempting to update  all of the running TaskRuns as cancelled failed.
     PipelineRunCouldntTimeOut PipelineRunReasonCouldntTimeOut  ReasonCouldntTimeOut indicates that a PipelineRun was timed out but attempting to update  all of the running TaskRuns as timed out failed.
@@ -3412,7 +3433,7 @@ export type PipelineRunTask = {
     ResourceVerificationFailed PipelineRunReasonResourceVerificationFailed  ReasonResourceVerificationFailed indicates that the pipeline fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
     CreateRunFailed PipelineRunReasonCreateRunFailed  ReasonCreateRunFailed indicates that the pipeline fails to create the taskrun or other run resources
     CELEvaluationFailed PipelineRunReasonCELEvaluationFailed  ReasonCELEvaluationFailed indicates the pipeline fails the CEL evaluation
-    InvalidParamValue PipelineRunReasonInvalidParamValue  PipelineRunReasonInvalidParamValue indicates that the PipelineRun Param input value is not allowed. */
+    InvalidParamValue PipelineRunReasonInvalidParamValue indicates that the PipelineRun Param input value is not allowed. */
   status?:
     | "Started"
     | "Running"
@@ -3458,22 +3479,22 @@ export type PipelineRunTaskStep = {
   /** Started timestamp */
   started?: string;
   /** Status of the task
-    Started TaskRunReasonStarted  TaskRunReasonStarted is the reason set when the TaskRun has just started
-    Running TaskRunReasonRunning  TaskRunReasonRunning is the reason set when the TaskRun is running
-    Succeeded TaskRunReasonSuccessful  TaskRunReasonSuccessful is the reason set when the TaskRun completed successfully
-    Failed TaskRunReasonFailed  TaskRunReasonFailed is the reason set when the TaskRun completed with a failure
-    ToBeRetried TaskRunReasonToBeRetried  TaskRunReasonToBeRetried is the reason set when the last TaskRun execution failed, and will be retried
-    TaskRunCancelled TaskRunReasonCancelled  TaskRunReasonCancelled is the reason set when the TaskRun is cancelled by the user
-    TaskRunTimeout TaskRunReasonTimedOut  TaskRunReasonTimedOut is the reason set when one TaskRun execution has timed out
-    TaskRunImagePullFailed TaskRunReasonImagePullFailed  TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
-    TaskRunResultLargerThanAllowedLimit TaskRunReasonResultLargerThanAllowedLimit  TaskRunReasonResultLargerThanAllowedLimit is the reason set when one of the results exceeds its maximum allowed limit of 1 KB
-    TaskRunStopSidecarFailed TaskRunReasonStopSidecarFailed  TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
-    InvalidParamValue TaskRunReasonInvalidParamValue  TaskRunReasonInvalidParamValue indicates that the TaskRun Param input value is not allowed.
-    TaskRunResolutionFailed TaskRunReasonFailedResolution  TaskRunReasonFailedResolution indicated that the reason for failure status is  that references within the TaskRun could not be resolved
-    TaskRunValidationFailed TaskRunReasonFailedValidation  TaskRunReasonFailedValidation indicated that the reason for failure status is  that taskrun failed runtime validation
-    TaskValidationFailed TaskRunReasonTaskFailedValidation  TaskRunReasonTaskFailedValidation indicated that the reason for failure status is  that task failed runtime validation
-    ResourceVerificationFailed TaskRunReasonResourceVerificationFailed  TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
-    FailureIgnored TaskRunReasonFailureIgnored  TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
+    Started TaskRunReasonStarted is the reason set when the TaskRun has just started
+    Running TaskRunReasonRunning is the reason set when the TaskRun is running
+    Succeeded TaskRunReasonSuccessful is the reason set when the TaskRun completed successfully
+    Failed TaskRunReasonFailed is the reason set when the TaskRun completed with a failure
+    ToBeRetried TaskRunReasonToBeRetried is the reason set when the last TaskRun execution failed, and will be retried
+    TaskRunCancelled TaskRunReasonCancelled is the reason set when the TaskRun is cancelled by the user
+    TaskRunTimeout TaskRunReasonTimedOut is the reason set when one TaskRun execution has timed out
+    TaskRunImagePullFailed TaskRunReasonImagePullFailed is the reason set when the step of a task fails due to image not being pulled
+    TaskRunResultLargerThanAllowedLimit TaskRunReasonResultLargerThanAllowedLimit is the reason set when one of the results exceeds its maximum allowed limit of 1 KB
+    TaskRunStopSidecarFailed TaskRunReasonStopSidecarFailed indicates that the sidecar is not properly stopped.
+    InvalidParamValue TaskRunReasonInvalidParamValue indicates that the TaskRun Param input value is not allowed.
+    TaskRunResolutionFailed TaskRunReasonFailedResolution indicated that the reason for failure status is  that references within the TaskRun could not be resolved
+    TaskRunValidationFailed TaskRunReasonFailedValidation indicated that the reason for failure status is  that taskrun failed runtime validation
+    TaskValidationFailed TaskRunReasonTaskFailedValidation indicated that the reason for failure status is  that task failed runtime validation
+    ResourceVerificationFailed TaskRunReasonResourceVerificationFailed indicates that the task fails the trusted resource verification,  it could be the content has changed, signature is invalid or public key is invalid
+    FailureIgnored TaskRunReasonFailureIgnored is the reason set when the Taskrun has failed due to pod execution error and the failure is ignored for the owning PipelineRun.  TaskRuns failed due to reconciler/validation error should not use this reason. */
   status?:
     | "Started"
     | "Running"
@@ -3512,10 +3533,10 @@ export type PipelineParametersBuild = {
     REQUIRED for "build" and "build-deploy" pipelines */
   gitRef?: string;
   /** GitRefType When the pipeline job should be built from branch or tag specified in GitRef:
-    branch
-    tag
-    <empty> - either branch or tag */
-  gitRefType?: "branch" | "tag" | '""';
+    - branch
+    - tag
+    - <empty> - either branch or tag */
+  gitRefType?: "branch" | "tag" | "";
   /** ImageTag of the image - if empty will use default logic */
   imageTag?: string;
   /** OverrideUseBuildCache override default or configured build cache option */
@@ -3565,8 +3586,8 @@ export type ImageHubSecret = {
   /** Server name of the image hub */
   server: string;
   /** Status of the secret
-    Pending = Secret value is not set
-    Consistent = Secret value is set */
+    - Pending = Secret value is not set
+    - Consistent = Secret value is set */
   status?: "Pending" | "Consistent";
   /** Updated when the secret was last changed */
   updated?: string;

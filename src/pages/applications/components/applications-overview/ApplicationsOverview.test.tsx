@@ -23,8 +23,11 @@ vi.mock('../../../../store/radix-api', async (importOriginal) => ({
       status: QueryStatus.fulfilled,
       // @ts-expect-error We dont care
       refetch: noop,
-      data: [{ name: 'mock-app-1' }, { name: 'mock-app-2' }],
-      currentData: [{ name: 'mock-app-1' }],
+      data: [
+        { name: 'mock-app-1', cloneURL: '', configBranch: '', radixConfigFullName: '' },
+        { name: 'mock-app-2', cloneURL: '', configBranch: '', radixConfigFullName: '' },
+      ],
+      currentData: [{ name: 'mock-app-1', cloneURL: '', configBranch: '', radixConfigFullName: '' }],
       error: undefined,
       fulfilledTimeStamp: 0,
     }),

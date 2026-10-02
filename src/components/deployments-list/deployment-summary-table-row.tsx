@@ -24,7 +24,6 @@ export const DeploymentSummaryTableRow = ({ appName, deployment, repo, inEnv }: 
     envName: deployment.environment,
   })
 
-  const commitHash = deployment.gitCommitHash || deployment.commitID
   return (
     <Table.Row>
       <Table.Cell>
@@ -39,7 +38,9 @@ export const DeploymentSummaryTableRow = ({ appName, deployment, repo, inEnv }: 
         </Typography>
       </Table.Cell>
       <Table.Cell>
-        <RelativeToNow time={new Date(deployment.activeFrom)} titlePrefix="Start" capitalize />
+        {deployment.activeFrom && (
+          <RelativeToNow time={new Date(deployment.activeFrom)} titlePrefix="Start" capitalize />
+        )}
       </Table.Cell>
       {!inEnv && (
         <>
@@ -59,7 +60,7 @@ export const DeploymentSummaryTableRow = ({ appName, deployment, repo, inEnv }: 
       )}
       <Table.Cell>{deployment.pipelineJobType}</Table.Cell>
       <Table.Cell>
-        <CommitHash commit={commitHash} repo={repo} />
+        <CommitHash commit={deployment.gitCommitHash} repo={repo} />
       </Table.Cell>
       <Table.Cell>
         {deployment.promotedFromEnvironment && (

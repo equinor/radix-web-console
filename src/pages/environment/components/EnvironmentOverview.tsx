@@ -174,7 +174,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                       <Typography>
                         Deployment active since{' '}
                         <strong>
-                          <RelativeToNow time={new Date(deployment.activeFrom)} />
+                          <RelativeToNow time={deployment.activeFrom} />
                         </strong>
                       </Typography>
                       <Typography>
