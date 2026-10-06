@@ -38,6 +38,7 @@ export const DeploymentSummaryTableRow = ({ appName, deployment, repo, inEnv }: 
         </Typography>
       </Table.Cell>
       <Table.Cell>
+        {/* TODO #1422 - deployment.activeFrom could be undefined, resulting in empty cell */}
         {deployment.activeFrom && (
           <RelativeToNow time={new Date(deployment.activeFrom)} titlePrefix="Start" capitalize />
         )}

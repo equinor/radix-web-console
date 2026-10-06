@@ -11,7 +11,7 @@ export const groupDeploymentsByEnvironment = (
   }, {})
 
 export const getDeploymentOptionLabel = (deployment: DeploymentSummary): string => {
-  const formattedActiveFrom = deployment.activeFrom ? formatDateTime(deployment.activeFrom) : 'N/A'
+  const formattedActiveFrom = deployment.activeFrom ? formatDateTime(deployment.activeFrom) : 'N/A' // TODO #1422 - deployment.activeFrom could be undefined, resulting in 'N/A'
   const activity = deployment.activeTo ? `(${formattedActiveFrom})` : '(currently active)'
   const commit = deployment.gitCommitHash ? ` ${smallGithubCommitHash(deployment.gitCommitHash)}` : ''
   const tags = deployment.gitTags ? `, ${deployment.gitTags}` : ''

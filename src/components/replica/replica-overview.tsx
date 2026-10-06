@@ -97,6 +97,7 @@ const ReplicaDuration = ({ created: started, ended }: ReplicaDurationProps) => {
       <Typography>
         Replica created{' '}
         <strong>
+          {/* TODO #1422 - created could be undefined, resulting in empty display */}
           <RelativeToNow time={started} />
         </strong>
       </Typography>

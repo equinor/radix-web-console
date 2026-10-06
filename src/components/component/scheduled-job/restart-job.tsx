@@ -84,8 +84,7 @@ export function RestartJob({
   if (!jobDeployment) {
     return null
   }
-
-  // activeTo and activeFrom should always be set, but fallback to 'N/A' if not available as it is not critical for display purposes.
+  // TODO #1422 - jobDeployment.activeFrom and jobDeployment.activeTo could be undefined, resulting in 'N/A' for display purposes. Do we really want this fallback behavior?
   const activeFrom = jobDeployment.activeFrom ? formatDateTime(jobDeployment.activeFrom) : 'N/A'
   const activeTo = jobDeployment.activeTo ? formatDateTime(jobDeployment.activeTo) : 'N/A'
   const activeDeploymentActiveFrom = activeDeployment?.activeFrom ? formatDateTime(activeDeployment.activeFrom) : 'N/A'

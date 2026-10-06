@@ -16,6 +16,7 @@ import type { FormProp } from './index'
 import { MissingRadixConfigAlert } from './missing-radix-config-alert'
 import { getDeploymentOptionLabel, groupDeploymentsByEnvironment } from './pipeline-form-promote.utils'
 
+// TODO #1422 - deployment.activeFrom could be undefined, resulting in text "Active from " without a date
 const DeploymentActiveStatus = (props: { deployment: DeploymentSummary }) => {
   const { deployment } = props
 
@@ -27,13 +28,16 @@ const DeploymentActiveStatus = (props: { deployment: DeploymentSummary }) => {
       variant="label"
       token={{ color: 'currentColor' }}
     >
-      Active {deployment.activeTo ? 'from' : 'since'} <RelativeToNow time={deployment.activeFrom} />{' '}
-      {deployment.activeTo && (
+      {deployment.activeTo ? (
         <>
-          to <RelativeToNow time={deployment.activeTo} />{' '}
+          Active from <RelativeToNow time={deployment.activeFrom} /> to <RelativeToNow time={deployment.activeTo} /> on
+          environment {deployment.environment}
+        </>
+      ) : (
+        <>
+          Active since <RelativeToNow time={deployment.activeFrom} /> on environment {deployment.environment}
         </>
       )}
-      on environment {deployment.environment}
     </Typography>
   )
 }

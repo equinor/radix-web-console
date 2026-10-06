@@ -88,7 +88,7 @@ export function RestartBatch({
     return null
   }
 
-  // activeTo and activeFrom should always be set, but fallback to 'N/A' if not available as it is not critical for display purposes.
+  // TODO #1422 - dates might be undefined, resulting in 'N/A' for display purposes. Do we really want this fallback behavior?
   const formattedBatchDeploymentActiveFrom = batchDeployment.activeFrom
     ? formatDateTime(batchDeployment.activeFrom)
     : 'N/A'

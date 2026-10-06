@@ -174,6 +174,7 @@ export const EnvironmentOverview = ({ appName, envName }: Props) => {
                       <Typography>
                         Deployment active since{' '}
                         <strong>
+                          {/* TODO #1422 - deployment.activeFrom could be undefined, resulting in empty display */}
                           <RelativeToNow time={deployment.activeFrom} />
                         </strong>
                       </Typography>
