@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "radix-web-console.fullname" . }}
+  labels:
+    {{- include "radix-web-console.labels" . | nindent 4 }}
+data:
+  # Runtime configuration consumed by the browser at /config/inject-env.js.
+  # Values are rendered by Helm at deploy time (no runtime envsubst).
+  inject-env.js: |
+    {{ tpl (.Files.Get "files/inject-env.js") . | nindent 4 }}
+
+  # nginx server configuration, mounted at /etc/nginx/conf.d/default.conf.
+  # Upstream URLs are rendered by Helm; nginx runtime variables ($uri, $status)
+  # are intentionally left literal.
+  server.conf: |-
+    {{ tpl (.Files.Get "files/server.conf") . | nindent 4 }}
