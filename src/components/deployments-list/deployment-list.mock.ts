@@ -46,7 +46,6 @@ export const mockedDeployments: Array<DeploymentSummary> = [
     activeTo: daysAgo(3),
     status: 'Inactive',
     pipelineJobType: 'deploy',
-    commitID: '393cb144cd079886c076285167e23a23c2c783c4',
   },
   // Inactive deployment without a commit hash
   {

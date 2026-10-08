@@ -4,9 +4,14 @@ services:
     container_name: radix-web_container
     read_only: true
     working_dir: /app
-    command: [ "sh", "-c", "npm install --prefer-offline --no-audit --ignore-scripts && chown -R node:node node_modules && npm run dev" ]
+    command:
+      [
+        "sh",
+        "-c",
+        "npm install --prefer-offline --no-audit --ignore-scripts && chown -R node:node node_modules && npm run dev",
+      ]
     environment:
-        - npm_config_proxy=${NPM_PROXY}
+      - npm_config_proxy=${NPM_PROXY}
     volumes:
       - type: bind
         source: .
@@ -24,26 +29,21 @@ services:
       - "9222:9222"
 
   proxy:
-    image: docker.io/nginxinc/nginx-unprivileged:1.31.3-alpine3.24
+    image: docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine3.24
     container_name: radix-proxy_container
     read_only: true
     volumes:
       - type: bind
         source: ./proxy/server.dev.conf
-        target: /default.conf
-      - type: bind
-        source: ./proxy/run_nginx.sh
-        target: /run_nginx.sh
+        target: /etc/nginx/conf.d/default.conf
+        read_only: true
       - type: bind
         source: ./src/inject-env-template.js
         target: /usr/share/nginx/html/inject-env.js
-      - type: volume
-        target: /etc/nginx/conf.d
-        tmpfs: {}
+        read_only: true
       - type: volume
         target: /tmp
         tmpfs: {}
-    command: [ "/bin/sh", "-c", ". run_nginx.sh" ]
     networks:
       - radix
     ports:

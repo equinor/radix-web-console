@@ -8,9 +8,6 @@ const injectedRtkApi = api.injectEndpoints({
           "Impersonate-User": queryArg["Impersonate-User"],
           "Impersonate-Group": queryArg["Impersonate-Group"],
         },
-        params: {
-          sshRepo: queryArg.sshRepo,
-        },
       }),
     }),
     registerApplication: build.mutation<RegisterApplicationApiResponse, RegisterApplicationApiArg>({
@@ -1094,8 +1091,6 @@ const injectedRtkApi = api.injectEndpoints({
 export { injectedRtkApi as radixApi };
 export type ShowApplicationsApiResponse = /** status 200 Successful operation */ ApplicationSummary[];
 export type ShowApplicationsApiArg = {
-  /** ssh repo to identify Radix application if exists */
-  sshRepo?: string;
   /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
   "Impersonate-User"?: string;
   /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
@@ -2798,11 +2793,30 @@ export type JobSummary = {
   useBuildCache?: boolean | null;
 };
 export type ApplicationSummary = {
+  adGroups?: string[];
+  adUsers?: string[];
+  /** AppID is the unique identifier for the Radix application. Not to be confused by Configuration Item. */
+  appID?: string;
+  /** CloneURL is the URL of the GitHub repository where the Radix configuration file is located. */
+  cloneURL: string;
+  /** ConfigBranch is the branch in the git repository where the Radix configuration file is located.
+    See https://git-scm.com/docs/git-check-ref-format#_description for more details. */
+  configBranch: string;
+  /** ConfigurationItem is an identifier for an entity in a configuration management solution such as a CMDB.
+    ITIL defines a CI as any component that needs to be managed in order to deliver an IT Service
+    Ref: https://en.wikipedia.org/wiki/Configuration_item */
+  configurationItem?: string;
+  creator?: string;
   /** Environments List of environments for this application */
   environments?: Environment[];
   latestJob?: JobSummary;
   /** Name the name of the application */
   name: string;
+  owner?: string;
+  /** RadixConfigFullName is the full name of the Radix configuration file in the git repository. */
+  radixConfigFullName: string;
+  readerAdGroups?: string[];
+  readerAdUsers?: string[];
 };
 export type ApplicationRegistration = {
   /** AdGroups the groups that should be able to access the application */
