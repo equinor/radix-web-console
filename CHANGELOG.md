@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.15.0](https://github.com/equinor/radix-web-console/compare/v4.14.0..v4.15.0) - 2026-10-08
+
+### 🚀 Features
+
+- Navigate user to new pipeline job on re-run - ([d0e7d09](https://github.com/equinor/radix-web-console/commit/d0e7d09ffe297938b87c44fc585bb09461436a5d)) by @kristin-pettersen in [#1409](https://github.com/equinor/radix-web-console/pull/1409)
+
+
+### 🐛 Bug Fixes
+
+- Sync api and fix code to match api spec (#1421) - ([71a5fc9](https://github.com/equinor/radix-web-console/commit/71a5fc9ef82351b993527b148b20e8a97c8abb22)) by @kristin-pettersen in [#1421](https://github.com/equinor/radix-web-console/pull/1421)
+
+
+### 📚 Documentation
+
+- Update README.md (#1420) - ([37635be](https://github.com/equinor/radix-web-console/commit/37635be734aae4559bd1296f7bc84cb3b344789d)) by @Richard87 in [#1420](https://github.com/equinor/radix-web-console/pull/1420)
+
+
 ## [4.14.0](https://github.com/equinor/radix-web-console/compare/v4.13.0..v4.14.0) - 2026-09-30
 
 ### 🚀 Features
@@ -227,7 +244,7 @@ All notable changes to this project will be documented in this file.
 
 ## New Contributors ❤️
 
-* @github-actions[bot] made their first contribution in [#1417](https://github.com/equinor/radix-web-console/pull/1417)
+* @github-actions[bot] made their first contribution in [#1415](https://github.com/equinor/radix-web-console/pull/1415)
 * @Richard87 made their first contribution in [#1416](https://github.com/equinor/radix-web-console/pull/1416)
 * @kristin-pettersen made their first contribution in [#1413](https://github.com/equinor/radix-web-console/pull/1413)
 * @herda1 made their first contribution in [#1410](https://github.com/equinor/radix-web-console/pull/1410)
