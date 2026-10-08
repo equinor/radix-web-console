@@ -20,7 +20,7 @@ export interface PublicComponent {
 
 export interface EnvironmentCardActiveDeployment {
   readonly name: string
-  readonly activeFrom: string
+  readonly activeFrom?: string
   readonly url: string
 }
 
