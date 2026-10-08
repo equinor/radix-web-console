@@ -12,7 +12,7 @@ export const SECRET_GROUPING: ReadonlyArray<SecretTableGroup> = Object.freeze([
   {
     title: 'Volume Mounts',
     Component: VolumeMountSecretsTable,
-    types: ['csi-azure-blob-volume', 'azure-blob-fuse-volume'],
+    types: ['csi-azure-blob-volume'],
   },
   {
     title: 'Key Vaults',
