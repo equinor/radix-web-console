@@ -1,4 +1,4 @@
-**PROD** ![prod](https://api.radix.equinor.com/api/v1/applications/radix-web-console/environments/prod/buildstatus)  **QA** ![qa](https://api.radix.equinor.com/api/v1/applications/radix-web-console/environments/qa/buildstatus)     [![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/radix-web-console/badge)](https://developer.equinor.com/governance/scm-policy/)
+[![SCM Compliance](https://scm-compliance-api.radix.equinor.com/repos/equinor/radix-web-console/badge)](https://developer.equinor.com/governance/scm-policy/)
 # Radix Web Console
 
 This is the web frontend for interacting with [Radix](https://www.radix.equinor.com). This document is for developers of the Web Console, or anyone interested in poking around.
@@ -58,39 +58,9 @@ It should be possible to connect to local instances of radix-cost-allocation-api
 
 ## Deploying
 
-The Web Console is a Radix application. Commits to `master` will trigger a build and deployment to the `qa` environment in the cluster *du jour*.
+The Web Console is a Helm Package. Commits to `master` will trigger a Release PR. Merging any release PR will create a new GitHub Release and build docker containers and package an updated Helm Chart.
 
-To deploy to production (`prod` environment) we must merge `master` into the `release` branch. Start by making sure you are on the correct branch:
-
-    git checkout master
-    git pull
-
-The application's version in `package.json` must be incremented. In `master`, type one of the following:
-
-- For small changes and fixes:
-
-      npm version patch
-
-- For new features that do not change URLs:
-
-      npm version minor
-
-- For major UI changes, or **any** URL changes:
-
-      npm version major
-
-Don't forget to push to `master`:
-
-    git push --follow-tags
-
-You can now merge `master` into `release`:
-
-    git checkout release
-    git pull
-    git merge master
-    git push
-
-Radix will build and deploy the new version.
+To deploy to production we must update [Flux CD](https://github.com/euqinor/radix-flux), a PR will be updated within minutes with the new version.
 
 ## Storybook
 

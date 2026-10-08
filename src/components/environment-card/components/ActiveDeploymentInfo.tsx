@@ -20,6 +20,7 @@ export const ActiveDeploymentInfo = (props: { deployment?: EnvironmentCardActive
         {smallDeploymentName(deployment.name)}
       </Typography>{' '}
       <span className={styles.secondaryText}>
+        {/* TODO #1422 - deployment.activeFrom could be undefined, resulting in empty display */}
         (<RelativeToNow time={deployment.activeFrom} titlePrefix="Deployed" capitalize />)
       </span>
     </>

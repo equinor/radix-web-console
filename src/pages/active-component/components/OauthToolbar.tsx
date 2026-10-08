@@ -8,7 +8,7 @@ type Props = {
   appName: string
   envName: string
   componentName: string
-  type?: 'oauth' | 'oauth-redis' | '""'
+  type?: 'oauth' | 'oauth-redis' | ''
   oauth2?: OAuth2AuxiliaryResource
   refetch: () => unknown
 }

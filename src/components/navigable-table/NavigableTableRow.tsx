@@ -34,8 +34,8 @@ export const NavigableTableRow: FunctionComponent<NavigableTableRowProps> = (pro
 
   const handleRowClick = (event: MouseEvent<HTMLTableRowElement>) => {
     const target = event.target as HTMLElement
-    // let interactive children (links, buttons, InteractiveCell content) handle their own clicks
-    if (target.closest(INTERACTIVE_SELECTOR) || target.closest(`.${styles.interactive}`)) return
+    // let interactive children (links, buttons, …) handle their own clicks
+    if (target.closest(INTERACTIVE_SELECTOR)) return
     // don't navigate away while the user is selecting text
     if (window.getSelection()?.toString()) return
     // leave modified clicks (open in new tab/window) to the browser
