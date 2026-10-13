@@ -57,27 +57,6 @@ export const Default: Story = {
   },
 }
 
-export const WithWidth: Story = {
-  args: { open: false, width: '700px' },
-  render: (args) => {
-    const [open, setOpen] = useState(false)
-    return (
-      <>
-        <Button onClick={() => setOpen(true)}> Open dialog</Button>
-        <Dialog {...args} open={open} onClose={() => setOpen(false)}>
-          <Dialog.Header>
-            <Dialog.Title>Dialog title</Dialog.Title>
-          </Dialog.Header>
-          <Dialog.CustomContent>This is the content of the dialog.</Dialog.CustomContent>
-          <Dialog.Actions>
-            <Button onClick={() => setOpen(false)}>Close</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </>
-    )
-  },
-}
-
 export const WithContentAutoGap: Story = {
   args: { open: false, contentAutoGap: true },
   render: (args) => {
@@ -103,7 +82,7 @@ export const WithContentAutoGap: Story = {
 }
 
 export const FullStory: Story = {
-  args: { open: false, width: '600px', contentAutoGap: true },
+  args: { open: false, contentAutoGap: true },
   render: (args) => {
     const [open, setOpen] = useState(false)
     return (

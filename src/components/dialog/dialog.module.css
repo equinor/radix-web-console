@@ -3,12 +3,18 @@
 * Double class to increase specificity and override EDS styles
 */
 .dialog.dialog {
-  --contentWidth: 32rem;
-  width: min(var(--contentWidth), calc(100vw - 2 * var(--eds_spacing_large)));
+  --minContentWidth: 32rem;
+
+  /** Set the width of the dialog, ensuring it doesn't exceed the viewport width minus paddings */
+  width: min(auto, calc(100vw - 2 * var(--eds_spacing_large)));
+
+  /* At least 32rem, but never wider than the viewport */
+  min-width: min(var(--minContentWidth), calc(100vw - 2 * var(--eds_spacing_large)));
 
   /* EDS overwrite: Allows smaller custom content */
   .customContent {
     min-height: 1rem;
+    overflow-y: scroll;
   }
 
   /* EDS overwrite: Add default gap between action buttons */
