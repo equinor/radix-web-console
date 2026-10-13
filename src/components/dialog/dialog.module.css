@@ -4,9 +4,10 @@
 */
 .dialog.dialog {
   --minContentWidth: 32rem;
+  --maxContentWidth: auto;
 
   /** Set the width of the dialog, ensuring it doesn't exceed the viewport width minus paddings */
-  width: min(auto, calc(100vw - 2 * var(--eds_spacing_large)));
+  width: min(var(--maxContentWidth), calc(100vw - 2 * var(--eds_spacing_large)));
 
   /* At least 32rem, but never wider than the viewport */
   min-width: min(var(--minContentWidth), calc(100vw - 2 * var(--eds_spacing_large)));

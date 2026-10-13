@@ -28,6 +28,8 @@ const meta = {
       },
     },
     onClose: { control: false },
+    minWidth: { control: 'text' },
+    maxWidth: { control: 'text' },
   },
 } satisfies Meta<typeof Dialog>
 
@@ -71,6 +73,32 @@ export const WithContentAutoGap: Story = {
           <Dialog.CustomContent>
             <Typography>This is the content of the dialog.</Typography>
             <Typography>It has multiple elements with a consistent gap between them.</Typography>
+          </Dialog.CustomContent>
+          <Dialog.Actions>
+            <Button onClick={() => setOpen(false)}>Close</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </>
+    )
+  },
+}
+
+export const WithCustomWidth: Story = {
+  args: { open: false, minWidth: '48rem', maxWidth: '64rem' },
+  render: (args) => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}> Open dialog</Button>
+        <Dialog {...args} open={open} onClose={() => setOpen(false)}>
+          <Dialog.Header>
+            <Dialog.Title>Dialog title</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.CustomContent>
+            <Typography>
+              This dialog is at least 48rem wide and grows up to 64rem to fit its content. On mobile screens, it will
+              auto-adjust, maintaining usability and readability.
+            </Typography>
           </Dialog.CustomContent>
           <Dialog.Actions>
             <Button onClick={() => setOpen(false)}>Close</Button>

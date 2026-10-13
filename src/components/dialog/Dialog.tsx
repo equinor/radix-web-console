@@ -9,8 +9,14 @@ import { forwardRef } from 'react'
 import styles from './dialog.module.css'
 
 interface DialogRootProps extends DialogProps {
-  /** Allows setting the width of the dialog. Accepts any valid CSS width value. */
-  //   width?: string
+  /**
+   * Maximum width of the dialog. Accepts any valid CSS width value.
+   */
+  maxWidth?: string
+  /**
+   * Minimum width of the dialog. Accepts any valid CSS width value.
+   */
+  minWidth?: string
   /** Enables medium gap between custom content elements when set to true. */
   contentAutoGap?: boolean
 }
@@ -19,12 +25,13 @@ interface DialogRootProps extends DialogProps {
  * It also provides compound components for the dialog's title, header, content, and actions.
  */
 const DialogRoot = forwardRef<HTMLDivElement, DialogRootProps>((props, ref) => {
-  const { className, contentAutoGap, ...restProps } = props
+  const { className, contentAutoGap, maxWidth, minWidth, ...restProps } = props
 
   return (
     <EDSDialog
       ref={ref}
       className={clsx(styles.dialog, { [styles.contentAutoGap]: contentAutoGap }, className)}
+      style={{ '--maxContentWidth': maxWidth, '--minContentWidth': minWidth } as React.CSSProperties}
       {...restProps}
     />
   )
