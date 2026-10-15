@@ -3,6 +3,7 @@ import { useState } from 'react'
 import AsyncResource from '../../../../async-resource/async-resource'
 import { LoadingButton } from '../../../../button/loading-button'
 import { Dialog } from '../../../../dialog/Dialog'
+import { ComponentSecretStatusBadge } from '../../../../status-badges'
 import { RelativeToNow } from '../../../../time/relative-to-now'
 import { useSecret } from './useSecret'
 
@@ -56,7 +57,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
                     Name
                   </Typography>
                   <Typography>
-                    <b>{secret.name}</b>
+                    <b>{secret.displayName}</b>
                   </Typography>
                 </div>
 
@@ -68,6 +69,13 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
                     <RelativeToNow time={secret.updated} />
                   </div>
                 )}
+
+                <div>
+                  <Typography variant="label" group="input" color="var(--eds_text_static_icons__tertiary)">
+                    Status
+                  </Typography>
+                  <ComponentSecretStatusBadge status={secret.status} />
+                </div>
 
                 <Textarea
                   label="Value"
