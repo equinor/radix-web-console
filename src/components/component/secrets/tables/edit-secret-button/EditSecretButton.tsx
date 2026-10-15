@@ -53,7 +53,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
               <>
                 <div>
                   <Typography variant="label" group="input" color="var(--eds_text_static_icons__tertiary)">
-                    Secret Key
+                    Name
                   </Typography>
                   <Typography>
                     <b>{secret.name}</b>
@@ -70,7 +70,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
                 )}
 
                 <Textarea
-                  label="Secret Value"
+                  label="Value"
                   helperText={textAreaHelperText}
                   value={value}
                   onChange={(e) => setValue(e.target.value)}

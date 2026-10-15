@@ -1,5 +1,5 @@
 import { Table } from '@equinor/eds-core-react'
-import { ComponentSecretStatusBadge } from '../../../status-badges'
+import { ComponentSecretStatusBadge, KeyVaultItemStatusBadge } from '../../../status-badges'
 import { useSortedSecrets } from '../useSortedSecrets'
 import { EditSecretButton } from './edit-secret-button/EditSecretButton'
 import type { SecretTableProps } from './secretTables.types'
@@ -28,7 +28,11 @@ export const KeyVaultSecretsTable = (props: SecretTableProps) => {
             <Table.Cell>{getSecretDisplayName(secret)}</Table.Cell>
             <Table.Cell>{secret.resource}</Table.Cell>
             <Table.Cell>
-              <ComponentSecretStatusBadge status={secret.status} />
+              {secret.type === 'csi-azure-key-vault-item' ? (
+                <KeyVaultItemStatusBadge status={secret.status} />
+              ) : (
+                <ComponentSecretStatusBadge status={secret.status} />
+              )}
             </Table.Cell>
             <Table.Cell>
               {secret.type === 'csi-azure-key-vault-item' ? (

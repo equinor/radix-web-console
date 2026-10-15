@@ -49,38 +49,6 @@ export const removeDuplicateBatchVaultItems = (data?: AzureKeyVaultSecretVersion
   )
 
 /**
- * Filters and returns a list of vault items, avoids showing duplicate secrets for job pods with same batchName and version
- */
-export const filterVaultItems = (_data?: AzureKeyVaultSecretVersion[]): AzureKeyVaultSecretVersion[] => {
-  // Temporary mock data for UI development; swap to removeDuplicateBatchVaultItems(data) when ready
-  return [
-    {
-      version: 'tx4vpiye50',
-      batchName: 'abcde',
-      batchCreated: 'Oct 12, 2026 03:24:00',
-      jobName: '',
-      replicaCreated: '',
-      replicaName: '',
-    },
-    {
-      version: 'tx4vpiye50',
-      batchCreated: 'Oct 12, 2026 03:24:00',
-      jobName: 'fghij',
-      jobCreated: 'Oct 12, 2026 03:24:00',
-      replicaCreated: '',
-      replicaName: '',
-    },
-    {
-      version: 'efb4czvti0',
-      replicaName: 'm4al',
-      batchName: '',
-      jobName: '',
-      replicaCreated: 'Oct 11, 2026 03:24:00',
-    },
-  ]
-}
-
-/**
  * Formats the key type into a human-readable string.
  */
 const formatKeyType = (keyType: string) => {

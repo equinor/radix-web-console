@@ -1,14 +1,12 @@
-import { Button, Icon, Table, Typography } from '@equinor/eds-core-react'
-import { info_circle } from '@equinor/eds-icons'
-import { clsx } from 'clsx'
+import { Button, Table, Typography } from '@equinor/eds-core-react'
 import { useState } from 'react'
 import { type Secret, useGetAzureKeyVaultSecretVersionsQuery } from '../../../../../store/radix-api'
 import AsyncResource from '../../../../async-resource/async-resource'
+import { Banner } from '../../../../banner/Banner'
 import { Dialog } from '../../../../dialog/Dialog'
 import { ComponentSecretStatusBadge } from '../../../../status-badges'
 import { Duration } from '../../../../time/duration'
-import styles from './viewAzureKeyVaultItemButton.module.css'
-import { extractKey, filterVaultItems, formatVaultItem } from './viewAzureKeyVaultItemButton.utils'
+import { extractKey, formatVaultItem, removeDuplicateBatchVaultItems } from './viewAzureKeyVaultItemButton.utils'
 
 interface AzureKeyVaultItemProps {
   readonly appName: string
@@ -33,7 +31,7 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
     }
   )
 
-  const filteredData = filterVaultItems(data)
+  const filteredData = removeDuplicateBatchVaultItems(data)
   const formattedData = filteredData.map(formatVaultItem)
 
   const { keyType, key } = extractKey(secret.id)
@@ -61,18 +59,18 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
               <div className="grid grid--same-width-columns">
                 <div>
                   <Typography variant="label" group="input" color="var(--eds_text_static_icons__tertiary)">
-                    Item Type
+                    Name
                   </Typography>
                   <Typography>
-                    <b>{keyType}</b>
+                    <b>{key}</b>
                   </Typography>
                 </div>
                 <div>
                   <Typography variant="label" group="input" color="var(--eds_text_static_icons__tertiary)">
-                    Item Key
+                    Type
                   </Typography>
                   <Typography>
-                    <b>{key}</b>
+                    <b>{keyType}</b>
                   </Typography>
                 </div>
               </div>
@@ -80,12 +78,10 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
                 <Typography variant="label" group="input" color="var(--eds_text_static_icons__tertiary)">
                   Status
                 </Typography>
-                <Typography>
-                  <ComponentSecretStatusBadge status={secret.status} />
-                </Typography>
+                <ComponentSecretStatusBadge status={secret.status} />
               </div>
             </>
-            <div className={clsx(styles.content, 'grid--table-overflow')}>
+            <div className="grid--table-overflow">
               {formattedData?.length > 0 ? (
                 <Table>
                   <Table.Head>
@@ -110,10 +106,9 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
                   </Table.Body>
                 </Table>
               ) : (
-                <div className={styles.contentEmpty}>
-                  <Icon data={info_circle} />
-                  <Typography>No replicas use this key vault item</Typography>
-                </div>
+                <Banner>
+                  <Typography>No replicas use this key vault item.</Typography>
+                </Banner>
               )}
             </div>
           </AsyncResource>

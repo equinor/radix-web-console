@@ -16,6 +16,11 @@
   .customContent {
     min-height: 1rem;
     overflow-y: scroll;
+    /**
+     *    Some EDS components (eg. Textarea) uses outline. If these are places at the bottom of the dialog, the outline might be cut off.
+     *    This ensures that the outline of such components is not cut off.
+     */
+    padding-bottom: 2px;
   }
 
   /* EDS overwrite: Add default gap between action buttons */
