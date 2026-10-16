@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.15.1](https://github.com/equinor/radix-web-console/compare/v4.15.0..v4.15.1) - 2026-10-16
+
+### 🐛 Bug Fixes
+
+- Remove abandond depchecks and replaced with knip (#1432) - ([4d97621](https://github.com/equinor/radix-web-console/commit/4d97621d4ff9421fa3e7491409735aa3e8ba7f09)) by @Richard87 in [#1432](https://github.com/equinor/radix-web-console/pull/1432)
+
+
 ## [4.15.0](https://github.com/equinor/radix-web-console/compare/v4.14.0..v4.15.0) - 2026-10-08
 
 ### 🚀 Features
