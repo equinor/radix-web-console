@@ -136,7 +136,7 @@ Besides the normal optimisations provided by Create React App, the build process
 
 - Linting, using ESLint
 - Dependency license checks, using `license-checker` — configuration in `deps-license-check.js`
-- Stale dependency check, using `depcheck` — configuration in `deps-stale-check.js`
+- Stale dependency check, using `knip` — configuration in `package.json`
 
 The production build is containerised in the project's `Dockerfile`. To run the build image locally:
 

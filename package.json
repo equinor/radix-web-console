@@ -21,7 +21,7 @@
     "lint-ts:watch": "tsc --watch",
     "deps": "npm run deps:license && npm run deps:stale",
     "deps:license": "node scripts/deps-license-check.js",
-    "deps:stale": "node scripts/deps-stale-check.js",
+    "deps:stale": "knip",
     "apigen:cost": "npx @rtk-query/codegen-openapi ./src/store/configs/cost-openapi-config.cts",
     "apigen:log": "npx @rtk-query/codegen-openapi ./src/store/configs/log-openapi-config.cts",
     "apigen:radix": "npx @rtk-query/codegen-openapi ./src/store/configs/radix-openapi-config.cts",
@@ -74,9 +74,9 @@
     "@vitest/browser": "^4.1.12",
     "@vitest/browser-playwright": "4.1.12",
     "@vitest/coverage-v8": "4.1.12",
-    "depcheck": "^1.4.7",
     "fetch-mock": "^12.6.0",
     "jsdom": "^27.4.0",
+    "knip": "^6.41.0",
     "license-checker": "^25.0.1",
     "miragejs": "^0.1.48",
     "mock-socket": "^9.3.1",
@@ -90,6 +90,18 @@
   "jest": {
     "transformIgnorePatterns": [
       "node_modules/(?!@ngrx|(?!deck.gl)|ng-dynamic)"
+    ]
+  },
+  "knip": {
+    "entry": [
+      "src/**/dev.tsx"
+    ],
+    "include": [
+      "dependencies"
+    ],
+    "ignoreDependencies": [
+      "sanitize.css",
+      "ts-node"
     ]
   },
   "browserslist": [
