@@ -3,19 +3,24 @@
 * Double class to increase specificity and override EDS styles
 */
 .dialog.dialog {
-  --minContentWidth: 32rem;
-  --maxContentWidth: auto;
+  /* The dialog never grows wider than the viewport minus a margin on each side */
+  --maxDialogWidth: calc(100vw - 2 * var(--eds_spacing_large));
 
-  /** Set the width of the dialog, ensuring it doesn't exceed the viewport width minus paddings */
-  width: min(var(--maxContentWidth), calc(100vw - 2 * var(--eds_spacing_large)));
+  /* Default: grow to fit content (overrides the fixed EDS width), at least 32rem */
+  width: auto;
+  min-width: min(32rem, var(--maxDialogWidth));
+  max-width: var(--maxDialogWidth);
 
-  /* At least 32rem, but never wider than the viewport */
-  min-width: min(var(--minContentWidth), calc(100vw - 2 * var(--eds_spacing_large)));
+  /* Explicit width set via the `width` prop. Honored exactly, but still capped at the viewport */
+  &.fixedWidth {
+    width: min(var(--dialogWidth), var(--maxDialogWidth));
+    min-width: 0;
+  }
 
   /* EDS overwrite: Allows smaller custom content */
   .customContent {
     min-height: 1rem;
-    overflow-y: scroll;
+    overflow-y: auto;
     /**
      *    Some EDS components (eg. Textarea) uses outline. If these are places at the bottom of the dialog, the outline might be cut off.
      *    This ensures that the outline of such components is not cut off.
