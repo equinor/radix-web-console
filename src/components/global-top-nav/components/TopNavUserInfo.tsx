@@ -13,6 +13,8 @@ export const TopNavUserInfo = () => {
     setIsOpen((prev) => !prev)
   }
 
+  const getUsernameWithoutDomain = (username?: string): string => username?.split('@')[0] ?? ''
+
   return (
     <>
       <Button
@@ -24,8 +26,8 @@ export const TopNavUserInfo = () => {
         aria-expanded={isOpen}
         aria-controls="menu-default"
       >
-        {account?.username}
         <Icon data={account_circle} />
+        {getUsernameWithoutDomain(account?.username)}
       </Button>
       <Popover open={isOpen} anchorEl={anchorEl} placement="bottom-end" onClose={toggleMenu}>
         <Card>
