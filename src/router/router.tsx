@@ -11,6 +11,11 @@ export const router = createBrowserRouter([
       { index: true, element: <Navigate to={routes.apps} replace /> },
       ...buildRouteObjects(routeTree),
       { path: '*', element: <Navigate to={routes.apps} replace /> },
+      /** Redirect /about to the platform information page to keep old url working */
+      {
+        path: '/about',
+        element: <Navigate to={routes.platformInformation} replace />,
+      },
     ],
   },
 ])

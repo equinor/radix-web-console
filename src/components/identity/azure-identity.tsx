@@ -64,7 +64,7 @@ export const AzureIdentity: FunctionComponent<AzureIdentityProps> = ({
       </div>
       <div>
         <Typography group="input" variant="label">
-          Cluster Issuer URLs
+          OIDC Issuer URLs
         </Typography>
         <div className="grid grid--gap-small">
           {oidcIssuerUrls.map((url) => (

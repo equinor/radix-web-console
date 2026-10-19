@@ -1,0 +1,19 @@
+/** Specifier hack */
+.page.page {
+  margin-top: var(--eds_spacing_x_large);
+
+  .content {
+    max-width: var(--layout-max-width-single-col);
+  }
+  .intro {
+    margin-bottom: var(--eds_spacing_small);
+  }
+
+  .sectionContent {
+    margin-left: var(--eds_spacing_x_large);
+  }
+
+  svg {
+    fill: var(--eds_interactive_primary__resting);
+  }
+}
