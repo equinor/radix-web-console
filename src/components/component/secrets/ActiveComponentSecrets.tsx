@@ -70,7 +70,7 @@ export const ActiveComponentSecrets = (props: ActiveComponentSecretsProps) => {
                 ))}
               </div>
             ) : (
-              <Typography>This component has no secrets</Typography>
+              <Typography>This component has no secrets.</Typography>
             )}
           </AsyncResource>
         </Accordion.Panel>

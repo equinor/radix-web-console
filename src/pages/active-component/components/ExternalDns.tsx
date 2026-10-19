@@ -13,7 +13,7 @@ import {
   useUpdateComponentExternalDnsTlsMutation,
 } from '../../../store/radix-api'
 import { getFetchErrorData } from '../../../store/utils/parse-errors'
-import styles from './ExternalDns.module.css'
+import styles from './externalDns.module.css'
 
 type TlsData = {
   certificate?: string

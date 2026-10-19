@@ -51,6 +51,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
 
   const displayName = getSecretDisplayName(secret)
   const isSaveDisabled = !value.length
+  // When the secret already has a value, inform the user that updating it will overwrite the existing value.
   const textAreaHelperText = secret.status === 'Consistent' ? 'Existing value will be overwritten' : undefined
 
   return (

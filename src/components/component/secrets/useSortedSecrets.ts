@@ -4,10 +4,10 @@ import { dataSorter, type SortDirection, sortCompareString } from '../../../util
 import { getSecretDisplayName } from './tables/secretTables.utils'
 
 export function useSortedSecrets(
-  secrets: Array<Secret>,
+  secrets: ReadonlyArray<Secret>,
   nameSort?: SortDirection,
   resourceSort?: SortDirection
-): Array<Secret> {
+): ReadonlyArray<Secret> {
   return useMemo(
     () =>
       dataSorter(secrets, [

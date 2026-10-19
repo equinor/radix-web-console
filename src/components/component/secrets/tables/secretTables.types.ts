@@ -2,21 +2,21 @@ import type { ReactNode } from 'react'
 import type { Secret } from '../../../../store/radix-api'
 
 export interface SecretTableProps {
-  appName: string
-  componentName: string
-  envName: string
-  secrets: Array<Secret>
+  readonly appName: string
+  readonly componentName: string
+  readonly envName: string
+  readonly secrets: ReadonlyArray<Secret>
 }
 
 export interface SecretTable {
-  title: string
-  Component: (props: SecretTableProps) => ReactNode
+  readonly title: string
+  readonly Component: (props: SecretTableProps) => ReactNode
 }
 
 export interface SecretTableGroup extends SecretTable {
-  types: Array<Secret['type']>
+  readonly types: Array<Secret['type']>
 }
 
 export interface SecretTableItem extends SecretTable {
-  secrets: Array<Secret>
+  readonly secrets: Array<Secret>
 }
