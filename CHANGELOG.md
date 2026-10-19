@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.16.0](https://github.com/equinor/radix-web-console/compare/v4.15.0..v4.16.0) - 2026-10-19
+
+### 🚀 Features
+
+- Improvements top navigation  - ([0232414](https://github.com/equinor/radix-web-console/commit/023241443b4a957b7d36dc7dcf68744ae1768426)) by @kristin-pettersen in [#1404](https://github.com/equinor/radix-web-console/pull/1404)
+
+
+### 🐛 Bug Fixes
+
+- Remove abandond depchecks and replaced with knip (#1432) - ([4d97621](https://github.com/equinor/radix-web-console/commit/4d97621d4ff9421fa3e7491409735aa3e8ba7f09)) by @Richard87 in [#1432](https://github.com/equinor/radix-web-console/pull/1432)
+
+- Shorten username to improve top navigation - ([22249ad](https://github.com/equinor/radix-web-console/commit/22249adc00cd36258693ee9237833b489d6ca801)) by @kristin-pettersen in [#1437](https://github.com/equinor/radix-web-console/pull/1437)
+
+
 ## [4.15.0](https://github.com/equinor/radix-web-console/compare/v4.14.0..v4.15.0) - 2026-10-08
 
 ### 🚀 Features
