@@ -29,12 +29,7 @@ export const GenericSecretsTable = (props: SecretTableProps) => {
               <ComponentSecretStatusBadge status={secret.status} />
             </Table.Cell>
             <Table.Cell>
-              <EditSecretButton
-                appName={appName}
-                componentName={componentName}
-                envName={envName}
-                secretName={secret.name}
-              />
+              <EditSecretButton appName={appName} componentName={componentName} envName={envName} secret={secret} />
             </Table.Cell>
           </Table.Row>
         ))}

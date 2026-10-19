@@ -26,7 +26,7 @@ interface ComponentSecretStatusBadgeProps {
 }
 
 export const ComponentSecretStatusBadge = ({ status }: ComponentSecretStatusBadgeProps) => {
-  const props = status ? COMPONENT_SECRET_STATUS_MAP[status] : UNSUPPORTED_STATUS
+  const props = status ? (COMPONENT_SECRET_STATUS_MAP[status] ?? UNSUPPORTED_STATUS) : UNSUPPORTED_STATUS
 
   return <StatusBadgeTemplate {...props} />
 }

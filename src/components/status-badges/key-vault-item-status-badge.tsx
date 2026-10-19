@@ -26,7 +26,7 @@ interface KeyVaultItemStatusBadgeProps {
 }
 
 export const KeyVaultItemStatusBadge = ({ status }: KeyVaultItemStatusBadgeProps) => {
-  const props = status ? KEY_VAULT_ITEM_STATUS_MAP[status] : UNSUPPORTED_STATUS
+  const props = status ? (KEY_VAULT_ITEM_STATUS_MAP[status] ?? UNSUPPORTED_STATUS) : UNSUPPORTED_STATUS
 
   return <StatusBadgeTemplate {...props} />
 }

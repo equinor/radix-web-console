@@ -4,7 +4,7 @@ import { type Secret, useGetAzureKeyVaultSecretVersionsQuery } from '../../../..
 import AsyncResource from '../../../../async-resource/async-resource'
 import { Banner } from '../../../../banner/Banner'
 import { Dialog } from '../../../../dialog/Dialog'
-import { ComponentSecretStatusBadge } from '../../../../status-badges'
+import { KeyVaultItemStatusBadge } from '../../../../status-badges'
 import { Duration } from '../../../../time/duration'
 import { extractKey, formatVaultItem, removeDuplicateBatchVaultItems } from './viewAzureKeyVaultItemButton.utils'
 
@@ -14,7 +14,9 @@ interface AzureKeyVaultItemProps {
   readonly componentName: string
   readonly secret: Pick<Secret, 'resource' | 'id' | 'status'>
 }
-export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, secret }: AzureKeyVaultItemProps) => {
+export const ViewAzureKeyVaultItemButton = (props: AzureKeyVaultItemProps) => {
+  const { appName, envName, componentName, secret } = props
+
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const { data, ...asyncState } = useGetAzureKeyVaultSecretVersionsQuery(
@@ -22,7 +24,7 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
       appName,
       envName,
       componentName,
-      azureKeyVaultName: secret.resource!,
+      azureKeyVaultName: secret.resource ?? '',
       secretName: secret.id,
     },
     {
@@ -38,7 +40,11 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
 
   return (
     <>
-      <Button variant="ghost" onClick={() => setIsDialogOpen(true)}>
+      <Button
+        variant="ghost"
+        onClick={() => setIsDialogOpen(true)}
+        aria-label={`View Azure Key Vault item ${secret.id}`}
+      >
         View
       </Button>
 
@@ -78,7 +84,7 @@ export const ViewAzureKeyVaultItemButton = ({ appName, envName, componentName, s
                 <Typography variant="label" group="input" color="var(--eds_text_static_icons__tertiary)">
                   Status
                 </Typography>
-                <ComponentSecretStatusBadge status={secret.status} />
+                <KeyVaultItemStatusBadge status={secret.status} />
               </div>
             </>
             <div className="grid--table-overflow">

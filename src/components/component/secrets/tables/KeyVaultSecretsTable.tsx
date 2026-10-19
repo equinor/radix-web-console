@@ -23,7 +23,7 @@ export const KeyVaultSecretsTable = (props: SecretTableProps) => {
       </Table.Head>
       <Table.Body>
         {sortedSecrets.map((secret) => (
-          <Table.Row key={secret.name}>
+          <Table.Row key={`${secret.resource}-${secret.name}`}>
             <Table.Cell className="fitwidth padding-right-0" />
             <Table.Cell>{getSecretDisplayName(secret)}</Table.Cell>
             <Table.Cell>{secret.resource}</Table.Cell>
@@ -38,12 +38,7 @@ export const KeyVaultSecretsTable = (props: SecretTableProps) => {
               {secret.type === 'csi-azure-key-vault-item' ? (
                 <ViewAzureKeyVaultItemButton secret={secret} {...{ appName, envName, componentName }} />
               ) : (
-                <EditSecretButton
-                  appName={appName}
-                  componentName={componentName}
-                  envName={envName}
-                  secretName={secret.name}
-                />
+                <EditSecretButton appName={appName} componentName={componentName} envName={envName} secret={secret} />
               )}
             </Table.Cell>
           </Table.Row>

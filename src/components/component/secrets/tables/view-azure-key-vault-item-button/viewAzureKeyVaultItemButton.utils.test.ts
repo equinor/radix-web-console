@@ -9,16 +9,16 @@ const baseItem: AzureKeyVaultSecretVersion = {
 }
 
 describe('formatVaultItem', () => {
-  it('formats a batch consumer from the batchName and batchCreated', () => {
+  it('formats a batch consumer with the short batch name and batchCreated', () => {
     const result = formatVaultItem({
       ...baseItem,
-      batchName: 'my-batch',
+      batchName: 'batch-20261012032400-abcde',
       batchCreated: 'Oct 12, 2026 03:24:00',
     })
 
     expect(result).toEqual({
       version: 'v1',
-      consumer: 'batch: my-batch',
+      consumer: 'batch: abcde',
       consumerCreated: 'Oct 12, 2026 03:24:00',
     })
   })
@@ -26,26 +26,26 @@ describe('formatVaultItem', () => {
   it('prefers the batch consumer over a job when both are present', () => {
     const result = formatVaultItem({
       ...baseItem,
-      batchName: 'my-batch',
+      batchName: 'batch-20261012032400-abcde',
       batchCreated: 'batch-created',
-      jobName: 'my-job',
+      jobName: 'job-20261012032400-fghij',
       jobCreated: 'job-created',
     })
 
-    expect(result.consumer).toBe('batch: my-batch')
+    expect(result.consumer).toBe('batch: abcde')
     expect(result.consumerCreated).toBe('batch-created')
   })
 
-  it('formats a job consumer from the jobName and jobCreated', () => {
+  it('formats a job consumer with the short job name and jobCreated', () => {
     const result = formatVaultItem({
       ...baseItem,
-      jobName: 'my-job',
+      jobName: 'job-20261012032400-fghij',
       jobCreated: 'Oct 12, 2026 03:24:00',
     })
 
     expect(result).toEqual({
       version: 'v1',
-      consumer: 'job: my-job',
+      consumer: 'job: fghij',
       consumerCreated: 'Oct 12, 2026 03:24:00',
     })
   })
@@ -53,26 +53,26 @@ describe('formatVaultItem', () => {
   it('prefers the job consumer over a replica when both are present', () => {
     const result = formatVaultItem({
       ...baseItem,
-      jobName: 'my-job',
+      jobName: 'job-20261012032400-fghij',
       jobCreated: 'job-created',
-      replicaName: 'my-replica',
+      replicaName: 'my-component-7d9f8b6c5d-klmno',
       replicaCreated: 'replica-created',
     })
 
-    expect(result.consumer).toBe('job: my-job')
+    expect(result.consumer).toBe('job: fghij')
     expect(result.consumerCreated).toBe('job-created')
   })
 
-  it('formats a replica consumer from the replicaName and replicaCreated', () => {
+  it('formats a replica consumer with the short replica name and replicaCreated', () => {
     const result = formatVaultItem({
       ...baseItem,
-      replicaName: 'my-replica',
+      replicaName: 'my-component-7d9f8b6c5d-klmno',
       replicaCreated: 'Oct 11, 2026 03:24:00',
     })
 
     expect(result).toEqual({
       version: 'v1',
-      consumer: 'replica: my-replica',
+      consumer: 'replica: klmno',
       consumerCreated: 'Oct 11, 2026 03:24:00',
     })
   })
@@ -113,7 +113,7 @@ describe('formatVaultItem', () => {
     expect(result).toEqual({
       version: 'v1',
       consumer: '',
-      consumerCreated: '',
+      consumerCreated: undefined,
     })
   })
 })

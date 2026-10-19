@@ -1,4 +1,5 @@
 import type { AzureKeyVaultSecretVersion } from '../../../../../store/radix-api'
+import { smallReplicaName, smallScheduledBatchName, smallScheduledJobName } from '../../../../../utils/string'
 
 /**
  * Formats a vault item into a standardized structure with version, consumer, and consumerCreated fields.
@@ -9,14 +10,14 @@ export const formatVaultItem = (
   if (item.batchName) {
     return {
       version: item.version,
-      consumer: `batch: ${item.batchName}`,
+      consumer: `batch: ${smallScheduledBatchName(item.batchName)}`,
       consumerCreated: item.batchCreated,
     }
   }
   if (item.jobName) {
     return {
       version: item.version,
-      consumer: `job: ${item.jobName}`,
+      consumer: `job: ${smallScheduledJobName(item.jobName)}`,
       consumerCreated: item.jobCreated,
     }
   }
@@ -25,7 +26,7 @@ export const formatVaultItem = (
 
     return {
       version: item.version,
-      consumer: isNewReplicaJob ? 'New job' : `replica: ${item.replicaName}`,
+      consumer: isNewReplicaJob ? 'New job' : `replica: ${smallReplicaName(item.replicaName)}`,
       consumerCreated: isNewReplicaJob ? undefined : item.replicaCreated,
     }
   }
@@ -33,7 +34,7 @@ export const formatVaultItem = (
   return {
     version: item.version,
     consumer: '',
-    consumerCreated: '',
+    consumerCreated: undefined,
   }
 }
 
