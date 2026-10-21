@@ -35,7 +35,6 @@ const meta = {
       creator: 'creator',
       owner: 'owner',
       radixConfigFullName: 'radixconfig.yaml',
-      hasMigratedFederatedCredential: false,
     },
     appName: 'a-name-thing',
     repository: 'https://some/path/to/a/repo',
