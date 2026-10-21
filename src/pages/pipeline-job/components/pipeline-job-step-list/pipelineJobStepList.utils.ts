@@ -21,8 +21,30 @@ interface GroupedSubPipelineSteps {
   readonly steps: ReadonlyArray<Step>
 }
 
-export const getStepIcon = (name: string): IconData => {
-  switch (name) {
+export const getStepIcon = (step: Step): IconData => {
+  if (!step.type) {
+    return getStepIconFromStepName(step.name ?? '')
+  }
+
+  switch (step.type) {
+    case 'CloneConfig':
+      return github
+    case 'PipelineRunner':
+      return pressure
+    case 'Clone':
+      return github
+    case 'Build':
+      return build_wrench
+    case 'SubPipelineStep':
+      return lightbulb
+    default:
+      return radio_button_unselected
+  }
+}
+
+// TODO: Remove this function when radix-api with step type is deployed to all clusters
+function getStepIconFromStepName(stepName: string): IconData {
+  switch (stepName) {
     case PipelineStep.CloneConfig:
     case PipelineStep.CloneRepository:
       return github
@@ -33,11 +55,11 @@ export const getStepIcon = (name: string): IconData => {
     case PipelineStep.SubPipelineTaskStep:
       return lightbulb
     default:
-      if (name.startsWith('scan-')) {
-        return record
-      }
-      if (name.startsWith('build-')) {
+      if (stepName?.startsWith('build')) {
         return build_wrench
+      }
+      if (stepName?.startsWith('clone')) {
+        return github
       }
       return radio_button_unselected
   }

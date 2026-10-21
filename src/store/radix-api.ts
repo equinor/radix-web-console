@@ -765,19 +765,6 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
-    federatedCredentialsMigratedAnnotation: build.mutation<
-      FederatedCredentialsMigratedAnnotationApiResponse,
-      FederatedCredentialsMigratedAnnotationApiArg
-    >({
-      query: (queryArg) => ({
-        url: `/applications/${queryArg.appName}/federated-credentials-migrated`,
-        method: "PATCH",
-        headers: {
-          "Impersonate-User": queryArg["Impersonate-User"],
-          "Impersonate-Group": queryArg["Impersonate-Group"],
-        },
-      }),
-    }),
     getApplicationJobs: build.query<GetApplicationJobsApiResponse, GetApplicationJobsApiArg>({
       query: (queryArg) => ({
         url: `/applications/${queryArg.appName}/jobs`,
@@ -2014,15 +2001,6 @@ export type GetApplicationEventsApiArg = {
   /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
   "Impersonate-Group"?: string;
 };
-export type FederatedCredentialsMigratedAnnotationApiResponse = unknown;
-export type FederatedCredentialsMigratedAnnotationApiArg = {
-  /** name of application */
-  appName: string;
-  /** Works only with custom setup of cluster. Allow impersonation of test users (Required if Impersonate-Group is set) */
-  "Impersonate-User"?: string;
-  /** Works only with custom setup of cluster. Allow impersonation of a comma-separated list of test groups (Required if Impersonate-User is set) */
-  "Impersonate-Group"?: string;
-};
 export type GetApplicationJobsApiResponse = /** status 200 Successful operation */ JobSummary[];
 export type GetApplicationJobsApiArg = {
   /** name of Radix application */
@@ -2833,8 +2811,6 @@ export type ApplicationRegistration = {
   configurationItem?: string;
   /** Owner of the application (email). Can be a single person or a shared group email */
   creator: string;
-  /** HasMigratedFederatedCredential indicates whether federated credential annotation exists */
-  hasMigratedFederatedCredential: boolean;
   /** Name the unique name of the Radix application */
   name: string;
   /** Owner of the application (email). Can be a single person or a shared group email */
@@ -3256,17 +3232,31 @@ export type SubPipelineTaskStep = {
   taskName: string;
 };
 export type Step = {
-  /** Components associated components */
+  /** Components lists components associated with this step */
   components?: string[];
+  /** ContainerName for the step's container */
+  containerName?: string;
   /** Ended timestamp */
   ended?: string;
+  /** Environments lists environments associated with this step */
+  environments?: string[];
   /** Name of the step */
   name?: string;
+  /** Pod name for the step */
+  podName?: string;
   /** Started timestamp */
   started?: string;
   /** Status of the step */
   status?: "Queued" | "Waiting" | "Running" | "Succeeded" | "Failed" | "Stopped" | "StoppedNoChanges";
   subPipelineTaskStep?: SubPipelineTaskStep;
+  /** Type of the step
+    CloneConfig StepTypeCloneConfig
+    PipelineRunner StepTypePipelineRunner
+    Clone StepTypeClone
+    Build StepTypeBuild
+    SubPipelineStep StepTypeSubPipelineStep
+    Unknown StepTypeUnknown */
+  type?: "CloneConfig" | "PipelineRunner" | "Clone" | "Build" | "SubPipelineStep" | "Unknown";
 };
 export type Job = {
   /** Branch to build from */
@@ -3679,7 +3669,6 @@ export const {
   useStopEnvironmentMutation,
   useGetEnvironmentResourcesUtilizationQuery,
   useGetApplicationEventsQuery,
-  useFederatedCredentialsMigratedAnnotationMutation,
   useGetApplicationJobsQuery,
   useGetApplicationJobQuery,
   useGetPipelineJobStepLogsQuery,

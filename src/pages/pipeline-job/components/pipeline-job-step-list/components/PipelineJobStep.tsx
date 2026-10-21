@@ -23,7 +23,7 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
   return (
     <div className={styles.step}>
       <div className={clsx('grid', styles.divider)}>
-        <Icon className={styles.stepIcon} data={getStepIcon(step.name ?? '')} />
+        <Icon className={styles.stepIcon} data={getStepIcon(step)} />
         <span className={styles.dividerLine} />
       </div>
 
@@ -35,7 +35,7 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
             link
             token={{ textDecoration: 'none', textTransform: 'capitalize' }}
           >
-            <PipelineJobStepDescription name={step.name} components={step.components} />
+            <PipelineJobStepDescription step={step} components={step.components} />
           </Typography>
 
           <RadixJobConditionBadge status={step.status ?? 'Waiting'} />

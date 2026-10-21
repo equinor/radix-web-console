@@ -8,7 +8,7 @@ import { RelativeToNow } from '../../components/time/relative-to-now'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationJobQuery } from '../../store/radix-api'
-import { getPipelineStepDescription, getPipelineStepTitle } from '../../utils/pipeline'
+import { getPipelineStepTitle } from '../../utils/pipeline'
 import { withRouteParams } from '../../utils/router'
 import { routeWithParams, smallJobName } from '../../utils/string'
 
@@ -39,7 +39,7 @@ export function StepPage({ appName, jobName, stepName }: PageStepProps) {
             label: smallJobName(jobName),
             to: routeWithParams(routes.appJob, { appName, jobName }),
           },
-          { label: getPipelineStepDescription(stepName) || stepName },
+          { label: stepName },
         ]}
       />
 
@@ -55,12 +55,18 @@ export function StepPage({ appName, jobName, stepName }: PageStepProps) {
                   Pipeline Step <strong>{step.status?.toLowerCase() ?? 'pending'}</strong>{' '}
                 </Typography>
                 <Typography>
-                  {getJobExecutionState(step.status)} Step{' '}
-                  <strong>{getPipelineStepTitle(step.name) || step.name}</strong>
+                  {getJobExecutionState(step.status)} Step <strong>{getPipelineStepTitle(step)}</strong>
                 </Typography>
-                {step.components?.length == 1 && (
+                {!!step.components?.length && (
                   <Typography>
-                    {'Component'} <strong>{step.components[0]}</strong>
+                    {step.components.length > 1 ? 'Components' : 'Component'}{' '}
+                    <strong>{step.components.join(', ')}</strong>
+                  </Typography>
+                )}
+                {!!step.environments?.length && (
+                  <Typography>
+                    {step.environments.length > 1 ? 'Environments' : 'Environment'}{' '}
+                    <strong>{step.environments.join(', ')}</strong>
                   </Typography>
                 )}
               </div>
@@ -92,13 +98,7 @@ export function StepPage({ appName, jobName, stepName }: PageStepProps) {
             </div>
           </section>
           <section>
-            <JobStepLogs
-              appName={appName}
-              jobName={jobName}
-              stepName={stepName}
-              start={step?.started}
-              end={step?.ended}
-            />
+            <JobStepLogs appName={appName} jobName={jobName} step={step} start={step?.started} end={step?.ended} />
           </section>
         </>
       )}

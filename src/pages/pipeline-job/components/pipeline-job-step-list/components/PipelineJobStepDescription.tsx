@@ -1,62 +1,71 @@
 import type { Step } from '../../../../../store/radix-api'
-import { getPipelineStepDescription, PipelineStep } from '../../../../../utils/pipeline'
+import { getPipelineStepTitle, PipelineStep } from '../../../../../utils/pipeline'
 
-const MAX_ENUMERATED_COMPONENTS = 3
+type StepKind = 'build' | 'clone'
 
-const formatComponents = (name: string, components: string[]): string => {
-  if (components?.length > 1) {
-    return components.length > MAX_ENUMERATED_COMPONENTS
-      ? `${components.slice(0, MAX_ENUMERATED_COMPONENTS - 1).join(',')}…`
-      : `${components.slice(0, -1).join(',')} and ${components.slice(-1)}`
+function getStepKind(step: Step): StepKind | undefined {
+  return step.type ? getStepKindFromType(step.type) : getStepKindFromName(step.name)
+}
+
+function getStepKindFromType(type: NonNullable<Step['type']>): StepKind | undefined {
+  switch (type) {
+    case 'Build':
+      return 'build'
+    case 'Clone':
+      return 'clone'
+    default:
+      return undefined
+  }
+}
+
+// TODO: Remove this function when radix-api with step type is deployed to all clusters
+function getStepKindFromName(name: string | undefined): StepKind | undefined {
+  if (!name || name === PipelineStep.CloneConfig) {
+    return undefined
+  }
+  if (name.startsWith('build')) {
+    return 'build'
+  }
+  if (name.startsWith('clone')) {
+    return 'clone'
+  }
+  return undefined
+}
+
+function getComponentInfo(step: Step, kind: StepKind): string {
+  const components = step.components ?? []
+  const environments = step.environments ?? []
+
+  if (environments.length > 0) {
+    return components.map((component) => `${component} (${environments.join(', ')})`).join(', ')
   }
 
-  return name
+  if (kind === 'build') {
+    const suffix = /^build-(.+)$/.exec(step.name ?? '')?.[1]
+    return suffix ?? components.join(', ')
+  }
+
+  return components.join(', ')
 }
 
 interface PipelineJobStepDescriptionProps {
-  readonly name?: string
+  readonly step: Step
   readonly components: Step['components']
 }
 
-export const PipelineJobStepDescription = (props: PipelineJobStepDescriptionProps) => {
-  const { name, components } = props
+export const PipelineJobStepDescription = ({ step }: PipelineJobStepDescriptionProps) => {
+  const stepTitle = getPipelineStepTitle(step)
 
-  const stepDescription = getPipelineStepDescription(name)
-  if (stepDescription) {
-    return <>{stepDescription}</>
+  const kind = getStepKind(step)
+  const info = kind ? getComponentInfo(step, kind) : ''
+  if (!info) {
+    return <>{stepTitle}</>
   }
 
-  if (name === PipelineStep.CloneRepository) {
-    return (
-      <>
-        Cloning repository
-        {components?.length === 1 && (
-          <>
-            {' for '} <strong>{components[0]}</strong>
-            {' component'}
-          </>
-        )}
-      </>
-    )
-  }
-
-  const buildComponent = /^build-(.+)$/.exec(name ?? '')
-  if (buildComponent) {
-    return (
-      <>
-        Building <strong>{formatComponents(buildComponent[1], components ?? [])}</strong> component
-      </>
-    )
-  }
-
-  const scanComponent = /^scan-(.+)$/.exec(name ?? '')
-  if (scanComponent) {
-    return (
-      <>
-        Scanning <strong>{formatComponents(scanComponent[1], components ?? [])}</strong> component
-      </>
-    )
-  }
-
-  return <>Unknown step</>
+  return (
+    <>
+      {stepTitle} {kind === 'clone' && 'for '}
+      <strong>{info}</strong>
+    </>
+  )
 }

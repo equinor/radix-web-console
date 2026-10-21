@@ -9,16 +9,17 @@ import {
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
 } from '../../../store/log-api'
+import type { Step } from '../../../store/radix-api'
 
 interface StepLogsProps {
   appName: string
   jobName: string
-  stepName: string
+  step: Step
   start?: string
   end?: string
 }
 
-export function HistoricalLog({ appName, jobName, stepName, start, end }: StepLogsProps) {
+export function HistoricalLog({ appName, jobName, step, start, end }: StepLogsProps) {
   end = end ? addMinutes(new Date(end), 10).toISOString() : undefined
   const { container, ...state } = useGetPipelineJobInventoryQuery(
     { appName, pipelineJobName: jobName, start, end },
@@ -26,7 +27,7 @@ export function HistoricalLog({ appName, jobName, stepName, start, end }: StepLo
       skip: !appName || !jobName,
       pollingInterval: 0,
       selectFromResult: ({ data, ...state }) => ({
-        container: data ? findContainer(data, stepName) : null,
+        container: data ? findContainer(data, step) : null,
         ...state,
       }),
     }
@@ -45,10 +46,14 @@ export function HistoricalLog({ appName, jobName, stepName, start, end }: StepLo
 
 type BrandedContainerModel = ModelsContainer & { parentId: string }
 
-function findContainer(data: ModelsInventoryResponse, stepName: string): BrandedContainerModel | null {
+function findContainer(data: ModelsInventoryResponse, step: Step): BrandedContainerModel | null {
   for (const replica of data?.replicas ?? []) {
+    if (step.podName && replica.name !== step.podName) {
+      continue
+    }
     for (const container of replica.containers ?? []) {
-      if (container.name === stepName) {
+      const containerName = (step.containerName ?? '').length > 0 ? step.containerName : (step.name ?? '')
+      if (container.name === containerName) {
         return { ...container, parentId: replica.name }
       }
     }

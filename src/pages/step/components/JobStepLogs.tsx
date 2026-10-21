@@ -1,7 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import { StreamingLog } from '../../../components/code/log'
 import { getPipelineJobStepLogsStreamUrl } from '../../../store/eventstream-log-api'
-import { radixApi, useGetPipelineJobStepLogsQuery } from '../../../store/radix-api'
+import { radixApi, type Step, useGetPipelineJobStepLogsQuery } from '../../../store/radix-api'
 import { getFetchErrorCode } from '../../../store/utils/parse-errors'
 import { HistoricalLog } from './HistoricalLog'
 
@@ -11,16 +11,17 @@ import AsyncResource from '../../../components/async-resource/async-resource'
 interface StepLogsProps {
   appName: string
   jobName: string
-  stepName: string
+  step: Step
   start?: string
   end?: string
 }
 
-export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogsProps) {
+export function JobStepLogs({ appName, jobName, step, start, end }: StepLogsProps) {
   const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
+  const stepName = step.name ?? ''
   const state = useGetPipelineJobStepLogsQuery(
     { appName, jobName, stepName, lines: '1' },
-    { skip: !appName || !jobName || !stepName, pollingInterval: 0 }
+    { skip: !appName || !jobName || stepName === '', pollingInterval: 0 }
   )
   const eventStreamUrl = getPipelineJobStepLogsStreamUrl(appName, jobName, stepName)
   const notFound = state.isError && getFetchErrorCode(state.error) === 404
@@ -35,7 +36,7 @@ export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogs
         </Accordion.Header>
         <Accordion.Panel>
           {notFound ? (
-            <HistoricalLog appName={appName} jobName={jobName} stepName={stepName} start={start} end={end} />
+            <HistoricalLog appName={appName} jobName={jobName} step={step} start={start} end={end} />
           ) : (
             <AsyncResource asyncState={state}>
               <StreamingLog
