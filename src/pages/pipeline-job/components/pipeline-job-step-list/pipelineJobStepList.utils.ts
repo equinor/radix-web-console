@@ -1,12 +1,4 @@
-import {
-  build_wrench,
-  github,
-  type IconData,
-  lightbulb,
-  pressure,
-  radio_button_unselected,
-  record,
-} from '@equinor/eds-icons'
+import { build_wrench, github, type IconData, lightbulb, pressure, radio_button_unselected } from '@equinor/eds-icons'
 import type { Step } from '../../../../store/radix-api'
 import { PipelineStep } from '../../../../utils/pipeline'
 import { sortCompareDate } from '../../../../utils/sort-utils'
