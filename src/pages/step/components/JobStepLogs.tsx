@@ -11,7 +11,7 @@ import AsyncResource from '../../../components/async-resource/async-resource'
 interface StepLogsProps {
   appName: string
   jobName: string
-  step: Step
+  step: Pick<Step, 'name'>
   start?: string
   end?: string
 }
