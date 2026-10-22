@@ -14,7 +14,7 @@ import type { Step } from '../../../store/radix-api'
 interface StepLogsProps {
   appName: string
   jobName: string
-  step: Step
+  step: Pick<Step, 'name' | 'containerName' | 'podName'>
   start?: string
   end?: string
 }
