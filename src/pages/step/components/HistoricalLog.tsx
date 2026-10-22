@@ -46,7 +46,7 @@ export function HistoricalLog({ appName, jobName, step, start, end }: StepLogsPr
 
 type BrandedContainerModel = ModelsContainer & { parentId: string }
 
-function findContainer(data: ModelsInventoryResponse, step: Step): BrandedContainerModel | null {
+function findContainer(data: ModelsInventoryResponse, step: StepLogsProps['step']): BrandedContainerModel | null {
   for (const replica of data?.replicas ?? []) {
     // TODO: Remove when radix-api deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
     if (step.podName && replica.name !== step.podName) {
