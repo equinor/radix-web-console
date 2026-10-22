@@ -3,7 +3,7 @@ import { getPipelineStepTitle, PipelineStep } from '../../../../../utils/pipelin
 
 type StepType = Step['type']
 
-function resolveStepType(step: Step): StepType | undefined {
+function resolveStepType(step: PipelineJobStepTitleProps['step']): StepType | undefined {
   return step.type ? step.type : getStepTypeFromName(step.name)
 }
 
