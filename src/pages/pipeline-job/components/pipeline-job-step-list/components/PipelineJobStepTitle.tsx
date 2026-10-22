@@ -21,7 +21,7 @@ function getStepTypeFromName(name: string): StepType | undefined {
   return undefined
 }
 
-function getComponentWithEnvironment(step: Step, kind: StepType): string {
+function getComponentWithEnvironment(step: PipelineJobStepTitleProps['step'], kind: StepType): string {
   const components = step.components ?? []
   const environments = step.environments ?? []
 
