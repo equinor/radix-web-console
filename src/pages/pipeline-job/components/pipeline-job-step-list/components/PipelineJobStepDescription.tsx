@@ -18,9 +18,9 @@ function getStepKindFromType(type: NonNullable<Step['type']>): StepKind | undefi
   }
 }
 
-// TODO: Remove this function when radix-api with step type is deployed to all clusters
-function getStepKindFromName(name: string | undefined): StepKind | undefined {
-  if (!name || name === PipelineStep.CloneConfig) {
+// TODO: Remove this function when radix-api with step type is deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
+function getStepKindFromName(name: string): StepKind | undefined {
+  if (name === PipelineStep.CloneConfig) {
     return undefined
   }
   if (name.startsWith('build')) {
@@ -41,7 +41,7 @@ function getComponentInfo(step: Step, kind: StepKind): string {
   }
 
   if (kind === 'build') {
-    const suffix = /^build-(.+)$/.exec(step.name ?? '')?.[1]
+    const suffix = /^build-(.+)$/.exec(step.name)?.[1]
     return suffix ?? components.join(', ')
   }
 

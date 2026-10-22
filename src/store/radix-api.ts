@@ -3241,7 +3241,7 @@ export type Step = {
   /** Environments lists environments associated with this step */
   environments?: string[];
   /** Name of the step */
-  name?: string;
+  name: string;
   /** Pod name for the step */
   podName?: string;
   /** Started timestamp */

@@ -31,7 +31,7 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
         <div className={styles.description}>
           <Typography
             as={Link}
-            to={routeWithParams(routes.appJobStep, { appName, jobName, stepName: step.name ?? '' })}
+            to={routeWithParams(routes.appJobStep, { appName, jobName, stepName: step.name })}
             link
             token={{ textDecoration: 'none', textTransform: 'capitalize' }}
           >

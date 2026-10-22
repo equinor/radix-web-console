@@ -1,6 +1,6 @@
 import type { Step } from '../../store/radix-api'
 
-// TODO: Remove this enum when radix-api with step type is deployed to all clusters
+// TODO: Remove this enum when radix-api with step type is deployed to all clusters, https://github.com/equinor/radix-operator/issues/2033
 export enum PipelineStep {
   CloneConfig = 'clone-config',
   CloneRepository = 'clone',
@@ -11,7 +11,7 @@ export enum PipelineStep {
 
 export function getPipelineStepTitle(step: Step): string {
   if (!step.type) {
-    return getPipelineStepTitleFromName(step.name ?? '')
+    return getPipelineStepTitleFromName(step.name)
   }
 
   switch (step.type) {
@@ -22,14 +22,14 @@ export function getPipelineStepTitle(step: Step): string {
     case 'Clone':
       return 'Cloning Repository'
     case 'Build':
-      return 'Building Component'
+      return 'Building'
     default:
       return 'Unknown Step'
   }
 }
 
 // Helper function to get the pipeline step title based on the step name when the step type is not defined.
-// TODO: Remove this function when radix-api with step type is deployed to all clusters
+// TODO: Remove this function when radix-api with step type is deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
 function getPipelineStepTitleFromName(stepName: string): string {
   switch (stepName) {
     case PipelineStep.CloneConfig:

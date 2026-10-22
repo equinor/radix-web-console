@@ -15,7 +15,7 @@ interface GroupedSubPipelineSteps {
 
 export const getStepIcon = (step: Step): IconData => {
   if (!step.type) {
-    return getStepIconFromStepName(step.name ?? '')
+    return getStepIconFromStepName(step.name)
   }
 
   switch (step.type) {
@@ -34,7 +34,7 @@ export const getStepIcon = (step: Step): IconData => {
   }
 }
 
-// TODO: Remove this function when radix-api with step type is deployed to all clusters
+// TODO: Remove this function when radix-api with step type is deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
 function getStepIconFromStepName(stepName: string): IconData {
   switch (stepName) {
     case PipelineStep.CloneConfig:

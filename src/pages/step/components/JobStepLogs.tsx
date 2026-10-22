@@ -18,12 +18,11 @@ interface StepLogsProps {
 
 export function JobStepLogs({ appName, jobName, step, start, end }: StepLogsProps) {
   const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
-  const stepName = step.name ?? ''
   const state = useGetPipelineJobStepLogsQuery(
-    { appName, jobName, stepName, lines: '1' },
-    { skip: !appName || !jobName || stepName === '', pollingInterval: 0 }
+    { appName, jobName, stepName: step.name, lines: '1' },
+    { skip: !appName || !jobName || !step.name, pollingInterval: 0 }
   )
-  const eventStreamUrl = getPipelineJobStepLogsStreamUrl(appName, jobName, stepName)
+  const eventStreamUrl = getPipelineJobStepLogsStreamUrl(appName, jobName, step.name)
   const notFound = state.isError && getFetchErrorCode(state.error) === 404
 
   return (
@@ -43,7 +42,7 @@ export function JobStepLogs({ appName, jobName, step, start, end }: StepLogsProp
                 eventStreamUrl={eventStreamUrl}
                 copy
                 download
-                downloadCb={() => getLog({ appName, jobName, stepName, file: 'true' }, false).unwrap()}
+                downloadCb={() => getLog({ appName, jobName, stepName: step.name, file: 'true' }, false).unwrap()}
               />
             </AsyncResource>
           )}
