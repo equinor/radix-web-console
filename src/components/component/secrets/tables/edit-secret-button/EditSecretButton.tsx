@@ -61,7 +61,9 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
       </Button>
 
       <Dialog open={isDialogOpen} isDismissable onClose={closeDialog} contentAutoGap>
-        <Dialog.Header>Edit Secret</Dialog.Header>
+        <Dialog.Header>
+          <Dialog.Title>Edit Secret</Dialog.Title>
+        </Dialog.Header>
         <Dialog.Content>
           {showErrorBanner && <Banner variant="danger">An error occurred while updating the secret.</Banner>}
           <div>
