@@ -38,7 +38,7 @@ function getComponentWithEnvironment(step: Step, kind: StepType): string {
 }
 
 const getExtendedTitleInfo = (step: Step) => {
-  const Type = resolveStepType(step)
+  const type = resolveStepType(step)
 
   return {
     preposition: Type == 'Clone' ? 'for ' : '',
