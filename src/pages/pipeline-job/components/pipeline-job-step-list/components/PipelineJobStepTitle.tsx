@@ -47,7 +47,7 @@ const getExtendedTitleInfo = (step: Step) => {
 }
 
 const resolveIsBuildOrCloneStep = (step: Step) => {
-  const Type = resolveStepType(step)
+  const type = resolveStepType(step)
   return Type === 'Build' || Type === 'Clone'
 }
 
