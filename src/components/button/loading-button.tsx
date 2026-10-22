@@ -19,7 +19,7 @@ export function LoadingButton({ onClick, ...rest }: Props) {
   }
 
   return (
-    <Button onClick={onLocalClick} {...rest} disabled={loading}>
+    <Button onClick={onLocalClick} {...rest} disabled={loading || rest.disabled}>
       <span style={{ visibility: loading ? 'hidden' : 'visible' }}>{rest.children}</span>
       {loading && (
         <CircularProgress

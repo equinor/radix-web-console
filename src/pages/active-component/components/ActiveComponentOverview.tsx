@@ -1,7 +1,7 @@
 import type { FunctionComponent } from 'react'
 import AsyncResource from '../../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../../components/breadcrumb'
-import { ActiveComponentSecrets } from '../../../components/component/secrets/active-component-secrets'
+import { ActiveComponentSecrets } from '../../../components/component/secrets/ActiveComponentSecrets'
 import { EnvironmentVariables } from '../../../components/environment-variables'
 import { EventsList } from '../../../components/events-list'
 import {

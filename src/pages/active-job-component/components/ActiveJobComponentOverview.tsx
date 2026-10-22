@@ -3,7 +3,7 @@ import AsyncResource from '../../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../../components/breadcrumb'
 import { ScheduledBatchList } from '../../../components/component/scheduled-job/scheduled-batch-list'
 import { ScheduledJobList } from '../../../components/component/scheduled-job/scheduled-job-list'
-import { ActiveComponentSecrets } from '../../../components/component/secrets/active-component-secrets'
+import { ActiveComponentSecrets } from '../../../components/component/secrets/ActiveComponentSecrets'
 import { EnvironmentVariables } from '../../../components/environment-variables'
 import { handlePromiseWithToast } from '../../../components/global-top-nav/styled-toaster'
 import {
