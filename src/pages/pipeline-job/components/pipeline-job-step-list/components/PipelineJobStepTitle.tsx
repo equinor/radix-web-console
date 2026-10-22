@@ -53,7 +53,6 @@ const resolveIsBuildOrCloneStep = (step: Step) => {
 
 interface PipelineJobStepTitleProps {
   readonly step: Step
-  readonly components: Step['components']
 }
 
 export const PipelineJobStepTitle = ({ step }: PipelineJobStepTitleProps) => {
