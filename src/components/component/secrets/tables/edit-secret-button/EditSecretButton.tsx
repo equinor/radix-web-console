@@ -96,6 +96,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
             helperText={textAreaHelperText}
             value={value}
             onChange={(e) => setValue(e.target.value)}
+            disabled={isUpdatingSecret}
           />
         </Dialog.Content>
         <Dialog.Actions>
