@@ -8,8 +8,8 @@ import type { Step } from '../../../../../store/radix-api'
 import { routeWithParams } from '../../../../../utils/string'
 import styles from '../pipelineJobStep.module.css'
 import { getStepIcon } from '../pipelineJobStepList.utils'
-import { PipelineJobStepDescription } from './PipelineJobStepDescription'
 import { PipelineJobStepDuration } from './PipelineJobStepDuration'
+import { PipelineJobStepTitle } from './PipelineJobStepTitle'
 
 interface PipelineJobStepProps {
   readonly appName: string
@@ -33,9 +33,9 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
             as={Link}
             to={routeWithParams(routes.appJobStep, { appName, jobName, stepName: step.name })}
             link
-            token={{ textDecoration: 'none', textTransform: 'capitalize' }}
+            token={{ textDecoration: 'none' }}
           >
-            <PipelineJobStepDescription step={step} components={step.components} />
+            <PipelineJobStepTitle step={step} components={step.components} />
           </Typography>
 
           <RadixJobConditionBadge status={step.status ?? 'Waiting'} />
