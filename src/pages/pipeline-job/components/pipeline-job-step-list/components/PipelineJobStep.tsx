@@ -35,7 +35,7 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
             link
             token={{ textDecoration: 'none' }}
           >
-            <PipelineJobStepTitle step={step} components={step.components} />
+            <PipelineJobStepTitle step={step} />
           </Typography>
 
           <RadixJobConditionBadge status={step.status ?? 'Waiting'} />
