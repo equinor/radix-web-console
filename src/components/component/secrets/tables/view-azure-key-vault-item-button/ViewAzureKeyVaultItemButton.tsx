@@ -49,7 +49,9 @@ export const ViewAzureKeyVaultItemButton = (props: AzureKeyVaultItemProps) => {
       </Button>
 
       <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} isDismissable contentAutoGap>
-        <Dialog.Header>Azure Key Vault Item</Dialog.Header>
+        <Dialog.Header>
+          <Dialog.Title>Azure Key Vault Item</Dialog.Title>
+        </Dialog.Header>
 
         <Dialog.Content>
           <AsyncResource asyncState={asyncState}>
