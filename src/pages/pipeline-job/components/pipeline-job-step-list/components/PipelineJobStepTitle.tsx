@@ -37,7 +37,7 @@ function getComponentWithEnvironment(step: Step, kind: StepType): string {
   return components.join(', ')
 }
 
-const getExtendedTitleInfo = (step: Step) => {
+const getExtendedTitleInfo = (step: PipelineJobStepTitleProps['step']) => {
   const type = resolveStepType(step)
 
   return {
