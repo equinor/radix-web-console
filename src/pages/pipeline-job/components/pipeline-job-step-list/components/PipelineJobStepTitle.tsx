@@ -41,14 +41,14 @@ const getExtendedTitleInfo = (step: PipelineJobStepTitleProps['step']) => {
   const type = resolveStepType(step)
 
   return {
-    preposition: Type == 'Clone' ? 'for ' : '',
-    componentWithEnvironment: Type ? getComponentWithEnvironment(step, Type) : '',
+    preposition: type == 'Clone' ? 'for ' : '',
+    componentWithEnvironment: type ? getComponentWithEnvironment(step, type) : '',
   }
 }
 
 const resolveIsBuildOrCloneStep = (step: PipelineJobStepTitleProps['step']) => {
   const type = resolveStepType(step)
-  return Type === 'Build' || Type === 'Clone'
+  return type === 'Build' || type === 'Clone'
 }
 
 interface PipelineJobStepTitleProps {
