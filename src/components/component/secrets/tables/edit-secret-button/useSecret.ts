@@ -13,7 +13,8 @@ export const useSecret = (args: UseSecretArgs) => {
   const { appName, envName, componentName, secretName } = args
 
   const dispatch = useDispatch<AppDispatch>()
-  const [triggerUpdateSecret] = radixApi.endpoints.changeComponentSecret.useMutation()
+  const [triggerUpdateSecret, { isLoading: isUpdatingSecret }] =
+    radixApi.endpoints.changeComponentSecret.useMutation()
 
   const updateSecret = async (value: string) => {
     await triggerUpdateSecret({
@@ -30,5 +31,5 @@ export const useSecret = (args: UseSecretArgs) => {
     )
   }
 
-  return { updateSecret }
+  return { updateSecret, isUpdatingSecret }
 }

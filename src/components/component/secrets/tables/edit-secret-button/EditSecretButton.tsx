@@ -24,7 +24,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [showErrorBanner, setShowErrorBanner] = useState(false)
 
-  const { updateSecret } = useSecret({
+  const { updateSecret, isUpdatingSecret } = useSecret({
     appName,
     envName,
     componentName,
@@ -50,7 +50,7 @@ export const EditSecretButton = (props: EditSecretButtonProps) => {
   }
 
   const displayName = getSecretDisplayName(secret)
-  const isSaveDisabled = !value.length
+  const isSaveDisabled = !value.length || isUpdatingSecret
   // When the secret already has a value, inform the user that updating it will overwrite the existing value.
   const textAreaHelperText = secret.status === 'Consistent' ? 'Existing value will be overwritten' : undefined
 
