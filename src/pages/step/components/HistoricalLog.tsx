@@ -14,15 +14,13 @@ import type { Step } from '../../../store/radix-api'
 interface StepLogsProps {
   appName: string
   jobName: string
-  step: Pick<Step, 'name' | 'containerName' | 'podName'>
-  start?: string
-  end?: string
+  step: Pick<Step, 'name' | 'containerName' | 'podName' | 'started' | 'ended'>
 }
 
-export function HistoricalLog({ appName, jobName, step, start, end }: StepLogsProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined
+export function HistoricalLog({ appName, jobName, step }: StepLogsProps) {
+  const end = step.ended ? addMinutes(new Date(step.ended), 10).toISOString() : undefined
   const { container, ...state } = useGetPipelineJobInventoryQuery(
-    { appName, pipelineJobName: jobName, start, end },
+    { appName, pipelineJobName: jobName, start: step.started, end },
     {
       skip: !appName || !jobName,
       pollingInterval: 0,
@@ -36,7 +34,7 @@ export function HistoricalLog({ appName, jobName, step, start, end }: StepLogsPr
   return (
     <AsyncResource asyncState={state}>
       {container ? (
-        <ContainerLog jobName={jobName} appName={appName} start={start} end={end} container={container} />
+        <ContainerLog jobName={jobName} appName={appName} start={step.started} end={end} container={container} />
       ) : (
         <Typography>This replica has no log</Typography>
       )}

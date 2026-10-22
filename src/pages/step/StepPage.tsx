@@ -98,7 +98,7 @@ export function StepPage({ appName, jobName, stepName }: PageStepProps) {
             </div>
           </section>
           <section>
-            <JobStepLogs appName={appName} jobName={jobName} step={step} start={step?.started} end={step?.ended} />
+            <JobStepLogs appName={appName} jobName={jobName} step={step} />
           </section>
         </>
       )}

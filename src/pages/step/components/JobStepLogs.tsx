@@ -12,11 +12,9 @@ interface StepLogsProps {
   appName: string
   jobName: string
   step: Pick<Step, 'name'>
-  start?: string
-  end?: string
 }
 
-export function JobStepLogs({ appName, jobName, step, start, end }: StepLogsProps) {
+export function JobStepLogs({ appName, jobName, step }: StepLogsProps) {
   const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
   const state = useGetPipelineJobStepLogsQuery(
     { appName, jobName, stepName: step.name, lines: '1' },
@@ -35,7 +33,7 @@ export function JobStepLogs({ appName, jobName, step, start, end }: StepLogsProp
         </Accordion.Header>
         <Accordion.Panel>
           {notFound ? (
-            <HistoricalLog appName={appName} jobName={jobName} step={step} start={start} end={end} />
+            <HistoricalLog appName={appName} jobName={jobName} step={step} />
           ) : (
             <AsyncResource asyncState={state}>
               <StreamingLog
