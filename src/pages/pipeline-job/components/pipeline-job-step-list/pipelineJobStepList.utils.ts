@@ -1,12 +1,4 @@
-import {
-  build_wrench,
-  github,
-  type IconData,
-  lightbulb,
-  pressure,
-  radio_button_unselected,
-  record,
-} from '@equinor/eds-icons'
+import { build_wrench, github, type IconData, lightbulb, pressure, radio_button_unselected } from '@equinor/eds-icons'
 import type { Step } from '../../../../store/radix-api'
 import { PipelineStep } from '../../../../utils/pipeline'
 import { sortCompareDate } from '../../../../utils/sort-utils'
@@ -21,8 +13,30 @@ interface GroupedSubPipelineSteps {
   readonly steps: ReadonlyArray<Step>
 }
 
-export const getStepIcon = (name: string): IconData => {
-  switch (name) {
+export const getStepIcon = (step: Step): IconData => {
+  if (!step.type) {
+    return getStepIconFromStepName(step.name)
+  }
+
+  switch (step.type) {
+    case 'CloneConfig':
+      return github
+    case 'PipelineRunner':
+      return pressure
+    case 'Clone':
+      return github
+    case 'Build':
+      return build_wrench
+    case 'SubPipelineStep':
+      return lightbulb
+    default:
+      return radio_button_unselected
+  }
+}
+
+// TODO: Remove this function when radix-api with step type is deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
+function getStepIconFromStepName(stepName: string): IconData {
+  switch (stepName) {
     case PipelineStep.CloneConfig:
     case PipelineStep.CloneRepository:
       return github
@@ -33,11 +47,11 @@ export const getStepIcon = (name: string): IconData => {
     case PipelineStep.SubPipelineTaskStep:
       return lightbulb
     default:
-      if (name.startsWith('scan-')) {
-        return record
-      }
-      if (name.startsWith('build-')) {
+      if (stepName?.startsWith('build')) {
         return build_wrench
+      }
+      if (stepName?.startsWith('clone')) {
+        return github
       }
       return radio_button_unselected
   }

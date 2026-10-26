@@ -23,7 +23,7 @@ export const PipelineJobSubStep = (props: PipelineJobSubStepProps) => {
   return (
     <div className={clsx(styles.indented, styles.step)}>
       <div className={clsx('grid', styles.divider)}>
-        <Icon className={styles.stepIcon} data={getStepIcon(step.name ?? '')} />
+        <Icon className={styles.stepIcon} data={getStepIcon(step)} />
         <span className={styles.dividerLine} />
       </div>
 
