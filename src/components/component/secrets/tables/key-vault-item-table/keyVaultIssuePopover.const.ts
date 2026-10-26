@@ -1,10 +1,11 @@
+import type { IconData } from '@equinor/eds-icons'
 import { error_outlined, warning_outlined } from '@equinor/eds-icons'
 import type { KeyVaultIssue } from './keyVaultSecretsTable.types'
 
 interface KeyVaultIssuePresentation {
   readonly title: string
   readonly severity: 'danger' | 'warning'
-  readonly icon: typeof error_outlined | typeof warning_outlined
+  readonly icon: IconData
   readonly triggerLabel: string
 }
 
