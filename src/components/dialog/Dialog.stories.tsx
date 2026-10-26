@@ -28,6 +28,7 @@ const meta = {
       },
     },
     onClose: { control: false },
+    width: { control: 'text' },
   },
 } satisfies Meta<typeof Dialog>
 
@@ -48,27 +49,6 @@ export const Default: Story = {
           <Dialog.CustomContent>
             <Typography>This is the content of the dialog.</Typography>
           </Dialog.CustomContent>
-          <Dialog.Actions>
-            <Button onClick={() => setOpen(false)}>Close</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </>
-    )
-  },
-}
-
-export const WithWidth: Story = {
-  args: { open: false, width: '700px' },
-  render: (args) => {
-    const [open, setOpen] = useState(false)
-    return (
-      <>
-        <Button onClick={() => setOpen(true)}> Open dialog</Button>
-        <Dialog {...args} open={open} onClose={() => setOpen(false)}>
-          <Dialog.Header>
-            <Dialog.Title>Dialog title</Dialog.Title>
-          </Dialog.Header>
-          <Dialog.CustomContent>This is the content of the dialog.</Dialog.CustomContent>
           <Dialog.Actions>
             <Button onClick={() => setOpen(false)}>Close</Button>
           </Dialog.Actions>
@@ -102,8 +82,34 @@ export const WithContentAutoGap: Story = {
   },
 }
 
+export const WithCustomWidth: Story = {
+  args: { open: false, width: '64rem' },
+  render: (args) => {
+    const [open, setOpen] = useState(false)
+    return (
+      <>
+        <Button onClick={() => setOpen(true)}> Open dialog</Button>
+        <Dialog {...args} open={open} onClose={() => setOpen(false)}>
+          <Dialog.Header>
+            <Dialog.Title>Dialog title</Dialog.Title>
+          </Dialog.Header>
+          <Dialog.CustomContent>
+            <Typography>
+              This dialog has an explicit width of 64rem regardless of its content. On narrower screens it is capped at
+              the viewport width, maintaining usability and readability.
+            </Typography>
+          </Dialog.CustomContent>
+          <Dialog.Actions>
+            <Button onClick={() => setOpen(false)}>Close</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </>
+    )
+  },
+}
+
 export const FullStory: Story = {
-  args: { open: false, width: '600px', contentAutoGap: true },
+  args: { open: false, contentAutoGap: true },
   render: (args) => {
     const [open, setOpen] = useState(false)
     return (

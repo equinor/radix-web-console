@@ -40,3 +40,7 @@
     grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   }
 }
+
+.grid--same-width-columns {
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+}
