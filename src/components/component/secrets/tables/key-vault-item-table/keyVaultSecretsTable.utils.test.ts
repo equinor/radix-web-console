@@ -29,6 +29,40 @@ describe('buildKeyVaultTableGroups', () => {
       ['healthy', undefined],
     ])
   })
+
+  it('orders vault groups alphabetically by vault name', () => {
+    const groups = buildKeyVaultTableGroups([
+      secret('csi-azure-key-vault-item', 'Consistent', 'zeta-vault'),
+      secret('csi-azure-key-vault-item', 'Consistent', 'alpha-vault'),
+      secret('csi-azure-key-vault-item', 'Consistent', 'mid-vault'),
+    ])
+    expect(groups.map((group) => group.vaultName)).toEqual(['alpha-vault', 'mid-vault', 'zeta-vault'])
+  })
+
+  it('lists credentials before items within a vault regardless of input order', () => {
+    const item: Secret = { name: 'a-item', type: 'csi-azure-key-vault-item', resource: 'vault' }
+    const credential: Secret = { name: 'z-cred', type: 'csi-azure-key-vault-creds', resource: 'vault' }
+
+    const [group] = buildKeyVaultTableGroups([item, credential])
+    expect(group.secrets.map((vaultSecret) => vaultSecret.type)).toEqual([
+      'csi-azure-key-vault-creds',
+      'csi-azure-key-vault-item',
+    ])
+  })
+
+  it('sorts secrets within a vault by display name, falling back to name', () => {
+    const named: Secret = { name: 'b-item', type: 'csi-azure-key-vault-item', resource: 'vault' }
+    const displayNamed: Secret = {
+      name: 'z-item',
+      displayName: 'a-display',
+      type: 'csi-azure-key-vault-item',
+      resource: 'vault',
+    }
+    const last: Secret = { name: 'c-item', type: 'csi-azure-key-vault-item', resource: 'vault' }
+
+    const [group] = buildKeyVaultTableGroups([last, named, displayNamed])
+    expect(group.secrets.map((vaultSecret) => vaultSecret.name)).toEqual(['z-item', 'b-item', 'c-item'])
+  })
 })
 
 describe('getKeyVaultIssue', () => {
@@ -36,7 +70,7 @@ describe('getKeyVaultIssue', () => {
     const broken = secret('csi-azure-key-vault-creds', 'Pending')
     expect(getKeyVaultIssue([broken, secret('csi-azure-key-vault-creds', 'Consistent')])).toEqual({
       kind: 'missing-credentials',
-      credentials: [broken],
+      inconsistentCredentials: [broken],
     })
   })
 

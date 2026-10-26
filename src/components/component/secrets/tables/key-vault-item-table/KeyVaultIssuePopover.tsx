@@ -84,5 +84,5 @@ const KeyVaultIssueDescription = (props: KeyVaultIssuePopoverProps) => {
     )
   }
 
-  return <></>
+  return null
 }
