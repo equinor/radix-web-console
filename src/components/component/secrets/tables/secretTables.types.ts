@@ -8,15 +8,17 @@ export interface SecretTableProps {
   readonly secrets: ReadonlyArray<Secret>
 }
 
-export interface SecretTable {
+interface SecretTable {
   readonly title: string
   readonly Component: (props: SecretTableProps) => ReactNode
 }
 
-export interface SecretTableGroup extends SecretTable {
+/** Static configuration: which secret types are rendered by this table. */
+export interface SecretTableDefinition extends SecretTable {
   readonly types: Array<Secret['type']>
 }
 
-export interface SecretTableItem extends SecretTable {
+/** A table populated with the secrets it should render, shown as one section. */
+export interface SecretTableSection extends SecretTable {
   readonly secrets: Array<Secret>
 }
