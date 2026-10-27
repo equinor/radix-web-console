@@ -2,6 +2,7 @@ import { Button, Checkbox, CircularProgress, Icon, NativeSelect, TextField, Typo
 import { info_circle } from '@equinor/eds-icons'
 import { uniq } from 'lodash-es'
 import { type ChangeEvent, type FormEvent, useId, useState } from 'react'
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import {
   type PipelineParametersBuild,
   useTriggerPipelineBuildDeployMutation,
@@ -16,7 +17,8 @@ import { TargetEnvs } from './target-envs'
 import { useGetApplicationBranches } from './use-get-application-branches'
 
 export function PipelineFormBuildBranches({ onSuccess, application, pipelineName }: FormProp) {
-  const hasEnvironments = application.environments && application.environments.length > 0
+  const isRadixConfigApplied = hasAppliedRadixConfig(application)
+
   const isBuildDeployPipeline = pipelineName === 'build-deploy'
   const [triggerBuild, buildState] = useTriggerPipelineBuildMutation()
   const [triggerBuildDeploy, buildDeployState] = useTriggerPipelineBuildDeployMutation()
@@ -107,7 +109,7 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={createJobState.isLoading} className="grid grid--gap-medium">
-        {hasEnvironments && hasBranches ? (
+        {isRadixConfigApplied && hasBranches ? (
           <div className="grid grid--gap-small input">
             <Typography
               className="input-label"
@@ -173,7 +175,7 @@ export function PipelineFormBuildBranches({ onSuccess, application, pipelineName
           </div>
         ) : (
           <>
-            {!hasEnvironments ? (
+            {!isRadixConfigApplied ? (
               <MissingRadixConfigAlert application={application} />
             ) : (
               <>

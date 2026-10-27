@@ -1,8 +1,7 @@
 import { EnvironmentCardContainer } from '../../containers/environment-card-container/EnvironmentCardContainer'
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import type { Application } from '../../store/radix-api'
-import { Banner } from '../banner/Banner'
-import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
-import { RadixConfigFileLink } from '../link/radix-config-file-link'
+import { MissingRadixConfigAlert } from '../create-job-form/missing-radix-config-alert'
 import styles from './environmentCardList.module.css'
 
 interface EnvironmentCardListProps {
@@ -11,11 +10,11 @@ interface EnvironmentCardListProps {
 
 export const EnvironmentCardList = (props: EnvironmentCardListProps) => {
   const { application } = props
-  const hasEnvironments = application.environments && application.environments.length > 0
+  const isRadixConfigApplied = hasAppliedRadixConfig(application)
 
   return (
     <>
-      {hasEnvironments ? (
+      {isRadixConfigApplied ? (
         <ul className={styles.environmentCardList}>
           {application?.environments?.map((environment) => (
             <li key={environment.name}>
@@ -24,15 +23,7 @@ export const EnvironmentCardList = (props: EnvironmentCardListProps) => {
           ))}
         </ul>
       ) : (
-        <Banner>
-          <Banner.Message>
-            The <RadixConfigFileLink registration={application.registration} /> file must be read by Radix in order to
-            show information about environments.
-            <br />
-            Run the <NewApplyConfigPipelineLink appName={application.name}>apply-config</NewApplyConfigPipelineLink>{' '}
-            pipeline job to read the file from the application's GitHub repository.
-          </Banner.Message>
-        </Banner>
+        <MissingRadixConfigAlert application={application} />
       )}
     </>
   )

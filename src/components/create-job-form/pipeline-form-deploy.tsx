@@ -1,7 +1,7 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FormEvent, useId, useState } from 'react'
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { useTriggerPipelineDeployMutation } from '../../store/radix-api'
-
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
@@ -9,7 +9,8 @@ import type { FormProp } from './index'
 import { MissingRadixConfigAlert } from './missing-radix-config-alert'
 
 export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
-  const hasEnvironments = application.environments && application.environments.length > 0
+  const isRadixConfigApplied = hasAppliedRadixConfig(application)
+
   const [trigger, state] = useTriggerPipelineDeployMutation()
   const [toEnvironment, setToEnvironment] = useState('')
   const toEnvironmentSelectId = useId()
@@ -31,7 +32,7 @@ export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
-        {hasEnvironments ? (
+        {isRadixConfigApplied ? (
           <div className="grid grid--gap-small input">
             <Typography
               className="input-label"

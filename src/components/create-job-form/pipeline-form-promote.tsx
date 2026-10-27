@@ -1,7 +1,7 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FormEvent, useId, useState } from 'react'
 import { useSearchParams } from 'react-router'
-
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { pollingInterval } from '../../store/defaults'
 import {
   type DeploymentSummary,
@@ -52,7 +52,7 @@ export const PipelineFormPromote = (props: FormProp) => {
   const deploymentNameSelectId = useId()
   const toEnvironmentSelectId = useId()
 
-  const hasEnvironments = !!application.environments && application.environments.length > 0
+  const isRadixConfigApplied = hasAppliedRadixConfig(application)
   const selectedDeployment = deployments?.find((deployment) => deployment.name === deploymentName)
   const fromEnvironment = selectedDeployment?.environment
   const deploymentsByEnvironment = groupDeploymentsByEnvironment(deployments ?? [])
@@ -71,7 +71,7 @@ export const PipelineFormPromote = (props: FormProp) => {
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
-        {hasEnvironments ? (
+        {isRadixConfigApplied ? (
           <div className="grid grid--gap-small input">
             <Typography
               className="input-label"

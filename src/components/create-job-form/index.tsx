@@ -2,6 +2,7 @@ import { NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FunctionComponent, useId, useMemo } from 'react'
 
 import { useSearchParams } from 'react-router'
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { pollingInterval } from '../../store/defaults'
 import { type Application, useGetApplicationQuery } from '../../store/radix-api'
 import { PipelineFormApplyConfig } from './pipeline-form-apply-config'
@@ -36,27 +37,37 @@ export interface CreateJobFormProps {
 }
 export default function CreateJobForm({ appName, onSuccess }: CreateJobFormProps) {
   const { data: application, ...appState } = useGetApplicationQuery({ appName }, { pollingInterval })
-  const hasEnvironments = application?.environments?.length
+
+  const isRadixConfigApplied = application ? hasAppliedRadixConfig(application) : false
   const buildBranches = useGetApplicationBranches(application)
   const hasBuildBranches = Object.keys(buildBranches).length > 0
   const [searchParams, setSearchParams] = useSearchParams()
   const pipelineNameSelectId = useId()
+
   const setPipelineType = (pipeline: string) =>
     setSearchParams((prev) => {
       prev.set(pipelineSearchParam, pipeline)
       return prev
     })
 
-  const pipeline = useMemo(() => {
+  const selectedPipelineName = useMemo(() => {
     const urlPipeline = searchParams.get(pipelineSearchParam)
     if (urlPipeline && Object.keys(Pipelines).includes(urlPipeline)) {
       return urlPipeline as SupportedPipelineNames
     }
 
-    return (!hasEnvironments ? 'apply-config' : hasBuildBranches ? 'build-deploy' : '') as SupportedPipelineNames
-  }, [searchParams, hasEnvironments, hasBuildBranches])
+    if (!isRadixConfigApplied) {
+      return 'apply-config'
+    }
 
-  const PipelineForm = Pipelines[pipeline]
+    if (hasBuildBranches) {
+      return 'build-deploy'
+    }
+
+    return '' as SupportedPipelineNames
+  }, [searchParams, isRadixConfigApplied, hasBuildBranches])
+
+  const PipelineForm = Pipelines[selectedPipelineName]
 
   return (
     <AsyncResource asyncState={appState}>
@@ -66,20 +77,20 @@ export default function CreateJobForm({ appName, onSuccess }: CreateJobFormProps
       <NativeSelect
         id={pipelineNameSelectId}
         label=""
-        value={pipeline}
+        value={selectedPipelineName}
         onChange={(e) => setPipelineType(e.target.value)}
       >
         <option hidden value="">
           — Please select —
         </option>
-        {Object.keys(Pipelines).map((pipeline) => (
-          <option value={pipeline} key={pipeline}>
-            {pipeline}
+        {Object.keys(Pipelines).map((pipelineName) => (
+          <option value={pipelineName} key={pipelineName}>
+            {pipelineName}
           </option>
         ))}
       </NativeSelect>
       {PipelineForm && application && (
-        <PipelineForm onSuccess={onSuccess} application={application} pipelineName={pipeline} />
+        <PipelineForm onSuccess={onSuccess} application={application} pipelineName={selectedPipelineName} />
       )}
     </AsyncResource>
   )
