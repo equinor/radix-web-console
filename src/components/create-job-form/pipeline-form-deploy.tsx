@@ -1,16 +1,12 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FormEvent, useId, useState } from 'react'
-import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { useTriggerPipelineDeployMutation } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import type { FormProp } from './index'
-import { MissingRadixConfigAlert } from './missing-radix-config-alert'
 
 export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
-  const isRadixConfigApplied = hasAppliedRadixConfig(application)
-
   const [trigger, state] = useTriggerPipelineDeployMutation()
   const [toEnvironment, setToEnvironment] = useState('')
   const toEnvironmentSelectId = useId()
@@ -32,42 +28,38 @@ export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
-        {isRadixConfigApplied ? (
+        <div className="grid grid--gap-small input">
+          <Typography
+            className="input-label"
+            as="span"
+            group="navigation"
+            variant="label"
+            token={{ color: 'currentColor' }}
+          >
+            Deploy an application
+          </Typography>
           <div className="grid grid--gap-small input">
-            <Typography
-              className="input-label"
-              as="span"
-              group="navigation"
-              variant="label"
-              token={{ color: 'currentColor' }}
-            >
-              Deploy an application
+            <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
+              Environment
             </Typography>
-            <div className="grid grid--gap-small input">
-              <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
-                Environment
-              </Typography>
-              <NativeSelect
-                id={toEnvironmentSelectId}
-                label=""
-                name="toEnvironment"
-                onChange={(e) => setToEnvironment(e.target.value)}
-                value={toEnvironment}
-              >
-                <option hidden value="">
-                  — Please select —
+            <NativeSelect
+              id={toEnvironmentSelectId}
+              label=""
+              name="toEnvironment"
+              onChange={(e) => setToEnvironment(e.target.value)}
+              value={toEnvironment}
+            >
+              <option hidden value="">
+                — Please select —
+              </option>
+              {application.environments?.map(({ name }, i) => (
+                <option key={i} value={name}>
+                  {name}
                 </option>
-                {application.environments?.map(({ name }, i) => (
-                  <option key={i} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </NativeSelect>
-            </div>
+              ))}
+            </NativeSelect>
           </div>
-        ) : (
-          <MissingRadixConfigAlert application={application} />
-        )}
+        </div>
         <div className="o-action-bar">
           {state.isLoading && (
             <div>

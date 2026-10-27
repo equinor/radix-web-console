@@ -6,7 +6,9 @@ import AsyncResource from '../../components/async-resource/async-resource'
 import { DefaultAppAlias } from '../../components/component/default-app-alias'
 import { DNSAliases } from '../../components/component/dns-aliases'
 import { EnvironmentCardList } from '../../components/environment-card-list/EnvironmentCardList'
+import { FirstTimeApplyConfig } from '../../components/first-time-apply-config/FirstTimeApplyConfig'
 import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
 import { configVariables } from '../../utils/config'
@@ -23,6 +25,8 @@ function AppOverviewPage({ appName }: { appName: string }) {
 
   const { appAlias, dnsAliases, dnsExternalAliases, jobs } = application ?? {}
 
+  const hasAppliedConfig = hasAppliedRadixConfig(application)
+
   return (
     <main className="grid grid--gap-medium">
       <AsyncResource asyncState={state}>
@@ -35,6 +39,8 @@ function AppOverviewPage({ appName }: { appName: string }) {
           </Alert>
         )}
 
+        {application && <FirstTimeApplyConfig application={application} />}
+
         <div className="grid grid--gap-medium grid--overview-columns">
           <ApplicationCost appName={appName} />
           <FutureApplicationCost appName={appName} />
@@ -44,10 +50,13 @@ function AppOverviewPage({ appName }: { appName: string }) {
         {dnsAliases && <DNSAliases appName={appName} dnsAliases={dnsAliases} title={'DNS aliases'} />}
         {DNSAliases && <DNSAliases appName={appName} dnsAliases={dnsExternalAliases} title={'DNS external aliases'} />}
 
-        <div className="grid grid--gap-small">
-          <Typography variant="h4">Environments</Typography>
-          {application && <EnvironmentCardList application={application} />}
-        </div>
+        {/* Show environments only if the application has an applied Radix config */}
+        {hasAppliedConfig && (
+          <div className="grid grid--gap-small">
+            <Typography variant="h4">Environments</Typography>
+            {application && <EnvironmentCardList application={application} />}
+          </div>
+        )}
 
         <PipelineJobsTable appName={appName} jobs={jobs} limit={LATEST_JOBS_LIMIT} />
       </AsyncResource>

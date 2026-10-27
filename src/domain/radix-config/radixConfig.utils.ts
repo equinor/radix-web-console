@@ -5,5 +5,5 @@ import type { Application } from '../../store/radix-api'
  * derived from the config by the apply-config pipeline, so an application with no
  * environments means the config has not been applied.
  */
-export const hasAppliedRadixConfig = (application: Pick<Application, 'environments'>): boolean =>
-  (application.environments?.length ?? 0) > 0
+export const hasAppliedRadixConfig = (application?: Pick<Application, 'environments'>): boolean =>
+  (application?.environments?.length ?? 0) > 0

@@ -1,0 +1,4 @@
+/* Small trick to prevent extra spacing above the title. */
+.title.title {
+  margin-top: calc(var(--eds_spacing_x_small) * -1);
+}

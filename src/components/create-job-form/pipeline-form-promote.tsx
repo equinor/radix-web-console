@@ -1,7 +1,6 @@
 import { Button, CircularProgress, NativeSelect, Typography } from '@equinor/eds-core-react'
 import { type FormEvent, useId, useState } from 'react'
 import { useSearchParams } from 'react-router'
-import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { pollingInterval } from '../../store/defaults'
 import {
   type DeploymentSummary,
@@ -13,7 +12,6 @@ import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { RelativeToNow } from '../time/relative-to-now'
 import type { FormProp } from './index'
-import { MissingRadixConfigAlert } from './missing-radix-config-alert'
 import { getDeploymentOptionLabel, groupDeploymentsByEnvironment } from './pipeline-form-promote.utils'
 
 // TODO #1422 - deployment.activeFrom could be undefined, resulting in text "Active from " without a date
@@ -52,7 +50,6 @@ export const PipelineFormPromote = (props: FormProp) => {
   const deploymentNameSelectId = useId()
   const toEnvironmentSelectId = useId()
 
-  const isRadixConfigApplied = hasAppliedRadixConfig(application)
   const selectedDeployment = deployments?.find((deployment) => deployment.name === deploymentName)
   const fromEnvironment = selectedDeployment?.environment
   const deploymentsByEnvironment = groupDeploymentsByEnvironment(deployments ?? [])
@@ -71,70 +68,66 @@ export const PipelineFormPromote = (props: FormProp) => {
   return (
     <form onSubmit={handleSubmit}>
       <fieldset disabled={state.isLoading} className="grid grid--gap-medium">
-        {isRadixConfigApplied ? (
-          <div className="grid grid--gap-small input">
-            <Typography
-              className="input-label"
-              as="span"
-              group="navigation"
-              variant="label"
-              token={{ color: 'currentColor' }}
-            >
-              Promote an existing deployment to an environment
-            </Typography>
-            <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
-              Deployment to promote
-            </Typography>
-            <NativeSelect
-              id={deploymentNameSelectId}
-              label=""
-              onChange={(event) => setDeploymentName(event.target.value)}
-              name="deploymentName"
-              value={deploymentName}
-            >
-              <option hidden value="">
-                — Please select —
-              </option>
-              {Object.entries(deploymentsByEnvironment).map(([environment, environmentDeployments]) => (
-                <optgroup key={environment} label={environment}>
-                  {environmentDeployments.map((deployment) => (
-                    <option key={deployment.name} value={deployment.name}>
-                      {getDeploymentOptionLabel(deployment)}
-                    </option>
-                  ))}
-                </optgroup>
-              ))}
-            </NativeSelect>
+        <div className="grid grid--gap-small input">
+          <Typography
+            className="input-label"
+            as="span"
+            group="navigation"
+            variant="label"
+            token={{ color: 'currentColor' }}
+          >
+            Promote an existing deployment to an environment
+          </Typography>
+          <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
+            Deployment to promote
+          </Typography>
+          <NativeSelect
+            id={deploymentNameSelectId}
+            label=""
+            onChange={(event) => setDeploymentName(event.target.value)}
+            name="deploymentName"
+            value={deploymentName}
+          >
+            <option hidden value="">
+              — Please select —
+            </option>
+            {Object.entries(deploymentsByEnvironment).map(([environment, environmentDeployments]) => (
+              <optgroup key={environment} label={environment}>
+                {environmentDeployments.map((deployment) => (
+                  <option key={deployment.name} value={deployment.name}>
+                    {getDeploymentOptionLabel(deployment)}
+                  </option>
+                ))}
+              </optgroup>
+            ))}
+          </NativeSelect>
 
-            {selectedDeployment && <DeploymentActiveStatus deployment={selectedDeployment} />}
+          {selectedDeployment && <DeploymentActiveStatus deployment={selectedDeployment} />}
 
-            <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
-              Target environment
-            </Typography>
-            <NativeSelect
-              id={toEnvironmentSelectId}
-              label=""
-              name="toEnvironment"
-              onChange={(event) => setToEnvironment(event.target.value)}
-              value={toEnvironment}
-            >
-              <option hidden value="">
-                — Please select —
+          <Typography group="input" variant="text" token={{ color: 'currentColor' }}>
+            Target environment
+          </Typography>
+          <NativeSelect
+            id={toEnvironmentSelectId}
+            label=""
+            name="toEnvironment"
+            onChange={(event) => setToEnvironment(event.target.value)}
+            value={toEnvironment}
+          >
+            <option hidden value="">
+              — Please select —
+            </option>
+            {application.environments?.map((environment) => (
+              <option
+                key={environment.name}
+                value={environment.name}
+                disabled={environment.activeDeployment?.name === deploymentName}
+              >
+                {environment.name}
               </option>
-              {application.environments?.map((environment) => (
-                <option
-                  key={environment.name}
-                  value={environment.name}
-                  disabled={environment.activeDeployment?.name === deploymentName}
-                >
-                  {environment.name}
-                </option>
-              ))}
-            </NativeSelect>
-          </div>
-        ) : (
-          <MissingRadixConfigAlert application={application} />
-        )}
+            ))}
+          </NativeSelect>
+        </div>
         <div className="o-action-bar">
           {state.isLoading && (
             <div>
