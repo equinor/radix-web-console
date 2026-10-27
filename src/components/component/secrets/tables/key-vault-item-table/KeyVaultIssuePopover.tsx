@@ -30,7 +30,7 @@ export const KeyVaultIssuePopover = (props: KeyVaultIssuePopoverProps) => {
           variant="ghost_icon"
           color={severity === 'danger' ? 'danger' : undefined}
           className={clsx({ [styles.warningTrigger]: severity === 'warning' })}
-          aria-haspopup
+          aria-haspopup="dialog"
           aria-expanded={isOpen}
           aria-label={triggerLabel}
           ref={setAnchorEl}
