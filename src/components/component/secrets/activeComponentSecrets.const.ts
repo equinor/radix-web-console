@@ -1,9 +1,10 @@
+import { CLIENT_CREDENTIALS_SECRET_TYPE, KEY_VAULT_ITEM_SECRET_TYPE } from '../../../domain/key-vault/keyVault.const'
 import { GenericSecretsTable } from './tables/GenericSecretsTable'
-import { KeyVaultSecretsTable } from './tables/KeyVaultSecretsTable'
-import type { SecretTableGroup } from './tables/secretTables.types'
+import { KeyVaultSecretsTable } from './tables/key-vault-item-table/KeyVaultSecretsTable'
+import type { SecretTableDefinition } from './tables/secretTables.types'
 import { VolumeMountSecretsTable } from './tables/VolumeMountSecretsTable'
 
-export const SECRET_GROUPING: ReadonlyArray<SecretTableGroup> = Object.freeze([
+export const SECRET_TABLE_DEFINITIONS: ReadonlyArray<SecretTableDefinition> = Object.freeze([
   {
     title: 'Secrets',
     Component: GenericSecretsTable,
@@ -15,9 +16,9 @@ export const SECRET_GROUPING: ReadonlyArray<SecretTableGroup> = Object.freeze([
     types: ['csi-azure-blob-volume'],
   },
   {
-    title: 'Key Vaults',
+    title: 'Key Vault Items',
     Component: KeyVaultSecretsTable,
-    types: ['csi-azure-key-vault-creds', 'csi-azure-key-vault-item'],
+    types: [KEY_VAULT_ITEM_SECRET_TYPE, CLIENT_CREDENTIALS_SECRET_TYPE],
   },
   {
     title: 'OAuth2',
