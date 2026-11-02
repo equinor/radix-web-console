@@ -8,8 +8,8 @@ import type { Step } from '../../../../../store/radix-api'
 import { routeWithParams } from '../../../../../utils/string'
 import styles from '../pipelineJobStep.module.css'
 import { getStepIcon } from '../pipelineJobStepList.utils'
-import { PipelineJobStepDescription } from './PipelineJobStepDescription'
 import { PipelineJobStepDuration } from './PipelineJobStepDuration'
+import { PipelineJobStepTitle } from './PipelineJobStepTitle'
 
 interface PipelineJobStepProps {
   readonly appName: string
@@ -23,7 +23,7 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
   return (
     <div className={styles.step}>
       <div className={clsx('grid', styles.divider)}>
-        <Icon className={styles.stepIcon} data={getStepIcon(step.name ?? '')} />
+        <Icon className={styles.stepIcon} data={getStepIcon(step)} />
         <span className={styles.dividerLine} />
       </div>
 
@@ -31,11 +31,11 @@ export const PipelineJobStep = (props: PipelineJobStepProps) => {
         <div className={styles.description}>
           <Typography
             as={Link}
-            to={routeWithParams(routes.appJobStep, { appName, jobName, stepName: step.name ?? '' })}
+            to={routeWithParams(routes.appJobStep, { appName, jobName, stepName: step.name })}
             link
-            token={{ textDecoration: 'none', textTransform: 'capitalize' }}
+            token={{ textDecoration: 'none' }}
           >
-            <PipelineJobStepDescription name={step.name} components={step.components} />
+            <PipelineJobStepTitle step={step} />
           </Typography>
 
           <RadixJobConditionBadge status={step.status ?? 'Waiting'} />

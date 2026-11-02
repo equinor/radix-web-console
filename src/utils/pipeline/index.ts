@@ -1,3 +1,6 @@
+import type { Step } from '../../store/radix-api'
+
+// TODO: Remove this enum when radix-api with step type is deployed to all clusters, https://github.com/equinor/radix-operator/issues/2033
 export enum PipelineStep {
   CloneConfig = 'clone-config',
   CloneRepository = 'clone',
@@ -6,28 +9,42 @@ export enum PipelineStep {
   SubPipelineTaskStep = 'sub-pipeline-step',
 }
 
-export function getPipelineStepDescription(stepName?: string): string | null {
-  switch (stepName) {
-    case PipelineStep.CloneConfig:
-      return 'Cloning Radix config from config branch'
-    case PipelineStep.OrchestratePipeline:
-      return 'Orchestrating pipeline'
-    case PipelineStep.BuildComponent:
-      return 'Building component'
+export function getPipelineStepTitle(step: Step): string {
+  if (!step.type) {
+    return getPipelineStepTitleFromName(step.name)
+  }
+
+  switch (step.type) {
+    case 'CloneConfig':
+      return 'Cloning Radix Config'
+    case 'PipelineRunner':
+      return 'Orchestrating Pipeline'
+    case 'Clone':
+      return 'Cloning Repository'
+    case 'Build':
+      return 'Building'
     default:
-      return null
+      return 'Unknown Step'
   }
 }
 
-export function getPipelineStepTitle(stepName?: string): string | null {
+// Helper function to get the pipeline step title based on the step name when the step type is not defined.
+// TODO: Remove this function when radix-api with step type is deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
+function getPipelineStepTitleFromName(stepName: string): string {
   switch (stepName) {
     case PipelineStep.CloneConfig:
-      return 'Cloning Radix config'
-    case PipelineStep.CloneRepository:
-      return 'Cloning repository'
+      return 'Cloning Radix Config'
     case PipelineStep.OrchestratePipeline:
-      return 'Orchestrating pipeline'
-    default:
-      return null
+      return 'Orchestrating Pipeline'
   }
+
+  if (stepName.startsWith('build')) {
+    return 'Building'
+  }
+
+  if (stepName.startsWith('clone')) {
+    return 'Cloning Repository'
+  }
+
+  return 'Unknown Step'
 }
