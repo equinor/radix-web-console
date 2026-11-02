@@ -4,7 +4,7 @@ import { type Secret, useGetAzureKeyVaultSecretVersionsQuery } from '../../../..
 import AsyncResource from '../../../../async-resource/async-resource'
 import { Banner } from '../../../../banner/Banner'
 import { Dialog } from '../../../../dialog/Dialog'
-import { KeyVaultItemStatusBadge } from '../../../../status-badges'
+import { KeyVaultItemStatusBadge } from '../../../../status-badges/key-vault-item-status-badge'
 import { Duration } from '../../../../time/duration'
 import { extractKey, formatVaultItem, removeDuplicateBatchVaultItems } from './viewAzureKeyVaultItemButton.utils'
 

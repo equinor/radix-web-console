@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import { pollingInterval } from '../../../store/defaults'
 import { useGetEnvironmentQuery } from '../../../store/radix-api'
 import AsyncResource from '../../async-resource/async-resource'
-import { SECRET_GROUPING } from './activeComponentSecrets.const'
-import { groupSecrets } from './activeComponentSecrets.utils'
+import { SECRET_TABLE_DEFINITIONS } from './activeComponentSecrets.const'
+import { buildSecretTableSections } from './activeComponentSecrets.utils'
 
 interface ActiveComponentSecretsProps {
   readonly appName: string
@@ -30,7 +30,7 @@ export const ActiveComponentSecrets = (props: ActiveComponentSecretsProps) => {
       )
       .filter((secret) => !!secret)
 
-    return groupSecrets(componentSecrets, SECRET_GROUPING)
+    return buildSecretTableSections(componentSecrets, SECRET_TABLE_DEFINITIONS)
   }, [secretNames, componentName, environment])
 
   const totalSecretCount = secretTables.reduce((sum, { secrets }) => sum + (secrets?.length ?? 0), 0)
@@ -55,7 +55,7 @@ export const ActiveComponentSecrets = (props: ActiveComponentSecretsProps) => {
                       <Accordion.Header>
                         <Accordion.HeaderTitle>
                           <Typography className="whitespace-nowrap" variant="h5" token={{ fontWeight: 400 }}>
-                            {title || 'Secrets'} ({secrets.length})
+                            {title} ({secrets.length})
                           </Typography>
                         </Accordion.HeaderTitle>
                       </Accordion.Header>

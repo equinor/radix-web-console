@@ -11,22 +11,19 @@ const UNSUPPORTED_STATUS: StatusBadgeTemplateProps = {
   children: 'Unsupported status',
 } as const
 
-const KEY_VAULT_ITEM_STATUS_MAP = {
+export const KEY_VAULT_ITEM_STATUS_MAP = {
   Pending: { type: 'danger', icon: <Icon data={error_outlined} />, children: 'Missing' },
   Consistent: { icon: <Icon data={check} />, children: 'Available' },
-  NotAvailable: {
-    type: 'danger',
-    icon: <Icon data={error_outlined} />,
-    children: 'Not available',
-  },
-} satisfies Record<SecretStatus, StatusBadgeTemplateProps>
+  NotAvailable: { type: 'danger', icon: <Icon data={error_outlined} />, children: 'Not available' },
+} as const satisfies Record<SecretStatus, StatusBadgeTemplateProps>
 
 interface KeyVaultItemStatusBadgeProps {
   status?: SecretStatus
 }
 
-export const KeyVaultItemStatusBadge = ({ status }: KeyVaultItemStatusBadgeProps) => {
-  const props = status ? (KEY_VAULT_ITEM_STATUS_MAP[status] ?? UNSUPPORTED_STATUS) : UNSUPPORTED_STATUS
+export const KeyVaultItemStatusBadge = (props: KeyVaultItemStatusBadgeProps) => {
+  const { status } = props
+  const badgeProps = (status && KEY_VAULT_ITEM_STATUS_MAP[status]) ?? UNSUPPORTED_STATUS
 
-  return <StatusBadgeTemplate {...props} />
+  return <StatusBadgeTemplate {...badgeProps} />
 }
