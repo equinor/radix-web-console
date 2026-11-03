@@ -1,7 +1,7 @@
 import { Accordion, Typography } from '@equinor/eds-core-react'
 import { StreamingLog } from '../../../components/code/log'
 import { getPipelineJobStepLogsStreamUrl } from '../../../store/eventstream-log-api'
-import { radixApi, useGetPipelineJobStepLogsQuery } from '../../../store/radix-api'
+import { radixApi, type Step, useGetPipelineJobStepLogsQuery } from '../../../store/radix-api'
 import { getFetchErrorCode } from '../../../store/utils/parse-errors'
 import { HistoricalLog } from './HistoricalLog'
 
@@ -11,18 +11,16 @@ import AsyncResource from '../../../components/async-resource/async-resource'
 interface StepLogsProps {
   appName: string
   jobName: string
-  stepName: string
-  start?: string
-  end?: string
+  step: Pick<Step, 'name'>
 }
 
-export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogsProps) {
+export function JobStepLogs({ appName, jobName, step }: StepLogsProps) {
   const [getLog] = radixApi.endpoints.getPipelineJobStepLogs.useLazyQuery()
   const state = useGetPipelineJobStepLogsQuery(
-    { appName, jobName, stepName, lines: '1' },
-    { skip: !appName || !jobName || !stepName, pollingInterval: 0 }
+    { appName, jobName, stepName: step.name, lines: '1' },
+    { skip: !appName || !jobName || !step.name, pollingInterval: 0 }
   )
-  const eventStreamUrl = getPipelineJobStepLogsStreamUrl(appName, jobName, stepName)
+  const eventStreamUrl = getPipelineJobStepLogsStreamUrl(appName, jobName, step.name)
   const notFound = state.isError && getFetchErrorCode(state.error) === 404
 
   return (
@@ -35,14 +33,14 @@ export function JobStepLogs({ appName, jobName, stepName, start, end }: StepLogs
         </Accordion.Header>
         <Accordion.Panel>
           {notFound ? (
-            <HistoricalLog appName={appName} jobName={jobName} stepName={stepName} start={start} end={end} />
+            <HistoricalLog appName={appName} jobName={jobName} step={step} />
           ) : (
             <AsyncResource asyncState={state}>
               <StreamingLog
                 eventStreamUrl={eventStreamUrl}
                 copy
                 download
-                downloadCb={() => getLog({ appName, jobName, stepName, file: 'true' }, false).unwrap()}
+                downloadCb={() => getLog({ appName, jobName, stepName: step.name, file: 'true' }, false).unwrap()}
               />
             </AsyncResource>
           )}

@@ -9,24 +9,23 @@ import {
   useGetPipelineJobContainerLogQuery,
   useGetPipelineJobInventoryQuery,
 } from '../../../store/log-api'
+import type { Step } from '../../../store/radix-api'
 
 interface StepLogsProps {
   appName: string
   jobName: string
-  stepName: string
-  start?: string
-  end?: string
+  step: Pick<Step, 'name' | 'containerName' | 'podName' | 'started' | 'ended'>
 }
 
-export function HistoricalLog({ appName, jobName, stepName, start, end }: StepLogsProps) {
-  end = end ? addMinutes(new Date(end), 10).toISOString() : undefined
+export function HistoricalLog({ appName, jobName, step }: StepLogsProps) {
+  const end = step.ended ? addMinutes(new Date(step.ended), 10).toISOString() : undefined
   const { container, ...state } = useGetPipelineJobInventoryQuery(
-    { appName, pipelineJobName: jobName, start, end },
+    { appName, pipelineJobName: jobName, start: step.started, end },
     {
       skip: !appName || !jobName,
       pollingInterval: 0,
       selectFromResult: ({ data, ...state }) => ({
-        container: data ? findContainer(data, stepName) : null,
+        container: data ? findContainer(data, step) : null,
         ...state,
       }),
     }
@@ -35,7 +34,7 @@ export function HistoricalLog({ appName, jobName, stepName, start, end }: StepLo
   return (
     <AsyncResource asyncState={state}>
       {container ? (
-        <ContainerLog jobName={jobName} appName={appName} start={start} end={end} container={container} />
+        <ContainerLog jobName={jobName} appName={appName} start={step.started} end={end} container={container} />
       ) : (
         <Typography>This replica has no log</Typography>
       )}
@@ -45,10 +44,15 @@ export function HistoricalLog({ appName, jobName, stepName, start, end }: StepLo
 
 type BrandedContainerModel = ModelsContainer & { parentId: string }
 
-function findContainer(data: ModelsInventoryResponse, stepName: string): BrandedContainerModel | null {
+function findContainer(data: ModelsInventoryResponse, step: StepLogsProps['step']): BrandedContainerModel | null {
   for (const replica of data?.replicas ?? []) {
+    // TODO: Remove when radix-api deployed to all clusters, ref https://github.com/equinor/radix-operator/issues/2033
+    if (step.podName && replica.name !== step.podName) {
+      continue
+    }
     for (const container of replica.containers ?? []) {
-      if (container.name === stepName) {
+      const containerName = step.containerName ? step.containerName : step.name
+      if (container.name === containerName) {
         return { ...container, parentId: replica.name }
       }
     }

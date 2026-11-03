@@ -58,7 +58,7 @@ export const SupportPage = () => {
 
           <SupportSection icon={email} title="Send us an email">
             Prefer email? Reach us at{' '}
-            <ExternalLink href={'mailto:' + externalUrls.radixSupportEmail} icon={null}>
+            <ExternalLink href={`mailto:${externalUrls.radixSupportEmail}`} icon={null}>
               {externalUrls.radixSupportEmail}
             </ExternalLink>
             .
