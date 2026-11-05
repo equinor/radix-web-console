@@ -9,6 +9,7 @@ import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.uti
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { radixApi, useGetApplicationQuery } from '../../store/radix-api'
+import type { AppDispatch } from '../../store/store'
 import { withRouteParams } from '../../utils/router'
 import { routeWithParams } from '../../utils/string'
 
@@ -19,13 +20,12 @@ interface PipelineJobNewPageProps {
 function PipelineJobNewPage({ appName }: PipelineJobNewPageProps) {
   const { data: application, ...appState } = useGetApplicationQuery({ appName }, { pollingInterval })
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   const refreshAndNavigateToJob = async (jobName: string) => {
     // Force refetch list of jobs
-    dispatch(
-      // @ts-expect-error initiate *is* a action, wrong types from redux?
+    await dispatch(
       radixApi.endpoints.getApplicationJobs.initiate({ appName }, { subscribe: false, forceRefetch: true })
     )
     await navigate(routeWithParams(routes.appJob, { appName, jobName }))
