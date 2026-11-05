@@ -11,8 +11,9 @@ import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
 import { RelativeToNow } from '../time/relative-to-now'
-import type { FormProp } from './index'
+import type { FormProp } from './create-job-form.types'
 import { getDeploymentOptionLabel, groupDeploymentsByEnvironment } from './pipeline-form-promote.utils'
+import './style.css'
 
 // TODO #1422 - deployment.activeFrom could be undefined, resulting in text "Active from " without a date
 const DeploymentActiveStatus = (props: { deployment: DeploymentSummary }) => {

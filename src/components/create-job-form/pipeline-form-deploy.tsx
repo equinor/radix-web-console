@@ -4,7 +4,8 @@ import { useTriggerPipelineDeployMutation } from '../../store/radix-api'
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import type { FormProp } from './index'
+import type { FormProp } from './create-job-form.types'
+import './style.css'
 
 export function PipelineFormDeploy({ application, onSuccess }: FormProp) {
   const [trigger, state] = useTriggerPipelineDeployMutation()

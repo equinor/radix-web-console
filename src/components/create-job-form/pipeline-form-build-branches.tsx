@@ -10,9 +10,10 @@ import {
 import { getFetchErrorMessage } from '../../store/utils/parse-errors'
 import { Alert } from '../alert'
 import { handlePromiseWithToast } from '../global-top-nav/styled-toaster'
-import type { FormProp } from './index'
+import type { FormProp } from './create-job-form.types'
 import { TargetEnvs } from './target-envs'
 import { useGetApplicationBranches } from './use-get-application-branches'
+import './style.css'
 
 export function PipelineFormBuildBranches({ onSuccess, application, pipelineName }: FormProp) {
   const isBuildDeployPipeline = pipelineName === 'build-deploy'
