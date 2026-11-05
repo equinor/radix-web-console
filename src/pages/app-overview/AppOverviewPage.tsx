@@ -25,7 +25,7 @@ function AppOverviewPage({ appName }: { appName: string }) {
 
   const { appAlias, dnsAliases, dnsExternalAliases, jobs } = application ?? {}
 
-  const hasAppliedConfig = hasAppliedRadixConfig(application)
+  const hasAppliedConfig = application ? hasAppliedRadixConfig(application) : undefined
 
   return (
     <main className="grid grid--gap-medium">
@@ -51,10 +51,10 @@ function AppOverviewPage({ appName }: { appName: string }) {
         {DNSAliases && <DNSAliases appName={appName} dnsAliases={dnsExternalAliases} title={'DNS external aliases'} />}
 
         {/* Show environments only if the application has an applied Radix config */}
-        {hasAppliedConfig && (
+        {application && hasAppliedConfig && (
           <div className="grid grid--gap-small">
             <Typography variant="h4">Environments</Typography>
-            {application && <EnvironmentCardList application={application} />}
+            <EnvironmentCardList application={application} />
           </div>
         )}
 

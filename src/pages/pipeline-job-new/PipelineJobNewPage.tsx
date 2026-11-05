@@ -1,48 +1,39 @@
 import { Typography } from '@equinor/eds-core-react'
-import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router'
-import { Alert } from '../../components/alert'
+import { Navigate, useNavigate } from 'react-router'
+import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import CreateJobForm from '../../components/create-job-form'
 import { DocumentTitle } from '../../components/document-title'
+import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { routes } from '../../router/routes'
-import { radixApi } from '../../store/radix-api'
+import { pollingInterval } from '../../store/defaults'
+import { radixApi, useGetApplicationQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { routeWithParams } from '../../utils/string'
 
-function JobLink(props: { appName: string; jobName: string }) {
-  return (
-    <Typography as={Link} to={routeWithParams(routes.appJob, props)} link>
-      Pipeline Job
-    </Typography>
-  )
-}
-function JobsLink(props: { appName: string }) {
-  return (
-    <Typography as={Link} to={routeWithParams(routes.appJobs, props)} link>
-      Pipeline Jobs
-    </Typography>
-  )
+interface PipelineJobNewPageProps {
+  readonly appName: string
 }
 
-interface Props {
-  appName: string
-}
-function PipelineJobNewPage({ appName }: Props) {
-  const [createdJob, setCreatedJob] = useState<string>()
+function PipelineJobNewPage({ appName }: PipelineJobNewPageProps) {
+  const { data: application, ...appState } = useGetApplicationQuery({ appName }, { pollingInterval })
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const onSuccess = (jobName: string) => {
-    setCreatedJob(jobName)
-
+  const refreshAndNavigateToJob = async (jobName: string) => {
     // Force refetch list of jobs
     dispatch(
       // @ts-expect-error initiate *is* a action, wrong types from redux?
       radixApi.endpoints.getApplicationJobs.initiate({ appName }, { subscribe: false, forceRefetch: true })
     )
-    navigate(routeWithParams(routes.appJob, { appName, jobName }))
+    await navigate(routeWithParams(routes.appJob, { appName, jobName }))
+  }
+
+  /** This page should not be accessible if the Radix config is not applied. Only decide once the application has loaded. */
+  if (application && !hasAppliedRadixConfig(application)) {
+    return <Navigate to={routeWithParams(routes.appJobs, { appName })} replace />
   }
 
   return (
@@ -58,28 +49,22 @@ function PipelineJobNewPage({ appName }: Props) {
           { label: 'New pipeline job' },
         ]}
       />
-      <div className="grid grid--gap-medium">
-        <div className="grid grid--gap-small">
-          <Typography variant="h4">New pipeline job</Typography>
-          <Typography>
-            Pipeline jobs perform different actions in Radix. The pipeline of the job defines what action to take, and
-            it may require specific parameters.
-          </Typography>
-        </div>
-        {createdJob ? (
+      <AsyncResource asyncState={appState}>
+        {application && (
           <div className="grid grid--gap-medium">
-            <Alert>
-              <Typography>The pipeline job "{createdJob}" has been created</Typography>
-            </Alert>
-            <Typography>
-              View <JobLink jobName={createdJob} appName={appName} /> or all <JobsLink appName={appName} />
-            </Typography>
+            <div className="grid grid--gap-small">
+              <Typography variant="h4">New pipeline job</Typography>
+              <Typography>
+                Pipeline jobs perform different actions in Radix. The pipeline of the job defines what action to take,
+                and it may require specific parameters.
+              </Typography>
+            </div>
+            <CreateJobForm onSuccess={refreshAndNavigateToJob} application={application} />
           </div>
-        ) : (
-          <CreateJobForm appName={appName} onSuccess={onSuccess} />
         )}
-      </div>
+      </AsyncResource>
     </>
   )
 }
+
 export default withRouteParams(PipelineJobNewPage)
