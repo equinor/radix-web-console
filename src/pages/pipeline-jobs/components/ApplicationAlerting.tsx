@@ -7,14 +7,14 @@ import { handlePromiseWithToast } from '../../../components/global-top-nav/style
 import { ScrimPopup } from '../../../components/scrim-popup'
 import { pollingInterval } from '../../../store/defaults'
 import { radixApi, type UpdateAlertingConfig } from '../../../store/radix-api'
+import styles from './applicationAlerting.module.css'
 
-import '../style.css'
-
-interface Props {
-  appName: string
+interface ApplicationAlertingProps {
+  readonly appName: string
 }
 
-const ApplicationAlerting = ({ appName }: Props) => {
+export const ApplicationAlerting = (props: ApplicationAlertingProps) => {
+  const { appName } = props
   const [visibleScrim, setVisibleScrim] = useState(false)
   const {
     data: config,
@@ -56,7 +56,7 @@ const ApplicationAlerting = ({ appName }: Props) => {
             </Button>
           </Typography>
           <ScrimPopup title="Alert Settings" open={visibleScrim} onClose={() => setVisibleScrim(false)}>
-            <div className="application-alerting-content">
+            <div className={styles.content}>
               <Alerting
                 isSaving={savingUpdate || savingDisable || savingEnable}
                 alertingConfig={config}
@@ -71,5 +71,3 @@ const ApplicationAlerting = ({ appName }: Props) => {
     </AsyncResource>
   )
 }
-
-export default ApplicationAlerting

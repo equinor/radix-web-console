@@ -1,0 +1,15 @@
+.content {
+  padding: var(--eds_spacing_medium);
+  padding-top: 0;
+  overflow-y: auto;
+}
+@media (min-width: 20rem) {
+  .content {
+    width: 18rem;
+  }
+}
+@media (min-width: 50rem) {
+  .content {
+    width: 28rem;
+  }
+}

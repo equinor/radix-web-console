@@ -8,13 +8,17 @@ import { routeWithParams } from '../../utils/string'
 import { Banner } from '../banner/Banner'
 import { RadixConfigFileLink } from '../link/radix-config-file-link'
 
-import styles from './firstTimeApplyConfig.module.css'
+import styles from './initialConfigurationPrompt.module.css'
 
-interface FirstTimeApplyConfigProps {
+interface InitialConfigurationPromptProps {
   readonly application: Pick<Application, 'name' | 'registration' | 'environments'>
 }
 
-export const FirstTimeApplyConfig = (props: FirstTimeApplyConfigProps) => {
+/**
+ * Component that prompts the user to apply the initial Radix configuration if it has not been applied yet.
+ * Will not render anything if the configuration has already been applied.
+ */
+export const InitialConfigurationPrompt = (props: InitialConfigurationPromptProps) => {
   const { application } = props
   const navigate = useNavigate()
 

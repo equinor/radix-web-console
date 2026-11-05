@@ -2,7 +2,7 @@ import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DeploymentListContainer } from '../../components/deployments-list'
 import { DocumentTitle } from '../../components/document-title'
-import { FirstTimeApplyConfig } from '../../components/first-time-apply-config/FirstTimeApplyConfig'
+import { InitialConfigurationPrompt } from '../../components/initial-configuration-prompt/InitialConfigurationPrompt'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery, useGetDeploymentsQuery } from '../../store/radix-api'
@@ -27,7 +27,7 @@ function DeploymentsPage({ appName }: DeploymentPageProps) {
         links={[{ label: appName, to: routeWithParams(routes.app, { appName }) }, { label: 'Deployments' }]}
       />
       <AsyncResource asyncState={applicationState}>
-        {application && <FirstTimeApplyConfig application={application} />}
+        {application && <InitialConfigurationPrompt application={application} />}
       </AsyncResource>
       <AsyncResource asyncState={state}>
         <DeploymentListContainer appName={appName} deployments={deployments} />

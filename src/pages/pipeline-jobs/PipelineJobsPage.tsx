@@ -1,22 +1,23 @@
-import { Button, Icon } from '@equinor/eds-core-react'
-import { add } from '@equinor/eds-icons'
-import { Link } from 'react-router'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
-import { FirstTimeApplyConfig } from '../../components/first-time-apply-config/FirstTimeApplyConfig'
+import { InitialConfigurationPrompt } from '../../components/initial-configuration-prompt/InitialConfigurationPrompt'
+import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
 import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationJobsQuery, useGetApplicationQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
 import { routeWithParams } from '../../utils/string'
-import ApplicationAlerting from './components/ApplicationAlerting'
+import { PipelineJobsActions } from './components/PipelineJobsActions'
 
-import './style.css'
-import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
+interface PipelineJobsPageProps {
+  readonly appName: string
+}
 
-function PipelineJobsPage({ appName }: { appName: string }) {
+const PipelineJobsPage = (props: PipelineJobsPageProps) => {
+  const { appName } = props
+
   const { data: application, ...applicationState } = useGetApplicationQuery(
     { appName },
     { skip: !appName, pollingInterval }
@@ -34,19 +35,9 @@ function PipelineJobsPage({ appName }: { appName: string }) {
         <AsyncResource asyncState={applicationState}>
           {application &&
             (hasAppliedRadixConfig(application) ? (
-              <div className="pipeline-job-actions">
-                <div>
-                  <Button variant="ghost" as={Link} to={routeWithParams(routes.appJobNew, { appName })}>
-                    <Icon data={add} size={24} />
-                    Create new
-                  </Button>
-                </div>
-                <div className="pipeline-job-action__action--justify-end">
-                  <ApplicationAlerting appName={appName} />
-                </div>
-              </div>
+              <PipelineJobsActions appName={appName} />
             ) : (
-              <FirstTimeApplyConfig application={application} />
+              <InitialConfigurationPrompt application={application} />
             ))}
         </AsyncResource>
 
@@ -57,4 +48,5 @@ function PipelineJobsPage({ appName }: { appName: string }) {
     </>
   )
 }
+
 export default withRouteParams(PipelineJobsPage)

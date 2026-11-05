@@ -6,7 +6,7 @@ import AsyncResource from '../../components/async-resource/async-resource'
 import { DefaultAppAlias } from '../../components/component/default-app-alias'
 import { DNSAliases } from '../../components/component/dns-aliases'
 import { EnvironmentCardList } from '../../components/environment-card-list/EnvironmentCardList'
-import { FirstTimeApplyConfig } from '../../components/first-time-apply-config/FirstTimeApplyConfig'
+import { InitialConfigurationPrompt } from '../../components/initial-configuration-prompt/InitialConfigurationPrompt'
 import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
 import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { pollingInterval } from '../../store/defaults'
@@ -39,7 +39,7 @@ function AppOverviewPage({ appName }: { appName: string }) {
           </Alert>
         )}
 
-        {application && <FirstTimeApplyConfig application={application} />}
+        {application && <InitialConfigurationPrompt application={application} />}
 
         <div className="grid grid--gap-medium grid--overview-columns">
           <ApplicationCost appName={appName} />
