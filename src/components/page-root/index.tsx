@@ -1,6 +1,6 @@
 import { InteractionType } from '@azure/msal-browser'
 import { useMsalAuthentication } from '@azure/msal-react'
-import { type FunctionComponent, useMemo } from 'react'
+import { type FunctionComponent } from 'react'
 import { useSelector } from 'react-redux'
 import { RouterProvider, type RouterProviderProps } from 'react-router'
 import type { RootState } from '../../store/store'
