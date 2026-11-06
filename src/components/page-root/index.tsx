@@ -8,11 +8,7 @@ import './style.css'
 
 export const PageRouter: FunctionComponent<Pick<RouterProviderProps, 'router'>> = ({ router }) => {
   // Round-trip the deep link via MSAL state, as redirectUri is always /applications
-  const loginRequest = useMemo(
-    () => ({ state: `${window.location.pathname}${window.location.search}${window.location.hash}` }),
-    []
-  )
-  useMsalAuthentication(InteractionType.Redirect, loginRequest)
+  useMsalAuthentication(InteractionType.Redirect)
 
   const authProvider = useAuthProvider()
   if (!authProvider) {
