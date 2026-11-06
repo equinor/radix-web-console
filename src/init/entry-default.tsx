@@ -36,6 +36,10 @@ try {
   if (response?.account) {
     msalInstance.setActiveAccount(response.account)
   }
+  const returnTo = response?.state
+  if (returnTo?.startsWith('/') && !returnTo.startsWith('//') && !returnTo.startsWith('/\\')) {
+    await router.navigate(returnTo, { replace: true })
+  }
 } catch (error) {
   console.error('MSAL redirect handling failed:', error)
 }

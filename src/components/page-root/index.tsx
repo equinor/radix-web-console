@@ -1,13 +1,18 @@
 import { InteractionType } from '@azure/msal-browser'
 import { useMsalAuthentication } from '@azure/msal-react'
-import type { FunctionComponent } from 'react'
+import { type FunctionComponent, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { RouterProvider, type RouterProviderProps } from 'react-router'
 import type { RootState } from '../../store/store'
 import './style.css'
 
 export const PageRouter: FunctionComponent<Pick<RouterProviderProps, 'router'>> = ({ router }) => {
-  useMsalAuthentication(InteractionType.Redirect)
+  // Round-trip the deep link via MSAL state, as redirectUri is always /applications
+  const loginRequest = useMemo(
+    () => ({ state: `${window.location.pathname}${window.location.search}${window.location.hash}` }),
+    []
+  )
+  useMsalAuthentication(InteractionType.Redirect, loginRequest)
 
   const authProvider = useAuthProvider()
   if (!authProvider) {
