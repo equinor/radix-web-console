@@ -25,7 +25,7 @@ describe('buildKeyVaultTableGroups', () => {
       secret('csi-azure-key-vault-item', 'Pending', 'broken'),
     ])
     expect(groups.map((group) => [group.vaultName, group.issue])).toEqual([
-      ['broken', { kind: 'no-items-available' }],
+      ['broken', { kind: 'some-items-unavailable' }],
       ['healthy', undefined],
     ])
   })
@@ -74,30 +74,42 @@ describe('getKeyVaultIssue', () => {
     })
   })
 
-  it('prefers missing-credentials over no-items-available when both apply', () => {
+  it('prefers missing-credentials over some-items-unavailable when both apply', () => {
     expect(
       getKeyVaultIssue([secret('csi-azure-key-vault-creds', 'Pending'), secret('csi-azure-key-vault-item', 'Pending')])
     ).toMatchObject({ kind: 'missing-credentials' })
   })
 
-  it('reports no-items-available when credentials are consistent but no item is', () => {
+  it('reports some-items-unavailable when credentials are consistent but an item is not', () => {
     expect(
       getKeyVaultIssue([
         secret('csi-azure-key-vault-creds', 'Consistent'),
         secret('csi-azure-key-vault-item', 'Pending'),
       ])
-    ).toEqual({ kind: 'no-items-available' })
+    ).toEqual({ kind: 'some-items-unavailable' })
   })
 
-  it('reports no-items-available for a vault without credentials whose items are all unavailable', () => {
-    expect(getKeyVaultIssue([secret('csi-azure-key-vault-item', 'Pending')])).toEqual({ kind: 'no-items-available' })
+  it('reports some-items-unavailable for a vault without credentials whose item is unavailable', () => {
+    expect(getKeyVaultIssue([secret('csi-azure-key-vault-item', 'Pending')])).toEqual({
+      kind: 'some-items-unavailable',
+    })
   })
 
-  it('reports no issue when at least one item is consistent', () => {
+  it('reports some-items-unavailable when only one of several items is unavailable', () => {
     expect(
       getKeyVaultIssue([
         secret('csi-azure-key-vault-creds', 'Consistent'),
         secret('csi-azure-key-vault-item', 'Pending'),
+        secret('csi-azure-key-vault-item', 'Consistent'),
+      ])
+    ).toEqual({ kind: 'some-items-unavailable' })
+  })
+
+  it('reports no issue when all items are consistent', () => {
+    expect(
+      getKeyVaultIssue([
+        secret('csi-azure-key-vault-creds', 'Consistent'),
+        secret('csi-azure-key-vault-item', 'Consistent'),
         secret('csi-azure-key-vault-item', 'Consistent'),
       ])
     ).toBeUndefined()

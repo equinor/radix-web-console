@@ -76,10 +76,10 @@ const KeyVaultIssueDescription = (props: KeyVaultIssuePopoverProps) => {
     )
   }
 
-  if (issue.kind === 'no-items-available') {
+  if (issue.kind === 'some-items-unavailable') {
     return (
       <Typography variant="body_short">
-        None of the Key Vault items are available. Verify that they are configured correctly.
+        One or more Key Vault items are unavailable. Check the events log for details on why they could not be read.
       </Typography>
     )
   }

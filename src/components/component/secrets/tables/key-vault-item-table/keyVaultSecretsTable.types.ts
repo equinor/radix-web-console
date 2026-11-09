@@ -5,7 +5,7 @@ import type { Secret } from '../../../../../store/radix-api'
  */
 export type KeyVaultIssue =
   | { readonly kind: 'missing-credentials'; readonly inconsistentCredentials: ReadonlyArray<Secret> }
-  | { readonly kind: 'no-items-available' }
+  | { readonly kind: 'some-items-unavailable' }
 
 /** Key vault with its associated secrets */
 export interface KeyVault {

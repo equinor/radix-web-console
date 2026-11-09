@@ -44,15 +44,13 @@ const groupSecretsByVault = (secrets: ReadonlyArray<Secret>): Array<KeyVault> =>
 const getInconsistentCredentials = (vaultSecrets: KeyVaultSecrets): Array<Secret> =>
   vaultSecrets.filter((secret) => isKeyVaultCredential(secret) && !isConsistent(secret))
 
-/** True when the vault has items and none of them resolved. */
-const areAllItemsUnavailable = (vaultSecrets: KeyVaultSecrets): boolean => {
-  const items = vaultSecrets.filter(isKeyVaultItem)
-  return items.length > 0 && !items.some(isConsistent)
-}
+/** True when at least one of the vault's items failed to resolve. */
+const isAnyItemUnavailable = (vaultSecrets: KeyVaultSecrets): boolean =>
+  vaultSecrets.some((secret) => isKeyVaultItem(secret) && !isConsistent(secret))
 
 /**
  * The single issue to surface for a vault, or `undefined` when it's healthy.
- * Missing credentials win over unavailable items, since the latter is a consequence of the former.
+ * Missing credentials win over unavailable items, since the latter is often a consequence of the former.
  */
 export const getKeyVaultIssue = (vaultSecrets: KeyVaultSecrets): KeyVaultIssue | undefined => {
   const inconsistentCredentials = getInconsistentCredentials(vaultSecrets)
@@ -61,8 +59,8 @@ export const getKeyVaultIssue = (vaultSecrets: KeyVaultSecrets): KeyVaultIssue |
     return { kind: 'missing-credentials', inconsistentCredentials }
   }
 
-  if (areAllItemsUnavailable(vaultSecrets)) {
-    return { kind: 'no-items-available' }
+  if (isAnyItemUnavailable(vaultSecrets)) {
+    return { kind: 'some-items-unavailable' }
   }
 
   return undefined

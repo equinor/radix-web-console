@@ -16,10 +16,10 @@ export const KEY_VAULT_ISSUE_PRESENTATION = {
     icon: error_outlined,
     triggerLabel: 'Key Vault credentials missing',
   },
-  'no-items-available': {
-    title: 'No Key Vault Items available',
+  'some-items-unavailable': {
+    title: 'Key Vault Items unavailable',
     severity: 'warning',
     icon: warning_outlined,
-    triggerLabel: 'No Key Vault Items available',
+    triggerLabel: 'Some Key Vault Items unavailable',
   },
 } as const satisfies Record<KeyVaultIssue['kind'], KeyVaultIssuePresentation>
