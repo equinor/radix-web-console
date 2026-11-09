@@ -32,7 +32,7 @@ msalInstance.addEventCallback((event) => {
 await msalInstance.initialize()
 
 try {
-  const response = await msalInstance.handleRedirectPromise({ navigateToLoginRequestUrl: false })
+  const response = await msalInstance.handleRedirectPromise({ navigateToLoginRequestUrl: true })
   if (response?.account) {
     msalInstance.setActiveAccount(response.account)
   }
