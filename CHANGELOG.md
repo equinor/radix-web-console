@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.16.1](https://github.com/equinor/radix-web-console/compare/v4.16.0..v4.16.1) - 2026-11-09
+
+### 🐛 Bug Fixes
+
+- Preserve deep link on login redirect (#1449) - ([4a3c5c4](https://github.com/equinor/radix-web-console/commit/4a3c5c4f4b7abd83fd3d0bb86eeb8cd949ad826b)) by @ingeknudsen in [#1449](https://github.com/equinor/radix-web-console/pull/1449)
+
+- Clean up temporary code and remove unused functions related to step types (#1447) - ([5725e68](https://github.com/equinor/radix-web-console/commit/5725e6894e1ffb868223af7d853e19c0195fb09e)) by @nilsgstrabo in [#1447](https://github.com/equinor/radix-web-console/pull/1447)
+
+
 ## [4.16.0](https://github.com/equinor/radix-web-console/compare/v4.15.0..v4.16.0) - 2026-11-02
 
 ### 🚀 Features
@@ -292,13 +301,13 @@ All notable changes to this project will be documented in this file.
 
 ### 🐛 Bug Fixes
 
-- Upgrade @fortawesome/fontawesome-free from 5.13.0 to 5.15.1 (#243) - ([f3bbc8b](https://github.com/equinor/radix-web-console/commit/f3bbc8b919f2e3a84c6365df3916d1692eb9b062)) by @snyk-bot
+- Upgrade @fortawesome/fontawesome-free from 5.13.0 to 5.15.1 (#243) - ([f3bbc8b](https://github.com/equinor/radix-web-console/commit/f3bbc8b919f2e3a84c6365df3916d1692eb9b062)) by @snyk-bot in [#243](https://github.com/equinor/radix-web-console/pull/243)
 
-- Upgrade history from 4.7.2 to 4.10.1 (#242) - ([1507dd3](https://github.com/equinor/radix-web-console/commit/1507dd30cb79e3435f4f58ee6728a0cd787e362c)) by @snyk-bot
+- Upgrade history from 4.7.2 to 4.10.1 (#242) - ([1507dd3](https://github.com/equinor/radix-web-console/commit/1507dd30cb79e3435f4f58ee6728a0cd787e362c)) by @snyk-bot in [#242](https://github.com/equinor/radix-web-console/pull/242)
 
-- Upgrade react-locky from 1.5.1 to 1.5.7 (#241) - ([7feb67f](https://github.com/equinor/radix-web-console/commit/7feb67f3db6681f476f905a0bb815a8e7eb85c07)) by @snyk-bot
+- Upgrade react-locky from 1.5.1 to 1.5.7 (#241) - ([7feb67f](https://github.com/equinor/radix-web-console/commit/7feb67f3db6681f476f905a0bb815a8e7eb85c07)) by @snyk-bot in [#241](https://github.com/equinor/radix-web-console/pull/241)
 
-- Upgrade react-focus-lock from 1.17.6 to 1.19.1 (#240) - ([4a5c6e3](https://github.com/equinor/radix-web-console/commit/4a5c6e3e147acbca6ae9e6143ebba1849139864a)) by @snyk-bot
+- Upgrade react-focus-lock from 1.17.6 to 1.19.1 (#240) - ([4a5c6e3](https://github.com/equinor/radix-web-console/commit/4a5c6e3e147acbca6ae9e6143ebba1849139864a)) by @snyk-bot in [#240](https://github.com/equinor/radix-web-console/pull/240)
 
 
 ## [4.3.1](https://github.com/equinor/radix-web-console/compare/v4.3.0..v4.3.1) - 2020-06-11
@@ -310,7 +319,7 @@ All notable changes to this project will be documented in this file.
 
 ### 💼 Other
 
-- Adds description of copy radixconfig.yaml step (#193) - ([47bc762](https://github.com/equinor/radix-web-console/commit/47bc762a37e30193e1752a7e3c3c1842b844166b)) by @keaaa
+- Adds description of copy radixconfig.yaml step (#193) - ([47bc762](https://github.com/equinor/radix-web-console/commit/47bc762a37e30193e1752a7e3c3c1842b844166b)) by @keaaa in [#193](https://github.com/equinor/radix-web-console/pull/193)
 
 
 ## New Contributors ❤️
@@ -321,38 +330,38 @@ All notable changes to this project will be documented in this file.
 
 ### 💼 Other
 
-- Secret status updated after save (#184) - ([e57440d](https://github.com/equinor/radix-web-console/commit/e57440d840dd7334c1ce96ae8f8bd3736f659cf2)) by @keaaa
+- Secret status updated after save (#184) - ([e57440d](https://github.com/equinor/radix-web-console/commit/e57440d840dd7334c1ce96ae8f8bd3736f659cf2)) by @keaaa in [#184](https://github.com/equinor/radix-web-console/pull/184)
 
-- Public links available on env card (#185) - ([c0e4508](https://github.com/equinor/radix-web-console/commit/c0e450867b22c2eda836e5d0fec797ed4e479954)) by @keaaa
+- Public links available on env card (#185) - ([c0e4508](https://github.com/equinor/radix-web-console/commit/c0e450867b22c2eda836e5d0fec797ed4e479954)) by @keaaa in [#185](https://github.com/equinor/radix-web-console/pull/185)
 
-- Link to app AAD group (#187) - ([1d65bf6](https://github.com/equinor/radix-web-console/commit/1d65bf62b3b0fb93b693b9d1a55913534de172e4)) by @keaaa
+- Link to app AAD group (#187) - ([1d65bf6](https://github.com/equinor/radix-web-console/commit/1d65bf62b3b0fb93b693b9d1a55913534de172e4)) by @keaaa in [#187](https://github.com/equinor/radix-web-console/pull/187)
 
-- Job triggered by fix (#188) - ([21c24d8](https://github.com/equinor/radix-web-console/commit/21c24d8f7abbf2a817da9aedb7238b462d412cba)) by @keaaa
+- Job triggered by fix (#188) - ([21c24d8](https://github.com/equinor/radix-web-console/commit/21c24d8f7abbf2a817da9aedb7238b462d412cba)) by @keaaa in [#188](https://github.com/equinor/radix-web-console/pull/188)
 
 
 ## New Contributors ❤️
 
-* @JoakimHagen made their first contribution
+* @JoakimHagen made their first contribution in [#183](https://github.com/equinor/radix-web-console/pull/183)
 ## [4.2.1](https://github.com/equinor/radix-web-console/compare/v4.2.0..v4.2.1) - 2020-02-10
 
 ### 💼 Other
 
-- Last job time based on status (#169) - ([9a5c99a](https://github.com/equinor/radix-web-console/commit/9a5c99ae698ee0312b1510211449572d7237a2c7)) by @keaaa
+- Last job time based on status (#169) - ([9a5c99a](https://github.com/equinor/radix-web-console/commit/9a5c99ae698ee0312b1510211449572d7237a2c7)) by @keaaa in [#169](https://github.com/equinor/radix-web-console/pull/169)
 
-- Requests refresh token as part of oauth (#171) - ([cc06bef](https://github.com/equinor/radix-web-console/commit/cc06bef0dc05ef5b9763541cf163ce880a7891c8)) by @keaaa
+- Requests refresh token as part of oauth (#171) - ([cc06bef](https://github.com/equinor/radix-web-console/commit/cc06bef0dc05ef5b9763541cf163ce880a7891c8)) by @keaaa in [#171](https://github.com/equinor/radix-web-console/pull/171)
 
-- Stop ongoing or queued jobs - ([df4acb5](https://github.com/equinor/radix-web-console/commit/df4acb5f8d0d3a50b9e5243227b3effcd02a30ce)) by @keaaa
+- Stop ongoing or queued jobs - ([df4acb5](https://github.com/equinor/radix-web-console/commit/df4acb5f8d0d3a50b9e5243227b3effcd02a30ce)) by @keaaa in [#172](https://github.com/equinor/radix-web-console/pull/172)
 
-- Always allow to build/deploy from master (#176) - ([e5ec099](https://github.com/equinor/radix-web-console/commit/e5ec099537cbe134b6abc045cf138b98b2484396)) by @keaaa
+- Always allow to build/deploy from master (#176) - ([e5ec099](https://github.com/equinor/radix-web-console/commit/e5ec099537cbe134b6abc045cf138b98b2484396)) by @keaaa in [#176](https://github.com/equinor/radix-web-console/pull/176)
 
 
 ## [3.6.0](https://github.com/equinor/radix-web-console/compare/v3.5.2..v3.6.0) - 2019-11-19
 
 ### 💼 Other
 
-- Support private image hub - ([0d9700b](https://github.com/equinor/radix-web-console/commit/0d9700bdbd8efcc925f774196e4099cffeb8e7d3)) by @keaaa
+- Support private image hub - ([0d9700b](https://github.com/equinor/radix-web-console/commit/0d9700bdbd8efcc925f774196e4099cffeb8e7d3)) by @keaaa in [#150](https://github.com/equinor/radix-web-console/pull/150)
 
-- Disclaimer on US PoC cluster (#153) - ([2b7c7c6](https://github.com/equinor/radix-web-console/commit/2b7c7c65990e167d09ad9b81a24420da82b82bc8)) by @keaaa
+- Disclaimer on US PoC cluster (#153) - ([2b7c7c6](https://github.com/equinor/radix-web-console/commit/2b7c7c65990e167d09ad9b81a24420da82b82bc8)) by @keaaa in [#153](https://github.com/equinor/radix-web-console/pull/153)
 
 
 ## [3.1.0](https://github.com/equinor/radix-web-console/compare/v3.0.1..v3.1.0) - 2019-07-11
@@ -366,7 +375,7 @@ All notable changes to this project will be documented in this file.
 
 ### 💼 Other
 
-- Support build only pipeline - ([f23646d](https://github.com/equinor/radix-web-console/commit/f23646d529f78b06388db0f9cc51567f9031300b)) by @keaaa
+- Support build only pipeline - ([f23646d](https://github.com/equinor/radix-web-console/commit/f23646d529f78b06388db0f9cc51567f9031300b)) by @keaaa in [#116](https://github.com/equinor/radix-web-console/pull/116)
 
 
 ## [2.1.0](https://github.com/equinor/radix-web-console/compare/v2.0.1..v2.1.0) - 2019-03-05
@@ -378,7 +387,7 @@ All notable changes to this project will be documented in this file.
 
 ## New Contributors ❤️
 
-* @ingeknudsen made their first contribution
+* @ingeknudsen made their first contribution in [#102](https://github.com/equinor/radix-web-console/pull/102)
 ## [1.2.1](https://github.com/equinor/radix-web-console/compare/v1.2.0..v1.2.1) - 2019-01-29
 
 ### 💼 Other
@@ -399,6 +408,6 @@ All notable changes to this project will be documented in this file.
 
 * @nemzes made their first contribution
 * @matseda made their first contribution
-* @ made their first contribution
+* @ made their first contribution in [#5](https://github.com/equinor/radix-web-console/pull/5)
 * @thezultimate made their first contribution
 <!-- generated by git-cliff -->
