@@ -3,14 +3,14 @@ import { Banner } from '../../../banner/Banner'
 import { PipelineJobLink } from '../../../link/PipelineJobLink'
 import type { ApplyConfigPromptStatus } from '../../applyConfigPrompt.types'
 
-interface ApplyConfigJobBannerProps {
+interface ApplyConfigStatusBannerProps {
   readonly appName: string
   readonly status: ApplyConfigPromptStatus
   readonly latestJob?: JobSummary
 }
 
 /** Tells the user how the latest apply attempt is going. Renders nothing until a job exists. */
-export const ApplyConfigJobBanner = (props: ApplyConfigJobBannerProps) => {
+export const ApplyConfigStatusBanner = (props: ApplyConfigStatusBannerProps) => {
   const { appName, status, latestJob } = props
 
   if (!latestJob || status === 'not-started') {

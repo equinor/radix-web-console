@@ -23,7 +23,9 @@ interface ApplyConfigPromptBannerProps {
 
 /**
  * Compact banner that prompts the user to apply the initial Radix configuration if it has not been applied yet.
- * Reflects whether an apply is already running or has failed. Renders nothing once the configuration is applied.
+ * Reflects whether an apply is already running or has failed.
+ *
+ * Renders nothing once the configuration is applied.
  */
 export const ApplyConfigPromptBanner = (props: ApplyConfigPromptBannerProps) => {
   const { application } = props
@@ -35,7 +37,9 @@ export const ApplyConfigPromptBanner = (props: ApplyConfigPromptBannerProps) => 
 
   const latestJob = getLatestPipelineJob(application.jobs)
   const status = getApplyConfigPromptStatus(latestJob)
-  const applyError = applyErrorMessage && <Banner.Message>Failed to apply config. {applyErrorMessage}</Banner.Message>
+  const applyError = applyErrorMessage && (
+    <Banner.Message>Could not start the pipeline job. {applyErrorMessage}</Banner.Message>
+  )
 
   if (status === 'in-progress' && latestJob) {
     return (

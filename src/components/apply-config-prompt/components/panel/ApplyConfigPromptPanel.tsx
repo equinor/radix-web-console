@@ -10,7 +10,7 @@ import { getApplyConfigPromptStatus } from '../../applyConfigPrompt.utils'
 import { ApplyConfigButton } from '../ApplyConfigButton'
 import { RadixConfigSource } from '../config-source/RadixConfigSource'
 import { OnboardingSteps } from '../onboarding-steps/OnboardingSteps'
-import { ApplyConfigJobBanner } from './ApplyConfigJobBanner'
+import { ApplyConfigStatusBanner } from './ApplyConfigStatusBanner'
 import styles from './applyConfigPromptPanel.module.css'
 
 export interface ApplyConfigPromptPanelProps {
@@ -49,22 +49,20 @@ export const ApplyConfigPromptPanel = (props: ApplyConfigPromptPanelProps) => {
 
       <RadixConfigSource registration={application.registration} />
 
-      <ApplyConfigJobBanner appName={application.name} status={status} latestJob={latestJob} />
-
-      {status === 'not-started' && (
-        <Typography className={styles.bodyText}>
-          Radix needs the deploy key in your repository to read the config. If you haven't added it yet, you'll find it
-          on the{' '}
-          <Typography as={Link} to={configurationPageUrl} link>
-            Configuration page
-          </Typography>
-          .
+      <Typography className={styles.bodyText}>
+        Radix needs the deploy key in your repository to read the config. If you haven't added it yet, you'll find it on
+        the{' '}
+        <Typography as={Link} to={configurationPageUrl} link>
+          Configuration page
         </Typography>
-      )}
+        .
+      </Typography>
+
+      <ApplyConfigStatusBanner appName={application.name} status={status} latestJob={latestJob} />
 
       {applyErrorMessage && (
         <Typography color="danger" role="alert">
-          Failed to apply config. {applyErrorMessage}
+          Could not start the pipeline job. {applyErrorMessage}
         </Typography>
       )}
 
