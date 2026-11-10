@@ -106,16 +106,8 @@ export function CreateApplicationScrim({ secrets, onRefreshApps, onCreateApplica
             <div className={'create-app'}>
               <div className="create-app-content">
                 <Typography>
-                  Now you can run the <em>apply-config</em> pipeline job, or go to{' '}
-                  <Typography
-                    as={Link}
-                    to={routeWithParams(routes.app, {
-                      appName: registration.name,
-                    })}
-                    link
-                  >
-                    your application's page
-                  </Typography>
+                  The app <strong>{registration.name}</strong> is registered. <br />
+                  Next, go to the application page and apply your Radix config to create your environments.
                 </Typography>
               </div>
               <div className="create-app-footer">
@@ -123,7 +115,7 @@ export function CreateApplicationScrim({ secrets, onRefreshApps, onCreateApplica
                   Previous: Webhook
                 </Button>
                 <Button as={Link} to={routeWithParams(routes.app, { appName: registration.name })}>
-                  Apply Config
+                  Go to application
                 </Button>
               </div>
             </div>
