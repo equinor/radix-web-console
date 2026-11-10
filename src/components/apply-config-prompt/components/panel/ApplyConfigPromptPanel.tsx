@@ -53,11 +53,12 @@ export const ApplyConfigPromptPanel = (props: ApplyConfigPromptPanelProps) => {
 
       {status === 'not-started' && (
         <Typography className={styles.bodyText}>
-          Before you apply, add the deploy key and webhook from the{' '}
+          Radix needs the deploy key in your repository to read the config. If you haven't added it yet, you'll find it
+          on the{' '}
           <Typography as={Link} to={configurationPageUrl} link>
             Configuration page
-          </Typography>{' '}
-          to your repository so Radix can reach it.
+          </Typography>
+          .
         </Typography>
       )}
 
