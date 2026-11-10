@@ -50,6 +50,10 @@ export function linkToGitHubBranch(repo: string, branch: string): string {
   return `${repo}/tree/${branch}`
 }
 
+export function linkToGitHubFile(repo: string, branch: string, filePath: string): string {
+  return `${repo}/blob/${branch}/${filePath}`
+}
+
 export function linkToGitHubCommit(repo: string, commit: string): string {
   return `${repo}/commit/${commit}`
 }

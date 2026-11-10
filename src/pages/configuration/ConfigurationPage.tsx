@@ -6,9 +6,9 @@ import { ExternalLink } from '../../components/link/external-link'
 import { RadixConfigFileLink } from '../../components/link/radix-config-file-link'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
-import { type ApplicationRegistration, radixApi, useGetDeployKeyAndSecretQuery } from '../../store/radix-api'
+import { radixApi, useGetDeployKeyAndSecretQuery } from '../../store/radix-api'
 import { withRouteParams } from '../../utils/router'
-import { routeWithParams } from '../../utils/string'
+import { linkToGitHubBranch, routeWithParams } from '../../utils/string'
 import { BuildSecretsAccordion } from './components/BuildSecretsAccordion'
 import ChangeAdminForm from './components/ChangeAdminForm'
 import { ChangeConfigurationItemForm } from './components/ChangeCiForm'
@@ -23,14 +23,6 @@ import { ConfigureDeployKey } from '../../components/configure-application-githu
 import { ConfigureGitHubWebhook } from '../../components/configure-application-github/configure-git-hub-webhook'
 import { RegenerateDeployKeyScrim } from '../../components/configure-application-github/regenerate-deploy-key-scrim'
 import { RegenerateSharedSecretScrim } from '../../components/configure-application-github/regenerate-shared-secret-scrim'
-
-function getConfigBranch(configBranch?: string): string {
-  return configBranch || 'master'
-}
-
-function getConfigBranchUrl({ configBranch, repository }: ApplicationRegistration): string {
-  return `${repository}/tree/${getConfigBranch(configBranch)}`
-}
 
 function ConfigurationPage({ appName }: { appName: string }) {
   const { data: application, refetch, ...reqState } = radixApi.useGetApplicationQuery({ appName }, { pollingInterval })
@@ -59,8 +51,8 @@ function ConfigurationPage({ appName }: { appName: string }) {
               </Typography>
               <Typography>
                 Config branch{' '}
-                <ExternalLink href={getConfigBranchUrl(registration)}>
-                  {getConfigBranch(registration.configBranch)}
+                <ExternalLink href={linkToGitHubBranch(registration.repository, registration.configBranch)}>
+                  {registration.configBranch}
                 </ExternalLink>
               </Typography>
               <Typography>

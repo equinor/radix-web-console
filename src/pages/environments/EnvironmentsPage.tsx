@@ -1,8 +1,8 @@
+import { ApplyConfigPromptBanner } from '../../components/apply-config-prompt/components/banner/ApplyConfigPromptBanner'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
 import { EnvironmentCardList } from '../../components/environment-card-list/EnvironmentCardList'
-import { InitialConfigurationPrompt } from '../../components/initial-configuration-prompt/InitialConfigurationPrompt'
 import { routes } from '../../router/routes'
 import { pollingInterval } from '../../store/defaults'
 import { useGetApplicationQuery } from '../../store/radix-api'
@@ -21,8 +21,12 @@ function EnvironmentsPage({ appName }: Props) {
       />
 
       <AsyncResource asyncState={state}>
-        {application && <InitialConfigurationPrompt application={application} />}
-        {application && <EnvironmentCardList application={application} />}
+        {application && (
+          <>
+            <ApplyConfigPromptBanner application={application} />
+            <EnvironmentCardList application={application} />
+          </>
+        )}
       </AsyncResource>
     </>
   )

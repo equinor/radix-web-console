@@ -1,0 +1,91 @@
+.steps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--eds_spacing_small);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: var(--eds_spacing_x_small);
+  color: var(--eds_text_static_icons__tertiary);
+
+  /* Connector line between steps */
+  &:not(:last-child)::after {
+    content: "";
+    display: block;
+    width: var(--eds_spacing_x_large);
+    height: 1px;
+    margin-left: var(--eds_spacing_x_small);
+    background-color: var(--eds_ui_background__medium);
+  }
+}
+
+.marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  border: 1px solid currentColor;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.label.label {
+  color: inherit;
+}
+
+.done {
+  color: var(--eds_interactive_primary__resting);
+
+  .marker {
+    background-color: var(--eds_interactive_primary__resting);
+    border-color: var(--eds_interactive_primary__resting);
+    /* EDS Icon fills with currentColor, so the colour (not fill) must be set here */
+    color: var(--eds_text_static_icons__primary_white);
+  }
+}
+
+.failed {
+  color: var(--eds_text_static_icons__default);
+
+  .marker {
+    background-color: var(--eds_interactive_danger__resting);
+    border-color: var(--eds_interactive_danger__resting);
+    color: var(--eds_text_static_icons__primary_white);
+  }
+
+  .label.label {
+    font-weight: 500;
+  }
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.current {
+  color: var(--eds_text_static_icons__default);
+
+  .marker {
+    border-color: var(--eds_interactive_primary__resting);
+    border-width: 2px;
+    color: var(--eds_interactive_primary__resting);
+  }
+
+  .label.label {
+    font-weight: 500;
+  }
+}

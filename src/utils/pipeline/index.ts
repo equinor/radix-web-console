@@ -1,4 +1,5 @@
-import type { Step } from '../../store/radix-api'
+import type { JobSummary, Step } from '../../store/radix-api'
+import { dataSorter, sortCompareDate } from '../sort-utils'
 
 // TODO: Remove this enum when radix-api with step type is deployed to all clusters, https://github.com/equinor/radix-operator/issues/2033
 export enum PipelineStep {
@@ -47,4 +48,9 @@ function getPipelineStepTitleFromName(stepName: string): string {
   }
 
   return 'Unknown Step'
+}
+
+/** The most recently created pipeline job, or undefined when there are none. Does not mutate the input. */
+export function getLatestPipelineJob(jobs?: ReadonlyArray<JobSummary>): JobSummary | undefined {
+  return dataSorter(jobs, [(left, right) => sortCompareDate(left.created, right.created, 'descending')])[0]
 }

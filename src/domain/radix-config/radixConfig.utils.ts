@@ -1,4 +1,5 @@
 import type { Application } from '../../store/radix-api'
+import { DEFAULT_CONFIG_FILE_NAME } from './radixConfig.const'
 
 /**
  * Whether Radix has applied the application's radixconfig.yaml yet. Environments are
@@ -7,3 +8,6 @@ import type { Application } from '../../store/radix-api'
  */
 export const hasAppliedRadixConfig = (application: Pick<Application, 'environments'>): boolean =>
   (application.environments?.length ?? 0) > 0
+
+export const getConfigFileName = (radixConfigFullName?: string): string =>
+  radixConfigFullName || DEFAULT_CONFIG_FILE_NAME

@@ -8,7 +8,6 @@ import type { ApplicationRegistration, DeployKeyAndSecret } from '../../store/ra
 import { routeWithParams } from '../../utils/string'
 import { ConfigureDeployKey } from '../configure-application-github/configure-deploy-key'
 import { ConfigureGitHubWebhook } from '../configure-application-github/configure-git-hub-webhook'
-import { NewApplyConfigPipelineLink } from '../link/apply-config-pipeline-link'
 import { ScrimPopup } from '../scrim-popup'
 import { CreateApplicationForm } from './create-application-form'
 
@@ -123,9 +122,9 @@ export function CreateApplicationScrim({ secrets, onRefreshApps, onCreateApplica
                 <Button onClick={() => setNewPage('webhook')} variant={'ghost'}>
                   Previous: Webhook
                 </Button>
-                <NewApplyConfigPipelineLink button appName={registration.name}>
+                <Button as={Link} to={routeWithParams(routes.app, { appName: registration.name })}>
                   Apply Config
-                </NewApplyConfigPipelineLink>
+                </Button>
               </div>
             </div>
           )}

@@ -1,0 +1,25 @@
+.details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--eds_spacing_medium) var(--eds_spacing_xx_large);
+  margin: 0;
+  padding: var(--eds_spacing_medium);
+  background-color: var(--eds_ui_background__light);
+  border-radius: var(--eds_spacing_x_small);
+}
+
+.detail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--eds_spacing_xx_small);
+
+  dd {
+    margin: 0;
+  }
+}
+
+.label.label {
+  color: var(--eds_text_static_icons__tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}

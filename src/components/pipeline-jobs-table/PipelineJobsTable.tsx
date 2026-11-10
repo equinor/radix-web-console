@@ -8,14 +8,18 @@ import { NavigableTable } from '../navigable-table/NavigableTable'
 import { PipelineJobsTableRow } from './PipelineJobsTableRow'
 import styles from './pipelineJobsTable.module.css'
 
+const DEFAULT_NO_JOBS_GUIDANCE_TEXT = 'Push to GitHub to trigger a job'
+
 interface PipelineJobsTableProps {
   readonly appName: string
   readonly jobs?: Readonly<Array<JobSummary>>
   readonly limit?: number
+  /** Tells the user how to get their first job, shown under "No pipeline jobs yet". Defaults to pushing to GitHub. */
+  readonly noJobsGuidanceText?: string
 }
 
 export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
-  const { appName, jobs, limit } = props
+  const { appName, jobs, limit, noJobsGuidanceText = DEFAULT_NO_JOBS_GUIDANCE_TEXT } = props
   const [sortedData, setSortedData] = useState([...(jobs ?? [])])
 
   const [dateSort, setDateSort] = useState<SortDirection>('descending')
@@ -67,7 +71,7 @@ export const PipelineJobsTable = (props: PipelineJobsTableProps) => {
       ) : (
         <span className="grid grid--gap-small">
           <Typography>No pipeline jobs yet</Typography>
-          <Typography>Push to GitHub to trigger a job</Typography>
+          <Typography>{noJobsGuidanceText}</Typography>
         </span>
       )}
     </span>

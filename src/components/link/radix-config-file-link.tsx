@@ -1,15 +1,15 @@
+import { getConfigFileName } from '../../domain/radix-config/radixConfig.utils'
 import type { ApplicationRegistration } from '../../store/radix-api'
+import { linkToGitHubFile } from '../../utils/string'
 import { ExternalLink } from './external-link'
 
-function configFileFullName(radixConfigFullName?: string): string {
-  return radixConfigFullName || 'radixconfig.yaml'
+interface RadixConfigFileLinkProps {
+  registration: Pick<ApplicationRegistration, 'repository' | 'configBranch' | 'radixConfigFullName'>
 }
 
-function configFileUrl({ configBranch, radixConfigFullName, repository }: ApplicationRegistration): string {
-  return `${repository}/blob/${configBranch}/${configFileFullName(radixConfigFullName)}`
-}
+export const RadixConfigFileLink = ({ registration }: RadixConfigFileLinkProps) => {
+  const fileName = getConfigFileName(registration.radixConfigFullName)
+  const href = linkToGitHubFile(registration.repository, registration.configBranch, fileName)
 
-type Props = { registration: ApplicationRegistration }
-export const RadixConfigFileLink = ({ registration }: Props) => (
-  <ExternalLink href={configFileUrl(registration)}>{configFileFullName(registration.radixConfigFullName)}</ExternalLink>
-)
+  return <ExternalLink href={href}>{fileName}</ExternalLink>
+}

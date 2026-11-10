@@ -1,0 +1,29 @@
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--eds_spacing_medium);
+  padding-block: var(--eds_spacing_small) var(--eds_spacing_large);
+
+  /* Give the progress indicator room to breathe before the heading takes over */
+  > :first-child {
+    margin-bottom: var(--eds_spacing_small);
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--eds_spacing_small);
+}
+
+.bodyText {
+  max-width: 65ch;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--eds_spacing_small);
+  margin-top: var(--eds_spacing_x_small);
+}

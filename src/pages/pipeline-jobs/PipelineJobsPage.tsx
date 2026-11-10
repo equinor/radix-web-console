@@ -1,7 +1,7 @@
+import { ApplyConfigPromptBanner } from '../../components/apply-config-prompt/components/banner/ApplyConfigPromptBanner'
 import AsyncResource from '../../components/async-resource/async-resource'
 import { Breadcrumb } from '../../components/breadcrumb'
 import { DocumentTitle } from '../../components/document-title'
-import { InitialConfigurationPrompt } from '../../components/initial-configuration-prompt/InitialConfigurationPrompt'
 import { PipelineJobsTable } from '../../components/pipeline-jobs-table/PipelineJobsTable'
 import { hasAppliedRadixConfig } from '../../domain/radix-config/radixConfig.utils'
 import { routes } from '../../router/routes'
@@ -10,6 +10,8 @@ import { useGetApplicationJobsQuery, useGetApplicationQuery } from '../../store/
 import { withRouteParams } from '../../utils/router'
 import { routeWithParams } from '../../utils/string'
 import { PipelineJobsActions } from './components/PipelineJobsActions'
+
+const CONFIG_NOT_APPLIED_NO_JOBS_GUIDANCE_TEXT = 'Your first pipeline job will show up here once you apply your config'
 
 interface PipelineJobsPageProps {
   readonly appName: string
@@ -24,6 +26,9 @@ const PipelineJobsPage = (props: PipelineJobsPageProps) => {
   )
   const { data: jobs, ...jobsState } = useGetApplicationJobsQuery({ appName }, { skip: !appName, pollingInterval })
 
+  const hasAppliedConfig = application ? hasAppliedRadixConfig(application) : undefined
+  const noJobsGuidanceText = hasAppliedConfig === false ? CONFIG_NOT_APPLIED_NO_JOBS_GUIDANCE_TEXT : undefined
+
   return (
     <>
       <DocumentTitle title={`${appName} pipeline jobs`} />
@@ -34,15 +39,15 @@ const PipelineJobsPage = (props: PipelineJobsPageProps) => {
       <main className="grid grid--gap-medium">
         <AsyncResource asyncState={applicationState}>
           {application &&
-            (hasAppliedRadixConfig(application) ? (
+            (hasAppliedConfig ? (
               <PipelineJobsActions appName={appName} />
             ) : (
-              <InitialConfigurationPrompt application={application} />
+              <ApplyConfigPromptBanner application={application} />
             ))}
         </AsyncResource>
 
         <AsyncResource asyncState={jobsState}>
-          <PipelineJobsTable appName={appName} jobs={jobs} />
+          <PipelineJobsTable appName={appName} jobs={jobs} noJobsGuidanceText={noJobsGuidanceText} />
         </AsyncResource>
       </main>
     </>
