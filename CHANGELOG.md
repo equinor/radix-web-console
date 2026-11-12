@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [4.16.1](https://github.com/equinor/radix-web-console/compare/v4.16.0..v4.16.1) - 2026-11-09
+## [4.17.0](https://github.com/equinor/radix-web-console/compare/v4.16.1..v4.17.0) - 2026-11-10
+
+### 🚀 Features
+
+- Group key vault items by their key vault (#1443) - ([4831c70](https://github.com/equinor/radix-web-console/commit/4831c706b5b2bc0723b544a61d1b0bfc1803cf58)) by @kristin-pettersen in [#1443](https://github.com/equinor/radix-web-console/pull/1443)
+
+
+## [4.16.1](https://github.com/equinor/radix-web-console/compare/v4.16.0..v4.16.1) - 2026-11-10
 
 ### 🐛 Bug Fixes
 
