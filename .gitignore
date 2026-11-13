@@ -6,6 +6,9 @@
 # testing
 /coverage
 
+# local runtime config for npm run dev
+/public/config/
+
 # production
 /build
 /.idea/

@@ -46,11 +46,57 @@ If you need to nuke `node_modules` you can stop the container and run:
 
 ### Without Docker
 
-If you want to connect to local Radix-API, you can omit Docker. You may want to do this for a better experience while debugging JavaScript in your IDE (e.g. JetBrains WebStorm). Run `npm run dev` with `VITE_RADIX_API_BASE_URI` set to your local instance of Radix-API, e.g.
+`npm run dev` serves the console on http://localhost:3000. Two settings choose what it talks to:
 
-`VITE_RADIX_API_BASE_URI=127.0.0.1:3002 npm run dev`
+- `RADIX_API_URL`: where `/api` is proxied to (default `https://api.dev.radix.equinor.com`). The cost, log and scan APIs are always proxied to the dev cluster.
+- `public/config/inject-env.js` (git-ignored): runtime config, including the login provider. Without it, the console logs in with Entra ID using the defaults in [src/utils/config/index.ts](./src/utils/config/index.ts). With the radix-local version, it logs in with the radix-local Keycloak.
 
-Radix-API *must* run with `--useOutClusterClient=false` for this to work.
+The console must log in with the identity provider the API trusts, otherwise the API rejects the token (`no issuers could validate token`). Always open http://localhost:3000: if Vite falls back to another port because 3000 is taken, login fails because that redirect URL isn't allowed.
+
+| | API | Kube context for local Radix API | `public/config/inject-env.js` | Login |
+|---|---|---|---|---|
+| 1 | Radix dev cluster | – | absent | Entra ID |
+| 2 | Local Radix API → Radix dev cluster | dev AKS cluster | absent | Entra ID |
+| 3 | Local Radix API → radix-local | `kind-radix-dev` | radix-local | Keycloak |
+| 4 | Radix API inside radix-local | – | radix-local | Keycloak |
+
+To create the radix-local config (scenarios 3 and 4):
+
+    mkdir -p public/config
+    curl -sk https://console.127-0-0-1.nip.io/config/inject-env.js \
+      -o public/config/inject-env.js
+
+To remove it again (scenarios 1 and 2):
+
+    rm -rf public/config
+
+A locally running Radix API calls Kubernetes with the user's token against the current context in `~/.kube/config`, so select the matching cluster (e.g. `kubectl config use-context kind-radix-dev`) before starting it. The examples below assume it listens on port 3002.
+
+#### 1. Against the Radix dev cluster
+
+    npm run dev
+
+Sign in with your Equinor account.
+
+#### 2. Against a local Radix API connected to the Radix dev cluster
+
+    RADIX_API_URL=http://localhost:3002 npm run dev
+
+Sign in with your Equinor account.
+
+#### 3. Against a local Radix API connected to a [radix-local](https://github.com/equinor/radix-local) cluster
+
+    RADIX_API_URL=http://localhost:3002 npm run dev
+
+Sign in with a radix-local user (`./bootstrap.sh status` in radix-local lists them). Requests from tabs open on https://console.127-0-0-1.nip.io go to the in-cluster API, not your local one.
+
+#### 4. Against the Radix API inside a [radix-local](https://github.com/equinor/radix-local) cluster
+
+    RADIX_API_URL=https://api.127-0-0-1.nip.io \
+    NODE_EXTRA_CA_CERTS=<radix-local>/.certs/pki/root-ca.crt \
+    npm run dev
+
+`NODE_EXTRA_CA_CERTS` makes the dev proxy trust the radix-local root CA. Sign in with a radix-local user.
 
 It should be possible to connect to local instances of radix-cost-allocation-api and radix-vulnerability-scanner-api in a similar fashion by setting the `VITE_COST_API_BASE_URI` and `VITE_SCAN_API_BASE_URI` environment variables, but as of August 2022, these backend applications have not been written with debug options to modify CORS settings to allow direct requests from web browser (as opposed to requests routed through the nginx proxy module in this repository).
 
