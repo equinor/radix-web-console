@@ -2,7 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
-## [4.17.0](https://github.com/equinor/radix-web-console/compare/v4.16.1..v4.17.0) - 2026-11-10
+## [4.17.1](https://github.com/equinor/radix-web-console/compare/v4.17.0..v4.17.1) - 2026-11-19
+
+### 🐛 Bug Fixes
+
+- *(deps)* Update nginx image to version 1.31.9 in Dockerfile and docker-compose.yml (#1460) - ([502a450](https://github.com/equinor/radix-web-console/commit/502a45006b94e23a80e17779237836149100ab57)) by @nilsgstrabo in [#1460](https://github.com/equinor/radix-web-console/pull/1460)
+
+
+## [4.17.0](https://github.com/equinor/radix-web-console/compare/v4.16.1..v4.17.0) - 2026-11-12
 
 ### 🚀 Features
 
