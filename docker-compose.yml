@@ -29,7 +29,7 @@ services:
       - "9222:9222"
 
   proxy:
-    image: docker.io/nginxinc/nginx-unprivileged:1.31.6-alpine3.24
+    image: docker.io/nginx/nginx-unprivileged:1.31.9-alpine3.24
     container_name: radix-proxy_container
     read_only: true
     volumes:
