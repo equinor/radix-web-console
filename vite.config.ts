@@ -28,7 +28,7 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/uptime/, ''),
       },
       '/log-api/': {
-        target: 'https://server-radix-log-api-qa.dev.radix.equinor.com',
+        target: process.env.RADIX_LOG_API_URL ?? 'https://server-radix-log-api-qa.dev.radix.equinor.com',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/log-api/, '/api/v1'),
       },
