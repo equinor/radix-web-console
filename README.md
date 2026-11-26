@@ -46,9 +46,10 @@ If you need to nuke `node_modules` you can stop the container and run:
 
 ### Without Docker
 
-`npm run dev` serves the console on http://localhost:3000. Two settings choose what it talks to:
+`npm run dev` serves the console on http://localhost:3000. Three settings choose what it talks to:
 
-- `RADIX_API_URL`: where `/api` is proxied to (default `https://api.dev.radix.equinor.com`). The cost, log and scan APIs are always proxied to the dev cluster.
+- `RADIX_API_URL`: where `/api` is proxied to (default `https://api.dev.radix.equinor.com`).
+- `RADIX_LOG_API_URL`: where `/log-api` is proxied to (default `https://server-radix-log-api-qa.dev.radix.equinor.com`). The `/log-api` prefix is rewritten to `/api/v1`, so point it at the host only. The cost and scan APIs are always proxied to the dev cluster.
 - `public/config/inject-env.js` (git-ignored): runtime config, including the login provider. Without it, the console logs in with Entra ID using the defaults in [src/utils/config/index.ts](./src/utils/config/index.ts). With the radix-local version, it logs in with the radix-local Keycloak.
 
 The console must log in with the identity provider the API trusts, otherwise the API rejects the token (`no issuers could validate token`). Always open http://localhost:3000: if Vite falls back to another port because 3000 is taken, login fails because that redirect URL isn't allowed.
@@ -97,6 +98,14 @@ Sign in with a radix-local user (`./bootstrap.sh status` in radix-local lists th
     npm run dev
 
 `NODE_EXTRA_CA_CERTS` makes the dev proxy trust the radix-local root CA. Sign in with a radix-local user.
+
+#### Against a local Radix Log API
+
+Any of the scenarios above can be combined with a locally running [radix-log-api](https://github.com/equinor/radix-log-api) (default port 8000):
+
+    RADIX_LOG_API_URL=http://localhost:8000 npm run dev
+
+The console sends the same bearer token to `/log-api` as to `/api`, so the log API must be configured with the issuer and audience of the login provider the console uses (`LOG_API_AUTH_ISSUER` / `LOG_API_AUTH_AUDIENCE`), and `LOG_API_RADIX_API_HOST` must point at a Radix API that accepts that token.
 
 It should be possible to connect to local instances of radix-cost-allocation-api and radix-vulnerability-scanner-api in a similar fashion by setting the `VITE_COST_API_BASE_URI` and `VITE_SCAN_API_BASE_URI` environment variables, but as of August 2022, these backend applications have not been written with debug options to modify CORS settings to allow direct requests from web browser (as opposed to requests routed through the nginx proxy module in this repository).
 
