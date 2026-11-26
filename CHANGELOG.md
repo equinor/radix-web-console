@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [4.17.2](https://github.com/equinor/radix-web-console/compare/v4.17.1..v4.17.2) - 2026-11-26
+
+### 🐛 Bug Fixes
+
+- *(log)* Handle empty content in Log component and improve log display in JobReplica (#1464) - ([b7bcd31](https://github.com/equinor/radix-web-console/commit/b7bcd310f0f6564f12bd6dd0ec144ebfd493f835)) by @ingeknudsen in [#1464](https://github.com/equinor/radix-web-console/pull/1464)
+
+
+### ⚙️ Miscellaneous Tasks
+
+- Allow running dev server against a custom Radix API (#1448) - ([6ca374e](https://github.com/equinor/radix-web-console/commit/6ca374e54cfcec2710338f6f64145ff1ef4fcef0)) by @ingeknudsen in [#1448](https://github.com/equinor/radix-web-console/pull/1448)
+
+
 ## [4.17.1](https://github.com/equinor/radix-web-console/compare/v4.17.0..v4.17.1) - 2026-11-19
 
 ### 🐛 Bug Fixes
