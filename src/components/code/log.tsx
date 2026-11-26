@@ -163,7 +163,7 @@ export const Log = ({ copy, download, downloadCb, filename, content }: LogProps)
     fit.fit()
 
     terminal.current.writeln(`${YELLOW}Starting stream...${WHITE}`)
-    terminal.current.writeln(content)
+    terminal.current.writeln(content ?? '')
     terminal.current.writeln(`${YELLOW}Stream completed.${WHITE}`)
   }, [serializeAddon, content])
 
