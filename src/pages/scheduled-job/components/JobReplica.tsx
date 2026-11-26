@@ -46,7 +46,13 @@ export const JobReplica: FunctionComponent<{
             <AsyncResource asyncState={{ isLoading: state.isLoading || historyLogState.isLoading, isError: false }}>
               <ReplicaOverview replica={replica} job={job} />
               {notFound && (
-                <Log content={historyLogState.data as string} copy download filename={`${replica.name}.txt`} />
+                <AsyncResource asyncState={historyLogState}>
+                  {historyLogState.data ? (
+                    <Log content={historyLogState.data as string} copy download filename={`${replica.name}.txt`} />
+                  ) : (
+                    <Typography>This replica has no log</Typography>
+                  )}
+                </AsyncResource>
               )}
               {!notFound && (
                 <StreamingLog
